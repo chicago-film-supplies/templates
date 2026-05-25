@@ -32,11 +32,18 @@ jobs:
       - name: Resolve target env
         id: env
         run: |
+          # Base branch selects the env. Each env has its OWN WIF provider, CI
+          # service account, and API URL/audience (dev → cfs-dev-3100, prod →
+          # cfs-3100), so all three are per-env *_DEV/*_PROD repo secrets.
           BASE="${{ github.base_ref }}"
           if [ "$BASE" = "main" ]; then
             echo "api_url=${{ secrets.API_URL_PROD }}" >> "$GITHUB_OUTPUT"
+            echo "wif_provider=${{ secrets.WIF_PROVIDER_PROD }}" >> "$GITHUB_OUTPUT"
+            echo "golden_diff_sa=${{ secrets.GOLDEN_DIFF_SA_PROD }}" >> "$GITHUB_OUTPUT"
           else
             echo "api_url=${{ secrets.API_URL_DEV }}" >> "$GITHUB_OUTPUT"
+            echo "wif_provider=${{ secrets.WIF_PROVIDER_DEV }}" >> "$GITHUB_OUTPUT"
+            echo "golden_diff_sa=${{ secrets.GOLDEN_DIFF_SA_DEV }}" >> "$GITHUB_OUTPUT"
           fi
 
       # ── Detect changed template git_paths ───────────────────────────
@@ -88,8 +95,8 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
-          service_account: ${{ secrets.GOLDEN_DIFF_SA }}
+          workload_identity_provider: ${{ steps.env.outputs.wif_provider }}
+          service_account: ${{ steps.env.outputs.golden_diff_sa }}
           # Mint an ID token audience-scoped to the target API.
           token_format: id_token
           id_token_audience: ${{ steps.env.outputs.api_url }}
