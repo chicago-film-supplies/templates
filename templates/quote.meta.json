@@ -6,5 +6,14 @@
   "depends_on": {
     "design_system": ["base"]
   },
-  "params": []
+  "params": [],
+  "render": {
+    "margin_top": 0.5,
+    "margin_bottom": 0.5,
+    "margin_left": 0.5,
+    "margin_right": 0.5,
+    "base_font_size": 10,
+    "filename": "Quote <%= it.doc.number %><% if (it.doc.reference) { %> - <%= it.doc.reference %><% } %>",
+    "footer": "partials/quote/footer.eta"
+  }
 }

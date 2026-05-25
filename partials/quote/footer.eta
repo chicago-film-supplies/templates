@@ -1,0 +1,43 @@
+<style>
+  body {
+    font-size: 10px;
+    color: #121212;
+  }
+  a {
+    text-decoration: none;
+    color: #121212
+  }
+  footer {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  div {
+    padding: .25em 0;
+    width: 100%;
+  }
+  #fein, #pages {
+    border-bottom: 1px solid #eee;
+  }
+  #pages, #contacts {
+    justify-self: end;
+    text-align: right;
+  }
+  #email {
+    padding-right: 1em;
+    border-right: 1px solid #eee;
+  }
+  #phone {
+    padding-left: 1em;
+  }
+</style>
+<footer>
+  <div id="fein">FEIN: 92-0918396</div>
+  <div id="pages">Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>
+  <div id="website"><a href="https://www.chicagofilmsupplies.com">https://www.chicagofilmsupplies.com</a></div>
+  <div id="contacts">
+    <a id="email" href="mailto:team@chicagofilmsupplies.com">team@chicagofilmsupplies.com</a>
+    <a id="phone" href="sms:+13128183008">312.818.3008</a>
+  </div>
+</footer>
