@@ -1,0 +1,157 @@
+name: visual-diff
+
+# Golden visual-diff gate. For each changed template family, renders the PR's
+# content via the API and pixel-compares against the committed golden for the
+# PR's BASE branch. Required status check for branch protection (Phase 3 owns
+# the full protection config).
+on:
+  pull_request:
+    branches:
+      - main
+      - sandbox
+      - "sandbox/e2e-*"
+
+# WIF needs id-token write; contents read to diff changed files.
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  visual-diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # need the base ref to diff changed files
+
+      # ── Per-env API + audience mapping ──────────────────────────────
+      # The PR's BASE branch selects the env: `sandbox*` → dev API, `main` →
+      # prod API. The minted ID token's audience MUST equal the target API's
+      # GOLDEN_DIFF_AUDIENCE (= the API URL). API_URL_DEV / API_URL_PROD are
+      # repo secrets (see infra/RUNBOOK-golden-diff.md).
+      - name: Resolve target env
+        id: env
+        run: |
+          BASE="${{ github.base_ref }}"
+          if [ "$BASE" = "main" ]; then
+            echo "api_url=${{ secrets.API_URL_PROD }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "api_url=${{ secrets.API_URL_DEV }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      # ── Detect changed template git_paths ───────────────────────────
+      # A shared-asset change (layouts/base.eta, styles/base.css,
+      # partials/shared/**) re-renders every family → diff all. Otherwise map
+      # each changed templates/<gp>.eta | styles/<gp>.css | partials/<gp>/** to
+      # its git_path. (Mirrors api-cloudrun src/services/templates/affected.ts.)
+      - name: Detect changed git_paths
+        id: changed
+        run: |
+          set -euo pipefail
+          BASE_SHA=$(git merge-base "origin/${{ github.base_ref }}" HEAD)
+          FILES=$(git diff --name-only "$BASE_SHA" HEAD)
+          echo "Changed files:"; echo "$FILES"
+
+          shared=0
+          declare -A paths
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            case "$f" in
+              layouts/base.eta|styles/base.css|partials/shared/*)
+                shared=1 ;;
+              templates/*.meta.json)
+                : ;; # metadata-only — no render change
+              templates/*.eta)
+                gp="${f#templates/}"; gp="${gp%.eta}"
+                [[ "$gp" == */* ]] || paths["$gp"]=1 ;;
+              styles/*.css)
+                gp="${f#styles/}"; gp="${gp%.css}"
+                [[ "$gp" == */* || "$gp" == "base" ]] || paths["$gp"]=1 ;;
+              partials/*)
+                rest="${f#partials/}"; seg="${rest%%/*}"
+                [ "$seg" != "shared" ] && paths["$seg"]=1 ;;
+            esac
+          done <<< "$FILES"
+
+          if [ "$shared" = "1" ]; then
+            # Shared change → every family (one per templates/*.meta.json).
+            ALL=$(ls templates/*.meta.json 2>/dev/null | sed 's#templates/##;s#\.meta\.json##')
+            for gp in $ALL; do paths["$gp"]=1; done
+          fi
+
+          GPS="${!paths[*]}"
+          echo "git_paths=$GPS" >> "$GITHUB_OUTPUT"
+          echo "Affected git_paths: $GPS"
+
+      - name: Authenticate to GCP (WIF)
+        if: steps.changed.outputs.git_paths != ''
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.GOLDEN_DIFF_SA }}
+          # Mint an ID token audience-scoped to the target API.
+          token_format: id_token
+          id_token_audience: ${{ steps.env.outputs.api_url }}
+          id_token_include_email: true
+
+      - name: Run golden diff per family
+        if: steps.changed.outputs.git_paths != ''
+        env:
+          API_URL: ${{ steps.env.outputs.api_url }}
+          ID_TOKEN: ${{ steps.auth.outputs.id_token }}
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -uo pipefail
+          fail=0
+          for gp in ${{ steps.changed.outputs.git_paths }}; do
+            echo "::group::golden-diff: $gp"
+            payload=$(jq -nc \
+              --arg gp "$gp" --arg sha "$HEAD_SHA" --arg b "$BASE_REF" \
+              '{git_path:$gp, sha:$sha, branch:$b}')
+
+            # Retry-with-backoff to absorb Gotenberg cold start (B6). Only a
+            # `renderer-unavailable` verdict (or transport error) is retried;
+            # a real diff fails immediately.
+            verdict=""; delta=""; cand=""; diff=""
+            for attempt in 1 2 3; do
+              resp=$(curl -sS -m 120 -w '\n%{http_code}' \
+                -H "Authorization: Bearer $ID_TOKEN" \
+                -H "Content-Type: application/json" \
+                -X POST "$API_URL/templates/golden-diff" \
+                -d "$payload" || true)
+              code=$(printf '%s' "$resp" | tail -n1)
+              body=$(printf '%s' "$resp" | sed '$d')
+
+              if [ "$code" = "200" ]; then
+                verdict=$(printf '%s' "$body" | jq -r '.verdict')
+                delta=$(printf '%s' "$body" | jq -r '.delta')
+                cand=$(printf '%s' "$body" | jq -r '.image_uuids.candidate // empty')
+                diff=$(printf '%s' "$body" | jq -r '.image_uuids.diff // empty')
+                [ "$verdict" != "renderer-unavailable" ] && break
+              else
+                echo "HTTP $code: $body"
+                verdict="renderer-unavailable"
+              fi
+
+              backoff=$((10 * attempt * 2))  # 10s, 40s, 90s
+              echo "renderer unavailable (attempt $attempt) — retrying in ${backoff}s"
+              sleep "$backoff"
+            done
+
+            case "$verdict" in
+              match|no-golden)
+                echo "✓ $gp: $verdict (delta=$delta)" ;;
+              diff)
+                echo "✗ $gp: VISUAL REGRESSION (delta=$delta)"
+                [ -n "$cand" ] && echo "    candidate: https://ucarecdn.com/$cand/"
+                [ -n "$diff" ] && echo "    diff:      https://ucarecdn.com/$diff/"
+                fail=1 ;;
+              renderer-unavailable|*)
+                echo "✗ $gp: renderer unavailable after retries — NOT a visual regression; retry the job."
+                fail=1 ;;
+            esac
+            echo "::endgroup::"
+          done
+          exit $fail

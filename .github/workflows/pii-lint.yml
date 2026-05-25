@@ -1,0 +1,81 @@
+name: pii-lint
+
+# Lightweight guard: templates must pull contact info from `it.doc`, never
+# hardcode customer PII. Scans .eta sources for hardcoded email addresses (other
+# than @chicagofilmsupplies.com) and US phone-number patterns. This is a
+# STARTING HEURISTIC — it catches the obvious cases (a literal customer email or
+# phone pasted into a template), not every conceivable PII shape; tune the
+# patterns below as real false-positives/negatives surface.
+on:
+  pull_request:
+    branches:
+      - main
+      - sandbox
+      - "sandbox/e2e-*"
+
+permissions:
+  contents: read
+
+jobs:
+  pii-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Scan templates for hardcoded PII
+        run: |
+          deno run --allow-read - <<'TS'
+          // Scan templates/**/*.eta + layouts/**/*.eta for hardcoded customer PII.
+          // Heuristics (starting point — see workflow header):
+          //   - email addresses whose domain is NOT chicagofilmsupplies.com
+          //   - US phone-number patterns: (312) 555-1212 / 312-555-1212 /
+          //     312.555.1212 / +1 312 555 1212 / 3125551212
+          const EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+          const PHONE =
+            /(?:\+?1[\s.-]?)?(?:\(\d{3}\)[\s.-]?|\d{3}[\s.-])\d{3}[\s.-]?\d{4}|\b\d{10}\b/g;
+          const ALLOWED_EMAIL_DOMAIN = "chicagofilmsupplies.com";
+          // CFS's own business contact is a legitimate hardcoded constant (it's
+          // the supplier's number, not customer PII). Allowlist its digits so
+          // the company-info block in templates doesn't trip the guard. Add
+          // more CFS lines here if they change.
+          const ALLOWED_PHONE_DIGITS = new Set(["3128183008"]);
+
+          const findings: string[] = [];
+          async function* walk(dir: string): AsyncGenerator<string> {
+            for await (const e of Deno.readDir(dir)) {
+              const p = `${dir}/${e.name}`;
+              if (e.isDirectory) yield* walk(p);
+              else if (e.isFile && p.endsWith(".eta")) yield p;
+            }
+          }
+          const roots: string[] = [];
+          for (const d of ["templates", "layouts"]) {
+            try { await Deno.stat(d); roots.push(d); } catch { /* absent */ }
+          }
+          for (const root of roots) {
+            for await (const file of walk(root)) {
+              const lines = (await Deno.readTextFile(file)).split("\n");
+              lines.forEach((line, i) => {
+                for (const m of line.matchAll(EMAIL)) {
+                  const domain = m[0].split("@")[1]?.toLowerCase() ?? "";
+                  if (domain !== ALLOWED_EMAIL_DOMAIN) {
+                    findings.push(`${file}:${i + 1}  hardcoded email: ${m[0]}`);
+                  }
+                }
+                for (const m of line.matchAll(PHONE)) {
+                  const digits = m[0].replace(/\D/g, "").replace(/^1(?=\d{10}$)/, "");
+                  if (ALLOWED_PHONE_DIGITS.has(digits)) continue;
+                  findings.push(`${file}:${i + 1}  hardcoded phone: ${m[0]}`);
+                }
+              });
+            }
+          }
+          if (findings.length) {
+            console.error("Hardcoded PII found — pull contact info from it.doc instead:\n");
+            for (const f of findings) console.error("  " + f);
+            Deno.exit(1);
+          }
+          console.log("pii-lint: no hardcoded customer PII found.");
+          TS
