@@ -1,0 +1,4 @@
+{
+  "display_name": "Base Layout",
+  "files": ["layouts/base.eta", "styles/base.css"]
+}
