@@ -1,18 +1,54 @@
-/* quote.css — quote-template-specific layout. */
+/* quote.css — quote-template-specific styles (ported from prod template 702). */
+body,
+table {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 10px;
+  color: #121212;
+}
 #grid-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1em;
 }
-#totals {
+#logo {
+  grid-column: 1 / -1;
   justify-self: end;
 }
-#totals td {
-  text-align: right;
-  padding-left: 2em;
+#logo svg {
+  height: 2.4em;
+  width: 4.8em;
 }
-#totals th, #totals td {
-  padding-top: 0;
+h1 {
+  font-size: 1.5em;
+  font-weight: normal;
+  margin: 4px 0;
+}
+h2, p {
+  font-size: 1em;
+  margin: 0;
+}
+hr {
+  line-height: 1.2em;
+  margin: 2px 0;
+  border-top: 1px solid #121212;
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+}
+table {
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+th,
+td {
+  font-size: 1em;
+  text-align: left;
+}
+th:first-child, td:first-child {
+  padding-left: 0;
+}
+th.center, td.center {
+  text-align: center;
 }
 #cfs {
   text-align: right;
@@ -22,13 +58,14 @@
 }
 #dates-delivery,
 #dates-charge {
-  grid-row: 3;
+  grid-row: 4;
 }
 #details th,
 #dates-delivery th,
 #dates-charge th {
   width: 9em;
 }
+
 #dates-delivery th,
 #dates-charge th {
   font-weight: normal;
@@ -38,26 +75,47 @@
 #replacement-costs {
   grid-column: 1 / -1;
 }
-
-#items th {
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
-}
-
-#items tr:last-child td {
-  border-bottom: 1px solid #121212;
-}
-
 #destinations {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: .25em 1em;
 }
-#destinations h2, #destinations .instructions {
-   grid-column: span 2;
+#destinations .title {
+  grid-row: 1;
+  grid-column: span 2;
+}
+#destinations .address, #destinations .contact {
+  grid-row: 2;
+}
+#destinations .instructions {
+  grid-row: 3;
+  grid-column: span 2;
+}
+#items th {
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+#items tr:last-child td {
+  border-bottom: 1px solid #121212;
+}
+#items th, #replacement-costs th, #items td, #replacement-costs td {
+  padding: 4px 0;
 }
 #items table, #replacement-costs table {
   width: 100%;
+}
+#totals {
+  justify-self: end;
+  margin-bottom: 4em;
+}
+th.total,
+td.total,
+#totals td {
+  text-align: right;
+  padding-left: 2em;
+}
+#totals th, #totals td {
+  padding-top: 0;
 }
 #replacement-costs {
   break-inside: avoid;

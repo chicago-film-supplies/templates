@@ -8,6 +8,9 @@ const hasTax = it.orders.orderHasTax(lineItems);
 const replacementItems = lineItems.filter(i => i.price.replacement != null);
 %>
 <div id="grid-wrapper">
+  <div id="logo">
+    <%~ it.logo %>
+  </div>
   <section id="bill-to">
     <h1>Quote #<%= order.number %></h1>
     <div><%= order.organization.name %></div>
@@ -34,22 +37,22 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
   <table>
     <tbody>
       <tr>
-        <th scope="row">Date</th>
+        <th scope="row">Date:</th>
         <td><%= it.dateFns.format(it.dateFns.parseISO(it.now), 'MMMM d, yyyy') %></td>
       </tr>
       <tr>
-        <th scope="row">Order Number</th>
+        <th scope="row">Order Number:</th>
         <td><%= order.number %></td>
       </tr>
       <% if (order.reference) { %>
       <tr>
-        <th scope="row">Reference</th>
+        <th scope="row">Reference:</th>
         <td><%= order.reference %></td>
       </tr>
       <% } %>
       <% if (order.subject) { %>
       <tr>
-        <th scope="row">Subject</th>
+        <th scope="row">Subject:</th>
         <td><%= order.subject %></td>
       </tr>
       <% } %>
@@ -59,11 +62,12 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
 
 <section id="dates-delivery">
   <h2>Rental Dates</h2>
+  <hr />
   <table>
     <tbody>
       <tr>
         <th scope="row">
-          <% if (order.customer_collecting) { %>In Store Pickup<% } else { %>Delivery<% } %>
+          <% if (order.customer_collecting) { %>In Store Pickup:<% } else { %>Delivery:<% } %>
         </th>
         <td>
           <%= it.dateFns.format(it.dateFns.parseISO(dates.delivery_start), 'EEE MM/dd/yy h:mm a') %>
@@ -74,7 +78,7 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
       </tr>
       <tr>
         <th scope="row">
-          <% if (order.customer_returning) { %>In Store Return<% } else { %>Collection<% } %>
+          <% if (order.customer_returning) { %>In Store Return:<% } else { %>Collection:<% } %>
         </th>
         <td>
           <%= it.dateFns.format(it.dateFns.parseISO(dates.collection_start), 'EEE MM/dd/yy h:mm a') %>
@@ -85,7 +89,7 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
       </tr>
       <% if (dates.days_charged) { %>
       <tr>
-        <th scope="row">Duration</th>
+        <th scope="row">Duration:</th>
         <td>
           <% if (dates.days_charged < 5) { %>
           <%= it.dates.formatChargeDays(dates.days_charged, "days").periodLabel %>
@@ -99,22 +103,23 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
   </table>
 </section>
 
-<% if (dates.charge_start !== dates.delivery_start || dates.charge_end !== dates.collection_end || true) { %>
+<% if (dates.charge_start !== dates.delivery_start || dates.charge_end !== dates.collection_end) { %>
 <section id="dates-charge">
   <h2>Billing Dates</h2>
+  <hr />
   <table>
     <tbody>
       <tr>
-        <th scope="row">Start</th>
+        <th scope="row">Start:</th>
         <td><%= it.dateFns.format(it.dateFns.parseISO(dates.charge_start), 'EEE MM/dd/yy h:mm a') %></td>
       </tr>
       <tr>
-        <th scope="row">End</th>
+        <th scope="row">End:</th>
         <td><%= it.dateFns.format(it.dateFns.parseISO(dates.charge_end), 'EEE MM/dd/yy h:mm a') %></td>
       </tr>
       <% if (dates.days_charged) { %>
       <tr>
-        <th scope="row">Duration</th>
+        <th scope="row">Duration:</th>
         <td>
           <% if (dates.days_charged < 5) { %>
           <%= it.dates.formatChargeDays(dates.days_charged, "days").periodLabel %>
@@ -132,12 +137,12 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
 <!-- Destinations -->
 <% if (destinations && destinations.length > 0) { %>
 <section id="destinations">
-    <% destinations.forEach(dest => {
-      const sameAddress = JSON.stringify(dest.delivery && dest.delivery.address) === JSON.stringify(dest.collection && dest.collection.address);
-    %>
-    <div class="dest-delivery-address">
+  <% destinations.forEach(function(dest) { %>
+    <div class="title">
       <h2>Delivery</h2>
       <hr />
+    </div>
+    <div class="address">
       <% if (dest.delivery && dest.delivery.address) { %>
       <%= dest.delivery.address.street %>
       <% if (dest.delivery.address.street2) { %><br><%= dest.delivery.address.street2 %><% } %>
@@ -147,7 +152,7 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
       <% } %>
       <% } %>
     </div>
-    <div class="dest-delivery-contact">
+    <div class="contact">
       <% if (dest.delivery && dest.delivery.contact) { %>
       <%= dest.delivery.contact.name %>
       <% if (dest.delivery.contact.phones && dest.delivery.contact.phones.length > 0) { %>
@@ -155,10 +160,12 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
       <% } %>
       <% } %>
     </div>
-    <% if (!sameAddress) { %>
-    <div class="dest-collection-address">
+    <% if (!it.orders.isSameAsDeliveryDestination(dest)) { %>
+    <div class="title">
       <h2>Collection</h2>
       <hr />
+    </div>
+    <div class="address">
       <% if (dest.collection && dest.collection.address) { %>
       <%= dest.collection.address.street %>
       <% if (dest.collection.address.street2) { %><br><%= dest.collection.address.street2 %><% } %>
@@ -168,7 +175,7 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
       <% } %>
       <% } %>
     </div>
-    <div class="dest-collection-contact">
+    <div class="contact">
       <% if (dest.collection && dest.collection.contact) { %>
       <%= dest.collection.contact.name %>
       <% if (dest.collection.contact.phones && dest.collection.contact.phones.length > 0) { %>
@@ -223,11 +230,13 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
           </td>
         </tr>
         <% } else if (item.type === "destination") { %>
+        <% if (destinations.length > 1) { %>
         <tr>
           <td colspan="<%= 5 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0) %>">
             <%= item.name %>
           </td>
         </tr>
+        <% } %>
         <% } else { %>
         <% const isComponent = (item.path?.length ?? 0) > 0; %>
         <tr>
@@ -322,7 +331,7 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
 <!-- Replacement Costs -->
 <% if (replacementItems.length > 0) { %>
 <section id="replacement-costs">
-  <h2>Replacement Costs</h2>
+  <h1>Replacement Costs</h1>
   <table>
     <thead>
       <tr>
@@ -330,7 +339,7 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
         <th scope="col">Unit Cost</th>
         <th scope="col">Sales Tax</th>
         <th scope="col" class="total">Total</th>
-        <th scope="col" class="center">Order Qty</th>
+        <th scope="col" class="center">Qty</th>
         <th scope="col">Sales Tax</th>
         <th scope="col" class="total">Total</th>
       </tr>
