@@ -56,19 +56,8 @@ th.center, td.center {
 .dates td {
   font-family: ui-monospace, monospace;
 }
-#dates-delivery,
-#dates-charge {
-  grid-row: 4;
-}
-#details th,
-#dates-delivery th,
-#dates-charge th {
+#details th {
   width: 9em;
-}
-
-#dates-delivery th,
-#dates-charge th {
-  font-weight: normal;
 }
 #destinations,
 #items,
@@ -76,20 +65,31 @@ th.center, td.center {
   grid-column: 1 / -1;
 }
 #destinations {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.destination-block .dest-dates {
+  margin-bottom: .5em;
+}
+.dest-dates th {
+  width: 6em;
+  font-weight: normal;
+  vertical-align: top;
+}
+.dest-dates .duration {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  color: #555;
+}
+.destination-block .endpoints {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: .25em 1em;
 }
-#destinations .title {
-  grid-row: 1;
-  grid-column: span 2;
-}
-#destinations .address, #destinations .contact {
-  grid-row: 2;
-}
-#destinations .instructions {
-  grid-row: 3;
-  grid-column: span 2;
+#destinations h3 {
+  font-size: 1em;
+  font-weight: normal;
+  margin: 0;
 }
 #items th {
   border-top: 1px solid #000;

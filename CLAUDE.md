@@ -36,8 +36,9 @@ Templates receive data via `it`:
 - `it.now` — **frozen** render timestamp (ISO string). Use this for "today" — never `new Date()` (non-deterministic output breaks golden diffs)
 - `it.logo` — inline SVG logo markup
 - `it.dateFns` — full date-fns library (parseISO, format, isSameDay, etc.)
+- `it.tz` — `@date-fns/tz` `tz` factory. **Format business datetimes in Chicago**: `it.dateFns.format(it.dateFns.parseISO(iso), 'pattern', { in: it.tz('America/Chicago') })`. Without `{ in: tz }` the render server (UTC on Cloud Run) emits the wrong wall-clock.
 - `it.currency` — currency.js for formatting currency values
-- `it.orders` — `@cfs/utilities/orders` (orderHasRentals, orderHasDiscount, orderHasTax, isPreTaxItem, calculateReplacementTotals)
+- `it.orders` — `@cfs/utilities/orders` (orderHasRentals, orderHasDiscount, orderHasTax, isPreTaxItem, calculateReplacementTotals, getDestinationsLegend, isSameAsDeliveryDates, isSameAsDeliveryDestination, getDestinationPairItemName)
 - `it.dates` — `@cfs/utilities/dates` (formatChargeDays, countCfsBusinessDays)
 
 ## Eta Syntax
@@ -53,9 +54,10 @@ Key paths available on `it.doc`:
 
 - `number`, `status`, `reference`, `subject`, `notes`
 - `organization.name`, `organization.billing_address` (street, street2, city, region, postcode, country_name)
-- `dates.delivery_start`, `dates.delivery_end`, `dates.collection_start`, `dates.collection_end`, `dates.charge_start`, `dates.charge_end`, `dates.days_active`, `dates.days_charged`
-- `customer_collecting`, `customer_returning`
-- `destinations[]` — each has `delivery` and `collection` endpoints with `address`, `contact`, `instructions`
+- `destinations[]` — **dates live per-destination** (there is no top-level `order.dates` anymore). Each destination has:
+  - `dates` — `delivery_start`, `delivery_end`, `collection_start`, `collection_end`, `charge_start`, `charge_end`, `days_active`, `days_charged`. Charge dates equal delivery/collection unless a custom charge window was set — gate the charge row on `!it.orders.isSameAsDeliveryDates(dest.dates)`.
+  - `delivery` and `collection` endpoints with `address`, `contact`, `instructions`. Suppress the collection block when `it.orders.isSameAsDeliveryDestination(dest)`.
+  - `customer_collecting`, `customer_returning` — per-destination flags. Use `it.orders.getDestinationsLegend([dest])` to get the `{ start, end }` row labels (Delivery/Pickup vs Pickup/Return).
 - `items[]` — mixed types:
   - Line items (type: rental/sale/service/surcharge/replacement/custom): `uid, name, description, quantity, price { base, replacement, chargeable_days, formula, subtotal, subtotal_discounted, discount { rate, type, amount }, taxes[], total }`
   - Group dividers (type: "group"): `uid, name, description`
@@ -95,4 +97,4 @@ Use `<% if (condition) { %>...<% } %>` to conditionally render `<th>` and matchi
 - Templates contain only HTML markup (no `<style>` blocks) — styles are managed externally
 - Use semantic table markup (`<table>`, `<thead>`, `<tbody>`, `<th scope="col">`)
 - Use `currency(value).format()` for all monetary values
-- Use `it.dateFns.format(it.dateFns.parseISO(isoString), 'pattern')` for dates
+- Use `it.dateFns.format(it.dateFns.parseISO(isoString), 'pattern', { in: it.tz('America/Chicago') })` for business datetimes — the `{ in: tz }` is required so the UTC render server doesn't shift the wall-clock
