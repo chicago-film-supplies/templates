@@ -1,5 +1,3 @@
-<%/* depends_on repair 053322Z */%>
-<%/* publish trigger 20260525T050909Z */%>
 <%
 const order = it.doc;
 const { dates, destinations, items, totals } = order;
