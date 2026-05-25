@@ -1,0 +1,202 @@
+{
+  "uid": "0R4MLi8yDbqRgx9Kg3O4",
+  "number": 841,
+  "status": "quoted",
+  "subject": "Stanchions",
+  "reference": null,
+  "notes": "",
+  "customer_collecting": false,
+  "customer_returning": false,
+  "tax_profile": "tax_applied",
+  "version": 1,
+  "organization": {
+    "uid": "XWi80oq1znJyE7JC1J8t",
+    "name": "COPA90",
+    "billing_address": {
+      "street": "TBD",
+      "street2": "",
+      "city": "Chicago",
+      "region": "IL",
+      "postcode": "60612",
+      "country_name": "United States",
+      "full": "TBD, Chicago, IL, 60612, United States"
+    }
+  },
+  "dates": {
+    "delivery_start": "2026-03-14T02:00:00.000Z",
+    "delivery_end": "2026-03-14T02:00:00.000Z",
+    "collection_start": "2026-03-15T23:00:00.000Z",
+    "collection_end": "2026-03-15T23:00:00.000Z",
+    "charge_start": "2026-03-14T02:00:00.000Z",
+    "charge_end": "2026-03-15T23:00:00.000Z",
+    "days_charged": 1,
+    "days_active": 1
+  },
+  "destinations": [
+    {
+      "delivery": {
+        "uid": "WEi2M8azGMWYUmcpPUoo",
+        "address": {
+          "name": "Oak Brook Mall",
+          "street": "100 Oakbrook Center Drive",
+          "street2": "",
+          "postcode": "60523",
+          "city": "Oak Brook",
+          "region": "Illinois",
+          "country_name": "United States",
+          "full": "100 Oakbrook Center, Oak Brook, IL, United States"
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "collection": {
+        "uid": "WEi2M8azGMWYUmcpPUoo",
+        "address": {
+          "name": "Oak Brook Mall",
+          "street": "100 Oakbrook Center Drive",
+          "street2": "",
+          "postcode": "60523",
+          "city": "Oak Brook",
+          "region": "Illinois",
+          "country_name": "United States",
+          "full": "100 Oakbrook Center, Oak Brook, IL, United States"
+        },
+        "instructions": "",
+        "contact": null
+      }
+    }
+  ],
+  "items": [
+    {
+      "uid": "7020163a-c80a-4ea4-abaa-ea4c3f46a99b",
+      "type": "destination",
+      "name": "Oak Brook Mall",
+      "description": "",
+      "uid_delivery": "WEi2M8azGMWYUmcpPUoo",
+      "uid_collection": "WEi2M8azGMWYUmcpPUoo"
+    },
+    {
+      "uid": "aosey66Ih8tTaoWKQXmO",
+      "type": "rental",
+      "name": "6' Folding Table",
+      "description": "",
+      "quantity": 2,
+      "stock_method": "bulk",
+      "path": [],
+      "inclusion_type": null,
+      "zero_priced": null,
+      "price": {
+        "base": 6,
+        "chargeable_days": 2,
+        "formula": "five_day_week",
+        "subtotal": 4.8,
+        "subtotal_discounted": 4.8,
+        "discount": null,
+        "taxes": [
+          { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 0.72 }
+        ],
+        "total": 12,
+        "replacement": 80
+      }
+    },
+    {
+      "uid": "EIzqIswHEVKZvlW7w82E",
+      "type": "rental",
+      "name": "Magliner Gemini Jr",
+      "description": "",
+      "quantity": 1,
+      "stock_method": "bulk",
+      "path": [],
+      "inclusion_type": null,
+      "zero_priced": null,
+      "price": {
+        "base": 30,
+        "chargeable_days": 2,
+        "formula": "five_day_week",
+        "subtotal": 12,
+        "subtotal_discounted": 12,
+        "discount": null,
+        "taxes": [
+          { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 1.8 }
+        ],
+        "total": 30,
+        "replacement": 700
+      }
+    },
+    {
+      "uid": "custom-NqNRTfBkqBEa1WjZSS3S",
+      "type": "rental",
+      "name": "Stanchion",
+      "description": "",
+      "quantity": 10,
+      "stock_method": "none",
+      "path": [],
+      "inclusion_type": null,
+      "zero_priced": null,
+      "price": {
+        "base": 30,
+        "chargeable_days": 2,
+        "formula": "five_day_week",
+        "subtotal": 120,
+        "subtotal_discounted": 120,
+        "discount": null,
+        "taxes": [
+          { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 18 }
+        ],
+        "total": 300
+      }
+    },
+    {
+      "uid": "F4ZiJl7ZzMChlRufw8RL",
+      "type": "service",
+      "name": "Delivery/Setup/Removal",
+      "description": "",
+      "quantity": 2,
+      "stock_method": "none",
+      "path": [],
+      "inclusion_type": null,
+      "zero_priced": null,
+      "price": {
+        "base": 250,
+        "chargeable_days": 1,
+        "formula": "fixed",
+        "subtotal": 500,
+        "subtotal_discounted": 500,
+        "discount": null,
+        "taxes": [],
+        "total": 500
+      }
+    },
+    {
+      "uid": "BEvfYcPD5yfAj9XKOXAn",
+      "type": "surcharge",
+      "name": "Off Hours Charge",
+      "description": "",
+      "quantity": 2,
+      "stock_method": "none",
+      "path": [],
+      "inclusion_type": null,
+      "zero_priced": null,
+      "price": {
+        "base": 250,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal": 500,
+        "subtotal_discounted": 500,
+        "discount": null,
+        "taxes": [],
+        "total": 500
+      }
+    }
+  ],
+  "totals": {
+    "discount_amount": 0,
+    "subtotal": 1136.8,
+    "subtotal_discounted": 1136.8,
+    "taxes": [
+      { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 20.52 }
+    ],
+    "transaction_fees": [],
+    "total": 1157.32
+  }
+}

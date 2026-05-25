@@ -1,0 +1,389 @@
+<%
+const order = it.doc;
+const { dates, destinations, items, totals } = order;
+const lineItems = items.filter(i => i.type !== "group" && i.type !== "destination");
+const hasDiscount = it.orders.orderHasDiscount(lineItems);
+const hasRentals = it.orders.orderHasRentals(lineItems);
+const hasTax = it.orders.orderHasTax(lineItems);
+const replacementItems = lineItems.filter(i => i.price.replacement != null);
+%>
+<div id="grid-wrapper">
+  <section id="bill-to">
+    <h1>Quote #<%= order.number %></h1>
+    <div><%= order.organization.name %></div>
+    <div>
+      <span><%= order.organization.billing_address.street %></span>
+      <span>, <%= order.organization.billing_address.street2 %></span>
+    </div>
+    <div>
+      <span><%= order.organization.billing_address.city %></span>
+      <span>, <%= order.organization.billing_address.region %></span>
+      <span> <%= order.organization.billing_address.postcode %></span>
+    </div>
+    <% if (order.organization.billing_address.country_name != "UnitedStates") { %>
+    <div><%= order.organization.billing_address.country_name %></div>
+    <% } %>
+  </section>
+  <section id="cfs">
+    <h1>Chicago Film Supplies</h1>
+    <div>3100 W Fillmore St, Chicago, IL 60612</div>
+    <div>team@chicagofilmsupplies.com</div>
+    <div>312.818.3008</div>
+  </section>
+<section id="details">
+  <table>
+    <tbody>
+      <tr>
+        <th scope="row">Date</th>
+        <td><%= it.dateFns.format(it.dateFns.parseISO(it.now), 'MMMM d, yyyy') %></td>
+      </tr>
+      <tr>
+        <th scope="row">Order Number</th>
+        <td><%= order.number %></td>
+      </tr>
+      <% if (order.reference) { %>
+      <tr>
+        <th scope="row">Reference</th>
+        <td><%= order.reference %></td>
+      </tr>
+      <% } %>
+      <% if (order.subject) { %>
+      <tr>
+        <th scope="row">Subject</th>
+        <td><%= order.subject %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</section>
+
+<section id="dates-delivery">
+  <h2>Rental Dates</h2>
+  <table>
+    <tbody>
+      <tr>
+        <th scope="row">
+          <% if (order.customer_collecting) { %>In Store Pickup<% } else { %>Delivery<% } %>
+        </th>
+        <td>
+          <%= it.dateFns.format(it.dateFns.parseISO(dates.delivery_start), 'EEE MM/dd/yy h:mm a') %>
+          <% if (dates.delivery_start !== dates.delivery_end) { %>
+          &ndash; <%= it.dateFns.format(it.dateFns.parseISO(dates.delivery_end), it.dateFns.isSameDay(it.dateFns.parseISO(dates.delivery_start), it.dateFns.parseISO(dates.delivery_end)) ? 'h:mm a' : 'EEE MM/dd/yy h:mm a') %>
+          <% } %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          <% if (order.customer_returning) { %>In Store Return<% } else { %>Collection<% } %>
+        </th>
+        <td>
+          <%= it.dateFns.format(it.dateFns.parseISO(dates.collection_start), 'EEE MM/dd/yy h:mm a') %>
+          <% if (dates.collection_start !== dates.collection_end) { %>
+          &ndash; <%= it.dateFns.format(it.dateFns.parseISO(dates.collection_end), it.dateFns.isSameDay(it.dateFns.parseISO(dates.collection_start), it.dateFns.parseISO(dates.collection_end)) ? 'h:mm a' : 'EEE MM/dd/yy h:mm a') %>
+          <% } %>
+        </td>
+      </tr>
+      <% if (dates.days_charged) { %>
+      <tr>
+        <th scope="row">Duration</th>
+        <td>
+          <% if (dates.days_charged < 5) { %>
+          <%= it.dates.formatChargeDays(dates.days_charged, "days").periodLabel %>
+          <% } else { %>
+          <%= it.dates.formatChargeDays(dates.days_charged, "weeks").periodLabel %>
+          <% } %>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</section>
+
+<% if (dates.charge_start !== dates.delivery_start || dates.charge_end !== dates.collection_end || true) { %>
+<section id="dates-charge">
+  <h2>Billing Dates</h2>
+  <table>
+    <tbody>
+      <tr>
+        <th scope="row">Start</th>
+        <td><%= it.dateFns.format(it.dateFns.parseISO(dates.charge_start), 'EEE MM/dd/yy h:mm a') %></td>
+      </tr>
+      <tr>
+        <th scope="row">End</th>
+        <td><%= it.dateFns.format(it.dateFns.parseISO(dates.charge_end), 'EEE MM/dd/yy h:mm a') %></td>
+      </tr>
+      <% if (dates.days_charged) { %>
+      <tr>
+        <th scope="row">Duration</th>
+        <td>
+          <% if (dates.days_charged < 5) { %>
+          <%= it.dates.formatChargeDays(dates.days_charged, "days").periodLabel %>
+          <% } else { %>
+          <%= it.dates.formatChargeDays(dates.days_charged, "weeks").periodLabel %>
+          <% } %>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</section>
+<% } %>
+
+<!-- Destinations -->
+<% if (destinations && destinations.length > 0) { %>
+<section id="destinations">
+    <% destinations.forEach(dest => {
+      const sameAddress = JSON.stringify(dest.delivery && dest.delivery.address) === JSON.stringify(dest.collection && dest.collection.address);
+    %>
+    <div class="dest-delivery-address">
+      <h2>Delivery</h2>
+      <hr />
+      <% if (dest.delivery && dest.delivery.address) { %>
+      <%= dest.delivery.address.street %>
+      <% if (dest.delivery.address.street2) { %><br><%= dest.delivery.address.street2 %><% } %>
+      <br><%= [dest.delivery.address.city, dest.delivery.address.region, dest.delivery.address.postcode].filter(Boolean).join(', ') %>
+      <% if (dest.delivery.address.country_name && dest.delivery.address.country_name !== "United States") { %>
+      <br><%= dest.delivery.address.country_name %>
+      <% } %>
+      <% } %>
+    </div>
+    <div class="dest-delivery-contact">
+      <% if (dest.delivery && dest.delivery.contact) { %>
+      <%= dest.delivery.contact.name %>
+      <% if (dest.delivery.contact.phones && dest.delivery.contact.phones.length > 0) { %>
+      <br><%= dest.delivery.contact.phones[0] %>
+      <% } %>
+      <% } %>
+    </div>
+    <% if (!sameAddress) { %>
+    <div class="dest-collection-address">
+      <h2>Collection</h2>
+      <hr />
+      <% if (dest.collection && dest.collection.address) { %>
+      <%= dest.collection.address.street %>
+      <% if (dest.collection.address.street2) { %><br><%= dest.collection.address.street2 %><% } %>
+      <br><%= [dest.collection.address.city, dest.collection.address.region, dest.collection.address.postcode].filter(Boolean).join(', ') %>
+      <% if (dest.collection.address.country_name && dest.collection.address.country_name !== "United States") { %>
+      <br><%= dest.collection.address.country_name %>
+      <% } %>
+      <% } %>
+    </div>
+    <div class="dest-collection-contact">
+      <% if (dest.collection && dest.collection.contact) { %>
+      <%= dest.collection.contact.name %>
+      <% if (dest.collection.contact.phones && dest.collection.contact.phones.length > 0) { %>
+      <br><%= dest.collection.contact.phones[0] %>
+      <% } %>
+      <% } %>
+    </div>
+    <% } %>
+    <% if (dest.delivery && dest.delivery.instructions) { %>
+    <div class="instructions">
+      <%= dest.delivery.instructions %>
+    </div>
+    <% } %>
+    <% if (dest.collection && dest.collection.instructions) { %>
+    <div class="instructions">
+      <%= dest.collection.instructions %>
+    </div>
+    <% } %>
+  <% }) %>
+</section>
+<% } %>
+
+<!-- Items -->
+<% if (lineItems.length > 0) { %>
+<section id="items">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Item Description</th>
+        <th scope="col" class="center">Type</th>
+        <th scope="col" class="center">Qty</th>
+        <% if (hasRentals) { %>
+        <th scope="col" class="center">Duration</th>
+        <% } %>
+        <th scope="col">Unit Price</th>
+        <% if (hasDiscount) { %>
+        <th scope="col">Discount</th>
+        <% } %>
+        <th scope="col">Subtotal</th>
+        <% if (hasTax) { %>
+        <th scope="col">Tax</th>
+        <% } %>
+        <th scope="col" class="total">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% items.forEach(item => { %>
+        <% if (item.type === "group") { %>
+        <tr>
+          <td colspan="<%= 5 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0) %>">
+            <strong><%= item.name %></strong>
+          </td>
+        </tr>
+        <% } else if (item.type === "destination") { %>
+        <tr>
+          <td colspan="<%= 5 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0) %>">
+            <%= item.name %>
+          </td>
+        </tr>
+        <% } else { %>
+        <% const isComponent = (item.path?.length ?? 0) > 0; %>
+        <tr>
+          <td style="<%= isComponent ? 'padding-left: ' + (item.path.length - 3) + 'em' : '' %>">
+            <%= item.name %>
+            <% if (item.description) { %>
+            <br><%= item.description %>
+            <% } %>
+          </td>
+          <td class="center"><%= item.type %></td>
+          <td class="center"><%= item.quantity %></td>
+          <% if (hasRentals) { %>
+          <td class="center"><%= item.type === "rental" && item.price.chargeable_days ? item.price.chargeable_days + ' days' : '' %></td>
+          <% } %>
+          <td><%= it.currency(item.price.base).format() %></td>
+          <% if (hasDiscount) { %>
+          <td>
+            <% if (item.price.discount) { %>
+            <% if (item.price.discount.type === "percent") { %>
+            <%= item.price.discount.rate %>%
+            <% } else { %>
+            <%= it.currency(item.price.discount.amount).format() %>
+            <% } %>
+            <% } %>
+          </td>
+          <% } %>
+          <td><%= it.currency(item.price.subtotal_discounted || item.price.subtotal).format() %></td>
+          <% if (hasTax) { %>
+          <td>
+            <% if (item.price.taxes && item.price.taxes.length > 0) { %>
+            <%= it.currency(item.price.taxes.reduce((sum, t) => sum + t.amount, 0)).format() %>
+            <% } %>
+          </td>
+          <% } %>
+          <td class="total"><%= it.currency(item.price.total).format() %></td>
+        </tr>
+        <% } %>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+<% } %>
+
+<section id="information">
+  <% if (replacementItems.length > 0) { %>
+  <p>The total replacement cost for all items on your rental order is: <%  %></p>
+  <% } %>
+</section>
+
+<!-- Totals -->
+<section id="totals">
+  <table>
+    <tbody>
+      <tr>
+        <th scope="row">Subtotal: </th>
+        <td><%= it.currency(totals.subtotal).format() %></td>
+      </tr>
+      <% if (totals.discount_amount > 0) { %>
+      <tr>
+        <th scope="row">Discount: </th>
+        <td>&minus;<%= it.currency(totals.discount_amount).format() %></td>
+      </tr>
+      <tr>
+        <th scope="row">Subtotal after Discount: </th>
+        <td><%= it.currency(totals.subtotal_discounted).format() %></td>
+      </tr>
+      <% } %>
+      <% totals.taxes.forEach(tax => { %>
+      <% if (tax.amount !== 0) { %>
+      <tr>
+        <th scope="row"><%= tax.name %><% if (tax.type === "percent") { %> <%= tax.rate %>%:<% } %></th>
+        <td><%= it.currency(tax.amount).format() %></td>
+      </tr>
+      <% } %>
+      <% }) %>
+      <% totals.transaction_fees.forEach(fee => { %>
+      <% if (fee.amount !== 0) { %>
+      <tr>
+        <th scope="row"><%= fee.name %><% if (fee.type === "percent") { %> <%= fee.rate %>%:<% } %></th>
+        <td><%= it.currency(fee.amount).format() %></td>
+      </tr>
+      <% } %>
+      <% }) %>
+      <tr>
+        <th scope="row">Total:</th>
+        <td><%= it.currency(totals.total).format() %></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Replacement Costs -->
+<% if (replacementItems.length > 0) { %>
+<section id="replacement-costs">
+  <h2>Replacement Costs</h2>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Item</th>
+        <th scope="col">Unit Cost</th>
+        <th scope="col">Sales Tax</th>
+        <th scope="col" class="total">Total</th>
+        <th scope="col" class="center">Order Qty</th>
+        <th scope="col">Sales Tax</th>
+        <th scope="col" class="total">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% replacementItems.forEach(item => { %>
+      <%
+        const unitCost = item.price.replacement;
+        const qty = item.quantity || 0;
+        const unitTaxAmount = item.price.taxes.reduce((sum, t) => {
+          if (t.type === "percent") return sum + (unitCost * t.rate / 100);
+          return sum + t.amount;
+        }, 0);
+        const unitTotal = unitCost + unitTaxAmount;
+        const lineTax = unitTaxAmount * qty;
+        const lineTotal = unitCost * qty + lineTax;
+      %>
+      <tr>
+        <td><%= item.name %></td>
+        <td><%= it.currency(unitCost).format() %></td>
+        <td><%= it.currency(unitTaxAmount).format() %></td>
+        <td class="total"><%= it.currency(unitTotal).format() %></td>
+        <td class="center"><%= qty %></td>
+        <td><%= it.currency(lineTax).format() %></td>
+        <td class="total"><%= it.currency(lineTotal).format() %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+    <tfoot>
+      <%
+        let rSubtotal = 0;
+        let rTax = 0;
+        replacementItems.forEach(item => {
+          const unitCost = item.price.replacement;
+          const qty = item.quantity || 0;
+          const unitTaxAmount = item.price.taxes.reduce((sum, t) => {
+            if (t.type === "percent") return sum + (unitCost * t.rate / 100);
+            return sum + t.amount;
+          }, 0);
+          rSubtotal += unitCost * qty;
+          rTax += unitTaxAmount * qty;
+        });
+        const rTotal = rSubtotal + rTax;
+      %>
+      <tr>
+        <th scope="row" colspan="4">Total Replacement Cost</th>
+        <td></td>
+        <td><%= it.currency(rTax).format() %></td>
+        <td class="total"><%= it.currency(rTotal).format() %></td>
+      </tr>
+    </tfoot>
+  </table>
+</section>
+<% } %>
+  <footer></footer>
+</div>

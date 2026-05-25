@@ -1,0 +1,10 @@
+{
+  "display_name": "Quote",
+  "collection_source": "orders",
+  "collection_target": "quotes",
+  "surfaces": ["order"],
+  "depends_on": {
+    "design_system": ["base"]
+  },
+  "params": []
+}

@@ -1,0 +1,44 @@
+{
+  "version": "5",
+  "specifiers": {
+    "jsr:@bgub/eta@^4.5.1": "4.5.1",
+    "jsr:@cfs/utilities@4.0.0-beta.15": "4.0.0-beta.15",
+    "npm:@date-fns/tz@1": "1.4.1",
+    "npm:currency.js@2": "2.0.4",
+    "npm:currency.js@^2.0.4": "2.0.4",
+    "npm:date-fns@4": "4.1.0",
+    "npm:date-fns@^4.1.0": "4.1.0"
+  },
+  "jsr": {
+    "@bgub/eta@4.5.1": {
+      "integrity": "ad1d45002bbe6e8567ae04728eb1df76f25527c046143cf252f22f43cfa828d5"
+    },
+    "@cfs/utilities@4.0.0-beta.15": {
+      "integrity": "c9ba131a9d6f51d057f62fd99aed47cbfa8a75404dcdd2a67ce5f98054da6db6",
+      "dependencies": [
+        "npm:@date-fns/tz",
+        "npm:currency.js@2",
+        "npm:date-fns@4"
+      ]
+    }
+  },
+  "npm": {
+    "@date-fns/tz@1.4.1": {
+      "integrity": "sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA=="
+    },
+    "currency.js@2.0.4": {
+      "integrity": "sha512-6/OplJYgJ0RUlli74d93HJ/OsKVBi8lB1+Z6eJYS1YZzBuIp4qKKHpJ7ad+GvTlWmLR/hLJOWTykN5Nm8NJ7+w=="
+    },
+    "date-fns@4.1.0": {
+      "integrity": "sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg=="
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@bgub/eta@^4.5.1",
+      "jsr:@cfs/utilities@4.0.0-beta.15",
+      "npm:currency.js@^2.0.4",
+      "npm:date-fns@^4.1.0"
+    ]
+  }
+}
