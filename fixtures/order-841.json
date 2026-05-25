@@ -5,8 +5,6 @@
   "subject": "Stanchions",
   "reference": null,
   "notes": "",
-  "customer_collecting": false,
-  "customer_returning": false,
   "tax_profile": "tax_applied",
   "version": 1,
   "organization": {
@@ -22,18 +20,20 @@
       "full": "TBD, Chicago, IL, 60612, United States"
     }
   },
-  "dates": {
-    "delivery_start": "2026-03-14T02:00:00.000Z",
-    "delivery_end": "2026-03-14T02:00:00.000Z",
-    "collection_start": "2026-03-15T23:00:00.000Z",
-    "collection_end": "2026-03-15T23:00:00.000Z",
-    "charge_start": "2026-03-14T02:00:00.000Z",
-    "charge_end": "2026-03-15T23:00:00.000Z",
-    "days_charged": 1,
-    "days_active": 1
-  },
   "destinations": [
     {
+      "customer_collecting": false,
+      "customer_returning": false,
+      "dates": {
+        "delivery_start": "2026-03-14T09:00:00.000-05:00",
+        "delivery_end": "2026-03-14T09:00:00.000-05:00",
+        "collection_start": "2026-03-15T17:00:00.000-05:00",
+        "collection_end": "2026-03-15T17:00:00.000-05:00",
+        "charge_start": "2026-03-14T09:00:00.000-05:00",
+        "charge_end": "2026-03-15T17:00:00.000-05:00",
+        "days_charged": 1,
+        "days_active": 1
+      },
       "delivery": {
         "uid": "WEi2M8azGMWYUmcpPUoo",
         "address": {
