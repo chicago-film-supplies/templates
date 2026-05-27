@@ -109,14 +109,17 @@ jobs:
           ID_TOKEN: ${{ steps.auth.outputs.id_token }}
           BASE_REF: ${{ github.base_ref }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_REF: ${{ github.head_ref }}
         run: |
           set -uo pipefail
           fail=0
           for gp in ${{ steps.changed.outputs.git_paths }}; do
             echo "::group::golden-diff: $gp"
+            # head_branch lets the API persist the verdict onto the matching draft
+            # version for the manager's approve-to-merge review (6.16).
             payload=$(jq -nc \
-              --arg gp "$gp" --arg sha "$HEAD_SHA" --arg b "$BASE_REF" \
-              '{git_path:$gp, sha:$sha, branch:$b}')
+              --arg gp "$gp" --arg sha "$HEAD_SHA" --arg b "$BASE_REF" --arg hb "$HEAD_REF" \
+              '{git_path:$gp, sha:$sha, branch:$b, head_branch:$hb}')
 
             # Retry-with-backoff to absorb Gotenberg cold start (B6). Only a
             # `renderer-unavailable` verdict (or transport error) is retried;
