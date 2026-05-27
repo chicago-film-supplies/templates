@@ -4,7 +4,7 @@
   "collection_target": "quotes",
   "surfaces": ["order"],
   "depends_on": {
-    "design_system": ["base"]
+    "components": ["base"]
   },
   "params": [],
   "render": {

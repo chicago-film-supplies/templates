@@ -3,9 +3,9 @@
  *
  * Mirrors the git-canonical overlay the api-cloudrun render lib performs:
  * the document body (`templates/<name>.eta`) is rendered, then injected into
- * the design-system layout (`layouts/base.eta`) along with the concatenated
- * stylesheet (design-system `styles/*.css` from the sidecar's
- * `depends_on.design_system` + the template's own `styles/<name>.css`).
+ * the component layout (`layouts/base.eta`) along with the concatenated
+ * stylesheet (component `styles/*.css` from the sidecar's
+ * `depends_on.components` + the template's own `styles/<name>.css`).
  *
  * The render date is FROZEN (injected as `it.now`) so output is deterministic
  * — no `new Date()` in templates (golden-diff friendly).
@@ -43,19 +43,19 @@ interface RenderConfig {
 
 interface Sidecar {
   display_name: string;
-  depends_on?: { design_system?: string[] };
+  depends_on?: { components?: string[] };
   render?: RenderConfig;
 }
 
 const sidecar: Sidecar = JSON.parse(
   await Deno.readTextFile(`templates/${name}.meta.json`),
 );
-const designSystem = sidecar.depends_on?.design_system ?? [];
+const components = sidecar.depends_on?.components ?? [];
 const renderConfig = sidecar.render ?? {};
 
-// Overlay the stylesheet: design-system styles first, then the template's own.
+// Overlay the stylesheet: component styles first, then the template's own.
 const styleParts: string[] = [];
-for (const dep of designSystem) {
+for (const dep of components) {
   styleParts.push(await Deno.readTextFile(`styles/${dep}.css`));
 }
 styleParts.push(await Deno.readTextFile(`styles/${name}.css`));

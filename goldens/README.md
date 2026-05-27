@@ -2,7 +2,7 @@
 
 Branch-keyed reference PNGs for the visual-diff CI. Each file is a screenshot of
 one template family's **overlay render** — the document body rendered into the
-design-system layout with the concatenated stylesheet (the same overlay
+component layout with the concatenated stylesheet (the same overlay
 `scripts/preview.ts` and the api-cloudrun render pipeline perform), rasterized
 HTML→PNG via Gotenberg's Chromium screenshot route with a **frozen** render
 timestamp so output is byte-deterministic.

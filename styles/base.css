@@ -1,4 +1,4 @@
-/* base.css — design-system shared styles (consumed by every template). */
+/* base.css — component shared styles (consumed by every template). */
 body,
 table {
   font-family: ui-sans-serif, system-ui, sans-serif;
