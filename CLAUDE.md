@@ -10,12 +10,12 @@ HTML/Eta templates rendered server-side (via `api-cloudrun`) into PDFs using Got
 
 ```
 templates/<name>.eta        document body partial (rendered with `it`)
-templates/<name>.meta.json  sidecar: display_name, collection_source/target, surfaces[], depends_on.design_system[], params[]
-layouts/<name>.eta          design-system layout skeleton (wraps the body via `it.body`, injects `it.styles`)
-styles/<name>.css           per-template OR per-design-system stylesheet
+templates/<name>.meta.json  sidecar: display_name, collection_source/target, surfaces[], depends_on.components[], params[]
+layouts/<name>.eta          component layout skeleton (wraps the body via `it.body`, injects `it.styles`)
+styles/<name>.css           per-template OR per-component stylesheet
 ```
 
-Render = overlay(template content ∪ each `depends_on.design_system` component's active version). The renderer concatenates the design-system `styles/*.css` (in `depends_on` order) followed by the template's own `styles/<name>.css`, renders the body, then injects body + styles into `layouts/base.eta`. `scripts/preview.ts` performs the same overlay locally.
+Render = overlay(template content ∪ each `depends_on.components` component's active version). The renderer concatenates the component `styles/*.css` (in `depends_on` order) followed by the template's own `styles/<name>.css`, renders the body, then injects body + styles into `layouts/base.eta`. `scripts/preview.ts` performs the same overlay locally.
 
 `display_name` lives in the sidecar (renames are metadata-only PRs), keeping the Firestore family doc fully rebuildable from git.
 
