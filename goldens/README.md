@@ -1,35 +1,45 @@
 # Goldens
 
-Branch-keyed reference PNGs for the visual-diff CI. Each file is a screenshot of
-one template family's **overlay render** — the document body rendered into the
-component layout with the concatenated stylesheet (the same overlay
-`scripts/preview.ts` and the api-cloudrun render pipeline perform), rasterized
-HTML→PNG via Gotenberg's Chromium screenshot route with a **frozen** render
-timestamp so output is byte-deterministic.
+Branch-keyed reference PNGs for the visual-diff CI. **One golden per fixture**:
+each file is a screenshot of one template family's **overlay render** against
+one operator-managed fixture (`fixtures/<git_path>/<slug>.json`) — the document
+body rendered into the component layout with the concatenated stylesheet (the
+same overlay `scripts/preview.ts` and the api-cloudrun render pipeline perform),
+rasterized HTML→PNG via Gotenberg's Chromium screenshot route with a **frozen**
+render timestamp so output is byte-deterministic.
 
 ```
-goldens/<branch>/<git_path>.png
+goldens/<branch>/<git_path>/<slug>.png
 ```
 
 - `<branch>` is the PR's **base** branch: `main` (prod-tracking) or `sandbox`
   (dev-tracking). A PR is compared against the goldens for the branch it targets.
 - `<git_path>` is the template family's immutable slug (e.g. `quote`).
+- `<slug>` matches a fixture file at `fixtures/<git_path>/<slug>.json`. Fixtures
+  are operator-managed in the manager (capture from a live Typesense doc, edit
+  inline, sanitized for PII on capture). The sidecar's `fixtures: [{slug, label,
+  description?}]` enriches the manager list — files in `fixtures/<git_path>/`
+  remain authoritative.
 
 ## How it's used
 
 `.github/workflows/visual-diff.yml` runs on every PR. For each changed template
 `git_path` (a shared-asset change fans out to all families), it calls the API's
-`POST /templates/golden-diff`, which renders the PR's content at `GITHUB_SHA`,
-screenshots it, and pixel-compares against `goldens/<base-branch>/<git_path>.png`:
+`POST /templates/golden-diff`, which renders the PR's content at `GITHUB_SHA`
+against every fixture in `fixtures/<git_path>/`, screenshots each, and
+pixel-compares against `goldens/<base-branch>/<git_path>/<slug>.png` — one
+verdict per fixture. The CI aggregate is:
 
-- **match** — render is within the per-image pixel threshold → PASS.
-- **no-golden** — no committed golden yet (new family) → PASS; the candidate is
-  uploaded for a reviewer to bless.
-- **diff** — visual regression → FAIL (the candidate + diff image URLs are
-  printed).
-- **renderer-unavailable** — Gotenberg was unreachable (cold start / outage) →
-  retried with backoff; a persistent outage FAILs with a message clearly
-  distinct from a pixel diff (not a regression — retry).
+- **match** — every fixture is within the per-image pixel threshold → PASS.
+- **no-golden** — at least one fixture has no committed golden yet → PASS; the
+  candidate(s) are uploaded for a reviewer to bless.
+- **diff** — any fixture differs from its golden → FAIL (each affected fixture's
+  candidate + diff image URLs are printed).
+- **renderer-unavailable** — Gotenberg was unreachable for at least one fixture
+  (cold start / outage) → retried with backoff; a persistent outage FAILs with
+  a message clearly distinct from a pixel diff (not a regression — retry).
+- **no-fixtures** — the family has no fixtures in git → PASS, no render attempted.
+  Capture a source doc in the manager to enable golden review.
 
 ## Regenerating (the re-bless ritual)
 

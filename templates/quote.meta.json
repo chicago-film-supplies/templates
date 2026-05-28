@@ -7,6 +7,13 @@
     "components": ["base"]
   },
   "params": [],
+  "fixtures": [
+    {
+      "slug": "order-841",
+      "label": "Order 841",
+      "description": "Original golden fixture — multi-destination order with rentals and tax."
+    }
+  ],
   "render": {
     "margin_top": 0.5,
     "margin_bottom": 0.5,

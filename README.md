@@ -25,15 +25,17 @@ version)`. The renderer branches on file extension — `.eta` is the body/layout
 ### Repo layout
 
 ```
-templates/<name>.eta          template body (Eta)
-templates/<name>.meta.json    sidecar: display_name, collection_source/target,
-                              surfaces[], depends_on.components[], params[], render{}
-styles/<name>.css             per-template stylesheet
-partials/<name>/*             per-template partials
-template-components/<name>.meta.json   component sidecar: { display_name, files[] }
-layouts/base.eta, styles/base.css      shared component content
-fixtures/<name>.json          deterministic render fixture (golden + preview)
-goldens/<branch>/<name>.png    committed golden screenshot per base branch
+templates/<name>.eta                    template body (Eta)
+templates/<name>.meta.json              sidecar: display_name, collection_source/target,
+                                        surfaces[], depends_on.components[], params[],
+                                        fixtures[{slug, label, description?}], render{}
+styles/<name>.css                       per-template stylesheet
+partials/<name>/*                       per-template partials
+template-components/<name>.meta.json    component sidecar: { display_name, files[] }
+layouts/base.eta, styles/base.css       shared component content
+fixtures/<name>/<slug>.json             deterministic render fixtures (one per slug;
+                                        operator-managed via the manager; PII sanitized on capture)
+goldens/<branch>/<name>/<slug>.png      committed golden screenshot, one per fixture per base branch
 ```
 
 ## Authoring (in the manager)
