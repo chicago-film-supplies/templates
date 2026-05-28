@@ -9,11 +9,19 @@ HTML/Eta templates rendered server-side (via `api-cloudrun`) into PDFs using Got
 ## Repo layout (sidecar + convention)
 
 ```
-templates/<name>.eta        document body partial (rendered with `it`)
-templates/<name>.meta.json  sidecar: display_name, collection_source/target, surfaces[], depends_on.components[], params[]
-layouts/<name>.eta          component layout skeleton (wraps the body via `it.body`, injects `it.styles`)
-styles/<name>.css           per-template OR per-component stylesheet
+templates/<name>.eta                document body partial (rendered with `it`)
+templates/<name>.meta.json          sidecar: display_name, collection_source/target, surfaces[], depends_on.components[], params[], fixtures: [{slug, label, description?}]
+layouts/<name>.eta                  component layout skeleton (wraps the body via `it.body`, injects `it.styles`)
+styles/<name>.css                   per-template OR per-component stylesheet
+fixtures/<name>/<slug>.json         deterministic source docs for golden visual-diff (operator-managed; PII sanitized on capture)
+goldens/<branch>/<name>/<slug>.png  branch-keyed golden screenshot, one per fixture
 ```
+
+Fixtures are **files-authoritative**: the renderer globs `fixtures/<gp>/*.json`
+and the sidecar's `fixtures[]` is a label/description join. An orphaned sidecar
+entry (slug with no matching file) is ignored at render time — never breaks a
+render. A template with zero fixtures yields a `no-fixtures` golden verdict
+(informational pass).
 
 Render = overlay(template content ∪ each `depends_on.components` component's active version). The renderer concatenates the component `styles/*.css` (in `depends_on` order) followed by the template's own `styles/<name>.css`, renders the body, then injects body + styles into `layouts/base.eta`. `scripts/preview.ts` performs the same overlay locally.
 

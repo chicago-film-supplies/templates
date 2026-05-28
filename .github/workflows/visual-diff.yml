@@ -49,8 +49,10 @@ jobs:
       # ── Detect changed template git_paths ───────────────────────────
       # A shared-asset change (layouts/base.eta, styles/base.css,
       # partials/shared/**) re-renders every family → diff all. Otherwise map
-      # each changed templates/<gp>.eta | styles/<gp>.css | partials/<gp>/** to
-      # its git_path. (Mirrors api-cloudrun src/services/templates/affected.ts.)
+      # each changed templates/<gp>.eta | styles/<gp>.css | partials/<gp>/** |
+      # fixtures/<gp>/<slug>.json to its git_path. (Mirrors api-cloudrun
+      # src/services/templates/affected.ts; fixture-only changes go into the
+      # `goldenOnly` bucket on the api side — same trigger here.)
       - name: Detect changed git_paths
         id: changed
         run: |
@@ -77,6 +79,11 @@ jobs:
               partials/*)
                 rest="${f#partials/}"; seg="${rest%%/*}"
                 [ "$seg" != "shared" ] && paths["$seg"]=1 ;;
+              fixtures/*)
+                # fixtures/<gp>/<slug>.json — re-run that family's per-fixture
+                # golden fan-out without bumping the template version.
+                rest="${f#fixtures/}"; seg="${rest%%/*}"
+                [[ "$rest" == */*.json ]] && paths["$seg"]=1 ;;
             esac
           done <<< "$FILES"
 
@@ -124,9 +131,9 @@ jobs:
             # Retry-with-backoff to absorb Gotenberg cold start (B6). Only a
             # `renderer-unavailable` verdict (or transport error) is retried;
             # a real diff fails immediately.
-            verdict=""; delta=""; cand=""; diff=""
+            verdict=""; body=""
             for attempt in 1 2 3; do
-              resp=$(curl -sS -m 120 -w '\n%{http_code}' \
+              resp=$(curl -sS -m 180 -w '\n%{http_code}' \
                 -H "Authorization: Bearer $ID_TOKEN" \
                 -H "Content-Type: application/json" \
                 -X POST "$API_URL/templates/golden-diff" \
@@ -136,9 +143,6 @@ jobs:
 
               if [ "$code" = "200" ]; then
                 verdict=$(printf '%s' "$body" | jq -r '.verdict')
-                delta=$(printf '%s' "$body" | jq -r '.delta')
-                cand=$(printf '%s' "$body" | jq -r '.image_uuids.candidate // empty')
-                diff=$(printf '%s' "$body" | jq -r '.image_uuids.diff // empty')
                 [ "$verdict" != "renderer-unavailable" ] && break
               else
                 echo "HTTP $code: $body"
@@ -150,13 +154,22 @@ jobs:
               sleep "$backoff"
             done
 
+            # Top-level verdict is the aggregate over all fixtures (precedence:
+            # renderer-unavailable → diff → no-golden → match). `.results[]`
+            # carries the per-fixture detail used to surface candidate/diff
+            # URLs on a real visual regression. `no-fixtures` is informational
+            # — the family has no fixtures yet (capture one in the manager).
             case "$verdict" in
-              match|no-golden)
-                echo "✓ $gp: $verdict (delta=$delta)" ;;
+              match)
+                echo "✓ $gp: match across $(printf '%s' "$body" | jq -r '.results | length') fixture(s)" ;;
+              no-golden)
+                echo "✓ $gp: no-golden — at least one fixture awaits its first bless"
+                printf '%s' "$body" | jq -r '.results[] | select(.verdict=="no-golden") | "    bless: \(.fixture) → https://ucarecdn.com/\(.image_uuids.candidate)/"' ;;
+              no-fixtures)
+                echo "ℹ $gp: no-fixtures — capture a source doc in the manager to enable golden review" ;;
               diff)
-                echo "✗ $gp: VISUAL REGRESSION (delta=$delta)"
-                [ -n "$cand" ] && echo "    candidate: https://ucarecdn.com/$cand/"
-                [ -n "$diff" ] && echo "    diff:      https://ucarecdn.com/$diff/"
+                echo "✗ $gp: VISUAL REGRESSION across $(printf '%s' "$body" | jq -r '[.results[] | select(.verdict=="diff")] | length') fixture(s)"
+                printf '%s' "$body" | jq -r '.results[] | select(.verdict=="diff") | "    \(.fixture) (delta=\(.delta))\n      candidate: https://ucarecdn.com/\(.image_uuids.candidate)/\n      diff:      https://ucarecdn.com/\(.image_uuids.diff)/"'
                 fail=1 ;;
               renderer-unavailable|*)
                 echo "✗ $gp: renderer unavailable after retries — NOT a visual regression; retry the job."

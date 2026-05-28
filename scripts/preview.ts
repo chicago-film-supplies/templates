@@ -10,8 +10,11 @@
  * The render date is FROZEN (injected as `it.now`) so output is deterministic
  * — no `new Date()` in templates (golden-diff friendly).
  *
- * Usage: deno task preview [name] [fixture]
- * Defaults: quote + fixtures/order-841.json
+ * Usage: deno task preview [name] [fixture-slug]
+ * Defaults: quote + the first fixture in `fixtures/<name>/`.
+ * A fixture slug resolves to `fixtures/<name>/<slug>.json`; passing a path
+ * (anything containing `/` or ending in `.json`) is also accepted as an
+ * escape hatch.
  */
 import { Eta } from "@bgub/eta";
 import * as dateFns from "date-fns";
@@ -27,7 +30,33 @@ const NOW = "2026-01-15T12:00:00.000-06:00";
 const eta = new Eta({ autoEscape: true, cache: false });
 
 const name = Deno.args[0] || "quote";
-const fixtureFile = Deno.args[1] || "fixtures/order-841.json";
+
+/** Resolve the fixture file: explicit path (contains `/` or ends `.json`),
+ * a bare slug → `fixtures/<name>/<slug>.json`, or the first fixture in
+ * `fixtures/<name>/` when no argument is passed. */
+async function resolveFixturePath(name: string, arg: string | undefined): Promise<string> {
+  if (arg && (arg.includes("/") || arg.endsWith(".json"))) return arg;
+  if (arg) return `fixtures/${name}/${arg}.json`;
+  const dir = `fixtures/${name}`;
+  try {
+    const entries: string[] = [];
+    for await (const e of Deno.readDir(dir)) {
+      if (e.isFile && e.name.endsWith(".json")) entries.push(e.name);
+    }
+    entries.sort();
+    if (entries.length === 0) {
+      throw new Error(`No fixtures in ${dir}/ — capture one in the manager or drop a JSON file here.`);
+    }
+    return `${dir}/${entries[0]}`;
+  } catch (err) {
+    if (err instanceof Deno.errors.NotFound) {
+      throw new Error(`No fixtures directory at ${dir}/ — capture one in the manager first.`);
+    }
+    throw err;
+  }
+}
+
+const fixtureFile = await resolveFixturePath(name, Deno.args[1]);
 const outputFile = "preview.html";
 
 interface RenderConfig {
