@@ -1,3 +1,4 @@
+<%# draft draft/quote/1a225453 %>
 <%
 const order = it.doc;
 const { destinations, items, totals } = order;
