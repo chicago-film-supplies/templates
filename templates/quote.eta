@@ -77,7 +77,10 @@ const rTotal = rSubtotal + rTax;
   </table>
 </section>
 
-<!-- Destinations — dates are scoped per-destination (no order-level envelope). -->
+<!-- Destinations — one compact per-destination table modeled on the manager's
+     OrderDetail: a Delivery | Pickup header, the rental window (and a charge row
+     when it differs), then address | contact per side and an instructions row.
+     Dates are scoped per-destination (no order-level envelope). -->
 <% if (destinations && destinations.length > 0) { %>
 <section id="destinations">
   <% destinations.forEach(function(dest, destIndex) { %>
@@ -86,124 +89,88 @@ const rTotal = rSubtotal + rTax;
     const legend = it.orders.getDestinationsLegend([dest]);
     const startLabel = legend.start || "Delivery";
     const endLabel = legend.end || "Pickup";
-    // Format a start[–end] instant range in Chicago time. The end is dropped
-    // when absent or equal to the start; a same-day end shows time only.
+    // Single instant + start–end range, both in Chicago time. fmtRange drops the
+    // end when it equals the start (the manager keeps delivery/collection
+    // *_end == *_start); the charge window's endpoints render in separate cells.
+    const fmtOne = (iso) => iso
+      ? it.dateFns.format(it.dateFns.parseISO(iso), "EEE MM/dd/yy h:mm a", { in: CHICAGO })
+      : "";
     const fmtRange = (start, end) => {
       if (!start) return "";
-      let out = it.dateFns.format(it.dateFns.parseISO(start), "EEE MM/dd/yy h:mm a", { in: CHICAGO });
+      let out = fmtOne(start);
       if (end && end !== start) {
         const sameDay = it.dateFns.isSameDay(it.dateFns.parseISO(start), it.dateFns.parseISO(end), { in: CHICAGO });
         out += " – " + it.dateFns.format(it.dateFns.parseISO(end), sameDay ? "h:mm a" : "EEE MM/dd/yy h:mm a", { in: CHICAGO });
       }
       return out;
     };
+    // Address lines (no contact — contact rides its own column).
+    const addrLines = (ep) => {
+      if (!ep || !ep.address) return [];
+      const a = ep.address;
+      return [
+        a.street,
+        a.street2 || null,
+        [a.city, a.region, a.postcode].filter(Boolean).join(', '),
+        (a.country_name && a.country_name !== "United States") ? a.country_name : null,
+      ].filter(Boolean);
+    };
+    const contactLine = (ep) => {
+      if (!ep || !ep.contact) return "";
+      const phone = ep.contact.phones && ep.contact.phones.length > 0 ? ep.contact.phones[0] : null;
+      return [ep.contact.name, phone].filter(Boolean).join(' · ');
+    };
     const hasCustomCharge = !it.orders.isSameAsDeliveryDates(d);
+    const showCollection = !it.orders.isSameAsDeliveryDestination(dest);
     %>
     <div class="destination-block">
       <% if (destinations.length > 1) { %>
-      <div class="title">
+      <div class="dest-title">
         <h2><%= it.orders.getDestinationPairItemName(dest, destIndex) %></h2>
         <hr />
       </div>
       <% } %>
 
-      <!-- Dates row -->
-      <table class="dest-dates dates">
+      <table class="dest-table">
+        <colgroup>
+          <col class="dg-col-addr" /><col class="dg-col-contact" />
+          <col class="dg-col-addr" /><col class="dg-col-contact" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th colspan="2"><%= startLabel %></th>
+            <th colspan="2"><%= endLabel %></th>
+          </tr>
+        </thead>
         <tbody>
-          <% if (d.delivery_start) { %>
-          <tr>
-            <th scope="row"><%= startLabel %>:</th>
-            <td><%= fmtRange(d.delivery_start, d.delivery_end) %></td>
+          <!-- Rental window: delivery (start side) | collection (end side) -->
+          <tr class="dg-dates">
+            <td colspan="2"><%= fmtRange(d.delivery_start, d.delivery_end) %></td>
+            <td colspan="2"><%= fmtRange(d.collection_start, d.collection_end) %></td>
           </tr>
-          <% } %>
-          <% if (d.collection_start) { %>
-          <tr>
-            <th scope="row"><%= endLabel %>:</th>
-            <td>
-              <%= fmtRange(d.collection_start, d.collection_end) %>
-              <% if (d.days_active) { %>
-              <span class="duration">(<%= it.dates.formatChargeDays(d.days_active).periodLabel %>)</span>
-              <% } %>
-            </td>
-          </tr>
-          <% } %>
           <% if (hasCustomCharge) { %>
-          <tr>
-            <th scope="row">Charge:</th>
-            <td>
-              <%= fmtRange(d.charge_start, d.charge_end) %>
-              <% if (d.days_charged) { %>
-              <span class="duration">(<%= it.dates.formatChargeDays(d.days_charged).periodLabel %>)</span>
-              <% } %>
-            </td>
+          <!-- Charge window — only when it differs from delivery/collection -->
+          <tr class="dg-dates dg-charge">
+            <td colspan="2"><span class="dg-tag">Charge</span><%= fmtOne(d.charge_start) %></td>
+            <td colspan="2"><%= fmtOne(d.charge_end) %></td>
+          </tr>
+          <% } %>
+          <!-- Address | contact, per side -->
+          <tr class="dg-addr">
+            <td><% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></td>
+            <td><%= contactLine(dest.delivery) %></td>
+            <td><% if (showCollection) { addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) } %></td>
+            <td><% if (showCollection) { %><%= contactLine(dest.collection) %><% } %></td>
+          </tr>
+          <!-- Instructions — its own row -->
+          <% if ((dest.delivery && dest.delivery.instructions) || (showCollection && dest.collection && dest.collection.instructions)) { %>
+          <tr class="dg-instructions">
+            <td colspan="2"><% if (dest.delivery) { %><%= dest.delivery.instructions || "" %><% } %></td>
+            <td colspan="2"><% if (showCollection && dest.collection) { %><%= dest.collection.instructions || "" %><% } %></td>
           </tr>
           <% } %>
         </tbody>
       </table>
-
-      <div class="endpoints">
-        <div class="endpoint">
-          <div class="title">
-            <h3><%= startLabel %></h3>
-            <hr />
-          </div>
-          <div class="address">
-            <% if (dest.delivery && dest.delivery.address) { %>
-            <%= dest.delivery.address.street %>
-            <% if (dest.delivery.address.street2) { %><br><%= dest.delivery.address.street2 %><% } %>
-            <br><%= [dest.delivery.address.city, dest.delivery.address.region, dest.delivery.address.postcode].filter(Boolean).join(', ') %>
-            <% if (dest.delivery.address.country_name && dest.delivery.address.country_name !== "United States") { %>
-            <br><%= dest.delivery.address.country_name %>
-            <% } %>
-            <% } %>
-          </div>
-          <div class="contact">
-            <% if (dest.delivery && dest.delivery.contact) { %>
-            <%= dest.delivery.contact.name %>
-            <% if (dest.delivery.contact.phones && dest.delivery.contact.phones.length > 0) { %>
-            <br><%= dest.delivery.contact.phones[0] %>
-            <% } %>
-            <% } %>
-          </div>
-          <% if (dest.delivery && dest.delivery.instructions) { %>
-          <div class="instructions">
-            <%= dest.delivery.instructions %>
-          </div>
-          <% } %>
-        </div>
-
-        <% if (!it.orders.isSameAsDeliveryDestination(dest)) { %>
-        <div class="endpoint">
-          <div class="title">
-            <h3><%= endLabel %></h3>
-            <hr />
-          </div>
-          <div class="address">
-            <% if (dest.collection && dest.collection.address) { %>
-            <%= dest.collection.address.street %>
-            <% if (dest.collection.address.street2) { %><br><%= dest.collection.address.street2 %><% } %>
-            <br><%= [dest.collection.address.city, dest.collection.address.region, dest.collection.address.postcode].filter(Boolean).join(', ') %>
-            <% if (dest.collection.address.country_name && dest.collection.address.country_name !== "United States") { %>
-            <br><%= dest.collection.address.country_name %>
-            <% } %>
-            <% } %>
-          </div>
-          <div class="contact">
-            <% if (dest.collection && dest.collection.contact) { %>
-            <%= dest.collection.contact.name %>
-            <% if (dest.collection.contact.phones && dest.collection.contact.phones.length > 0) { %>
-            <br><%= dest.collection.contact.phones[0] %>
-            <% } %>
-            <% } %>
-          </div>
-          <% if (dest.collection && dest.collection.instructions) { %>
-          <div class="instructions">
-            <%= dest.collection.instructions %>
-          </div>
-          <% } %>
-        </div>
-        <% } %>
-      </div>
     </div>
   <% }) %>
 </section>

@@ -64,8 +64,11 @@
           "country_name": "United States",
           "full": "600 E Grand Ave, Chicago, IL, 60611, United States"
         },
-        "instructions": "",
-        "contact": null
+        "instructions": "Dock C, east loading bay. Check in with pier security.",
+        "contact": {
+          "name": "Dana Ruiz",
+          "phones": ["312.555.0142"]
+        }
       }
     },
     {
