@@ -1,0 +1,240 @@
+{
+  "uid": "M0ltiDestFixt0re0001",
+  "number": 915,
+  "status": "quoted",
+  "subject": "Two-unit shoot — Navy Pier + Cinespace",
+  "reference": "PO-44821",
+  "notes": "",
+  "tax_profile": "tax_applied",
+  "version": 1,
+  "organization": {
+    "uid": "Org915ExampleProdC0",
+    "name": "Lakeshore Pictures",
+    "billing_address": {
+      "street": "445 N Lake Shore Dr",
+      "street2": "Suite 300",
+      "city": "Chicago",
+      "region": "IL",
+      "postcode": "60611",
+      "country_name": "United States",
+      "full": "445 N Lake Shore Dr, Suite 300, Chicago, IL, 60611, United States"
+    }
+  },
+  "destinations": [
+    {
+      "customer_collecting": false,
+      "customer_returning": false,
+      "dates": {
+        "delivery_start": "2026-04-06T08:00:00.000-05:00",
+        "delivery_end": "2026-04-06T08:00:00.000-05:00",
+        "collection_start": "2026-04-10T17:00:00.000-05:00",
+        "collection_end": "2026-04-10T17:00:00.000-05:00",
+        "charge_start": "2026-04-06T08:00:00.000-05:00",
+        "charge_end": "2026-04-10T17:00:00.000-05:00",
+        "days_charged": 5,
+        "days_active": 5
+      },
+      "delivery": {
+        "uid": "NavyPierEndpoint0001",
+        "address": {
+          "name": "Navy Pier",
+          "street": "600 E Grand Ave",
+          "street2": "",
+          "postcode": "60611",
+          "city": "Chicago",
+          "region": "IL",
+          "country_name": "United States",
+          "full": "600 E Grand Ave, Chicago, IL, 60611, United States"
+        },
+        "instructions": "Dock C, east loading bay. Check in with pier security.",
+        "contact": {
+          "name": "Dana Ruiz",
+          "phones": ["312.555.0142"]
+        }
+      },
+      "collection": {
+        "uid": "NavyPierEndpoint0001",
+        "address": {
+          "name": "Navy Pier",
+          "street": "600 E Grand Ave",
+          "street2": "",
+          "postcode": "60611",
+          "city": "Chicago",
+          "region": "IL",
+          "country_name": "United States",
+          "full": "600 E Grand Ave, Chicago, IL, 60611, United States"
+        },
+        "instructions": "",
+        "contact": null
+      }
+    },
+    {
+      "customer_collecting": true,
+      "customer_returning": false,
+      "dates": {
+        "delivery_start": "2026-04-07T09:00:00.000-05:00",
+        "delivery_end": "2026-04-07T09:00:00.000-05:00",
+        "collection_start": "2026-04-09T15:00:00.000-05:00",
+        "collection_end": "2026-04-09T15:00:00.000-05:00",
+        "charge_start": "2026-04-06T09:00:00.000-05:00",
+        "charge_end": "2026-04-10T15:00:00.000-05:00",
+        "days_charged": 5,
+        "days_active": 3
+      },
+      "delivery": {
+        "uid": "CineStageEndpoint001",
+        "address": {
+          "name": "Chicago Film Supplies",
+          "street": "3100 W Fillmore St",
+          "street2": "",
+          "postcode": "60612",
+          "city": "Chicago",
+          "region": "IL",
+          "country_name": "United States",
+          "full": "3100 W Fillmore St, Chicago, IL, 60612, United States"
+        },
+        "instructions": "Customer pickup at our counter.",
+        "contact": null
+      },
+      "collection": {
+        "uid": "CineReturnEndpoint01",
+        "address": {
+          "name": "Cinespace Chicago — Stage 14",
+          "street": "2621 W 15th Pl",
+          "street2": "",
+          "postcode": "60608",
+          "city": "Chicago",
+          "region": "IL",
+          "country_name": "United States",
+          "full": "2621 W 15th Pl, Chicago, IL, 60608, United States"
+        },
+        "instructions": "Strike by 3pm; gear staged at the Stage 14 roll-up door.",
+        "contact": {
+          "name": "Marcus Webb",
+          "phones": ["312.555.0188"]
+        }
+      }
+    }
+  ],
+  "items": [
+    {
+      "uid": "destdivider-navypier",
+      "type": "destination",
+      "name": "Navy Pier",
+      "description": "",
+      "uid_delivery": "NavyPierEndpoint0001",
+      "uid_collection": "NavyPierEndpoint0001"
+    },
+    {
+      "uid": "applebox-set-0000001",
+      "type": "rental",
+      "name": "Apple Box Set",
+      "description": "Full, half, quarter, pancake",
+      "quantity": 3,
+      "stock_method": "bulk",
+      "path": [],
+      "inclusion_type": null,
+      "zero_priced": null,
+      "price": {
+        "base": 8,
+        "chargeable_days": 5,
+        "formula": "five_day_week",
+        "subtotal": 24,
+        "subtotal_discounted": 24,
+        "discount": null,
+        "taxes": [
+          { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 3.6 }
+        ],
+        "total": 27.6,
+        "replacement": 45
+      }
+    },
+    {
+      "uid": "cstand-40-000000001",
+      "type": "rental",
+      "name": "C-Stand 40in",
+      "description": "",
+      "quantity": 6,
+      "stock_method": "bulk",
+      "path": [],
+      "inclusion_type": null,
+      "zero_priced": null,
+      "price": {
+        "base": 12,
+        "chargeable_days": 5,
+        "formula": "five_day_week",
+        "subtotal": 72,
+        "subtotal_discounted": 72,
+        "discount": null,
+        "taxes": [
+          { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 10.8 }
+        ],
+        "total": 82.8,
+        "replacement": 120
+      }
+    },
+    {
+      "uid": "destdivider-cinespace",
+      "type": "destination",
+      "name": "Cinespace Studios",
+      "description": "",
+      "uid_delivery": "CineStageEndpoint001",
+      "uid_collection": "CineReturnEndpoint01"
+    },
+    {
+      "uid": "magliner-gemini-0001",
+      "type": "rental",
+      "name": "Magliner Gemini Jr",
+      "description": "",
+      "quantity": 2,
+      "stock_method": "bulk",
+      "path": [],
+      "inclusion_type": null,
+      "zero_priced": null,
+      "price": {
+        "base": 30,
+        "chargeable_days": 10,
+        "formula": "five_day_week",
+        "subtotal": 120,
+        "subtotal_discounted": 120,
+        "discount": null,
+        "taxes": [
+          { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 18 }
+        ],
+        "total": 138,
+        "replacement": 700
+      }
+    },
+    {
+      "uid": "delivery-service-001",
+      "type": "service",
+      "name": "Delivery/Setup/Removal",
+      "description": "",
+      "quantity": 1,
+      "stock_method": "none",
+      "path": [],
+      "inclusion_type": null,
+      "zero_priced": null,
+      "price": {
+        "base": 250,
+        "chargeable_days": 1,
+        "formula": "fixed",
+        "subtotal": 250,
+        "subtotal_discounted": 250,
+        "discount": null,
+        "taxes": [],
+        "total": 250
+      }
+    }
+  ],
+  "totals": {
+    "discount_amount": 0,
+    "subtotal": 466,
+    "subtotal_discounted": 466,
+    "taxes": [
+      { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 32.4 }
+    ],
+    "transaction_fees": [],
+    "total": 498.4
+  }
+}

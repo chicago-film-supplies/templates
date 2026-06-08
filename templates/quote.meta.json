@@ -11,7 +11,12 @@
     {
       "slug": "order-841",
       "label": "Order 841",
-      "description": "Original golden fixture — multi-destination order with rentals and tax."
+      "description": "Single-destination order with rentals, tax, and replacement costs (destination-scoped dates)."
+    },
+    {
+      "slug": "multi-dest",
+      "label": "Multi-destination",
+      "description": "Two destinations — we-deliver (charge == delivery) plus customer-collecting with a divergent charge window — exercises per-destination titles, legend variants, and the conditional charge row."
     }
   ],
   "render": {
