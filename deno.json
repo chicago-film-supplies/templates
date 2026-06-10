@@ -1,9 +1,10 @@
 {
   "imports": {
     "@bgub/eta": "jsr:@bgub/eta@^4.5.1",
-    "@cfs/utilities/orders": "jsr:@cfs/utilities@7.0.0-beta.7/orders",
-    "@cfs/utilities/dates": "jsr:@cfs/utilities@7.0.0-beta.7/dates",
+    "@cfs/utilities/orders": "jsr:@cfs/utilities@^7.0.0-beta.7/orders",
+    "@cfs/utilities/dates": "jsr:@cfs/utilities@^7.0.0-beta.7/dates",
     "date-fns": "npm:date-fns@^4.1.0",
+    "@date-fns/tz": "npm:@date-fns/tz@^1.5.0",
     "currency.js": "npm:currency.js@^2.0.4"
   },
   "tasks": {
