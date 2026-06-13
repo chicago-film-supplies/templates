@@ -2,9 +2,13 @@
   "display_name": "Quote",
   "collection_source": "orders",
   "collection_target": "quotes",
-  "surfaces": ["order"],
+  "surfaces": [
+    "order"
+  ],
   "depends_on": {
-    "design_system": ["base"]
+    "design_system": [
+      "base"
+    ]
   },
   "params": [],
   "render": {
@@ -15,5 +19,11 @@
     "base_font_size": 10,
     "filename": "Quote <%= it.doc.number %><% if (it.doc.reference) { %> - <%= it.doc.reference %><% } %>",
     "footer": "partials/quote/footer.eta"
-  }
+  },
+  "fixtures": [
+    {
+      "slug": "891",
+      "label": "891 - Production Supplies"
+    }
+  ]
 }
