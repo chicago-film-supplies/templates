@@ -56,19 +56,8 @@ th.center, td.center {
 .dates td {
   font-family: ui-monospace, monospace;
 }
-#dates-delivery,
-#dates-charge {
-  grid-row: 4;
-}
-#details th,
-#dates-delivery th,
-#dates-charge th {
+#details th {
   width: 9em;
-}
-
-#dates-delivery th,
-#dates-charge th {
-  font-weight: normal;
 }
 #destinations,
 #items,
@@ -76,20 +65,42 @@ th.center, td.center {
   grid-column: 1 / -1;
 }
 #destinations {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: .25em 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
-#destinations .title {
-  grid-row: 1;
-  grid-column: span 2;
+#destinations h2 {
+  font-size: 1em;
 }
-#destinations .address, #destinations .contact {
-  grid-row: 2;
+/* Compact per-destination table: a Delivery | Pickup header (2 columns each),
+   the rental window, an optional charge row, then address | contact per side
+   and an instructions row. */
+.dest-table {
+  width: 100%;
+  table-layout: fixed;
 }
-#destinations .instructions {
-  grid-row: 3;
-  grid-column: span 2;
+.dest-table .dg-col-addr { width: 30%; }
+.dest-table .dg-col-contact { width: 20%; }
+.dest-table th {
+  font-weight: normal;
+  color: #555;
+  border-bottom: 1px solid #121212;
+  padding-bottom: 2px;
+}
+.dest-table td {
+  vertical-align: top;
+  padding: 3px 1em 0 0;
+}
+.dest-table .dg-dates td {
+  font-family: ui-monospace, monospace;
+}
+.dest-table .dg-charge td,
+.dest-table .dg-instructions td {
+  color: #555;
+}
+.dest-table .dg-charge .dg-tag {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  margin-right: .5em;
 }
 #items th {
   border-top: 1px solid #000;

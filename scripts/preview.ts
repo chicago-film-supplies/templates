@@ -18,6 +18,7 @@
  */
 import { Eta } from "@bgub/eta";
 import * as dateFns from "date-fns";
+import { tz } from "@date-fns/tz";
 import currency from "currency.js";
 import * as orderUtils from "@cfs/utilities/orders";
 import * as dateUtils from "@cfs/utilities/dates";
@@ -99,6 +100,7 @@ const ctx = {
   version: 1,
   now: NOW,
   dateFns,
+  tz,
   currency,
   orders: orderUtils,
   dates: dateUtils,
