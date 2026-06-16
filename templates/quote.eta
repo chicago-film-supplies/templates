@@ -1,4 +1,3 @@
-<%/* draft draft/dev/quote/357f7c6e */%>
 <%
 const order = it.doc;
 const { destinations, items, totals } = order;
@@ -8,6 +7,13 @@ const hasDiscount = it.orders.orderHasDiscount(lineItems);
 const hasRentals = it.orders.orderHasRentals(lineItems);
 const hasTax = it.orders.orderHasTax(lineItems);
 const replacementItems = lineItems.filter(i => i.price.replacement != null);
+// All-in replacement cost (unit + tax, × qty) — mirrors the replacement-costs table total.
+const replacementTotal = replacementItems.reduce((sum, item) => {
+  const qty = item.quantity || 0;
+  const unitTaxAmount = item.price.taxes.reduce((t, tax) =>
+    tax.type === "percent" ? t + (item.price.replacement * tax.rate / 100) : t + tax.amount, 0);
+  return sum + (item.price.replacement + unitTaxAmount) * qty;
+}, 0);
 %>
 <div id="grid-wrapper">
   <div id="logo">
@@ -278,7 +284,7 @@ const replacementItems = lineItems.filter(i => i.price.replacement != null);
 
 <section id="information">
   <% if (replacementItems.length > 0) { %>
-  <p>The total replacement cost for all items on your rental order is: <%  %></p>
+  <p>The total replacement cost for all items on your rental order is: <%= it.currency(replacementTotal).format() %></p>
   <% } %>
 </section>
 
