@@ -2,19 +2,31 @@
   "version": "5",
   "specifiers": {
     "jsr:@bgub/eta@^4.5.1": "4.6.0",
-    "jsr:@cfs/utilities@7.0.0-beta.7": "7.0.0-beta.7",
+    "jsr:@cfs/schemas@10.0.0-beta.34": "10.0.0-beta.34",
+    "jsr:@cfs/utilities@^7.0.0-beta.7": "7.0.0-beta.31",
     "npm:@date-fns/tz@^1.4.1": "1.5.0",
+    "npm:@date-fns/tz@^1.5.0": "1.5.0",
     "npm:currency.js@^2.0.4": "2.0.4",
-    "npm:date-fns@^4.1.0": "4.3.0"
+    "npm:date-fns@^4.1.0": "4.4.0",
+    "npm:zod@^4.3.6": "4.4.3"
   },
   "jsr": {
     "@bgub/eta@4.6.0": {
       "integrity": "fe872004cd6c64ca25c7e71fd80bbbad7d8d552cefd31828bddddb7db0f79eb1"
     },
-    "@cfs/utilities@7.0.0-beta.7": {
-      "integrity": "1a2500bfba69b41f86390bd117913f7784b6d88281100a497cd57bdb8a6e5a42",
+    "@cfs/schemas@10.0.0-beta.34": {
+      "integrity": "a94c6f58c54dc0cb8f784b5e37b81ff73f8ebb03cf64bac434854f231fb9426e",
       "dependencies": [
-        "npm:@date-fns/tz",
+        "npm:@date-fns/tz@^1.4.1",
+        "npm:date-fns",
+        "npm:zod"
+      ]
+    },
+    "@cfs/utilities@7.0.0-beta.31": {
+      "integrity": "25bc9a00616ac698ed9fd72bb2f5df2cda9471f588f851c1f3a44af686b04f8d",
+      "dependencies": [
+        "jsr:@cfs/schemas",
+        "npm:@date-fns/tz@^1.4.1",
         "npm:currency.js",
         "npm:date-fns"
       ]
@@ -27,14 +39,18 @@
     "currency.js@2.0.4": {
       "integrity": "sha512-6/OplJYgJ0RUlli74d93HJ/OsKVBi8lB1+Z6eJYS1YZzBuIp4qKKHpJ7ad+GvTlWmLR/hLJOWTykN5Nm8NJ7+w=="
     },
-    "date-fns@4.3.0": {
-      "integrity": "sha512-OYcL+3N/jyWbYdFGqoMAhytDgxP9pbYPUUiRCOgn4Fewaadk9l/Wam4Avciiyp2BgkpfQyBV9B+ehnVJych+eQ=="
+    "date-fns@4.4.0": {
+      "integrity": "sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w=="
+    },
+    "zod@4.4.3": {
+      "integrity": "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="
     }
   },
   "workspace": {
     "dependencies": [
       "jsr:@bgub/eta@^4.5.1",
-      "jsr:@cfs/utilities@7.0.0-beta.7",
+      "jsr:@cfs/utilities@^7.0.0-beta.7",
+      "npm:@date-fns/tz@^1.5.0",
       "npm:currency.js@^2.0.4",
       "npm:date-fns@^4.1.0"
     ]

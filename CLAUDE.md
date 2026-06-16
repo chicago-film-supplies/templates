@@ -6,26 +6,36 @@ HTML/Eta templates rendered server-side (via `api-cloudrun`) into PDFs using Got
 
 **Git-canonical.** Git is the source of truth for template *content*; Firestore is a rebuildable projection (family doc + `templates-versions`). This repo is the canonical content store and an ad-hoc local-dev/preview harness; the production editing surface lives in `manager/`.
 
+**Authoring reference:** the `cfs-template-authoring` skill (plugin `cfs-skills@cfs`, auto-installed via `.claude/settings.json`) is the canonical deep reference — render context (`it.*`), sidecar schema, overlay semantics, order data shape, price fields, fixtures/goldens. Consult it before writing template content. The pipeline side (lifecycle, publish invariants, golden gate, RBAC) is `api-cloudrun/.claude/skills/templates/SKILL.md`.
+
 ## Repo layout (sidecar + convention)
 
 ```
-templates/<name>.eta                document body partial (rendered with `it`)
-templates/<name>.meta.json          sidecar: display_name, collection_source/target, surfaces[], depends_on.components[], params[], fixtures: [{slug, label, description?}]
-layouts/<name>.eta                  component layout skeleton (wraps the body via `it.body`, injects `it.styles`)
-styles/<name>.css                   per-template OR per-component stylesheet
-fixtures/<name>/<slug>.json         deterministic source docs for golden visual-diff (operator-managed; PII sanitized on capture)
-goldens/<branch>/<name>/<slug>.png  branch-keyed golden screenshot, one per fixture
+templates/<name>.eta                    document body partial (rendered with `it`)
+templates/<name>.meta.json              sidecar: display_name, collection_source/target, surfaces[], depends_on.components[], params[], fixtures[], render{}
+layouts/<name>.eta                      component layout skeleton (wraps the body via `it.body`, injects `it.styles`)
+styles/<name>.css                       per-template OR per-component stylesheet
+partials/<template>/<part>.eta          render-config partials (footer/header), rendered with the same `it` context
+template-components/<name>.meta.json    component sidecar: display_name + files[] manifest
+fixtures/<template>/<slug>.json         deterministic source docs for golden visual-diff (operator-managed; PII sanitized on capture)
+goldens/<branch>/<template>/<slug>.png  branch-keyed golden screenshot, one per fixture
 ```
 
-Fixtures are **files-authoritative**: the renderer globs `fixtures/<gp>/*.json`
-and the sidecar's `fixtures[]` is a label/description join. An orphaned sidecar
-entry (slug with no matching file) is ignored at render time — never breaks a
-render. A template with zero fixtures yields a `no-fixtures` golden verdict
-(informational pass).
+Fixtures are **files-authoritative**: the renderer globs `fixtures/<template>/*.json` and the sidecar's `fixtures[]` is a label/description join. An orphaned sidecar entry never breaks a render; zero fixtures yields a `no-fixtures` golden verdict (informational pass).
 
-Render = overlay(template content ∪ each `depends_on.components` component's active version). The renderer concatenates the component `styles/*.css` (in `depends_on` order) followed by the template's own `styles/<name>.css`, renders the body, then injects body + styles into `layouts/base.eta`. `scripts/preview.ts` performs the same overlay locally.
+The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta string, `footer`/`header` partial paths) drives Gotenberg PDF generation — full field semantics in the `cfs-template-authoring` skill.
 
-`display_name` lives in the sidecar (renames are metadata-only PRs), keeping the Firestore family doc fully rebuildable from git.
+## Template context (summary)
+
+`it.doc`, `it.version`, `it.params`, `it.now` (frozen render timestamp — never `new Date()`), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.currency` (currency.js), `it.orders` (`@cfs/utilities/orders`), `it.dates` (`@cfs/utilities/dates`). Injected by `api-cloudrun/src/lib/templates/eta.ts`; `scripts/preview.ts` mirrors it. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
+
+## Local preview
+
+`deno task preview [name] [fixture-slug]` renders a template + fixture to `preview.html` with the same overlay the API performs (component styles → template styles → layout), prints the rendered `filename`, and inlines the footer partial below the body to confirm it parses. `deno task preview:watch` re-renders on change.
+
+## Dependencies
+
+`@cfs/utilities` uses a **floating caret range** (`^7.0.0-beta.N`) so the preview harness tracks the latest published beta — the same package line `api-cloudrun` renders with. After a schemas/utilities publish, refresh the lock: `deno outdated --update` (or `rm deno.lock && deno install`). A new major (e.g. `8.0.0-beta.1`) requires editing the range. Never hard-pin to an old beta — preview output silently diverges from server renders.
 
 ## LLM Reference Docs
 
@@ -34,73 +44,3 @@ Fresh copies of framework documentation are fetched on session start into `.clau
 - `.claude/docs/eta.txt` — Eta v4 template engine (syntax, API, config). **Read this whenever working on template syntax, tag usage, or helper access.**
 
 Run `deno task fetch-llms-docs` to refresh manually.
-
-## Template Context
-
-Templates receive data via `it`:
-
-- `it.doc` — the source document (e.g., an Order)
-- `it.version` — version number or `null` for drafts
-- `it.now` — **frozen** render timestamp (ISO string). Use this for "today" — never `new Date()` (non-deterministic output breaks golden diffs)
-- `it.logo` — inline SVG logo markup
-- `it.dateFns` — full date-fns library (parseISO, format, isSameDay, etc.)
-- `it.currency` — currency.js for formatting currency values
-- `it.orders` — `@cfs/utilities/orders` (orderHasRentals, orderHasDiscount, orderHasTax, isPreTaxItem, calculateReplacementTotals)
-- `it.dates` — `@cfs/utilities/dates` (formatChargeDays, countCfsBusinessDays)
-
-## Eta Syntax
-
-- `<%= expr %>` — escaped output
-- `<%~ expr %>` — raw/unescaped output (use for HTML)
-- `<% code %>` — logic (if/for/const)
-- Auto-escaping is enabled by default
-
-## Order Data Shape (for quotes)
-
-Key paths available on `it.doc`:
-
-- `number`, `status`, `reference`, `subject`, `notes`
-- `organization.name`, `organization.billing_address` (street, street2, city, region, postcode, country_name)
-- `dates.delivery_start`, `dates.delivery_end`, `dates.collection_start`, `dates.collection_end`, `dates.charge_start`, `dates.charge_end`, `dates.days_active`, `dates.days_charged`
-- `customer_collecting`, `customer_returning`
-- `destinations[]` — each has `delivery` and `collection` endpoints with `address`, `contact`, `instructions`
-- `items[]` — mixed types:
-  - Line items (type: rental/sale/service/surcharge/replacement/custom): `uid, name, description, quantity, price { base, replacement, chargeable_days, formula, subtotal, subtotal_discounted, discount { rate, type, amount }, taxes[], total }`
-  - Group dividers (type: "group"): `uid, name, description`
-  - Destination dividers (type: "destination"): `uid, name, uid_delivery, uid_collection`
-- `totals` — `{ subtotal, subtotal_discounted, discount_amount, taxes[], transaction_fees[], total }`
-- `tax_profile` — "tax_applied" | "tax_exempt" | "reverse_charge"
-
-## Price Field Meanings
-
-- `price.base` — unit price (daily/weekly rate)
-- `price.subtotal` — formula-applied amount: `base × (chargeable_days / 5) × qty` for five_day_week, `base × qty` for fixed
-- `price.subtotal_discounted` — subtotal after discount applied
-- `price.total` — the actual line charge: `subtotal_discounted + sum(taxes)`
-- `price.replacement` — replacement cost per unit (only on rentals)
-
-**Known bug**: `getDaysFactor` in `@cfs/utilities/orders` does not enforce a 1-week minimum for five_day_week formula. Rentals < 5 days get a multiplier < 1 (e.g., 2 days = 0.4×) when the minimum should be 1. This causes `subtotal` to be less than `base` for short rentals.
-
-## Template Context Limitations
-
-- No `isEqual` / deep comparison available — use `JSON.stringify(a) === JSON.stringify(b)` as workaround
-- No `isLineItem` utility — use `item.type !== "group" && item.type !== "destination"` to filter line items
-- `isPreTaxItem` excludes transaction_fee items from price calculations
-
-## Conditional Column Hiding Pattern
-
-Hide table columns when data is irrelevant (follow the pattern from OrderItems in manager):
-
-- Hide "discount" column if `!it.orders.orderHasDiscount(lineItems)`
-- Hide "duration" column if `!it.orders.orderHasRentals(lineItems)`
-- Hide "tax" column if `!it.orders.orderHasTax(lineItems)`
-- Hide "replacement" column if `!it.orders.orderHasRentals(lineItems)`
-
-Use `<% if (condition) { %>...<% } %>` to conditionally render `<th>` and matching `<td>` cells.
-
-## Style Guidelines
-
-- Templates contain only HTML markup (no `<style>` blocks) — styles are managed externally
-- Use semantic table markup (`<table>`, `<thead>`, `<tbody>`, `<th scope="col">`)
-- Use `currency(value).format()` for all monetary values
-- Use `it.dateFns.format(it.dateFns.parseISO(isoString), 'pattern')` for dates
