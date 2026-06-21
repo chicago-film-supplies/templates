@@ -69,38 +69,27 @@ th.center, td.center {
   flex-direction: column;
   gap: 1em;
 }
-#destinations h2 {
-  font-size: 1em;
+.destination-block .dest-dates {
+  margin-bottom: .5em;
 }
-/* Compact per-destination table: a Delivery | Pickup header (2 columns each),
-   the rental window, an optional charge row, then address | contact per side
-   and an instructions row. */
-.dest-table {
-  width: 100%;
-  table-layout: fixed;
-}
-.dest-table .dg-col-addr { width: 30%; }
-.dest-table .dg-col-contact { width: 20%; }
-.dest-table th {
+.dest-dates th {
+  width: 6em;
   font-weight: normal;
-  color: #555;
-  border-bottom: 1px solid #121212;
-  padding-bottom: 2px;
-}
-.dest-table td {
   vertical-align: top;
-  padding: 3px 1em 0 0;
 }
-.dest-table .dg-dates td {
-  font-family: ui-monospace, monospace;
-}
-.dest-table .dg-charge td,
-.dest-table .dg-instructions td {
+.dest-dates .duration {
+  font-family: ui-sans-serif, system-ui, sans-serif;
   color: #555;
 }
-.dest-table .dg-charge .dg-tag {
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  margin-right: .5em;
+.destination-block .endpoints {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .25em 1em;
+}
+#destinations h3 {
+  font-size: 1em;
+  font-weight: normal;
+  margin: 0;
 }
 #items th {
   border-top: 1px solid #000;
