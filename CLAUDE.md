@@ -29,7 +29,7 @@ The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta
 
 ## Template context (summary)
 
-`it.doc`, `it.version`, `it.params`, `it.now` (frozen render timestamp — never `new Date()`), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.currency` (currency.js), `it.orders` (`@cfs/utilities/orders`), `it.dates` (`@cfs/utilities/dates`). Injected by `api-cloudrun/src/lib/templates/eta.ts`; `scripts/preview.ts` mirrors it. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
+`it.doc`, `it.version`, `it.params`, `it.now` (frozen render timestamp — never `new Date()`), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.currency` (currency.js), `it.orders` (`@cfs/core/utils/orders`), `it.dates` (`@cfs/core/utils/dates`). Injected by `api-cloudrun/src/lib/templates/eta.ts`; `scripts/preview.ts` mirrors it. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
 
 ## Local preview
 
@@ -37,7 +37,7 @@ The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta
 
 ## Dependencies
 
-`@cfs/utilities` uses a **floating caret range** (`^7.0.0-beta.N`) so the preview harness tracks the latest published beta — the same package line `api-cloudrun` renders with. After a schemas/utilities publish, refresh the lock: `deno outdated --update` (or `rm deno.lock && deno install`). A new major (e.g. `8.0.0-beta.1`) requires editing the range. Never hard-pin to an old beta — preview output silently diverges from server renders.
+`@cfs/core` uses a **floating caret range** (`^10.0.0-beta.N`) so the preview harness tracks the latest published beta — the same package line `api-cloudrun` renders with. After a `@cfs/core` publish, refresh the lock: `deno outdated --update` (or `rm deno.lock && deno install`). A new major (e.g. `11.0.0-beta.1`) requires editing the range. Never hard-pin to an old beta — preview output silently diverges from server renders.
 
 ## LLM Reference Docs
 
