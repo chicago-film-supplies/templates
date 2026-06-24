@@ -7,6 +7,7 @@
     "npm:@date-fns/tz@^1.5.0": "1.5.0",
     "npm:currency.js@^2.0.4": "2.0.4",
     "npm:date-fns@^4.1.0": "4.4.0",
+    "npm:date-fns@^4.4.0": "4.4.0",
     "npm:zod@^4.3.6": "4.4.3"
   },
   "jsr": {
@@ -18,7 +19,7 @@
       "dependencies": [
         "npm:@date-fns/tz@^1.4.1",
         "npm:currency.js",
-        "npm:date-fns",
+        "npm:date-fns@^4.1.0",
         "npm:zod"
       ]
     }
@@ -43,7 +44,7 @@
       "jsr:@cfs/core@^10.0.0-beta.43",
       "npm:@date-fns/tz@^1.5.0",
       "npm:currency.js@^2.0.4",
-      "npm:date-fns@^4.1.0"
+      "npm:date-fns@^4.4.0"
     ]
   }
 }
