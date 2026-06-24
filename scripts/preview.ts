@@ -20,8 +20,8 @@ import { Eta } from "@bgub/eta";
 import * as dateFns from "date-fns";
 import { tz } from "@date-fns/tz";
 import currency from "currency.js";
-import * as orderUtils from "@cfs/utilities/orders";
-import * as dateUtils from "@cfs/utilities/dates";
+import * as orderUtils from "@cfs/core/utils/orders";
+import * as dateUtils from "@cfs/core/utils/dates";
 
 const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="80" viewBox="0 44 160 80" fill="currentColor" role="img" aria-label="Chicago Film Supplies logo"><path d="m 46.8,104.95007 c -0.2,1.4 0.7,2.5 2.1,2.5 h 47.5 c 1.4,0 2.7,-1.1 3,-2.5 l 0.3,-1.6 H 47.2 l -0.3,1.6 z"/></svg>`;
 
