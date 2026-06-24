@@ -1,7 +1,7 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@bgub/eta@^4.5.1": "4.6.0",
+    "jsr:@bgub/eta@^4.6.0": "4.6.0",
     "jsr:@cfs/core@^10.0.0-beta.43": "10.0.0-beta.43",
     "npm:@date-fns/tz@^1.4.1": "1.5.0",
     "npm:@date-fns/tz@^1.5.0": "1.5.0",
@@ -39,7 +39,7 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@bgub/eta@^4.5.1",
+      "jsr:@bgub/eta@^4.6.0",
       "jsr:@cfs/core@^10.0.0-beta.43",
       "npm:@date-fns/tz@^1.5.0",
       "npm:currency.js@^2.0.4",
