@@ -50,8 +50,16 @@ the **`.css`** styles. The body renders through the API's Eta context:
 - `it.holidays` — CFS holiday ISO dates (`YYYY-MM-DD[]`, live snapshot); pass to
   the holiday-aware `it.dates.*` helpers (they throw if omitted). Not available in
   the layout.
-- `it.orders.*`, `it.dates.*`, `it.currency`, `it.dateFns`, `it.tz`, `it.logo` —
-  helper namespaces (see the editor's Template Helpers panel).
+- `it.currency`, `it.dateFns`, `it.tz`, `it.logo`, `it.dates.*` — always available.
+- `it.orders.*` / `it.invoices.*` — **collection-dependent**, NOT guaranteed. The
+  `@cfs/core/utils` namespaces a template gets are the union of its
+  `collection_source` + `collection_target` namespaces (`orders` → `it.orders`,
+  `invoices` → `it.invoices`; `quotes`/`packing_lists` contribute none), plus the
+  always-on set above. So the quote template (orders → quotes) has `it.orders` and
+  NOT `it.invoices`; an invoices-source template is the reverse. Resolved by
+  `availableUtilNamespaces` in `@cfs/core/schemas` — the editor's Template Helpers
+  panel lists exactly the namespaces your template actually gets, with each
+  helper's return type.
 
 **Preview** renders the *draft* against a real source document. Save first; the
 preview reflects your saved draft (not the published version).
