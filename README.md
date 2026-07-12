@@ -47,6 +47,9 @@ the **`.css`** styles. The body renders through the API's Eta context:
   editor's Schema Reference panel).
 - `it.params` — strict-validated render params (booleans in v1).
 - `it.now` — a frozen Chicago-offset render instant (use instead of `new Date()`).
+- `it.holidays` — CFS holiday ISO dates (`YYYY-MM-DD[]`, live snapshot); pass to
+  the holiday-aware `it.dates.*` helpers (they throw if omitted). Not available in
+  the layout.
 - `it.orders.*`, `it.dates.*`, `it.currency`, `it.dateFns`, `it.tz`, `it.logo` —
   helper namespaces (see the editor's Template Helpers panel).
 
