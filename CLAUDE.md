@@ -29,7 +29,7 @@ The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta
 
 ## Template context (summary)
 
-`it.doc`, `it.version`, `it.params`, `it.now` (frozen render timestamp — never `new Date()`), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.currency` (currency.js), `it.orders` (`@cfs/core/utils/orders`), `it.dates` (`@cfs/core/utils/dates`). Injected by `api-cloudrun/src/lib/templates/eta.ts`; `scripts/preview.ts` mirrors it. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
+`it.doc`, `it.version`, `it.params`, `it.now` (frozen render timestamp — never `new Date()`), `it.holidays` (CFS holiday ISO dates `YYYY-MM-DD[]`, live snapshot — feeds the `it.dates.*` holiday helpers, which throw if omitted; absent in layouts), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.currency` (currency.js), `it.orders` (`@cfs/core/utils/orders`), `it.dates` (`@cfs/core/utils/dates`). Injected by `api-cloudrun/src/lib/templates/eta.ts`; `scripts/preview.ts` mirrors it. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
 
 ## Local preview
 
