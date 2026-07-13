@@ -1,23 +1,28 @@
 {
-  "uid": "0R4MLi8yDbqRgx9Kg3O4",
+  "uid": "Order841FixtureDoc01",
   "number": 841,
   "status": "quoted",
   "subject": "Stanchions",
   "reference": null,
-  "notes": "",
   "tax_profile": "tax_applied",
   "version": 1,
   "organization": {
-    "uid": "XWi80oq1znJyE7JC1J8t",
-    "name": "COPA90",
+    "uid": "HarborLineMediaOrg01",
+    "name": "Harbor Line Media",
+    "crms_id": null,
+    "xero_id": "5c7e2b14-6d3a-4f88-9a02-1b8e7c4d5a63",
     "billing_address": {
-      "street": "TBD",
-      "street2": "",
+      "name": "Harbor Line Media",
+      "street": "540 N Lake Shore Dr",
+      "street2": "Suite 320",
       "city": "Chicago",
       "region": "IL",
-      "postcode": "60612",
+      "postcode": "60611",
       "country_name": "United States",
-      "full": "TBD, Chicago, IL, 60612, United States"
+      "full": "540 N Lake Shore Dr, Chicago, IL, United States",
+      "mapbox_id": "",
+      "address_coordinates": null,
+      "user_coordinates": null
     }
   },
   "destinations": [
@@ -93,7 +98,13 @@
         "subtotal_discounted": 4.8,
         "discount": null,
         "taxes": [
-          { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 0.72 }
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount": 0.72
+          }
         ],
         "total": 12,
         "replacement": 80
@@ -117,7 +128,13 @@
         "subtotal_discounted": 12,
         "discount": null,
         "taxes": [
-          { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 1.8 }
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount": 1.8
+          }
         ],
         "total": 30,
         "replacement": 700
@@ -141,7 +158,13 @@
         "subtotal_discounted": 120,
         "discount": null,
         "taxes": [
-          { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 18 }
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount": 18
+          }
         ],
         "total": 300
       }
@@ -194,9 +217,23 @@
     "subtotal": 1136.8,
     "subtotal_discounted": 1136.8,
     "taxes": [
-      { "uid": "VEW4Ivy7VNqgxFA5eJw6", "name": "Chicago Rental Tax", "rate": 15, "type": "percent", "amount": 20.52 }
+      {
+        "uid": "VEW4Ivy7VNqgxFA5eJw6",
+        "name": "Chicago Rental Tax",
+        "rate": 15,
+        "type": "percent",
+        "amount": 20.52
+      }
     ],
     "transaction_fees": [],
     "total": 1157.32
+  },
+  "created_at": {
+    "_seconds": 1758204120,
+    "_nanoseconds": 0
+  },
+  "updated_at": {
+    "_seconds": 1758742260,
+    "_nanoseconds": 0
   }
 }

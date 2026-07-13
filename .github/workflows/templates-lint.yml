@@ -1,11 +1,19 @@
-name: pii-lint
+name: templates-lint
 
-# Lightweight guard: templates must pull contact info from `it.doc`, never
-# hardcode customer PII. Scans .eta sources for hardcoded email addresses (other
-# than @chicagofilmsupplies.com) and US phone-number patterns. This is a
-# STARTING HEURISTIC — it catches the obvious cases (a literal customer email or
-# phone pasted into a template), not every conceivable PII shape; tune the
-# patterns below as real false-positives/negatives surface.
+# Two always-on guards on every PR.
+#
+# 1. FIXTURES (scripts/lint-fixtures.ts) — every fixtures/<gp>/*.json must satisfy
+#    the same schema the API enforces on save, and carry no customer PII. Fixtures
+#    used to be validated ONLY on the API's write path, so a fixture committed
+#    straight to git bypassed the only gate there was: both quote fixtures sat
+#    invalid in main for months, rendering fine, and only exploded when an operator
+#    tried to save an edit — reporting a wall of failures they had not caused. One
+#    of them was also a verbatim copy of a live customer's order.
+#
+# 2. TEMPLATES — .eta sources must pull contact info from `it.doc`, never hardcode
+#    customer PII. A STARTING HEURISTIC: it catches the obvious cases (a literal
+#    customer email or phone pasted into a template), not every conceivable PII
+#    shape; tune the patterns as real false-positives/negatives surface.
 on:
   pull_request:
     branches:
@@ -17,13 +25,20 @@ permissions:
   contents: read
 
 jobs:
-  pii-lint:
+  templates-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+
+      # Resolves @cfs/core from the committed lock, so the gate validates with the
+      # same schema build the API enforces with. A lagging lock here would make the
+      # gate pass while the API 422s — which is the exact drift it exists to catch.
+      - name: Lint fixtures (schema + PII)
+        run: deno task lint:fixtures
+
       - name: Scan templates for hardcoded PII
         run: |
           deno run --allow-read - <<'TS'
