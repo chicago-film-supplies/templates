@@ -47,8 +47,19 @@ the **`.css`** styles. The body renders through the API's Eta context:
   editor's Schema Reference panel).
 - `it.params` — strict-validated render params (booleans in v1).
 - `it.now` — a frozen Chicago-offset render instant (use instead of `new Date()`).
-- `it.orders.*`, `it.dates.*`, `it.currency`, `it.dateFns`, `it.tz`, `it.logo` —
-  helper namespaces (see the editor's Template Helpers panel).
+- `it.holidays` — CFS holiday ISO dates (`YYYY-MM-DD[]`, live snapshot); pass to
+  the holiday-aware `it.dates.*` helpers (they throw if omitted). Not available in
+  the layout.
+- `it.currency`, `it.dateFns`, `it.tz`, `it.logo`, `it.dates.*` — always available.
+- `it.orders.*` / `it.invoices.*` — **collection-dependent**, NOT guaranteed. The
+  `@cfs/core/utils` namespaces a template gets are the union of its
+  `collection_source` + `collection_target` namespaces (`orders` → `it.orders`,
+  `invoices` → `it.invoices`; `quotes`/`packing_lists` contribute none), plus the
+  always-on set above. So the quote template (orders → quotes) has `it.orders` and
+  NOT `it.invoices`; an invoices-source template is the reverse. Resolved by
+  `availableUtilNamespaces` in `@cfs/core/schemas` — the editor's Template Helpers
+  panel lists exactly the namespaces your template actually gets, with each
+  helper's return type.
 
 **Preview** renders the *draft* against a real source document. Save first; the
 preview reflects your saved draft (not the published version).
@@ -86,7 +97,7 @@ in the editor. The field-map is a best-effort head-start — loop-aliased refs
 - **Permissions:** routes require `templates.{read,search,create,propose,release,merge,archive}`. After adding a permission to the catalog, **re-run `seed-rbac.ts --write` on each env** — the route/catalog can pass tests while the Firestore `roles/*` docs are stale (this caused a `templates.propose` 403 in QA).
 - **Golden gate:** `visual-diff` is a **required** status check on `main` (prod) and `sandbox` (dev). `enforce_admins=false` lets the App squash past a failing golden after a human approves the diff.
 - **Branches per env:** the API publishes from `main` (prod) and `sandbox` (dev) — the in-app base-ref gate decides which env a merge publishes to.
-- **Cross-repo bumps:** changing `@cfs/schemas`/`@cfs/utilities` → publish each package's `beta` (semantic-release), then bump the pins in `api-cloudrun` + `manager` in lockstep.
+- **Cross-repo bumps:** changing `@cfs/core` → publish its `beta` (semantic-release), then bump the pins in `api-cloudrun` + `manager` (+ this preview harness's caret range) in lockstep.
 
 See `api-cloudrun/.claude/skills/templates/SKILL.md` for the deep data-model /
 publish-invariant reference.

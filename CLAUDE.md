@@ -29,7 +29,9 @@ The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta
 
 ## Template context (summary)
 
-`it.doc`, `it.version`, `it.params`, `it.now` (frozen render timestamp — never `new Date()`), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.currency` (currency.js), `it.orders` (`@cfs/utilities/orders`), `it.dates` (`@cfs/utilities/dates`). Injected by `api-cloudrun/src/lib/templates/eta.ts`; `scripts/preview.ts` mirrors it. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
+**Always on:** `it.doc` (the **source** document — a template never reads its target, it produces it), `it.version`, `it.params`, `it.now` (frozen render timestamp — never `new Date()`), `it.holidays` (CFS holiday ISO dates `YYYY-MM-DD[]`, live snapshot — feeds the `it.dates.*` holiday helpers, which throw if omitted; absent in layouts), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.currency` (currency.js), `it.dates` (`@cfs/core/utils/dates`).
+
+**Collection-dependent — `it.orders` is NOT guaranteed:** the `@cfs/core/utils` namespaces a template gets are the union of its `collection_source` + `collection_target` namespaces (`orders` → `it.orders`, `invoices` → `it.invoices`; `quotes`/`packing_lists` contribute none). The quote template (orders → quotes) gets `it.orders` and NOT `it.invoices`; an invoices-source template gets the reverse. Resolved by `availableUtilNamespaces` (`@cfs/core/schemas`), which `api-cloudrun/src/lib/templates/eta.ts` (render), `goldenDiff.ts` (golden gate) and `scripts/preview.ts` (this harness) all funnel through, so preview, gate and prod cannot diverge. Calling a namespace your collections don't resolve to throws at render — and fails the golden gate. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
 
 ## Local preview
 
@@ -37,7 +39,7 @@ The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta
 
 ## Dependencies
 
-`@cfs/utilities` uses a **floating caret range** (`^7.0.0-beta.N`) so the preview harness tracks the latest published beta — the same package line `api-cloudrun` renders with. After a schemas/utilities publish, refresh the lock: `deno outdated --update` (or `rm deno.lock && deno install`). A new major (e.g. `8.0.0-beta.1`) requires editing the range. Never hard-pin to an old beta — preview output silently diverges from server renders.
+`@cfs/core` uses a **floating caret range** (`^10.0.0-beta.N`) so the preview harness tracks the latest published beta — the same package line `api-cloudrun` renders with. After a `@cfs/core` publish, refresh the lock: `deno outdated --update` (or `rm deno.lock && deno install`). A new major (e.g. `11.0.0-beta.1`) requires editing the range. Never hard-pin to an old beta — preview output silently diverges from server renders.
 
 ## LLM Reference Docs
 
