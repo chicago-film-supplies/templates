@@ -21,7 +21,20 @@ import * as dateFns from "date-fns";
 import { tz } from "@date-fns/tz";
 import currency from "currency.js";
 import * as orderUtils from "@cfs/core/utils/orders";
+import * as invoiceUtils from "@cfs/core/utils/invoices";
 import * as dateUtils from "@cfs/core/utils/dates";
+import { availableUtilNamespaces } from "@cfs/core/schemas";
+import type { TemplateCollectionType } from "@cfs/core/schemas";
+
+/**
+ * Every `@cfs/core/utils` module the server can inject, keyed by its `it.*`
+ * namespace. Mirrors `UTIL_MODULES` in `api-cloudrun/src/lib/templates/eta.ts`.
+ */
+const UTIL_MODULES: Record<string, unknown> = {
+  orders: orderUtils,
+  invoices: invoiceUtils,
+  dates: dateUtils,
+};
 
 const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="80" viewBox="0 44 160 80" fill="currentColor" role="img" aria-label="Chicago Film Supplies logo"><path d="m 46.8,104.95007 c -0.2,1.4 0.7,2.5 2.1,2.5 h 47.5 c 1.4,0 2.7,-1.1 3,-2.5 l 0.3,-1.6 H 47.2 l -0.3,1.6 z"/></svg>`;
 
@@ -73,6 +86,8 @@ interface RenderConfig {
 
 interface Sidecar {
   display_name: string;
+  collection_source?: TemplateCollectionType;
+  collection_target?: TemplateCollectionType;
   depends_on?: { components?: string[] };
   render?: RenderConfig;
 }
@@ -95,6 +110,27 @@ const layout = await Deno.readTextFile("layouts/base.eta");
 const templateBody = await Deno.readTextFile(`templates/${name}.eta`);
 const doc = JSON.parse(await Deno.readTextFile(fixtureFile));
 
+/**
+ * The `it.*` util namespaces this template gets — resolved from its sidecar's
+ * collections, exactly as the server does (`availableUtilNamespaces`).
+ *
+ * This harness builds its own context and never calls the API's
+ * `renderTemplate`, so it does NOT inherit that function's namespace resolution;
+ * hard-coding `orders` + `dates` here would silently diverge from the server the
+ * moment an invoice-source template exists — the preview would render green
+ * against helpers prod never injects.
+ */
+const utilNamespaces = availableUtilNamespaces(
+  sidecar.collection_source ? [sidecar.collection_source] : [],
+  sidecar.collection_target ? [sidecar.collection_target] : [],
+);
+
+const utils: Record<string, unknown> = {};
+for (const namespace of utilNamespaces) {
+  const mod = UTIL_MODULES[namespace];
+  if (mod) utils[namespace] = mod;
+}
+
 const ctx = {
   doc,
   version: 1,
@@ -102,9 +138,8 @@ const ctx = {
   dateFns,
   tz,
   currency,
-  orders: orderUtils,
-  dates: dateUtils,
   logo: LOGO_SVG,
+  ...utils,
 };
 
 const body = await eta.renderStringAsync(templateBody, ctx);
