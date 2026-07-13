@@ -78,11 +78,6 @@ const rTotal = rSubtotal + rTax;
   </table>
 </section>
 
-<!-- Destinations — one compact per-destination table modeled on the manager's
-     OrderDetail: a Delivery | Pickup header, the rental window (and a charge row
-     when it differs), then address | contact per side and an instructions row.
-     Dates are scoped per-destination (no order-level envelope). -->
-<% if (destinations && destinations.length > 0) { %>
 <section id="destinations">
   <% destinations.forEach(function(dest, destIndex) { %>
     <%
@@ -90,28 +85,12 @@ const rTotal = rSubtotal + rTax;
     const legend = it.orders.getDestinationsLegend([dest]);
     const startLabel = legend.start || "Delivery";
     const endLabel = legend.end || "Pickup";
-    // Single instant + start–end range, both in Chicago time. fmtRange drops the
-    // end when it equals the start (the manager keeps delivery/collection
-    // *_end == *_start); the charge window's endpoints render in separate cells.
-    const fmtOne = (iso) => iso
-      ? it.dateFns.format(it.dateFns.parseISO(iso), "EEE MM/dd/yy h:mm a", { in: CHICAGO })
-      : "";
-    const fmtRange = (start, end) => {
-      if (!start) return "";
-      let out = fmtOne(start);
-      if (end && end !== start) {
-        const sameDay = it.dateFns.isSameDay(it.dateFns.parseISO(start), it.dateFns.parseISO(end), { in: CHICAGO });
-        out += " – " + it.dateFns.format(it.dateFns.parseISO(end), sameDay ? "h:mm a" : "EEE MM/dd/yy h:mm a", { in: CHICAGO });
-      }
-      return out;
-    };
     // Address lines (no contact — contact rides its own column).
     const addrLines = (ep) => {
       if (!ep || !ep.address) return [];
       const a = ep.address;
       return [
-        a.street,
-        a.street2 || null,
+        [a.street, a.street2].filter(Boolean).join(', '),
         [a.city, a.region, a.postcode].filter(Boolean).join(', '),
         (a.country_name && a.country_name !== "United States") ? a.country_name : null,
       ].filter(Boolean);
@@ -121,61 +100,36 @@ const rTotal = rSubtotal + rTax;
       const phone = ep.contact.phones && ep.contact.phones.length > 0 ? ep.contact.phones[0] : null;
       return [ep.contact.name, phone].filter(Boolean).join(' · ');
     };
-    const hasCustomCharge = !it.orders.isSameAsDeliveryDates(d);
-    const showCollection = !it.orders.isSameAsDeliveryDestination(dest);
     %>
-    <div class="destination-block">
-      <% if (destinations.length > 1) { %>
-      <div class="dest-title">
-        <h2><%= it.orders.getDestinationPairItemName(dest, destIndex) %></h2>
-        <hr />
-      </div>
+      <div class="dates">
+      <h2>Dates</h2>
+      <p>
+        <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
+        <span class="bold">Checked Out: </span>
+        <% } %>
+        <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.delivery_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.collection_start), 'EEE M/d/yy') %> · <%= it.dates.formatChargeDays(dest.dates.days_active).periodLabel %></p>
+      <!-- Charge window — only when it differs from delivery/collection -->
+      <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
+      <p>
+        <span class="bold">Billed: </span>
+        <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_end), 'EEE MMMM d, yyyy') %> - <%= it.dates.formatChargeDays(dest.dates.days_charged).periodLabel %></p>
       <% } %>
-
-      <table class="dest-table">
-        <colgroup>
-          <col class="dg-col-addr" /><col class="dg-col-contact" />
-          <col class="dg-col-addr" /><col class="dg-col-contact" />
-        </colgroup>
-        <thead>
-          <tr>
-            <th colspan="2"><%= startLabel %></th>
-            <th colspan="2"><%= endLabel %></th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Rental window: delivery (start side) | collection (end side) -->
-          <tr class="dg-dates">
-            <td colspan="2"><%= fmtRange(d.delivery_start, d.delivery_end) %></td>
-            <td colspan="2"><%= fmtRange(d.collection_start, d.collection_end) %></td>
-          </tr>
-          <% if (hasCustomCharge) { %>
-          <!-- Charge window — only when it differs from delivery/collection -->
-          <tr class="dg-dates dg-charge">
-            <td colspan="2"><span class="dg-tag">Charge</span><%= fmtOne(d.charge_start) %></td>
-            <td colspan="2"><%= fmtOne(d.charge_end) %></td>
-          </tr>
-          <% } %>
-          <!-- Address | contact, per side -->
-          <tr class="dg-addr">
-            <td><% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></td>
-            <td><%= contactLine(dest.delivery) %></td>
-            <td><% if (showCollection) { addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) } %></td>
-            <td><% if (showCollection) { %><%= contactLine(dest.collection) %><% } %></td>
-          </tr>
-          <!-- Instructions — its own row -->
-          <% if ((dest.delivery && dest.delivery.instructions) || (showCollection && dest.collection && dest.collection.instructions)) { %>
-          <tr class="dg-instructions">
-            <td colspan="2"><% if (dest.delivery) { %><%= dest.delivery.instructions || "" %><% } %></td>
-            <td colspan="2"><% if (showCollection && dest.collection) { %><%= dest.collection.instructions || "" %><% } %></td>
-          </tr>
-          <% } %>
-        </tbody>
-      </table>
+      </div>
+      <!-- Rental window: delivery (start side) | collection (end side) -->
+      <div class="address">
+      <h2><%= startLabel %></h2>
+      <p><% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></p>
+      <p><%= contactLine(dest.delivery) %></p>
+      <p><% if (dest.delivery) { %><%= dest.delivery.instructions || "" %><% } %></p>
+      </div>
+      <div class="address">
+      <h2><%= endLabel %></h2>
+      <p><% addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></p>
+      <p><%= contactLine(dest.collection) %></p>
+      <p><%= dest.collection.instructions || "" %></p>
     </div>
   <% }) %>
 </section>
-<% } %>
 
 <!-- Items -->
 <% if (lineItems.length > 0) { %>
@@ -184,10 +138,10 @@ const rTotal = rSubtotal + rTax;
     <thead>
       <tr>
         <th scope="col">Item Description</th>
-        <th scope="col" class="center">Type</th>
-        <th scope="col" class="center">Qty</th>
+        <th scope="col">Type</th>
+        <th scope="col">Qty</th>
         <% if (hasRentals) { %>
-        <th scope="col" class="center">Duration</th>
+        <th scope="col">Duration</th>
         <% } %>
         <th scope="col">Unit Price</th>
         <% if (hasDiscount) { %>
@@ -225,10 +179,10 @@ const rTotal = rSubtotal + rTax;
             <br><%= item.description %>
             <% } %>
           </td>
-          <td class="center"><%= item.type %></td>
-          <td class="center"><%= item.quantity %></td>
+          <td class="capitalize"><%= item.type %></td>
+          <td><%= item.quantity %></td>
           <% if (hasRentals) { %>
-          <td class="center"><%= item.type === "rental" && item.price.chargeable_days ? item.price.chargeable_days + ' days' : '' %></td>
+          <td><%= item.type === "rental" && item.price.chargeable_days ? item.price.chargeable_days + ' days' : '' %></td>
           <% } %>
           <td><%= it.currency(item.price.base).format() %></td>
           <% if (hasDiscount) { %>
