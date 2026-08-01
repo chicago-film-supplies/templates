@@ -2,7 +2,7 @@
 body,
 table {
   font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: 10px;
+  font-size: 9px;
   color: #121212;
 }
 #grid-wrapper {
@@ -39,10 +39,20 @@ table {
   border-spacing: 0;
   border-collapse: collapse;
 }
+
+thead th {
+  margin-bottom: 2px;
+  border-bottom: 1px solid #121212;
+}
+tbody tr:first-child td {
+  padding-top: 4px;
+}
 th,
 td {
   font-size: 1em;
   text-align: left;
+  vertical-align: top;
+  padding: 2px 0;
 }
 th:first-child, td:first-child {
   padding-left: 0;
@@ -50,11 +60,12 @@ th:first-child, td:first-child {
 th.center, td.center {
   text-align: center;
 }
+
+.capitalize {
+  text-transform: capitalize;
+}
 #cfs {
   text-align: right;
-}
-.dates td {
-  font-family: ui-monospace, monospace;
 }
 #details th {
   width: 9em;
@@ -65,47 +76,19 @@ th.center, td.center {
   grid-column: 1 / -1;
 }
 #destinations {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
 }
+
 #destinations h2 {
-  font-size: 1em;
-}
-/* Compact per-destination table: a Delivery | Pickup header (2 columns each),
-   the rental window, an optional charge row, then address | contact per side
-   and an instructions row. */
-.dest-table {
-  width: 100%;
-  table-layout: fixed;
-}
-.dest-table .dg-col-addr { width: 30%; }
-.dest-table .dg-col-contact { width: 20%; }
-.dest-table th {
-  font-weight: normal;
-  color: #555;
   border-bottom: 1px solid #121212;
-  padding-bottom: 2px;
 }
-.dest-table td {
-  vertical-align: top;
-  padding: 3px 1em 0 0;
+
+#destinations p {
+  margin-bottom: .25rem;
 }
-.dest-table .dg-dates td {
-  font-family: ui-monospace, monospace;
-}
-.dest-table .dg-charge td,
-.dest-table .dg-instructions td {
-  color: #555;
-}
-.dest-table .dg-charge .dg-tag {
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  margin-right: .5em;
-}
-#items th {
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
-}
+
 #items tr:last-child td {
   border-bottom: 1px solid #121212;
 }
@@ -125,9 +108,6 @@ td.total,
   text-align: right;
   padding-left: 2em;
 }
-#totals th, #totals td {
-  padding-top: 0;
-}
 #replacement-costs {
   break-inside: avoid;
 }
@@ -135,4 +115,8 @@ td.total,
 #replacement-costs th, #replacement-costs td {
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
+}
+
+.bold {
+  font-weight: bold;
 }
