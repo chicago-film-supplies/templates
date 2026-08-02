@@ -70,15 +70,16 @@ th.center, td.center {
 #details th {
   width: 9em;
 }
+
+#destinations .address {
+  width: 33%;
+}
+
 #destinations,
 #items,
 #replacement-costs {
   grid-column: 1 / -1;
-}
-#destinations {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
+  width: 100%;
 }
 
 #destinations h2 {
