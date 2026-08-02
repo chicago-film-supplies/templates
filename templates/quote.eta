@@ -103,13 +103,7 @@ const rTotal = rSubtotal + rTax;
     %>
   <thead>
     <tr>
-    <th scope="col" colspan="2">
-      <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
-        Checked Out: 
-      <% } else { %>
-        Dates: 
-      <% } %>
-    </th>
+    <th scope="col" colspan="2">Dates: </th>
     <th scope="col"><%= startLabel %></th>
     <th scope="col"><%= endLabel %></th>
     </tr>
@@ -133,7 +127,7 @@ const rTotal = rSubtotal + rTax;
       <td colspan="2">
       <!-- Charge window — only when it differs from delivery/collection -->
       <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
-      <span class="bold">Charged: </span>
+      <span class="bold">Dates Charged: </span>
       <% } %>
       </td>
       <td class="address"><%= contactLine(dest.delivery) %></td>
