@@ -130,27 +130,29 @@ const rTotal = rSubtotal + rTax;
     </td>
     </tr>
     <tr>
-      <td>
+      <td colspan="2">
       <!-- Charge window — only when it differs from delivery/collection -->
       <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
-      <p><span class="bold">Charged: </span></p>
-      <p><%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_end), 'EEE M/d/yy') %></p>
-      <% } %> 
-    </td>
-    <td>
-      <!-- Charge window — only when it differs from delivery/collection -->
-      <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
-      <%= it.dates.formatChargeDays(dest.dates.days_charged).periodLabel %>
+      <span class="bold">Charged: </span>
       <% } %>
-    </td>
-    <td class="address">
-      <p><%= contactLine(dest.delivery) %></p>
-      <p><% if (dest.delivery) { %><%= dest.delivery.instructions || "" %><% } %></p>
-    </td>
-    <td class="address">
-      <p><%= contactLine(dest.collection) %></p>
-      <p><%= dest.collection.instructions || "" %></p>
-    </td>
+      </td>
+      <td class="address"><%= contactLine(dest.delivery) %></td>
+      <td class="address"><%= contactLine(dest.collection) %></td>
+    </tr>
+    <tr>
+      <td>
+      <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
+      <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_end), 'EEE M/d/yy') %>
+      <% } %>
+      </td>
+      <td>
+        <!-- Charge window — only when it differs from delivery/collection -->
+        <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
+        <%= it.dates.formatChargeDays(dest.dates.days_charged).periodLabel %>
+        <% } %>
+      </td>
+      <td class="address"><% if (dest.delivery) { %><%= dest.delivery.instructions || "" %><% } %></td>
+      <td class="address"><%= dest.collection.instructions || "" %></td>
     </tr>
   </tbody>
 <% }) %>
