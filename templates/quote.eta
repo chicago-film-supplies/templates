@@ -78,8 +78,8 @@ const rTotal = rSubtotal + rTax;
   </table>
 </section>
 
-<section id="destinations">
-  <% destinations.forEach(function(dest, destIndex) { %>
+<table id="destinations">
+<% destinations.forEach(function(dest, destIndex) { %>
     <%
     const d = dest.dates || {};
     const legend = it.orders.getDestinationsLegend([dest]);
@@ -101,35 +101,60 @@ const rTotal = rSubtotal + rTax;
       return [ep.contact.name, phone].filter(Boolean).join(' · ');
     };
     %>
-      <div class="dates">
-      <h2>Dates</h2>
-      <p>
-        <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
-        <span class="bold">Checked Out: </span>
-        <% } %>
-        <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.delivery_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.collection_start), 'EEE M/d/yy') %> · <%= it.dates.formatChargeDays(dest.dates.days_active).periodLabel %></p>
+  <thead>
+    <tr>
+    <th scope="col" colspan="2">
+      <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
+        Checked Out: 
+      <% } else { %>
+        Dates: 
+      <% } %>
+    </th>
+    <th scope="col"><%= startLabel %></th>
+    <th scope="col"><%= endLabel %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td class="dates">
+      <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.delivery_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.collection_start), 'EEE M/d/yy') %>
+    </td>
+    <td>
+      <%= it.dates.formatChargeDays(dest.dates.days_active).periodLabel %>
+    </td>
+    <td class="address">
+      <% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
+    </td>
+    <td class="address">
+      <% addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
+    </td>
+    </tr>
+    <tr>
+      <td>
       <!-- Charge window — only when it differs from delivery/collection -->
       <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
-      <p>
-        <span class="bold">Billed: </span>
-        <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_end), 'EEE MMMM d, yyyy') %> - <%= it.dates.formatChargeDays(dest.dates.days_charged).periodLabel %></p>
+      <p><span class="bold">Charged: </span></p>
+      <p><%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_end), 'EEE M/d/yy') %></p>
+      <% } %> 
+    </td>
+    <td>
+      <!-- Charge window — only when it differs from delivery/collection -->
+      <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
+      <%= it.dates.formatChargeDays(dest.dates.days_charged).periodLabel %>
       <% } %>
-      </div>
-      <!-- Rental window: delivery (start side) | collection (end side) -->
-      <div class="address">
-      <h2><%= startLabel %></h2>
-      <p><% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></p>
+    </td>
+    <td class="address">
       <p><%= contactLine(dest.delivery) %></p>
       <p><% if (dest.delivery) { %><%= dest.delivery.instructions || "" %><% } %></p>
-      </div>
-      <div class="address">
-      <h2><%= endLabel %></h2>
-      <p><% addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></p>
+    </td>
+    <td class="address">
       <p><%= contactLine(dest.collection) %></p>
       <p><%= dest.collection.instructions || "" %></p>
-    </div>
-  <% }) %>
-</section>
+    </td>
+    </tr>
+  </tbody>
+<% }) %>
+</table>
 
 <!-- Items -->
 <% if (lineItems.length > 0) { %>
