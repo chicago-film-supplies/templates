@@ -1,10 +1,26 @@
 {
+  "//minimumDependencyAge": [
+    "Deno 2.9 refuses any JSR/npm version younger than 24h. That default is",
+    "right for third-party code and stays in force — the exclude list names ONE",
+    "package rather than disabling the setting.",
+    "@cfs/core is first-party: we publish it from chicago-film-supplies/core and",
+    "the workspace publish order (edit core/beta -> publish -> bump these pins)",
+    "means every core change reaches this repo minutes old by construction.",
+    "Without the exclusion a `deno install` here fails outright for a full day",
+    "after each publish, which is what it did on the beta.117 bump.",
+    "Same setting, same reasoning, as api-cloudrun/deno.json — do NOT widen it",
+    "to a bare age override: the 24h window is the only supply-chain delay we",
+    "get on a compromised third-party publish."
+  ],
+  "minimumDependencyAge": {
+    "exclude": ["jsr:@cfs/core"]
+  },
   "imports": {
     "@bgub/eta": "jsr:@bgub/eta@^4.6.0",
-    "@cfs/core/schemas": "jsr:@cfs/core@^10.0.0-beta.62/schemas",
-    "@cfs/core/utils/orders": "jsr:@cfs/core@^10.0.0-beta.62/utils/orders",
-    "@cfs/core/utils/invoices": "jsr:@cfs/core@^10.0.0-beta.62/utils/invoices",
-    "@cfs/core/utils/dates": "jsr:@cfs/core@^10.0.0-beta.62/utils/dates",
+    "@cfs/core/schemas": "jsr:@cfs/core@10.0.0-beta.117/schemas",
+    "@cfs/core/utils/orders": "jsr:@cfs/core@10.0.0-beta.117/utils/orders",
+    "@cfs/core/utils/invoices": "jsr:@cfs/core@10.0.0-beta.117/utils/invoices",
+    "@cfs/core/utils/dates": "jsr:@cfs/core@10.0.0-beta.117/utils/dates",
     "date-fns": "npm:date-fns@^4.4.0",
     "@date-fns/tz": "npm:@date-fns/tz@^1.5.0",
     "currency.js": "npm:currency.js@^2.0.4"
