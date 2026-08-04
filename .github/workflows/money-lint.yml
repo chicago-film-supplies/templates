@@ -1,0 +1,147 @@
+name: money-lint
+
+# The templates arm of the cross-repo money ratchet.
+#
+# `it.currency` is the raw currency.js library, injected into EVERY render
+# context by `api-cloudrun/src/lib/templates/eta.ts`. That makes a template an
+# **unguarded money surface**: `it.currency(x).divide(y)` is a real, working
+# call, it makes a silent rounding decision, and no ratchet in api-cloudrun or
+# core can see it — template content is canonical here, in git, not there.
+#
+# So this guard has two rules, and the second is the one that matters.
+#
+# ## Rule 1 — the `it.currency` budget may not grow
+#
+# It is a budget rather than a ban because `it.currency` CANNOT be withdrawn
+# yet. The replacement is `it.money.formatCents`, which takes **cents**, while
+# template documents still hold **dollars** — so every call site would become
+# `it.money.formatCents(it.money.toCents(x))`, which is worse than what it
+# replaces. It retires when documents are cents-denominated (the money
+# campaign's Phase 11), at which point `it.money.formatCents(doc.total_cents)`
+# is the natural form and the problem dissolves on its own.
+#
+# Until then: the existing 19 call sites in `quote.eta` are grandfathered, and a
+# twentieth is a deliberate act. New money display goes through `it.money`.
+#
+# ## Rule 2 — no non-closed operation, anywhere, ever
+#
+# Money arithmetic is closed or it is not. `.add`/`.subtract` are closed — the
+# result is representable at the quantum, so no rounding decision exists.
+# `.divide` and a fractional `.multiply` are not: currency.js quantizes every
+# intermediate at its `precision` and supplies a rounding policy nothing states.
+# Measured against an exact BigInt reference over 200,000 lines, the
+# precomputed-factor form was wrong 199,998 times, worst error $32,031.20.
+#
+# A template must never do that arithmetic at all. Money reaches a template
+# already computed, by `@cfs/core/utils/{orders,invoices}`, which are swept
+# against exact rational references. There are ZERO such calls today and there
+# is no legitimate reason for one.
+on:
+  pull_request:
+    branches:
+      - main
+      - sandbox
+      - "sandbox/e2e-*"
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  money-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Scan templates for unguarded money arithmetic
+        run: |
+          deno run --allow-read - <<'TS'
+          // Per-file budget of `it.currency` references. A file absent from this
+          // map may hold ZERO. Lower a number when call sites go away; raising
+          // one is the deliberate act this guard exists to make visible.
+          const BUDGET: Record<string, number> = {
+            // Every money cell on the quote: `it.currency(x).format()`.
+            // Grandfathered — see Rule 1 in this workflow's header.
+            "templates/quote.eta": 19,
+          };
+
+          // Non-closed currency.js operations. Not a budget: zero, permanently.
+          const OPEN_OP = /\.(?:divide|multiply|distribute)\(/g;
+          const CURRENCY = /it\.currency\b/g;
+
+          async function* walk(dir: string): AsyncGenerator<string> {
+            for await (const e of Deno.readDir(dir)) {
+              const p = `${dir}/${e.name}`;
+              if (e.isDirectory) yield* walk(p);
+              else if (e.isFile && p.endsWith(".eta")) yield p;
+            }
+          }
+
+          const roots: string[] = [];
+          for (const d of ["templates", "layouts", "partials", "template-components"]) {
+            try { await Deno.stat(d); roots.push(d); } catch { /* absent */ }
+          }
+
+          const findings: string[] = [];
+          const counts = new Map<string, number>();
+          let files = 0;
+
+          for (const root of roots) {
+            for await (const file of walk(root)) {
+              files++;
+              const src = await Deno.readTextFile(file);
+              counts.set(file, [...src.matchAll(CURRENCY)].length);
+              src.split("\n").forEach((line, i) => {
+                for (const m of line.matchAll(OPEN_OP)) {
+                  findings.push(
+                    `${file}:${i + 1}  non-closed money operation: ${m[0]}\n` +
+                    `      currency.js quantizes at its precision, so this makes a rounding\n` +
+                    `      decision nothing states. A template must not compute money at all —\n` +
+                    `      the value arrives already computed by @cfs/core/utils/*.`,
+                  );
+                }
+              });
+            }
+          }
+
+          for (const [file, n] of [...counts].sort()) {
+            const allowed = BUDGET[file] ?? 0;
+            if (n > allowed) {
+              findings.push(
+                `${file}  ${n} it.currency references, budget ${allowed}\n` +
+                `      it.currency is the RAW library — unguarded, and retiring with the cents\n` +
+                `      migration. Use it.money.* for new money display.`,
+              );
+            }
+          }
+
+          // Non-vacuity, in both directions. Without the first check a renamed
+          // directory or a changed extension would leave this guard green over
+          // an EMPTY scan; without the second, a budget could outlive its
+          // subject and sit here as a standing exemption nobody is watching.
+          if (files === 0) {
+            console.error("money-lint: found no .eta files at all — the scan is broken, not clean.");
+            Deno.exit(1);
+          }
+          for (const [file, allowed] of Object.entries(BUDGET)) {
+            const n = counts.get(file);
+            if (n === undefined) {
+              findings.push(`${file}  budgeted at ${allowed} but the file does not exist — remove the entry.`);
+            } else if (n < allowed) {
+              findings.push(
+                `${file}  budget ${allowed} but only ${n} references remain — lower it to ${n},\n` +
+                `      so the ratchet keeps what the cleanup won.`,
+              );
+            }
+          }
+
+          if (findings.length) {
+            console.error("money-lint failed:\n");
+            for (const f of findings) console.error("  " + f + "\n");
+            Deno.exit(1);
+          }
+          console.log(`money-lint: ${files} .eta files, no unguarded money arithmetic.`);
+          TS
