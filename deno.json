@@ -21,6 +21,7 @@
     "@cfs/core/utils/orders": "jsr:@cfs/core@10.0.0-beta.134/utils/orders",
     "@cfs/core/utils/invoices": "jsr:@cfs/core@10.0.0-beta.134/utils/invoices",
     "@cfs/core/utils/dates": "jsr:@cfs/core@10.0.0-beta.134/utils/dates",
+    "@cfs/core/utils/money": "jsr:@cfs/core@10.0.0-beta.134/utils/money",
     "date-fns": "npm:date-fns@^4.4.0",
     "@date-fns/tz": "npm:@date-fns/tz@^1.5.0",
     "currency.js": "npm:currency.js@^2.0.4"
