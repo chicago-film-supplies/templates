@@ -23,17 +23,37 @@ import currency from "currency.js";
 import * as orderUtils from "@cfs/core/utils/orders";
 import * as invoiceUtils from "@cfs/core/utils/invoices";
 import * as dateUtils from "@cfs/core/utils/dates";
+import * as moneyUtils from "@cfs/core/utils/money";
 import { availableUtilNamespaces } from "@cfs/core/schemas";
 import type { TemplateCollectionType } from "@cfs/core/schemas";
 
 /**
  * Every `@cfs/core/utils` module the server can inject, keyed by its `it.*`
  * namespace. Mirrors `UTIL_MODULES` in `api-cloudrun/src/lib/templates/eta.ts`.
+ *
+ * ⚠️ **`money` was missing here from the day `it.money` was introduced**, while
+ * the server has always injected it — and `money` is in core's
+ * `ALWAYS_ON_UTIL_NAMESPACES`, so `availableUtilNamespaces` requests it for
+ * *every* template. The resolver below swallowed the miss, so the first
+ * `it.money.formatCents(...)` written into a template rendered correctly in
+ * production and threw under `deno task preview`: the harness failing on
+ * content that is actually fine.
+ *
+ * That matters more than a broken preview. Phase 11 makes `it.money` the
+ * ONLY way to render a document total — `it.currency` is on a ratcheting budget
+ * and retires when documents become cents-denominated — so the harness would
+ * have broken progressively as templates were converted, on exactly the change
+ * it exists to let an author see.
+ *
+ * The server side is guarded (`renderUtilNamespaces.test.ts` asserts every
+ * namespace core declares injectable has a module to inject). This repo has no
+ * test suite, so the guarantee here is the **throw** below rather than a test.
  */
 const UTIL_MODULES: Record<string, unknown> = {
   orders: orderUtils,
   invoices: invoiceUtils,
   dates: dateUtils,
+  money: moneyUtils,
 };
 
 const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="80" viewBox="0 44 160 80" fill="currentColor" role="img" aria-label="Chicago Film Supplies logo"><path d="m 46.8,104.95007 c -0.2,1.4 0.7,2.5 2.1,2.5 h 47.5 c 1.4,0 2.7,-1.1 3,-2.5 l 0.3,-1.6 H 47.2 l -0.3,1.6 z"/></svg>`;
@@ -125,10 +145,27 @@ const utilNamespaces = availableUtilNamespaces(
   sidecar.collection_target ? [sidecar.collection_target] : [],
 );
 
+// Fail loudly on a namespace this harness cannot provide.
+//
+// This used to be `if (mod) utils[namespace] = mod;` — a silent skip, which is
+// how the missing `money` module survived unnoticed. A swallowed miss does not
+// make the preview work; it defers the failure to an `undefined is not an
+// object` inside the template, where it reads as a template bug rather than a
+// harness one. The whole value of this script is telling an author whether
+// their content is correct, so it must not report a harness gap as their fault.
 const utils: Record<string, unknown> = {};
 for (const namespace of utilNamespaces) {
   const mod = UTIL_MODULES[namespace];
-  if (mod) utils[namespace] = mod;
+  if (!mod) {
+    throw new Error(
+      `preview: no module for util namespace "${namespace}". The server injects it ` +
+        `(see UTIL_MODULES in api-cloudrun/src/lib/templates/eta.ts) but this harness ` +
+        `does not, so a template using it.${namespace}.* would render in prod and fail ` +
+        `here. Add it to UTIL_MODULES above and map @cfs/core/utils/${namespace} in ` +
+        `deno.json — do not re-add a silent skip.`,
+    );
+  }
+  utils[namespace] = mod;
 }
 
 const ctx = {
