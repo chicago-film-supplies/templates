@@ -36,6 +36,36 @@ name: money-lint
 # already computed, by `@cfs/core/utils/{orders,invoices}`, which are swept
 # against exact rational references. There are ZERO such calls today and there
 # is no legitimate reason for one.
+#
+# ## Rule 3 — no RAW arithmetic on a money value either
+#
+# Rules 1 and 2 both key on currency.js: an `it.currency` reference, or a
+# `.divide(`/`.multiply(` method on one. **Neither can see a bare `*` or `/`,**
+# and `quote.eta` has been computing its entire replacement-cost table that way
+# since before this workflow existed — six sites, green the whole time:
+#
+#     if (t.type === "percent") return sum + (unitCost * t.rate / 100);
+#     rSubtotal += unitCost * qty;
+#     const lineTotal = unitCost * qty + lineTax;
+#
+# That is a percentage applied to money in float and accumulated with `+=`, in
+# the one place the workflow header already says must never happen. The guard
+# was not wrong about the rule; it was matching a *library* when the rule is
+# about an *operation*, so the plainest possible spelling walked straight past
+# it. Same shape as api-cloudrun's Ratchet C-vs-F: a guard that matches names
+# cannot see an anonymous expression.
+#
+# It is a **budget, like Rule 1, not a ban** — and deliberately so. The fix is
+# not local: `calculateReplacementTotals` in `@cfs/core` does multiply-then-round
+# while these six sites do round-then-multiply, so under integer cents they
+# systematically diverge and the PDF footer can disagree with the order it
+# renders. Closing it needs either stored per-line replacement fields or a new
+# core helper — the money campaign's Phase C3 (api-cloudrun#450). Landing this
+# as a hard zero today would red every unrelated PR in the repo while waiting on
+# a core change.
+#
+# The budget ratchets DOWN and cannot grow: a seventh site fails, and so does
+# leaving the budget at 6 once a site is removed.
 on:
   pull_request:
     branches:
@@ -72,6 +102,20 @@ jobs:
           const OPEN_OP = /\.(?:divide|multiply|distribute)\(/g;
           const CURRENCY = /it\.currency\b/g;
 
+          // Rule 3: raw `*` or `/` with a money-named operand on either side.
+          // Keys on the IDENTIFIER carrying the unit, the same way api-cloudrun's
+          // Ratchet F does — so it fires where the units are declared in the name
+          // and stays silent on `i / 2` or a loop index. `rate` is deliberately
+          // NOT a money word: a rate is not an amount.
+          const RAW_MONEY_ARITH =
+            /\b\w*(?:cost|price|total|subtotal|amount|tax)\w*\b\s*[*\/]|[*\/]\s*\b\w*(?:cost|price|total|subtotal|amount|tax)\w*\b/i;
+
+          // Per-file budget of raw money arithmetic. Ratchets down, never up.
+          // quote.eta's six sites are the replacement-cost table — see Rule 3.
+          const RAW_BUDGET: Record<string, number> = {
+            "templates/quote.eta": 6,
+          };
+
           async function* walk(dir: string): AsyncGenerator<string> {
             for await (const e of Deno.readDir(dir)) {
               const p = `${dir}/${e.name}`;
@@ -87,6 +131,8 @@ jobs:
 
           const findings: string[] = [];
           const counts = new Map<string, number>();
+          const rawCounts = new Map<string, number>();
+          const rawSites: string[] = [];
           let files = 0;
 
           for (const root of roots) {
@@ -94,7 +140,13 @@ jobs:
               files++;
               const src = await Deno.readTextFile(file);
               counts.set(file, [...src.matchAll(CURRENCY)].length);
+              let raw = 0;
               src.split("\n").forEach((line, i) => {
+                // A comment line is prose about money, not arithmetic on it.
+                if (!/^\s*(?:\/\/|\*|<%\/\*)/.test(line) && RAW_MONEY_ARITH.test(line)) {
+                  raw++;
+                  rawSites.push(`${file}:${i + 1}  ${line.trim().slice(0, 100)}`);
+                }
                 for (const m of line.matchAll(OPEN_OP)) {
                   findings.push(
                     `${file}:${i + 1}  non-closed money operation: ${m[0]}\n` +
@@ -104,6 +156,7 @@ jobs:
                   );
                 }
               });
+              rawCounts.set(file, raw);
             }
           }
 
@@ -114,6 +167,33 @@ jobs:
                 `${file}  ${n} it.currency references, budget ${allowed}\n` +
                 `      it.currency is the RAW library — unguarded, and retiring with the cents\n` +
                 `      migration. Use it.money.* for new money display.`,
+              );
+            }
+          }
+
+          // Rule 3's budget, both directions — same ratchet shape as Rule 1.
+          for (const [file, n] of [...rawCounts].sort()) {
+            const allowed = RAW_BUDGET[file] ?? 0;
+            if (n > allowed) {
+              findings.push(
+                `${file}  ${n} raw money arithmetic site(s), budget ${allowed}\n` +
+                `      A bare \`*\` or \`/\` on a money value. Neither Rule 1 nor Rule 2 can see\n` +
+                `      this — they key on currency.js — which is how quote.eta's replacement\n` +
+                `      table computed money in float, green, for this workflow's whole life.\n` +
+                `      A template must not compute money: the value arrives already computed\n` +
+                `      by @cfs/core/utils/*, swept against exact rational references.\n` +
+                rawSites.filter((x) => x.startsWith(file + ":")).map((x) => `        ${x}`).join("\n"),
+              );
+            }
+          }
+          for (const [file, allowed] of Object.entries(RAW_BUDGET)) {
+            const n = rawCounts.get(file);
+            if (n === undefined) {
+              findings.push(`${file}  raw-arithmetic budget ${allowed} but the file does not exist — remove the entry.`);
+            } else if (n < allowed) {
+              findings.push(
+                `${file}  raw-arithmetic budget ${allowed} but only ${n} site(s) remain — lower it\n` +
+                `      to ${n}, so the ratchet keeps what the cleanup won.`,
               );
             }
           }
