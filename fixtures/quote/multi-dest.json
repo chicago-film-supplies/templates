@@ -162,7 +162,7 @@
       "delivery": {
         "uid": "Dst2StageDelivery001",
         "address": {
-          "name": "Cinespace Chicago — Stage 14",
+          "name": "Cinespace Chicago \u2014 Stage 14",
           "street": "2621 W 15th Pl",
           "street2": "",
           "postcode": "60608",
@@ -194,7 +194,7 @@
       "collection": {
         "uid": "Dst2StageDelivery001",
         "address": {
-          "name": "Cinespace Chicago — Stage 14",
+          "name": "Cinespace Chicago \u2014 Stage 14",
           "street": "2621 W 15th Pl",
           "street2": "",
           "postcode": "60608",
@@ -265,8 +265,8 @@
         "U8WC4Js2oPaTdYpkvbcx"
       ],
       "price": {
-        "base": 2,
-        "replacement": 16,
+        "base_cents": 200,
+        "replacement_cents": 1600,
         "chargeable_days": 5,
         "formula": "five_day_week",
         "discount": null,
@@ -276,7 +276,7 @@
             "name": "Chicago Rental Tax",
             "rate": 15,
             "type": "percent",
-            "amount": 0.3
+            "amount_cents": 30
           }
         ],
         "taxes_base": [
@@ -287,9 +287,9 @@
             "type": "percent"
           }
         ],
-        "subtotal": 2,
-        "subtotal_discounted": 2,
-        "total": 2.3
+        "subtotal_cents": 200,
+        "subtotal_discounted_cents": 200,
+        "total_cents": 230
       }
     },
     {
@@ -308,8 +308,8 @@
         "0BIQ73UMiHTtd8mo0yNk"
       ],
       "price": {
-        "base": 25,
-        "replacement": 465,
+        "base_cents": 2500,
+        "replacement_cents": 46500,
         "chargeable_days": 5,
         "formula": "five_day_week",
         "discount": null,
@@ -319,7 +319,7 @@
             "name": "Chicago Rental Tax",
             "rate": 15,
             "type": "percent",
-            "amount": 7.5
+            "amount_cents": 750
           }
         ],
         "taxes_base": [
@@ -330,9 +330,9 @@
             "type": "percent"
           }
         ],
-        "subtotal": 50,
-        "subtotal_discounted": 50,
-        "total": 57.5
+        "subtotal_cents": 5000,
+        "subtotal_discounted_cents": 5000,
+        "total_cents": 5750
       }
     },
     {
@@ -351,8 +351,8 @@
         "jN6MZEMqwr9VWsNix8p4"
       ],
       "price": {
-        "base": 200,
-        "replacement": 0,
+        "base_cents": 20000,
+        "replacement_cents": 0,
         "chargeable_days": 5,
         "formula": "five_day_week",
         "discount": null,
@@ -362,7 +362,7 @@
             "name": "Chicago Rental Tax",
             "rate": 15,
             "type": "percent",
-            "amount": 90
+            "amount_cents": 9000
           }
         ],
         "taxes_base": [
@@ -373,9 +373,9 @@
             "type": "percent"
           }
         ],
-        "subtotal": 600,
-        "subtotal_discounted": 600,
-        "total": 690
+        "subtotal_cents": 60000,
+        "subtotal_discounted_cents": 60000,
+        "total_cents": 69000
       }
     },
     {
@@ -404,8 +404,8 @@
         "F4ZiJl7ZzMChlRufw8RL"
       ],
       "price": {
-        "base": 250,
-        "replacement": 0,
+        "base_cents": 25000,
+        "replacement_cents": 0,
         "chargeable_days": null,
         "formula": "fixed",
         "discount": null,
@@ -415,7 +415,7 @@
             "name": "Chicago Sales Tax",
             "rate": 10.25,
             "type": "percent",
-            "amount": 25.63
+            "amount_cents": 2563
           }
         ],
         "taxes_base": [
@@ -426,9 +426,9 @@
             "type": "percent"
           }
         ],
-        "subtotal": 250,
-        "subtotal_discounted": 250,
-        "total": 275.63
+        "subtotal_cents": 25000,
+        "subtotal_discounted_cents": 25000,
+        "total_cents": 27563
       }
     },
     {
@@ -457,8 +457,8 @@
         "CaWTUrRVadAs6IJUjqzF"
       ],
       "price": {
-        "base": 5,
-        "replacement": 60,
+        "base_cents": 500,
+        "replacement_cents": 6000,
         "chargeable_days": 5,
         "formula": "five_day_week",
         "discount": null,
@@ -468,7 +468,7 @@
             "name": "Chicago Rental Tax",
             "rate": 15,
             "type": "percent",
-            "amount": 1.5
+            "amount_cents": 150
           }
         ],
         "taxes_base": [
@@ -479,9 +479,9 @@
             "type": "percent"
           }
         ],
-        "subtotal": 10,
-        "subtotal_discounted": 10,
-        "total": 11.5
+        "subtotal_cents": 1000,
+        "subtotal_discounted_cents": 1000,
+        "total_cents": 1150
       }
     },
     {
@@ -500,8 +500,8 @@
         "YyBaHYXVZofngOqtw2Lk"
       ],
       "price": {
-        "base": 15,
-        "replacement": 150,
+        "base_cents": 1500,
+        "replacement_cents": 15000,
         "chargeable_days": 5,
         "formula": "five_day_week",
         "discount": null,
@@ -511,7 +511,7 @@
             "name": "Chicago Rental Tax",
             "rate": 15,
             "type": "percent",
-            "amount": 6.75
+            "amount_cents": 675
           }
         ],
         "taxes_base": [
@@ -522,9 +522,9 @@
             "type": "percent"
           }
         ],
-        "subtotal": 45,
-        "subtotal_discounted": 45,
-        "total": 51.75
+        "subtotal_cents": 4500,
+        "subtotal_discounted_cents": 4500,
+        "total_cents": 5175
       }
     },
     {
@@ -543,8 +543,8 @@
         "aosey66Ih8tTaoWKQXmO"
       ],
       "price": {
-        "base": 6,
-        "replacement": 80,
+        "base_cents": 600,
+        "replacement_cents": 8000,
         "chargeable_days": 5,
         "formula": "five_day_week",
         "discount": null,
@@ -554,7 +554,7 @@
             "name": "Chicago Rental Tax",
             "rate": 15,
             "type": "percent",
-            "amount": 3.6
+            "amount_cents": 360
           }
         ],
         "taxes_base": [
@@ -565,9 +565,9 @@
             "type": "percent"
           }
         ],
-        "subtotal": 24,
-        "subtotal_discounted": 24,
-        "total": 27.6
+        "subtotal_cents": 2400,
+        "subtotal_discounted_cents": 2400,
+        "total_cents": 2760
       }
     },
     {
@@ -586,8 +586,8 @@
         "OYvggZa70ccCCbcQ8o1H"
       ],
       "price": {
-        "base": 20,
-        "replacement": 0,
+        "base_cents": 2000,
+        "replacement_cents": 0,
         "chargeable_days": null,
         "formula": "fixed",
         "discount": null,
@@ -597,7 +597,7 @@
             "name": "Chicago Sales Tax",
             "rate": 10.25,
             "type": "percent",
-            "amount": 8.2
+            "amount_cents": 820
           }
         ],
         "taxes_base": [
@@ -608,36 +608,36 @@
             "type": "percent"
           }
         ],
-        "subtotal": 80,
-        "subtotal_discounted": 80,
-        "total": 88.2
+        "subtotal_cents": 8000,
+        "subtotal_discounted_cents": 8000,
+        "total_cents": 8820
       }
     }
   ],
   "tax_profile": "tax_applied",
   "totals": {
-    "discount_amount": 0,
-    "subtotal": 1061,
-    "subtotal_discounted": 1061,
+    "discount_amount_cents": 0,
+    "subtotal_cents": 106100,
+    "subtotal_discounted_cents": 106100,
     "taxes": [
       {
         "uid": "VEW4Ivy7VNqgxFA5eJw6",
         "name": "Chicago Rental Tax",
         "rate": 15,
         "type": "percent",
-        "amount": 109.65
+        "amount_cents": 10965
       },
       {
         "uid": "NJc430kShJ0GRj7uvaQZ",
         "name": "Chicago Sales Tax",
         "rate": 10.25,
         "type": "percent",
-        "amount": 33.83
+        "amount_cents": 3383
       }
     ],
     "transaction_fees": [],
-    "total": 1204.48,
-    "replacement_total": 2111.4
+    "total_cents": 120448,
+    "replacement_total_cents": 211140
   },
   "invoices": [],
   "query_by_invoices": [],
@@ -653,7 +653,7 @@
     "lost": 0,
     "damaged": 0
   },
-  "subject": "Untitled Series — Ep 3 Reshoots",
+  "subject": "Untitled Series \u2014 Ep 3 Reshoots",
   "reference": "PO-4471",
   "xero_id": null,
   "version": 0,
