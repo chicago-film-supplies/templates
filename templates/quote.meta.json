@@ -21,6 +21,11 @@
       "slug": "multi-dest",
       "label": "Multi-destination",
       "description": "Two destinations \u2014 customer-collecting from our counter (charge window == delivery window) plus a we-deliver stage with a divergent charge window \u2014 exercises per-destination titles, legend variants, the conditional charge row, and both nesting levels (a line item directly under a destination, and a group). Items, prices and taxes are drawn from real orders; the organization, contacts and instructions are invented and both addresses are public corporate venues, so the fixture is PII-free by construction and is NOT run through applyPii."
+    },
+    {
+      "slug": "discounts-and-fee",
+      "label": "Discounts + transaction fee",
+      "description": "The money-coverage fixture: a percent discount, a flat (dollars-per-unit) discount, and a percent_of_total transaction fee \u2014 the three shapes no other fixture exercises, which left 5 of quote.eta's 19 it.currency sites in branches nothing renders. Every money value is computed by @cfs/core/utils/orders rather than typed by hand. Organization, contacts and instructions are invented and the address is a public venue, so it is PII-free by construction."
     }
   ],
   "render": {
