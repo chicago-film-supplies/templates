@@ -47,6 +47,33 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
 **A util namespace this harness cannot provide is a hard error, deliberately.** `UTIL_MODULES` in `scripts/preview.ts` must mirror the server's (`api-cloudrun/src/lib/templates/eta.ts`); if it doesn't, the resolver throws and names the fix. It used to skip silently, and that is how `money` came to be missing here while the server injected it — and `money` is in core's `ALWAYS_ON_UTIL_NAMESPACES`, so *every* template requests it. The result was that the first `it.money.*` call rendered correctly in production and died here with `Cannot read properties of undefined`, which reads as a template bug rather than a harness one. This repo has no test suite, so the throw is the guarantee (the server side is covered by `renderUtilNamespaces.test.ts`). **Do not re-add a silent skip.**
 
+## Goldens are DEFERRED, not missing
+
+`goldens/` holds a README and two `.gitkeep` and **zero PNGs**, so every fixture
+yields verdict `no-golden` → **PASS** and `visual-diff` cannot fail. That is the
+intended state, not a gap to close.
+
+**There is no live template yet.** `quote` is the only one and it is still WIP,
+so a golden would lock a design that is still moving — every iteration would
+need re-blessing, which is churn, not signal. A golden is a *freeze*, and you
+freeze a thing once it has stopped moving.
+
+This is the same convention `manager` already documents for its Playwright
+screenshots (*"convergence, not freeze… a surface gets a `toHaveScreenshot`
+pixel lock only once it reaches the design-system standard"*, via its
+`GRADUATED` list). Bless `goldens/main/<template>/*` and
+`goldens/sandbox/<template>/*` from `api-cloudrun/scripts/rebless-goldens.ts`
+when a template **graduates** — not before.
+
+⚠️ **What a golden would NOT have caught, so do not reach for one as the
+answer.** Neither fixture exercises a discount or a transaction fee — measured
+2026-08-07: 0 discounts and 0 `transaction_fees` across 18 line items in the two
+fixtures — so **5 of `quote.eta`'s 19 `it.currency` sites sit in branches
+nothing renders** (`:215`, `:220`, `:254`, `:258`, `:273`). A golden compares
+what was rendered; it is silent about a branch that never ran. Fixture
+*coverage* and golden *stability* are different problems, and only the first one
+is live today.
+
 ## Dependencies
 
 `@cfs/core` is **exact-pinned** (`jsr:@cfs/core@10.0.0-beta.N/...`, one entry per subpath), and moves in lockstep with `api-cloudrun/deno.json` + `manager/package.json` on every publish — same day, same version, per `feedback_bump_all_core_consumers_lockstep`.
