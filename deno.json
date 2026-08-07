@@ -28,6 +28,7 @@
   "tasks": {
     "preview": "deno run --allow-read --allow-write --allow-run scripts/preview.ts",
     "preview:watch": "deno run --watch=templates/,layouts/,styles/ --allow-read --allow-write --allow-run scripts/preview.ts",
-    "fetch-llms-docs": "deno run --allow-net --allow-read --allow-write scripts/fetch-llms-docs.ts"
+    "fetch-llms-docs": "deno run --allow-net --allow-read --allow-write scripts/fetch-llms-docs.ts",
+    "lint:fixtures": "deno run --allow-read scripts/lint-fixtures.ts"
   }
 }

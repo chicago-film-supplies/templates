@@ -2,21 +2,25 @@
   "display_name": "Quote",
   "collection_source": "orders",
   "collection_target": "quotes",
-  "surfaces": ["order"],
+  "surfaces": [
+    "order"
+  ],
   "depends_on": {
-    "components": ["base"]
+    "components": [
+      "base"
+    ]
   },
   "params": [],
   "fixtures": [
     {
       "slug": "order-841",
       "label": "Order 841",
-      "description": "Single-destination order with rentals, tax, and replacement costs (destination-scoped dates)."
+      "description": "Single-destination order with rentals, tax, and replacement costs (destination-scoped dates). Real catalog items and prices; the organization and billing address are synthetic \u2014 the delivery address is a public shopping centre."
     },
     {
       "slug": "multi-dest",
       "label": "Multi-destination",
-      "description": "Two destinations — we-deliver (charge == delivery) plus customer-collecting with a divergent charge window — exercises per-destination titles, legend variants, and the conditional charge row."
+      "description": "Two destinations \u2014 customer-collecting from our counter (charge window == delivery window) plus a we-deliver stage with a divergent charge window \u2014 exercises per-destination titles, legend variants, the conditional charge row, and both nesting levels (a line item directly under a destination, and a group). Items, prices and taxes are drawn from real orders; the organization, contacts and instructions are invented and both addresses are public corporate venues, so the fixture is PII-free by construction and is NOT run through applyPii."
     }
   ],
   "render": {
