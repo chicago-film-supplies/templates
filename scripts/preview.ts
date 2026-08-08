@@ -19,7 +19,6 @@
 import { Eta } from "@bgub/eta";
 import * as dateFns from "date-fns";
 import { tz } from "@date-fns/tz";
-import currency from "currency.js";
 import * as orderUtils from "@cfs/core/utils/orders";
 import * as invoiceUtils from "@cfs/core/utils/invoices";
 import * as dateUtils from "@cfs/core/utils/dates";
@@ -39,11 +38,16 @@ import type { TemplateCollectionType } from "@cfs/core/schemas";
  * production and threw under `deno task preview`: the harness failing on
  * content that is actually fine.
  *
- * That matters more than a broken preview. Phase 11 makes `it.money` the
- * ONLY way to render a document total — `it.currency` is on a ratcheting budget
- * and retires when documents become cents-denominated — so the harness would
- * have broken progressively as templates were converted, on exactly the change
- * it exists to let an author see.
+ * That matters more than a broken preview. Phase 11 made `it.money` the ONLY
+ * way to render a document total — `it.currency` was withdrawn entirely once
+ * documents became cents-denominated — so the harness would have broken
+ * progressively as templates were converted, on exactly the change it exists to
+ * let an author see.
+ *
+ * The injected set here must keep MIRRORING the server's, which is asserted
+ * against core's `TEMPLATE_LIB_GLOBALS` by Ratchet E. A library injected here
+ * and not there is the same failure in the other direction: content that
+ * previews fine and throws in production.
  *
  * The server side is guarded (`renderUtilNamespaces.test.ts` asserts every
  * namespace core declares injectable has a module to inject). This repo has no
@@ -174,7 +178,6 @@ const ctx = {
   now: NOW,
   dateFns,
   tz,
-  currency,
   logo: LOGO_SVG,
   ...utils,
 };
