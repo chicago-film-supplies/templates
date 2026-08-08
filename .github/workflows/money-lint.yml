@@ -10,18 +10,21 @@ name: money-lint
 #
 # So this guard has two rules, and the second is the one that matters.
 #
-# ## Rule 1 — the `it.currency` budget may not grow
+# ## Rule 1 — the `it.currency` budget is now ZERO
 #
-# It is a budget rather than a ban because `it.currency` CANNOT be withdrawn
-# yet. The replacement is `it.money.formatCents`, which takes **cents**, while
-# template documents still hold **dollars** — so every call site would become
-# `it.money.formatCents(it.money.toCents(x))`, which is worse than what it
-# replaces. It retires when documents are cents-denominated (the money
+# It used to be a budget rather than a ban because `it.currency` could not be
+# withdrawn: the replacement is `it.money.formatCents`, which takes **cents**,
+# while template documents held **dollars** — so every call site would have read
+# `it.money.formatCents(it.money.toCents(x))`, worse than what it replaced. The
+# note said it would retire "when documents are cents-denominated (the money
 # campaign's Phase 11), at which point `it.money.formatCents(doc.total_cents)`
-# is the natural form and the problem dissolves on its own.
+# is the natural form and the problem dissolves on its own."
 #
-# Until then: the existing 19 call sites in `quote.eta` are grandfathered, and a
-# twentieth is a deliberate act. New money display goes through `it.money`.
+# That happened. All 19 `quote.eta` call sites are `it.money.formatCents` and
+# the budget map is empty, so this is the ban the heading always promised — any
+# `it.currency` reference, anywhere, fails. The `it.currency` INJECTION itself
+# is withdrawn from the render context in Phase E; until then this rule is what
+# keeps the surface from growing back.
 #
 # ## Rule 2 — no non-closed operation, anywhere, ever
 #
@@ -93,9 +96,14 @@ jobs:
           // map may hold ZERO. Lower a number when call sites go away; raising
           // one is the deliberate act this guard exists to make visible.
           const BUDGET: Record<string, number> = {
-            // Every money cell on the quote: `it.currency(x).format()`.
-            // Grandfathered — see Rule 1 in this workflow's header.
-            "templates/quote.eta": 19,
+            // EMPTY, as of Phase 11. All 19 of `quote.eta`'s `it.currency` cells
+            // became `it.money.formatCents`, so Rule 1 is now the ban its header
+            // promises rather than a grandfathered allowance. A file absent from
+            // this map may hold ZERO — which is every file.
+            //
+            // Re-adding an entry is the deliberate act this guard exists to make
+            // visible; `it.currency` itself is retired from the render context in
+            // Phase E, at which point the rule becomes unfalsifiable and can go.
           };
 
           // Non-closed currency.js operations. Not a budget: zero, permanently.
@@ -111,9 +119,16 @@ jobs:
             /\b\w*(?:cost|price|total|subtotal|amount|tax)\w*\b\s*[*\/]|[*\/]\s*\b\w*(?:cost|price|total|subtotal|amount|tax)\w*\b/i;
 
           // Per-file budget of raw money arithmetic. Ratchets down, never up.
-          // quote.eta's six sites are the replacement-cost table — see Rule 3.
+          //
+          // Six -> three. The replacement-cost GRAND totals stopped being
+          // hand-rolled entirely — `it.orders.calculateReplacementTotals` is the
+          // real function and the footer now agrees with the stored order by
+          // construction instead of by coincidence. What remains is the per-line
+          // decomposition, which has no exposed helper (`computeItemTaxAmountCents`
+          // is denylisted as a building block and there is no stored per-line
+          // replacement field), so it is spelled out in core's own order.
           const RAW_BUDGET: Record<string, number> = {
-            "templates/quote.eta": 6,
+            "templates/quote.eta": 3,
           };
 
           async function* walk(dir: string): AsyncGenerator<string> {

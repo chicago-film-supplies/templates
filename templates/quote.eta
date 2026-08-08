@@ -7,23 +7,79 @@ const lineItems = items.filter(i => i.type !== "group" && i.type !== "destinatio
 const hasDiscount = it.orders.orderHasDiscount(lineItems);
 const hasRentals = it.orders.orderHasRentals(lineItems);
 const hasTax = it.orders.orderHasTax(lineItems);
-const replacementItems = lineItems.filter(i => i.price.replacement != null);
+const replacementItems = lineItems.filter(i => i.price.replacement_cents != null);
 
-// Replacement grand total (tax-inclusive), hoisted so the information line and
-// the Replacement Costs table footer share one computation.
-let rSubtotal = 0;
-let rTax = 0;
-replacementItems.forEach(item => {
-  const unitCost = item.price.replacement;
+// Replacement cost, in integer cents, computed the way CORE computes it.
+//
+// ## The order of operations is the whole point
+//
+// This used to be round-then-multiply: a per-unit tax
+// (`unitCost * t.rate / 100`) accumulated and then scaled by quantity. Core
+// does the opposite in `calculateReplacementTotals` — it multiplies the line out
+// FIRST and rounds once, at the line. On dollar floats the two mostly agreed
+// and the difference read as rounding noise. On integer cents they diverge
+// systematically, and the divergence shows up as a PDF footer that disagrees
+// with the order it is rendering.
+//
+// So the grand totals are no longer hand-rolled at all: `it.orders`
+// exposes the real function, and calling it is what makes the footer and the
+// stored order the same arithmetic rather than two implementations that happen
+// to match. `item.price.taxes` is a `PriceModifier[]` carrying `uid`, `rate`
+// and `type`, which is exactly the surface the lookup inside it reads.
+//
+// ⚠️ The PER-LINE columns below still have no exposed helper —
+// `computeItemTaxAmountCents` is deliberately denylisted as a building block,
+// and there is no stored per-line replacement field. They are therefore spelled
+// out here in the same order core uses, so they sum to the totals by construction.
+// It is a duplicated formula and is tracked as such; see the note at the table.
+//
+// NOTE FOR THE NEXT EDITOR: keep apostrophes OUT of this block. Eta scans for
+// the closing tag while tracking string delimiters, and it counts a bare
+// single-quote as one even inside a line comment — so an odd number of them
+// swallows the close tag and the whole template compiles as a runaway string.
+// The failure surfaces as a bad-syntax error several hundred lines away from
+// the cause, which is why this note is here rather than in a commit message.
+const replacementTaxCatalog = lineItems.flatMap(i => i.price.taxes || []);
+const rTotals = it.orders.calculateReplacementTotals(lineItems, replacementTaxCatalog);
+const rSubtotal = rTotals.subtotal_cents;
+const rTax = rTotals.tax_cents;
+const rTotal = rTotals.total_cents;
+
+// One replacement line, in the same order and with the same rounding
+// core uses — `× n ÷ d`, divide last, round half away from zero exactly once.
+// Half AWAY from zero rather than half up because a negative subtotal is legal
+// and a credit must not differ in magnitude from the charge it mirrors.
+const replacementLine = (item) => {
+  const unitCostCents = item.price.replacement_cents;
   const qty = item.quantity || 0;
-  const unitTaxAmount = (item.price.taxes || []).reduce((sum, t) => {
-    if (t.type === "percent") return sum + (unitCost * t.rate / 100);
-    return sum + t.amount;
-  }, 0);
-  rSubtotal += unitCost * qty;
-  rTax += unitTaxAmount * qty;
-});
-const rTotal = rSubtotal + rTax;
+  const lineSubtotalCents = Math.round(unitCostCents * qty);
+  const taxCentsFor = (subtotalCents, quantity) =>
+    (item.price.taxes || []).reduce((sum, t) => {
+      if (t.type === "percent") {
+        const scaled = subtotalCents * t.rate;
+        const magnitude = Math.abs(scaled);
+        const rounded = Math.floor((2 * magnitude + 100) / 200);
+        return sum + (scaled < 0 ? -rounded : rounded);
+      }
+      // `flat`: DOLLARS per unit. `t.rate` is a rate and keeps its dollar
+      // denomination — this is the one place in the template where a money
+      // value is not already cents.
+      return sum + Math.round(it.money.toCents(t.rate) * quantity);
+    }, 0);
+  const lineTaxCents = taxCentsFor(lineSubtotalCents, qty);
+  // The per-UNIT column is the line divided back down, not a separately-rounded
+  // per-unit computation — deriving it the other way is what made the columns
+  // fail to add up to their own footer.
+  const unitTaxCents = qty > 0 ? Math.round(lineTaxCents / qty) : 0;
+  return {
+    unitCostCents,
+    qty,
+    unitTaxCents,
+    unitTotalCents: unitCostCents + unitTaxCents,
+    lineTaxCents,
+    lineTotalCents: lineSubtotalCents + lineTaxCents,
+  };
+};
 %>
 <div id="grid-wrapper">
   <div id="logo">
@@ -205,27 +261,34 @@ const rTotal = rSubtotal + rTax;
           <% if (hasRentals) { %>
           <td><%= item.type === "rental" && item.price.chargeable_days ? item.price.chargeable_days + ' days' : '' %></td>
           <% } %>
-          <td><%= it.currency(item.price.base).format() %></td>
+          <td><%= it.money.formatCents(item.price.base_cents) %></td>
           <% if (hasDiscount) { %>
           <td>
             <% if (item.price.discount) { %>
             <% if (item.price.discount.type === "percent") { %>
             <%= item.price.discount.rate %>%
             <% } else { %>
-            <%= it.currency(item.price.discount.amount).format() %>
+            <%= it.money.formatCents(item.price.discount.amount_cents) %>
             <% } %>
             <% } %>
           </td>
           <% } %>
-          <td><%= it.currency(item.price.subtotal_discounted || item.price.subtotal).format() %></td>
+          <%
+            // `??`, not `||`. A fully-discounted line has
+            // `subtotal_discounted_cents: 0`, which is falsy — so `||` fell
+            // through and printed the PRE-discount subtotal for exactly the
+            // lines where the discount mattered most. The bug was invisible
+            // because neither fixture carried a discount until templates#57.
+          %>
+          <td><%= it.money.formatCents(item.price.subtotal_discounted_cents ?? item.price.subtotal_cents) %></td>
           <% if (hasTax) { %>
           <td>
             <% if (item.price.taxes && item.price.taxes.length > 0) { %>
-            <%= it.currency(item.price.taxes.reduce((sum, t) => sum + t.amount, 0)).format() %>
+            <%= it.money.formatCents(item.price.taxes.reduce((sum, t) => sum + t.amount_cents, 0)) %>
             <% } %>
           </td>
           <% } %>
-          <td class="total"><%= it.currency(item.price.total).format() %></td>
+          <td class="total"><%= it.money.formatCents(item.price.total_cents) %></td>
         </tr>
         <% } %>
       <% }) %>
@@ -236,7 +299,7 @@ const rTotal = rSubtotal + rTax;
 
 <section id="information">
   <% if (replacementItems.length > 0) { %>
-  <p>The total replacement cost for all items on your rental order is: <%= it.currency(rTotal).format() %></p>
+  <p>The total replacement cost for all items on your rental order is: <%= it.money.formatCents(rTotal) %></p>
   <% } %>
 </section>
 
@@ -246,37 +309,37 @@ const rTotal = rSubtotal + rTax;
     <tbody>
       <tr>
         <th scope="row">Subtotal: </th>
-        <td><%= it.currency(totals.subtotal).format() %></td>
+        <td><%= it.money.formatCents(totals.subtotal_cents) %></td>
       </tr>
-      <% if (totals.discount_amount > 0) { %>
+      <% if (totals.discount_amount_cents > 0) { %>
       <tr>
         <th scope="row">Discount: </th>
-        <td>&minus;<%= it.currency(totals.discount_amount).format() %></td>
+        <td>&minus;<%= it.money.formatCents(totals.discount_amount_cents) %></td>
       </tr>
       <tr>
         <th scope="row">Subtotal after Discount: </th>
-        <td><%= it.currency(totals.subtotal_discounted).format() %></td>
+        <td><%= it.money.formatCents(totals.subtotal_discounted_cents) %></td>
       </tr>
       <% } %>
       <% totals.taxes.forEach(tax => { %>
-      <% if (tax.amount !== 0) { %>
+      <% if (tax.amount_cents !== 0) { %>
       <tr>
         <th scope="row"><%= tax.name %><% if (tax.type === "percent") { %> <%= tax.rate %>%:<% } %></th>
-        <td><%= it.currency(tax.amount).format() %></td>
+        <td><%= it.money.formatCents(tax.amount_cents) %></td>
       </tr>
       <% } %>
       <% }) %>
       <% totals.transaction_fees.forEach(fee => { %>
-      <% if (fee.amount !== 0) { %>
+      <% if (fee.amount_cents !== 0) { %>
       <tr>
         <th scope="row"><%= fee.name %><% if (fee.type === "percent") { %> <%= fee.rate %>%:<% } %></th>
-        <td><%= it.currency(fee.amount).format() %></td>
+        <td><%= it.money.formatCents(fee.amount_cents) %></td>
       </tr>
       <% } %>
       <% }) %>
       <tr>
         <th scope="row">Total:</th>
-        <td><%= it.currency(totals.total).format() %></td>
+        <td><%= it.money.formatCents(totals.total_cents) %></td>
       </tr>
     </tbody>
   </table>
@@ -301,24 +364,20 @@ const rTotal = rSubtotal + rTax;
     <tbody>
       <% replacementItems.forEach(item => { %>
       <%
-        const unitCost = item.price.replacement;
-        const qty = item.quantity || 0;
-        const unitTaxAmount = item.price.taxes.reduce((sum, t) => {
-          if (t.type === "percent") return sum + (unitCost * t.rate / 100);
-          return sum + t.amount;
-        }, 0);
-        const unitTotal = unitCost + unitTaxAmount;
-        const lineTax = unitTaxAmount * qty;
-        const lineTotal = unitCost * qty + lineTax;
+        // One helper, defined once at the top, rather than a second copy of the
+        // arithmetic inline here. The two used to be separate and could drift —
+        // that is how a per-unit figure and its own line total ended up rounded
+        // in different orders.
+        const r = replacementLine(item);
       %>
       <tr>
         <td><%= item.name %></td>
-        <td><%= it.currency(unitCost).format() %></td>
-        <td><%= it.currency(unitTaxAmount).format() %></td>
-        <td class="total"><%= it.currency(unitTotal).format() %></td>
-        <td class="center"><%= qty %></td>
-        <td><%= it.currency(lineTax).format() %></td>
-        <td class="total"><%= it.currency(lineTotal).format() %></td>
+        <td><%= it.money.formatCents(r.unitCostCents) %></td>
+        <td><%= it.money.formatCents(r.unitTaxCents) %></td>
+        <td class="total"><%= it.money.formatCents(r.unitTotalCents) %></td>
+        <td class="center"><%= r.qty %></td>
+        <td><%= it.money.formatCents(r.lineTaxCents) %></td>
+        <td class="total"><%= it.money.formatCents(r.lineTotalCents) %></td>
       </tr>
       <% }) %>
     </tbody>
@@ -326,8 +385,8 @@ const rTotal = rSubtotal + rTax;
       <tr>
         <th scope="row" colspan="4">Total Replacement Cost</th>
         <td></td>
-        <td><%= it.currency(rTax).format() %></td>
-        <td class="total"><%= it.currency(rTotal).format() %></td>
+        <td><%= it.money.formatCents(rTax) %></td>
+        <td class="total"><%= it.money.formatCents(rTotal) %></td>
       </tr>
     </tfoot>
   </table>
