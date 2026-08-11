@@ -3,6 +3,7 @@
   "number": 1042,
   "status": "quoted",
   "organization": {
+    "tax_profile": "tax_applied",
     "uid": "LakeshorePicturesOrg",
     "name": "Lakeshore Pictures",
     "crms_id": null,
