@@ -107,32 +107,37 @@ const replacementLine = (item) => {
     <div>team@chicagofilmsupplies.com</div>
     <div>312.818.3008</div>
   </section>
-<section id="details">
-  <table>
-    <tbody>
-      <tr>
-        <th scope="row">Date:</th>
-        <td><%= it.dateFns.format(it.dateFns.parseISO(it.now), 'MMMM d, yyyy') %></td>
-      </tr>
-      <tr>
-        <th scope="row">Order Number:</th>
-        <td><%= order.number %></td>
-      </tr>
-      <% if (order.reference) { %>
-      <tr>
-        <th scope="row">Reference:</th>
-        <td><%= order.reference %></td>
-      </tr>
-      <% } %>
+
+<table id="details">
+  <thead>
+    <tr>
+      <th scope="col">Date:</th>
+      <th scope="col">Subject:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= it.dateFns.format(it.dateFns.parseISO(it.now), 'MMMM d, yyyy') %></td>
       <% if (order.subject) { %>
-      <tr>
-        <th scope="row">Subject:</th>
-        <td><%= order.subject %></td>
-      </tr>
+      <td><%= order.subject %></td>
       <% } %>
-    </tbody>
-  </table>
-</section>
+    </tr>
+  </tbody>
+  <thead>
+    <tr>
+      <th scope="col">Order Number:</th>
+      <th scope="col">Reference:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= order.number %></td>
+      <% if (order.reference) { %>
+      <td><%= order.reference %></td>
+      <% } %>
+    </tr>
+  </tbody>
+</table>
 
 <table id="destinations">
 <% destinations.forEach(function(dest, destIndex) { %>
@@ -159,9 +164,9 @@ const replacementLine = (item) => {
     %>
   <thead>
     <tr>
-    <th scope="col" colspan="2">Dates: </th>
-    <th scope="col"><%= startLabel %></th>
-    <th scope="col"><%= endLabel %></th>
+    <th class="wide" scope="col" colspan="2">Dates: </th>
+    <th class="address" scope="col"><%= startLabel %></th>
+    <th class="address" scope="col"><%= endLabel %></th>
     </tr>
   </thead>
   <tbody>
@@ -180,7 +185,7 @@ const replacementLine = (item) => {
     </td>
     </tr>
     <tr>
-      <td colspan="2">
+      <td class="wide" colspan="2">
       <!-- Charge window — only when it differs from delivery/collection -->
       <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
       <span class="bold">Dates Charged: </span>
@@ -190,12 +195,12 @@ const replacementLine = (item) => {
       <td class="address"><%= contactLine(dest.collection) %></td>
     </tr>
     <tr>
-      <td>
+      <td class="wide">
       <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
       <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_end), 'EEE M/d/yy') %>
       <% } %>
       </td>
-      <td>
+      <td class="wide">
         <!-- Charge window — only when it differs from delivery/collection -->
         <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
         <%= it.dates.formatChargeDays(dest.dates.days_charged).periodLabel %>
@@ -214,7 +219,7 @@ const replacementLine = (item) => {
   <table>
     <thead>
       <tr>
-        <th scope="col">Item Description</th>
+        <th class="wide" scope="col">Item Description</th>
         <th scope="col">Type</th>
         <th scope="col">Qty</th>
         <% if (hasRentals) { %>
@@ -235,7 +240,7 @@ const replacementLine = (item) => {
       <% items.forEach(item => { %>
         <% if (item.type === "group") { %>
         <tr>
-          <td colspan="<%= 5 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0) %>">
+          <td class="wide" colspan="<%= 5 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0) %>">
             <strong><%= item.name %></strong>
           </td>
         </tr>

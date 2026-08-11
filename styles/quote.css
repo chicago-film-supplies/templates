@@ -1,30 +1,32 @@
 /* quote.css — quote-template-specific styles (ported from prod template 702). */
-body,
-table {
-  font-family: ui-sans-serif, system-ui, sans-serif;
+html {
   font-size: 9px;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, sans-serif;
   color: #121212;
 }
 #grid-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1em;
+  gap: 1rem;
 }
 #logo {
   grid-column: 1 / -1;
   justify-self: end;
 }
 #logo svg {
-  height: 2.4em;
-  width: 4.8em;
+  height: 2.4rem;
+  width: 4.8rem;
 }
 h1 {
-  font-size: 1.5em;
+  font-size: 1.5rem;
   font-weight: normal;
   margin: 4px 0;
 }
 h2, p {
-  font-size: 1em;
+  font-size: 1rem;
   margin: 0;
 }
 hr {
@@ -36,8 +38,10 @@ hr {
   border-right: 0;
 }
 table {
+  width: 100%;
   border-spacing: 0;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 thead th {
@@ -49,10 +53,14 @@ tbody tr:first-child td {
 }
 th,
 td {
-  font-size: 1em;
+  font-size: 1rem;
   text-align: left;
   vertical-align: top;
   padding: 2px 0;
+  width: 6rem;
+}
+th:first-child, td:first-child {
+  width: 24rem;
 }
 th:first-child, td:first-child {
   padding-left: 0;
@@ -67,14 +75,16 @@ th.center, td.center {
 #cfs {
   text-align: right;
 }
-#details th {
-  width: 9em;
+
+#destinations td.dates {
+ width: 18rem; 
 }
 
-#destinations .address {
-  width: 33%;
+#destinations th.address, #destinations td.address {
+  width: calc(50% - 24rem);
 }
 
+#details,
 #destinations,
 #items,
 #replacement-costs {
