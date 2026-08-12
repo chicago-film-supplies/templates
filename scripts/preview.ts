@@ -67,7 +67,15 @@ const NOW = "2026-01-15T12:00:00.000-06:00";
 
 const eta = new Eta({ autoEscape: true, cache: false });
 
-const name = Deno.args[0] || "quote";
+// Positionals are [template name, fixture slug]; flags may appear anywhere.
+// Filtering them out first is what lets a TASK bake a flag in — `preview:watch`
+// passes `--background`, which `deno task` places BEFORE the args a caller
+// appends, so reading `Deno.args[0]` directly would resolve the template name
+// to "--background".
+const flag = (f: string) => Deno.args.includes(f);
+const positional = Deno.args.filter((a) => !a.startsWith("--"));
+
+const name = positional[0] || "quote";
 
 /** Resolve the fixture file: explicit path (contains `/` or ends `.json`),
  * a bare slug → `fixtures/<name>/<slug>.json`, or the first fixture in
@@ -94,7 +102,7 @@ async function resolveFixturePath(name: string, arg: string | undefined): Promis
   }
 }
 
-const fixtureFile = await resolveFixturePath(name, Deno.args[1]);
+const fixtureFile = await resolveFixturePath(name, positional[1]);
 const outputFile = "preview.html";
 
 interface RenderConfig {
@@ -225,10 +233,18 @@ if (renderConfig.base_font_size || renderConfig.margin_top !== undefined) {
 //   export PREVIEW_BROWSER="Brave Browser"   # or "Google Chrome", "Chromium"
 //
 // Unset keeps the previous behaviour (bare `open` → the macOS default browser).
-if (!Deno.args.includes("--no-open")) {
+if (!flag("--no-open")) {
   const browser = Deno.env.get("PREVIEW_BROWSER");
+  // `--background` maps to `open -g`: launch/raise the file WITHOUT activating
+  // the app. `preview:watch` re-opens on every render, so without it the
+  // browser steals focus on every save, which is unusable. Measured: `-g` holds
+  // both on a cold start and on repeat opens into an already-running browser.
   const cmd = new Deno.Command("open", {
-    args: browser ? ["-a", browser, outputFile] : [outputFile],
+    args: [
+      ...(flag("--background") ? ["-g"] : []),
+      ...(browser ? ["-a", browser] : []),
+      outputFile,
+    ],
   });
   await cmd.output();
 }
