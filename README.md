@@ -97,7 +97,7 @@ in the editor. The field-map is a best-effort head-start — loop-aliased refs
 - **Permissions:** routes require `templates.{read,search,create,propose,release,merge,archive}`. After adding a permission to the catalog, **re-run `seed-rbac.ts --write` on each env** — the route/catalog can pass tests while the Firestore `roles/*` docs are stale (this caused a `templates.propose` 403 in QA).
 - **Golden gate:** `visual-diff` is a **required** status check on `main` (prod) and `sandbox` (dev). `enforce_admins=false` lets the App squash past a failing golden after a human approves the diff.
 - **Branches per env:** the API publishes from `main` (prod) and `sandbox` (dev) — the in-app base-ref gate decides which env a merge publishes to.
-- **Cross-repo bumps:** changing `@cfs/core` → publish its `beta` (semantic-release), then bump the pins in `api-cloudrun` + `manager` (+ this preview harness's caret range) in lockstep.
+- **Cross-repo bumps:** changing `@cfs/core` → publish its `beta` (semantic-release), then bump the pins in `api-cloudrun` + `manager` (+ this preview harness) in lockstep. ⚠️ This repo's `deno.json` pins **exact** versions, not a caret range, so `deno outdated --update` is not the mechanism and a floated range will not pick the bump up — edit the five subpath entries and re-run `deno install`.
 
 See `api-cloudrun/.claude/skills/templates/SKILL.md` for the deep data-model /
 publish-invariant reference.
