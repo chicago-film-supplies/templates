@@ -213,7 +213,22 @@ if (renderConfig.base_font_size || renderConfig.margin_top !== undefined) {
   );
 }
 
+// Open in `$PREVIEW_BROWSER` when set, otherwise the OS default.
+//
+// This is not a preference. Gotenberg renders the PDF with CHROMIUM, so a
+// preview opened in Safari is a different engine than the one that produces the
+// artifact — WebKit distributes `table-layout: fixed` surplus differently, and
+// its font metrics differ, so column widths and wrap points you eyeball there
+// are not the ones that ship. Point this at a Chromium build and the preview
+// agrees with the PDF:
+//
+//   export PREVIEW_BROWSER="Brave Browser"   # or "Google Chrome", "Chromium"
+//
+// Unset keeps the previous behaviour (bare `open` → the macOS default browser).
 if (!Deno.args.includes("--no-open")) {
-  const cmd = new Deno.Command("open", { args: [outputFile] });
+  const browser = Deno.env.get("PREVIEW_BROWSER");
+  const cmd = new Deno.Command("open", {
+    args: browser ? ["-a", browser, outputFile] : [outputFile],
+  });
   await cmd.output();
 }
