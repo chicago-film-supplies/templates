@@ -5,6 +5,7 @@
     "jsr:@cfs/core@10.0.0-beta.160": "10.0.0-beta.160",
     "npm:@date-fns/tz@^1.4.1": "1.5.0",
     "npm:@date-fns/tz@^1.5.0": "1.5.0",
+    "npm:currency.js@^2.0.4": "2.0.4",
     "npm:date-fns@^4.1.0": "4.4.0",
     "npm:date-fns@^4.4.0": "4.4.0",
     "npm:zod@^4.3.6": "4.4.3"
@@ -17,6 +18,7 @@
       "integrity": "f01a2b598e61d9f18348d85066da3cee6c336f37b7d47742d0e23ab583a22ff0",
       "dependencies": [
         "npm:@date-fns/tz@^1.4.1",
+        "npm:currency.js",
         "npm:date-fns@^4.1.0",
         "npm:zod"
       ]
@@ -25,6 +27,9 @@
   "npm": {
     "@date-fns/tz@1.5.0": {
       "integrity": "sha512-lwYN/vDPeNRULcepoE/LO2Pgx+7/RV+S9ARfbc9lr2DtGkOD7pAiruHvbR1RX3Qyf6ja47EWJDMsNK5vK08DJg=="
+    },
+    "currency.js@2.0.4": {
+      "integrity": "sha512-6/OplJYgJ0RUlli74d93HJ/OsKVBi8lB1+Z6eJYS1YZzBuIp4qKKHpJ7ad+GvTlWmLR/hLJOWTykN5Nm8NJ7+w=="
     },
     "date-fns@4.4.0": {
       "integrity": "sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w=="
