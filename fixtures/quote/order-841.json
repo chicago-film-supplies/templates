@@ -7,6 +7,7 @@
   "tax_profile": "tax_applied",
   "version": 1,
   "organization": {
+    "tax_profile": "tax_applied",
     "uid": "HarborLineMediaOrg01",
     "name": "Harbor Line Media",
     "crms_id": null,
