@@ -22,6 +22,11 @@
  *      an unsanitized write path into git; the capture flow sanitizes, a paste
  *      into the textarea does not.
  *
+ *   3. REASON — every sidecar `fixtures[]` entry says what its fixture covers
+ *      that no other one does. A fixture set is a coverage argument, and the
+ *      fixture file is a strict source document with nowhere to write it down,
+ *      so the sidecar is the only place it can live.
+ *
  * Fails CLOSED: a fixtures dir with no sidecar, a sidecar with no
  * `collection_source`, an unmapped collection, or sidecar/file drift are all
  * errors. An unknown key in `schemas` yields `undefined` and would otherwise
@@ -48,6 +53,17 @@ interface Sidecar {
   collection_source?: string;
   fixtures?: { slug: string; label?: string; description?: string }[];
 }
+
+/**
+ * Minimum length for a fixture's reason.
+ *
+ * The schema (`@cfs/core`'s `FixtureMeta`) requires a non-empty string, which
+ * stops the field being absent but not `"x"`. This is the repo-side policy on
+ * top of that: a coverage argument is a sentence. Deliberately a small round
+ * number rather than a tuned one — it exists to catch a placeholder, not to
+ * grade prose.
+ */
+const MIN_DESCRIPTION = 40;
 
 let fixtureDirs: string[] = [];
 try {
@@ -139,6 +155,29 @@ for (const gitPath of fixtureDirs) {
       note(sidecarPath, `fixtures/${gitPath}/${slug}.json exists but is not listed in \`fixtures[]\``);
     }
   }
+
+  // Every entry states WHY the fixture exists. The API enforces this on writes,
+  // but a fixture hand-committed through git bypasses the API entirely — which
+  // is the same hole that let both fixtures sit schema-invalid in `main` for
+  // months, and the reason this script exists at all.
+  for (const entry of sidecar.fixtures ?? []) {
+    const description = entry.description?.trim() ?? "";
+    if (!description) {
+      note(
+        sidecarPath,
+        `"${entry.slug}" has no \`description\` — a fixture must record what it ` +
+          `covers that no other fixture does. The fixture file is a strict source ` +
+          `document with nowhere to put a comment, so this is the only place it can be said.`,
+      );
+    } else if (description.length < MIN_DESCRIPTION) {
+      note(
+        sidecarPath,
+        `"${entry.slug}" has a ${description.length}-character description — too short ` +
+          `to be a coverage argument (minimum ${MIN_DESCRIPTION}). Say what this fixture ` +
+          `exercises that its siblings do not: ${JSON.stringify(description)}`,
+      );
+    }
+  }
 }
 
 // ── 2. PII ──────────────────────────────────────────────────────────
@@ -217,7 +256,8 @@ if (problems.length) {
   console.error(
     "A fixture must satisfy the same schema the API enforces on save, or an\n" +
       "operator cannot edit it from the manager — they get a 422 listing failures\n" +
-      "they did not cause.\n",
+      "they did not cause. It must also say why it exists: a fixture set is a\n" +
+      "coverage argument, and the sidecar is the only place that can be written.\n",
   );
   Deno.exit(1);
 }

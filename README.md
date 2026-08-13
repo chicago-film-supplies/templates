@@ -50,7 +50,8 @@ the **`.css`** styles. The body renders through the API's Eta context:
 - `it.holidays` — CFS holiday ISO dates (`YYYY-MM-DD[]`, live snapshot); pass to
   the holiday-aware `it.dates.*` helpers (they throw if omitted). Not available in
   the layout.
-- `it.currency`, `it.dateFns`, `it.tz`, `it.logo`, `it.dates.*` — always available.
+- `it.dateFns`, `it.tz`, `it.logo`, `it.dates.*`, `it.money.*`, `it.icons.*` — always available.
+  (`it.currency` was withdrawn in Phase 11 Phase E — use `it.money.formatCents`.)
 - `it.orders.*` / `it.invoices.*` — **collection-dependent**, NOT guaranteed. The
   `@cfs/core/utils` namespaces a template gets are the union of its
   `collection_source` + `collection_target` namespaces (`orders` → `it.orders`,

@@ -22,6 +22,8 @@ import { tz } from "@date-fns/tz";
 import * as orderUtils from "@cfs/core/utils/orders";
 import * as invoiceUtils from "@cfs/core/utils/invoices";
 import * as dateUtils from "@cfs/core/utils/dates";
+import * as iconUtils from "@cfs/core/utils/icons";
+import { CFS_LOGO_SVG } from "@cfs/core/utils/icons";
 import * as moneyUtils from "@cfs/core/utils/money";
 import { availableUtilNamespaces } from "@cfs/core/schemas";
 import type { TemplateCollectionType } from "@cfs/core/schemas";
@@ -58,9 +60,19 @@ const UTIL_MODULES: Record<string, unknown> = {
   invoices: invoiceUtils,
   dates: dateUtils,
   money: moneyUtils,
+  icons: iconUtils,
 };
 
-const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="80" viewBox="0 44 160 80" fill="currentColor" role="img" aria-label="Chicago Film Supplies logo"><path d="m 46.8,104.95007 c -0.2,1.4 0.7,2.5 2.1,2.5 h 47.5 c 1.4,0 2.7,-1.1 3,-2.5 l 0.3,-1.6 H 47.2 l -0.3,1.6 z"/></svg>`;
+/**
+ * The logo, imported rather than pasted.
+ *
+ * This file used to carry its own copy with a SINGLE path where the real logo
+ * has five, so `deno task preview` had been rendering a visibly different logo
+ * from production — the exact class of drift a second hand-copied SVG constant
+ * invites, and nothing could catch it because the two copies lived in different
+ * repos. One string now, in `@cfs/core/utils/icons`, read by both.
+ */
+const LOGO_SVG = CFS_LOGO_SVG;
 
 /** Frozen render timestamp — deterministic output for goldens. */
 const NOW = "2026-01-15T12:00:00.000-06:00";
