@@ -23,19 +23,33 @@ fixtures/<template>/<slug>.json         deterministic source docs for golden vis
 goldens/<branch>/<template>/<slug>.png  branch-keyed golden screenshot, one per fixture
 ```
 
-Fixtures are **files-authoritative**: the renderer globs `fixtures/<template>/*.json` and the sidecar's `fixtures[]` is a label/description join. An orphaned sidecar entry never breaks a render; zero fixtures yields a `no-fixtures` golden verdict (informational pass).
+Fixtures are **files-authoritative for discovery**: the renderer globs `fixtures/<template>/*.json` and the sidecar's `fixtures[]` supplies each entry's label and reason. An orphaned sidecar entry never breaks a render; zero fixtures yields a `no-fixtures` golden verdict (informational pass).
+
+⚠️ **Every sidecar entry must say WHY its fixture exists** — what it covers that no other fixture in the family does. `description` is required (`@cfs/core`'s `FixtureMeta`), the API refuses a write without one, and `deno task lint:fixtures` fails a missing or placeholder reason (minimum 40 characters). This is not bookkeeping: a fixture set *is* a coverage argument, and the fixture file is a `z.strictObject` source document with nowhere to put a comment, so the sidecar is the only place that argument can be written down. A fixture that is synthetic because no real order exercises its shape must say so, or the next person "cleans it up".
+
+**Never hand-write a fixture from real data.** `PUT /templates/{uid}/fixtures/{slug}` (and the manager's JSON textarea) commit exactly what you give them — dev mirrors prod, so a dev order carries real customer names, contacts and addresses. Capture instead: the manager's capture action / MCP `templates_capture_fixture` runs the document through `applyPii` with a deterministic salt first. The PII pass in `lint:fixtures` is the net for when that is skipped.
 
 The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta string, `footer`/`header` partial paths) drives Gotenberg PDF generation — full field semantics in the `cfs-template-authoring` skill.
 
 ## Template context (summary)
 
-**Always on:** `it.doc` (the **source** document — a template never reads its target, it produces it), `it.version`, `it.params`, `it.now` (frozen render timestamp — never `new Date()`), `it.holidays` (CFS holiday ISO dates `YYYY-MM-DD[]`, live snapshot — feeds the `it.dates.*` holiday helpers, which throw if omitted; absent in layouts), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.currency` (currency.js — **legacy, budgeted; see Money below**), `it.money` (`@cfs/core/utils/money`), `it.dates` (`@cfs/core/utils/dates`).
+**Always on:** `it.doc` (the **source** document — a template never reads its target, it produces it), `it.version`, `it.params`, `it.now` (frozen render timestamp — never `new Date()`), `it.holidays` (CFS holiday ISO dates `YYYY-MM-DD[]`, live snapshot — feeds the `it.dates.*` holiday helpers, which throw if omitted; absent in layouts), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.money` (`@cfs/core/utils/money`), `it.dates` (`@cfs/core/utils/dates`), `it.icons` (`@cfs/core/utils/icons`).
+
+⚠️ **`it.currency` is gone.** Phase 11 Phase E withdrew currency.js from the render context entirely, `money-lint.yml`'s budget is **zero**, and `quote.eta` has no remaining call sites — so any `it.currency` reference now fails CI *and* would throw at render. Use `it.money.formatCents(doc.total_cents)`.
+
+### Icons
+
+`it.icons.svg(name, opts)` returns **inline SVG** for any lucide icon; `it.icons.has(name)` gates a data-driven name. Emit raw — `<%~ it.icons.svg("truck") %>`, not `<%= %>`.
+
+Inline is the only shape available, not a preference: both render paths set Gotenberg's `failOnResourceLoadingFailed=true`, and header/footer partials render in an isolated Chromium frame that loads **no** external resources at all. An icon font, a CDN sprite and an `<img src>` each fail the whole document. Never paste raw `<svg>` into an `.eta` instead — besides the duplication, a self-closing `/>` next to a money-named identifier is a plausible false positive for `money-lint.yml`'s Rule 3.
+
+An unknown name **throws** (listing near matches) rather than rendering nothing — a blank icon is invisible in a PDF and would ship.
 
 ### Money (`money-lint` enforces this)
 
 **A template must not compute money.** Values arrive already computed by `@cfs/core/utils/*`, which are verified against exact BigInt rational references over 200k–500k inputs. `.github/workflows/money-lint.yml` fails CI on `.divide(` / `.multiply(` / `.distribute(` in any `.eta` — zero sites, permanently, no allowlist. currency.js quantizes every intermediate at its `precision`, so those operations make a rounding decision nothing states: measured, the precomputed-factor form was wrong 199,998 of 200,000 times, worst error $32,031.20.
 
-**`it.currency` is on a per-file budget, not banned** — 19 grandfathered call sites in `templates/quote.eta`, and the budget **ratchets down**: a file whose count drops below its budget fails until the number is lowered. New money display uses `it.money`. It is not withdrawn outright because `it.money.formatCents` takes **cents** while template documents hold **dollars**, so every site would become `it.money.formatCents(it.money.toCents(x))` — worse than what it replaces. It retires when documents are cents-denominated, at which point `it.money.formatCents(doc.total_cents)` is the natural form.
+**`it.currency` is now banned outright, and the budget is ZERO** (verified 2026-08-13: `money-lint.yml`'s budget map is empty and `quote.eta` has 0 call sites). It was a per-file budget of 19 grandfathered sites while `it.money.formatCents` took **cents** and template documents held **dollars** — every replacement would have read `it.money.formatCents(it.money.toCents(x))`, worse than what it replaced. Documents are cents-denominated now, so `it.money.formatCents(doc.total_cents)` is the natural form and the trade flipped exactly as predicted. The injection is gone from the render context too, so a stray reference throws as well as failing CI.
 
 Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
