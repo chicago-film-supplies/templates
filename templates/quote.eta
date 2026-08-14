@@ -341,11 +341,17 @@ const replacementLine = (item) => {
           <td><%= it.money.formatCents(item.price.base_cents) %></td>
           <% if (hasDiscount) { %>
           <td>
+            <%/* Parenthesised: a discount is a deduction, and the accounting
+                 convention reads it as one without a sign the eye can miss.
+                 Both arms get the parens — a `percent` discount is the same
+                 deduction expressed as a rate, so bracketing only the flat one
+                 would make the column's two shapes look like different kinds
+                 of number. Empty cell when there is no discount, NOT `(  )`. */%>
             <% if (item.price.discount) { %>
             <% if (item.price.discount.type === "percent") { %>
-            <%= item.price.discount.rate %>%
+            (<%= item.price.discount.rate %>%)
             <% } else { %>
-            <%= it.money.formatCents(item.price.discount.amount_cents) %>
+            (<%= it.money.formatCents(item.price.discount.amount_cents) %>)
             <% } %>
             <% } %>
           </td>
@@ -391,7 +397,7 @@ const replacementLine = (item) => {
       <% if (totals.discount_amount_cents > 0) { %>
       <tr>
         <th scope="row">Discount: </th>
-        <td>&minus;<%= it.money.formatCents(totals.discount_amount_cents) %></td>
+        <td>(<%= it.money.formatCents(totals.discount_amount_cents) %>)</td>
       </tr>
       <tr>
         <th scope="row">Subtotal after Discount: </th>
@@ -457,15 +463,21 @@ const replacementLine = (item) => {
         <td class="total"><%= it.money.formatCents(r.lineTotalCents) %></td>
       </tr>
       <% }) %>
-    </tbody>
-    <tfoot>
-      <tr>
+      <%/* The last row of the <tbody>, NOT a <tfoot> — deliberately, and against
+           the semantics. Browsers repeat a <tfoot> on every printed page by
+           design, which is right for a running summary and wrong for this: it is
+           a GRAND total, identical on each repeat, so on `long-multi-group` it
+           printed at the foot of pages 3, 4 and 5 and each of the first two read
+           as if the table ended there at $28,847.87. There is no CSS that
+           suppresses only the non-final repeat, and no way to label them apart
+           without a mechanism outside the table. templates#74 finding 1. */%>
+      <tr class="grand-total">
         <th scope="row" colspan="4">Total Replacement Cost</th>
         <td></td>
         <td><%= it.money.formatCents(rTax) %></td>
         <td class="total"><%= it.money.formatCents(rTotal) %></td>
       </tr>
-    </tfoot>
+    </tbody>
   </table>
 </section>
 <% } %>
