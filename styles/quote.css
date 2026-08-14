@@ -17,16 +17,56 @@ html {
      alignment IS the contract, and it was previously held together by a comment
      doing the arithmetic (`18 + 6 = 24rem`) that nothing checked. */
   --label-col: 24rem;
+
+  /* Where #destinations' THIRD block opens — the return/pickup column, headed
+     "In Store Return" or "Pickup". #destinations is three blocks, not four
+     columns: the dates block (`--label-col`, spanned by the "Dates:" header),
+     then the two address columns splitting what is left. So block 3 starts one
+     address column in, and #totals is aligned to it.
+     Derived, not typed: it is `--label-col + (100% - --label-col) / 2`, which
+     is the same expression `#destinations col.address` is sized by. Writing the
+     literal would let the two drift the first time the dates block changes. */
+  --dest-block-3: calc((100% + var(--label-col)) / 2);
+
+  /* Vertical cell padding. Named because it is not only padding: it is the gap
+     between a table cell box and its first text baseline, which is what
+     anything sitting BESIDE a table has to match to share that baseline. */
+  --cell-pad-y: 2px;
 }
 
 body {
   font-family: ui-sans-serif, system-ui, sans-serif;
   color: #121212;
 }
+/* THE PAGE GRID. Three columns, because the page has exactly two vertical
+   boundaries anything is placed against: the half-way split the letterhead
+   uses, and `--dest-block-3`, where #destinations opens its return column and
+   #totals begins.
+
+   The boundaries are what is declared; the three widths are just the gaps
+   between them (50%, then up to block 3, then the rest). Expressed that way so
+   the grid cannot drift from the table it aligns to — both read the same
+   custom property.
+
+   `column-gap: 0` is load-bearing, not a tidy-up: a gap would make each
+   boundary a RANGE rather than an edge, and #totals would start one gap right
+   of where #destinations block 3 does. Horizontal separation is bought with
+   alignment instead — #cfs is right-aligned into its column, so the letterhead
+   blocks sit far apart without a gutter. Row gap keeps its 1rem. */
 #grid-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns:
+    50%
+    calc(var(--dest-block-3) - 50%)
+    calc(100% - var(--dest-block-3));
+  column-gap: 0;
+  row-gap: 1rem;
+}
+#bill-to {
+  grid-column: 1;
+}
+#cfs {
+  grid-column: 2 / -1;
 }
 #logo {
   grid-column: 1 / -1;
@@ -86,7 +126,7 @@ td {
   font-size: 1rem;
   text-align: left;
   vertical-align: top;
-  padding: 2px 0;
+  padding: var(--cell-pad-y) 0;
   width: 6rem;
 }
 /* The label/description column. `:first-child` covers the tables whose wide
@@ -134,7 +174,6 @@ th.center, td.center {
 #details,
 #destinations,
 #items,
-#information,
 #replacement-costs {
   grid-column: 1 / -1;
   width: 100%;
@@ -193,23 +232,51 @@ th.center, td.center {
 #items thead th:not(:first-child) {
   width: auto;
 }
-/* #totals starts ON the alignment edge, so its label column shares a left edge
-   with #destinations column 3 and #items column 2, and its money column ends on
-   the right margin with the #items Total column.
-   Full-bleed + a left margin, NOT `justify-self: end` in grid column 2. The
-   wrapper is `1fr 1fr`, so column 2 begins at 357px while the shared edge is at
-   216px — the old placement could not reach it at any justification, and a
-   negative margin would have hard-coded the 141px difference between two
-   numbers that are each free to move.
-   The money column is what right-aligns against #items Total, not a column
-   boundary: the items grid divides its remainder by the column count, so every
-   internal edge to the right of --label-col moves between 6 and 9 columns
-   (measured: the Total column opens at 606px, 623px, 634px or 643px). The two
-   edges that hold at every count are this one and the right margin. */
+/* #information and #totals share one row, split at `--dest-block-3`: the note
+   takes everything left of it, the totals block sits in the return column.
+
+   The first line of the note and the Subtotal row sit on ONE baseline, and it
+   is bought with `--cell-pad-y` rather than with `align-self: baseline`.
+   ⚠️ That is deliberate and measured, not a fallback taken on faith.
+   `align-self: baseline` is the property that MEANS this, and Blink gets it
+   wrong here: it shifts #information DOWN 4px and overshoots, leaving the note
+   2px BELOW the Subtotal row (measured 433.09 vs 431.09) — worse than doing
+   nothing, which lands 2px the other way. Gotenberg renders in Blink, so that
+   is the behaviour that would ship. Re-test before swapping it back.
+   The note is padded by the same variable the cells are, so the two cannot
+   drift: a table's first baseline sits exactly one `--cell-pad-y` below its box,
+   and matching it is the whole trick.
+
+   ⚠️ #totals aligns to #destinations and to the right margin. It does NOT align
+   to an #items column at every column count, and cannot: #items gives its
+   description column `--label-col` and divides the remainder by the column
+   count, so its internal edges move. Measured across the nine fixtures, block 3
+   lands on an #items edge at 7 and 9 columns and misses at 6 and 8 (at 8 the
+   neighbouring edges are 425 and 495, straddling 460). Closing that needs the
+   items columns sized on the same unit as the page — see templates#78. */
+#information,
 #totals {
-  grid-column: 1 / -1;
-  margin-left: var(--label-col);
+  align-self: start;
+}
+#information {
+  grid-column: 1 / 3;
+}
+#information p {
+  padding-top: var(--cell-pad-y);
+}
+#totals {
+  grid-column: 3;
   margin-bottom: 4em;
+}
+/* The blanket `th, td { width: 6rem }` plus the 24rem first-child rule sum to
+   more than this block is wide, and a fixed-layout table then scales both down
+   in proportion — which left the amount column too narrow for its own content
+   once `#totals td`'s 2em padding-left was taken out of it. Split explicitly. */
+#totals th:first-child {
+  width: 60%;
+}
+#totals td {
+  width: 40%;
 }
 th.total,
 td.total,
