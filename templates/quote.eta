@@ -341,11 +341,17 @@ const replacementLine = (item) => {
           <td><%= it.money.formatCents(item.price.base_cents) %></td>
           <% if (hasDiscount) { %>
           <td>
+            <%/* Parenthesised: a discount is a deduction, and the accounting
+                 convention reads it as one without a sign the eye can miss.
+                 Both arms get the parens — a `percent` discount is the same
+                 deduction expressed as a rate, so bracketing only the flat one
+                 would make the column's two shapes look like different kinds
+                 of number. Empty cell when there is no discount, NOT `(  )`. */%>
             <% if (item.price.discount) { %>
             <% if (item.price.discount.type === "percent") { %>
-            <%= item.price.discount.rate %>%
+            (<%= item.price.discount.rate %>%)
             <% } else { %>
-            <%= it.money.formatCents(item.price.discount.amount_cents) %>
+            (<%= it.money.formatCents(item.price.discount.amount_cents) %>)
             <% } %>
             <% } %>
           </td>
@@ -391,7 +397,7 @@ const replacementLine = (item) => {
       <% if (totals.discount_amount_cents > 0) { %>
       <tr>
         <th scope="row">Discount: </th>
-        <td>&minus;<%= it.money.formatCents(totals.discount_amount_cents) %></td>
+        <td>(<%= it.money.formatCents(totals.discount_amount_cents) %>)</td>
       </tr>
       <tr>
         <th scope="row">Subtotal after Discount: </th>
