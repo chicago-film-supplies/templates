@@ -1,0 +1,1034 @@
+{
+  "uid": "HPEOd2oOKdlNbExrPOgS",
+  "number": 993,
+  "status": "reserved",
+  "organization": {
+    "uid": "SiJSnxBysKnvnUqu35fj",
+    "name": "Logan Ingram",
+    "crms_id": 539,
+    "tax_profile": "tax_applied",
+    "xero_id": "74b21e6d-17c3-4980-829d-4845e9db76ff",
+    "billing_address": {
+      "city": "Chicago",
+      "country_name": "United States",
+      "full": "Sample text for full..................",
+      "name": "Reese Ingram",
+      "postcode": "62379",
+      "region": "IL",
+      "street": "Hillcrest",
+      "street2": "",
+      "mapbox_id": "Sample text for mapbox_id.......................................................",
+      "address_coordinates": null,
+      "user_coordinates": null
+    }
+  },
+  "destinations": [
+    {
+      "dates": {
+        "delivery_start": "2026-08-12T09:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1786543200,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-08-12T09:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1786543200,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-08-14T10:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1786719600,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-08-14T10:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1786719600,
+          "_nanoseconds": 0
+        },
+        "charge_start": "2026-08-12T09:00:00.000-05:00",
+        "charge_start_fs": {
+          "_seconds": 1786543200,
+          "_nanoseconds": 0
+        },
+        "charge_end": "2026-08-14T10:00:00.000-05:00",
+        "charge_end_fs": {
+          "_seconds": 1786719600,
+          "_nanoseconds": 0
+        },
+        "days_active": 3,
+        "days_charged": 3
+      },
+      "delivery": {
+        "uid": "EbwCegMmJK7Hldly6LHk",
+        "address": {
+          "city": "Libertyville",
+          "country_name": "United States",
+          "full": "7405 Cedar Rd",
+          "name": "",
+          "postcode": "68852",
+          "region": "IL",
+          "street": "7907 Chestnut St",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "Sample text for inst",
+        "contact": null
+      },
+      "collection": {
+        "uid": "EbwCegMmJK7Hldly6LHk",
+        "address": {
+          "city": "Libertyville",
+          "country_name": "United States",
+          "full": "5045 Walnut Blvd",
+          "name": "",
+          "postcode": "69289",
+          "region": "IL",
+          "street": "5161 Juniper Ct",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "customer_collecting": false,
+      "customer_returning": false
+    }
+  ],
+  "items": [
+    {
+      "uid": "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+      "type": "destination",
+      "name": "1015 Thornbury Lane",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d"
+      ],
+      "uid_delivery": "EbwCegMmJK7Hldly6LHk",
+      "uid_collection": "EbwCegMmJK7Hldly6LHk",
+      "description": ""
+    },
+    {
+      "uid": "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+      "type": "group",
+      "name": "Surface Protection",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "d5w9h96wJYvSPTDX3niD",
+      "type": "rental",
+      "name": "3' x 10' Floor Mat",
+      "description": "",
+      "quantity": 40,
+      "price": {
+        "base_cents": 1000,
+        "replacement_cents": 7000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 40000,
+        "subtotal_discounted_cents": 40000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 6000
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 46000
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "d5w9h96wJYvSPTDX3niD"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 408,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "lMxaFkdQPEn45jwGYc5J",
+      "type": "rental",
+      "name": "Magliner Gemini Jr w/ Basket",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 6000,
+        "replacement_cents": 0,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 6000,
+        "subtotal_discounted_cents": 6000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 900
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 6900
+      },
+      "stock_method": "none",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "d5w9h96wJYvSPTDX3niD",
+        "lMxaFkdQPEn45jwGYc5J"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 509,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "EIzqIswHEVKZvlW7w82E",
+      "type": "rental",
+      "name": "Magliner Gemini Jr",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 70000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "d5w9h96wJYvSPTDX3niD",
+        "lMxaFkdQPEn45jwGYc5J",
+        "EIzqIswHEVKZvlW7w82E"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 91,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "I9Ac4WCfjqPhYdwGcfxZ",
+      "type": "rental",
+      "name": "38\" x 22\" Vinyl Basket",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 40000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "d5w9h96wJYvSPTDX3niD",
+        "lMxaFkdQPEn45jwGYc5J",
+        "I9Ac4WCfjqPhYdwGcfxZ"
+      ],
+      "inclusion_type": "mandatory",
+      "zero_priced": true,
+      "crms_id": 508,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "kETzgYqCmiCLZvjwBfpE",
+      "type": "rental",
+      "name": "3 ' x 5' Floor Mat",
+      "description": "",
+      "quantity": 40,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 3000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 24000,
+        "subtotal_discounted_cents": 24000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 3600
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 27600
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "kETzgYqCmiCLZvjwBfpE"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 108,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "lMxaFkdQPEn45jwGYc5J",
+      "type": "rental",
+      "name": "Magliner Gemini Jr w/ Basket",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 6000,
+        "replacement_cents": 0,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 6000,
+        "subtotal_discounted_cents": 6000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 900
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 6900
+      },
+      "stock_method": "none",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "kETzgYqCmiCLZvjwBfpE",
+        "lMxaFkdQPEn45jwGYc5J"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 509,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "WU65HeTi4HHMMk6JLkly",
+      "type": "sale",
+      "name": "Carpet Mask (36\" x 200')",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 8000,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 16000,
+        "subtotal_discounted_cents": 16000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent",
+            "amount_cents": 1640
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 17640
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "WU65HeTi4HHMMk6JLkly"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 407,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "aAtxeOzwGBYmkzlmsjTc",
+      "type": "rental",
+      "name": "Carpet Mask Applicator",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 3000,
+        "replacement_cents": 20000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 3000,
+        "subtotal_discounted_cents": 3000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 450
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 3450
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "aAtxeOzwGBYmkzlmsjTc"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 119,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "nXrZlo5kGVMSqjkSWWaz",
+      "type": "sale",
+      "name": "Corrugated Roll (48\" x 250')",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 13500,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 13500,
+        "subtotal_discounted_cents": 13500,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent",
+            "amount_cents": 1384
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 14884
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "nXrZlo5kGVMSqjkSWWaz"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 115,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "rYxQapfObjx5jhQbhZGw",
+      "type": "sale",
+      "name": "Blue Painters Tape (1.88\") - 3M",
+      "description": "",
+      "quantity": 6,
+      "price": {
+        "base_cents": 800,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 4800,
+        "subtotal_discounted_cents": 4800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent",
+            "amount_cents": 492
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 5292
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "rYxQapfObjx5jhQbhZGw"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 67,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "bw1VOxvwI21DI3MmYjZF",
+      "type": "rental",
+      "name": "E-Z Access 2' Folding Ramp",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 3000,
+        "replacement_cents": 30000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 3000,
+        "subtotal_discounted_cents": 3000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 450
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 3450
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "bw1VOxvwI21DI3MmYjZF"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 438,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "meT4g1Buy0xnufy1bGH2",
+      "type": "rental",
+      "name": "E-Z Access 4' Folding Ramp",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 6000,
+        "replacement_cents": 30000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 6000,
+        "subtotal_discounted_cents": 6000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 900
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 6900
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "meT4g1Buy0xnufy1bGH2"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 107,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "eqOJlpjvKjSNxDrB3N8v",
+      "type": "sale",
+      "name": "Layout Board (4' x 6')",
+      "description": "",
+      "quantity": 20,
+      "price": {
+        "base_cents": 1000,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 20000,
+        "subtotal_discounted_cents": 20000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent",
+            "amount_cents": 2050
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 22050
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "eqOJlpjvKjSNxDrB3N8v"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 65,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "rYxQapfObjx5jhQbhZGw",
+      "type": "sale",
+      "name": "Blue Painters Tape (1.88\") - 3M",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 800,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 3200,
+        "subtotal_discounted_cents": 3200,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent",
+            "amount_cents": 328
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 3528
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "eqOJlpjvKjSNxDrB3N8v",
+        "rYxQapfObjx5jhQbhZGw"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 67,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "tE77BpWcOFsExoPKuDue",
+      "type": "rental",
+      "name": "Layout Cart",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 10000,
+        "replacement_cents": 160000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 10000,
+        "subtotal_discounted_cents": 0,
+        "discount": {
+          "rate": 100,
+          "type": "percent",
+          "amount_cents": 10000
+        },
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "f7192322-7353-42eb-8b52-2ca69f99a7f6",
+        "tE77BpWcOFsExoPKuDue"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 526,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "32242831-13d8-418c-b909-e7d9409f043d",
+      "type": "group",
+      "name": "Replacements",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "32242831-13d8-418c-b909-e7d9409f043d"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "TFbTK9JgH3EmG6eQZN6A",
+      "type": "replacement",
+      "name": "Replacement: 3' x 10' Floor Mat",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 7000,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 7000,
+        "subtotal_discounted_cents": 7000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent",
+            "amount_cents": 718
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 7718
+      },
+      "stock_method": "none",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "32242831-13d8-418c-b909-e7d9409f043d",
+        "TFbTK9JgH3EmG6eQZN6A"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 409,
+      "coa_revenue": 4210
+    },
+    {
+      "uid": "c881b39f-42b6-4054-96cf-cafa23e41bc9",
+      "type": "group",
+      "name": "Delivery",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "c881b39f-42b6-4054-96cf-cafa23e41bc9"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "F4ZiJl7ZzMChlRufw8RL",
+      "type": "service",
+      "name": "Delivery/Setup/Removal",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 25000,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 50000,
+        "subtotal_discounted_cents": 50000,
+        "discount": null,
+        "taxes": [],
+        "taxes_base": [],
+        "total_cents": 50000
+      },
+      "stock_method": "none",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "c881b39f-42b6-4054-96cf-cafa23e41bc9",
+        "F4ZiJl7ZzMChlRufw8RL"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 30,
+      "coa_revenue": 4100
+    },
+    {
+      "uid": "Xgio2ZPsF3SyxtwJjkwD",
+      "type": "surcharge",
+      "name": "Distance Charge",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 25000,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 50000,
+        "subtotal_discounted_cents": 50000,
+        "discount": null,
+        "taxes": [],
+        "taxes_base": [],
+        "total_cents": 50000
+      },
+      "stock_method": "none",
+      "order_number": 993,
+      "uid_order": "HPEOd2oOKdlNbExrPOgS",
+      "path": [
+        "789f4c32-62ea-40c9-b01f-48ff7ffd9c7d",
+        "c881b39f-42b6-4054-96cf-cafa23e41bc9",
+        "Xgio2ZPsF3SyxtwJjkwD"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 464,
+      "coa_revenue": 4110
+    }
+  ],
+  "tax_profile": null,
+  "totals": {
+    "discount_amount_cents": 10000,
+    "subtotal_cents": 262500,
+    "subtotal_discounted_cents": 252500,
+    "taxes": [
+      {
+        "uid": "VEW4Ivy7VNqgxFA5eJw6",
+        "name": "Chicago Rental Tax",
+        "rate": 15,
+        "type": "percent",
+        "amount_cents": 13200
+      },
+      {
+        "uid": "NJc430kShJ0GRj7uvaQZ",
+        "name": "Chicago Sales Tax",
+        "rate": 10.25,
+        "type": "percent",
+        "amount_cents": 6612
+      }
+    ],
+    "transaction_fees": [],
+    "total_cents": 272312,
+    "replacement_total_cents": 989000
+  },
+  "invoices": [
+    {
+      "uid": "ssoVD9acC0qjyS3xai8m",
+      "number": 2383,
+      "status": "issued"
+    }
+  ],
+  "query_by_invoices": [
+    "ssoVD9acC0qjyS3xai8m"
+  ],
+  "query_by_items": [
+    "d5w9h96wJYvSPTDX3niD",
+    "lMxaFkdQPEn45jwGYc5J",
+    "EIzqIswHEVKZvlW7w82E",
+    "I9Ac4WCfjqPhYdwGcfxZ",
+    "kETzgYqCmiCLZvjwBfpE",
+    "WU65HeTi4HHMMk6JLkly",
+    "aAtxeOzwGBYmkzlmsjTc",
+    "nXrZlo5kGVMSqjkSWWaz",
+    "rYxQapfObjx5jhQbhZGw",
+    "bw1VOxvwI21DI3MmYjZF",
+    "meT4g1Buy0xnufy1bGH2",
+    "eqOJlpjvKjSNxDrB3N8v",
+    "tE77BpWcOFsExoPKuDue",
+    "TFbTK9JgH3EmG6eQZN6A",
+    "F4ZiJl7ZzMChlRufw8RL"
+  ],
+  "query_by_contacts": [],
+  "query_by_dates": [
+    "2026-08-12",
+    "2026-08-14"
+  ],
+  "bookings_breakdown": {
+    "quoted": 0,
+    "reserved": 2,
+    "prepped": 0,
+    "out": 0,
+    "returned": 0,
+    "lost": 0,
+    "damaged": 0
+  },
+  "crms_id": 1020,
+  "crms_status": "Open",
+  "subject": "Floor Mats",
+  "reference": null,
+  "xero_id": "5d4eb276-7686-4cb7-beb3-4c171e0b3dc4",
+  "uid_thread": "bl1OYeVsgtsJZMXlXS4Y",
+  "version": 23,
+  "created_at": {
+    "_seconds": 1786483190,
+    "_nanoseconds": 781000000
+  },
+  "updated_at": {
+    "_seconds": 1786729824,
+    "_nanoseconds": 97000000
+  }
+}
