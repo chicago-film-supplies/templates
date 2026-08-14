@@ -13,7 +13,7 @@
  * that is exactly the drift this exists to catch.
  *
  *   1. SCHEMA — every `fixtures/<git_path>/*.json` parses against
- *      `schemas[<collection_source>]`, read from the family's sidecar. This is
+ *      `schemaFor(<collection_source>)`, read from the family's sidecar. This is
  *      the same schema `saveFixture` enforces with, so what passes here can be
  *      saved from the manager.
  *
@@ -29,12 +29,13 @@
  *
  * Fails CLOSED: a fixtures dir with no sidecar, a sidecar with no
  * `collection_source`, an unmapped collection, or sidecar/file drift are all
- * errors. An unknown key in `schemas` yields `undefined` and would otherwise
- * throw a bare TypeError on `.safeParse`.
+ * errors. An unmapped collection is caught by `isCollectionName` BEFORE the
+ * lookup — the previous shape read `schemas[key]`, got `undefined`, and would
+ * otherwise have thrown a bare TypeError on `.safeParse`.
  *
  * Run: deno task lint:fixtures
  */
-import { schemas } from "@cfs/core/schemas";
+import { isCollectionName, schemaFor } from "@cfs/core/schemas";
 
 const problems: string[] = [];
 const note = (file: string, message: string) => problems.push(`${file}\n    ${message}`);
@@ -100,14 +101,20 @@ for (const gitPath of fixtureDirs) {
     continue;
   }
 
-  const schema = schemas[collection];
-  if (!schema) {
+  // `isCollectionName` rather than a truthiness test on the lookup: the guard
+  // this already had now NARROWS as well as checks, so core can make the
+  // exported `schemas` precise without this call site changing again
+  // (api-cloudrun#444). The schema stays the WIDE view — `collection_source` is
+  // read out of a sidecar at runtime, so `schemaFor` can only return the whole
+  // document union and `safeParse` below wants none of it.
+  if (!isCollectionName(collection)) {
     note(
       sidecarPath,
       `collection_source "${collection}" has no entry in @cfs/core's \`schemas\` registry`,
     );
     continue;
   }
+  const schema = schemaFor(collection);
 
   const files: string[] = [];
   for await (const file of walk(`fixtures/${gitPath}`)) {
