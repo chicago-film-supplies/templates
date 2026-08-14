@@ -144,6 +144,33 @@ th.center, td.center {
 #items table, #replacement-costs table {
   width: 100%;
 }
+
+/* Align the items grid with the destinations grid above it. Both tables are
+   `table-layout: fixed` at `width: 100%`, but only #destinations' widths add up
+   to the full width (18 + 6 + two `calc(50% - 12rem)` = 100%), so it lands its
+   third column at exactly 24rem. #items specifies 24rem + n x 6rem, which at
+   every column count the template can emit (6 through 9) falls SHORT of the
+   page — and Blink hands the surplus back in proportion to the specified
+   widths, so the widest column takes the biggest share and column 2 drifts
+   right. Measured on `multi-dest`: 262px against the destination column's 216px.
+
+   Releasing the money columns to `auto` is what fixes it: a fixed-layout table
+   gives the leftover to its auto columns first, so the one column with a
+   specified width — the 24rem description — keeps it exactly and column 2 lands
+   on 24rem at EVERY column count rather than at one of them. Measured across
+   all nine fixtures, 6 columns through 9: 216px both tables, every time.
+
+   `thead th`, not every cell, because under fixed layout only the first row
+   sizes anything — and the banner rows are `colspan`, so a rule that reached
+   them would size nothing and mislead the next reader.
+
+   Releasing only the LAST column also aligns, and is the smaller change, but it
+   pools all ~126px of slack behind Total: the money columns stay at their 6rem
+   and a gap opens between Tax and the right edge that reads as a layout fault.
+   Spreading it keeps the grid evenly set. */
+#items thead th:not(:first-child) {
+  width: auto;
+}
 #totals {
   justify-self: end;
   margin-bottom: 4em;
@@ -154,8 +181,31 @@ td.total,
   text-align: right;
   padding-left: 2em;
 }
-#replacement-costs {
-  break-inside: avoid;
+/* Keep the heading with the rows it introduces — NOT the section with itself.
+   `#replacement-costs { break-inside: avoid }` was unsatisfiable the moment the
+   table outgrew a page: on `long-multi-group` it is 78 rows, so Chromium
+   honoured the request as far as it could by pushing the whole section to a
+   fresh page (leaving page 3 with 13 of ~46 lines on it) and then split the
+   table anyway. There is no CSS for "avoid a break if you fit, otherwise start
+   where you are", so glue the small part instead: heading, column headers, and
+   the first rows.
+
+   The chain is the mechanism — each `break-after: avoid` forbids the break at
+   ONE boundary, so h1 → thead → rows 1-8 makes the earliest legal break the one
+   after row 9. Same mechanism as the `#items` banner rule above.
+
+   8 is measured, not a round number. At 1 ("the heading and a couple of rows")
+   `mixed-two-tax-rates` and `multi-dest` split a replacement table the old rule
+   held intact, and neither saved a page for it — a cost with nothing bought. 8
+   is the smallest depth at which both are whole again, while `long-multi-group`
+   still splits and still fills page 3. Deeper is not better: the glued run is
+   indivisible, so it bounds the blank tail a push can leave at ~N lines, where
+   the section rule bounded it at nothing. Re-measure before changing it —
+   `long-multi-group` is the only fixture under page-break pressure. */
+#replacement-costs h1,
+#replacement-costs thead tr,
+#replacement-costs tbody tr:nth-child(-n+8) {
+  break-after: avoid;
 }
 
 #replacement-costs th, #replacement-costs td {
