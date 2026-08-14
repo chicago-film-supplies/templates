@@ -51,6 +51,11 @@
       "slug": "mixed-two-tax-rates",
       "label": "Two tax rates, mixed item types",
       "description": "The only fixture with TWO tax rates in one order — Chicago Rental Tax 15% on the rentals and Chicago Sales Tax 10.25% on the sales — so it is the only one where the totals block emits more than a single tax row. Also the widest item-type spread in the family: rental, sale, replacement, service and surcharge in one document, with the service and surcharge untaxed beside taxed lines, plus repeated product uids across rows. It renders 9 columns (a 100%-discounted rental turns the Discount column on); rental-discount-taxed and long-multi-group share that count and are kept for different reasons — see their descriptions. Captured from prod order 993."
+    },
+    {
+      "slug": "rental-discount-taxed",
+      "label": "9-column ceiling, single page",
+      "description": "The 9-column ceiling readable in a single view: Duration, Discount and Tax all on, over four rentals in one group with one 20% discount and 15% rental tax. This is the fixture for eyeballing column widths under `table-layout: fixed` — the tightest grid the template can produce, small enough to take in at once. long-multi-group renders the same nine columns but over ~90 rows across several pages, which answers a different question (page breaks, not widths); a reader who sees only the column count will otherwise delete one of the two as a duplicate. Captured from prod order 943."
     }
   ],
   "render": {
