@@ -31,6 +31,11 @@
       "slug": "service-untaxed",
       "label": "Service only, untaxed",
       "description": "The 6-column floor: the only fixture that drops BOTH the Duration and the Tax column. One untaxed service line, no rental anywhere, no discount — so every conditional column in the items grid is off and the header is just Item Description / Type / Qty / Unit Price / Subtotal / Total. Note it is NOT \"the only fixture without tax\" — rental-discount-exempt drops Tax too but keeps Duration. Captured from prod order 977."
+    },
+    {
+      "slug": "sale-taxed",
+      "label": "Taxed sale, no rentals",
+      "description": "7 columns — Tax on, Duration and Discount off. A single taxed sale line and no rental anywhere, so this is the only fixture that renders a Tax column with NO Duration column beside it, and the only one whose grid is exactly one conditional wide. Captured from prod order 992."
     }
   ],
   "render": {
