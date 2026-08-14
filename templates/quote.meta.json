@@ -36,6 +36,11 @@
       "slug": "sale-taxed",
       "label": "Taxed sale, no rentals",
       "description": "7 columns — Tax on, Duration and Discount off. A single taxed sale line and no rental anywhere, so this is the only fixture that renders a Tax column with NO Duration column beside it, and the only one whose grid is exactly one conditional wide. Captured from prod order 992."
+    },
+    {
+      "slug": "rental-discount-exempt",
+      "label": "Discounted rentals, tax exempt",
+      "description": "8 columns via Duration + Discount with Tax OFF — the only fixture that lays a Discount column out with no Tax column next to it, because the organization is tax_exempt and totals.taxes is empty. Two of its five rentals are 100% discounted, so subtotal_discounted_cents is 0: the falsy-zero case that made `||` print the pre-discount subtotal. Also carries two sibling groups under one destination. templates#69 listed this order as 9 columns; measured 2026-08-14 it is 8. Captured from prod order 989."
     }
   ],
   "render": {
