@@ -80,13 +80,30 @@ pixel lock only once it reaches the design-system standard"*, via its
 when a template **graduates** — not before.
 
 ⚠️ **What a golden would NOT have caught, so do not reach for one as the
-answer.** Neither fixture exercises a discount or a transaction fee — measured
-2026-08-07: 0 discounts and 0 `transaction_fees` across 18 line items in the two
-fixtures — so **5 of `quote.eta`'s 19 `it.currency` sites sit in branches
-nothing renders** (`:215`, `:220`, `:254`, `:258`, `:273`). A golden compares
-what was rendered; it is silent about a branch that never ran. Fixture
-*coverage* and golden *stability* are different problems, and only the first one
-is live today.
+answer.** A golden compares what was rendered; it is silent about a branch that
+never ran. Fixture *coverage* and golden *stability* are different problems, and
+only the first one is live today.
+
+The set was widened for exactly that reason — 3 fixtures to **9** on
+2026-08-14, seven of them captured from real prod orders — and the argument
+still holds at the new size. Measured against the current set: 121 line items,
+10 of them discounted across 5 fixtures, and 1 transaction fee in 1 fixture.
+The items grid is now covered at **every column count it can produce, 6 through
+9**, including both 8-column shapes (Duration+Discount and Duration+Tax), which
+is what the banner-`colspan` bug needed and did not have.
+
+What still renders in **no** fixture, and would therefore survive a green
+golden run untouched:
+
+| branch | why nothing covers it |
+|---|---|
+| the foreign-country line in `#bill-to` | all 9 `billing_address.country_name` are `United States` |
+| an absent `billing_address` | the field is `.optional()` and `Address` is `.nullable()`, but no fixture omits it |
+| a destination with no delivery/collection window | every boundary is nullable; all 9 fixtures set them |
+
+Those three are guards, not layout, so a golden was never going to speak to
+them — which is the point of keeping this note rather than replacing it with a
+screenshot.
 
 ## Dependencies
 
