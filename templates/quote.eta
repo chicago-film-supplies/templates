@@ -463,15 +463,21 @@ const replacementLine = (item) => {
         <td class="total"><%= it.money.formatCents(r.lineTotalCents) %></td>
       </tr>
       <% }) %>
-    </tbody>
-    <tfoot>
-      <tr>
+      <%/* The last row of the <tbody>, NOT a <tfoot> — deliberately, and against
+           the semantics. Browsers repeat a <tfoot> on every printed page by
+           design, which is right for a running summary and wrong for this: it is
+           a GRAND total, identical on each repeat, so on `long-multi-group` it
+           printed at the foot of pages 3, 4 and 5 and each of the first two read
+           as if the table ended there at $28,847.87. There is no CSS that
+           suppresses only the non-final repeat, and no way to label them apart
+           without a mechanism outside the table. templates#74 finding 1. */%>
+      <tr class="grand-total">
         <th scope="row" colspan="4">Total Replacement Cost</th>
         <td></td>
         <td><%= it.money.formatCents(rTax) %></td>
         <td class="total"><%= it.money.formatCents(rTotal) %></td>
       </tr>
-    </tfoot>
+    </tbody>
   </table>
 </section>
 <% } %>
