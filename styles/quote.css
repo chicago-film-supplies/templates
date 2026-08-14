@@ -126,6 +126,15 @@ th.center, td.center {
   margin-bottom: .25rem;
 }
 
+/* Keep a group/destination banner with the rows it introduces. Without this a
+   banner can be the last row on a page and its items open the next one with no
+   heading — measured on `long-multi-group`, where "Expendables" ended page 2
+   and its two rows started page 3. Selected by the colspan rather than by a
+   class because the colspan is what MAKES it a banner: the same fact the row
+   count is checked against. */
+#items tbody tr:has(> td[colspan]) {
+  break-after: avoid;
+}
 #items tr:last-child td {
   border-bottom: 1px solid #121212;
 }
