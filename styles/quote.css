@@ -6,6 +6,17 @@
    the same rule. */
 html {
   font-size: 9px;
+
+  /* THE ALIGNMENT EDGE — one number, three tables.
+     #items ends its description column here, #destinations ends its dates block
+     here, and #totals begins here, so the page reads as one grid rather than
+     three tables that happen to share a width. Measured at 216px in all three
+     across every fixture and every column count the items grid can emit, 6
+     through 9.
+     A custom property rather than the literal `24rem` in four places: the
+     alignment IS the contract, and it was previously held together by a comment
+     doing the arithmetic (`18 + 6 = 24rem`) that nothing checked. */
+  --label-col: 24rem;
 }
 
 body {
@@ -58,7 +69,16 @@ thead th {
   margin-bottom: 2px;
   border-bottom: 1px solid #121212;
 }
-tbody tr:first-child td {
+/* Clear the <thead> border above — `thead + tbody`, not a bare `tbody`, because
+   the rule only has a job where there IS a thead.
+   #totals is the only table here without one, and the only one whose body row
+   mixes a <th> label with a <td> value. Unscoped, this gave the value 4px and
+   the label 2px, so "Subtotal:" printed 2px above its own amount — measured
+   textTop 395.09 vs 397.09, in every one of the nine fixtures.
+   The v55 draft recovered on 2026-08-14 scoped this by naming three tables and
+   omitted #details, which does have a thead and does need the clearance. The
+   sibling combinator states the actual condition instead of enumerating it. */
+thead + tbody tr:first-child td {
   padding-top: 4px;
 }
 th,
@@ -73,7 +93,7 @@ td {
    column is simply the first one; `.wide` names it for the cells `:first-child`
    cannot reach — a `colspan` banner, or a second cell on the same row. */
 th:first-child, td:first-child, .wide {
-  width: 24rem;
+  width: var(--label-col);
 }
 th:first-child, td:first-child {
   padding-left: 0;
@@ -93,26 +113,28 @@ th.center, td.center {
    first row of the table sizes anything, and this table's first row is a
    header — so the width that used to sit on `td.dates` could never take effect
    and the date range wrapped mid-range ("Thu 7/9/26 - Sun" / "7/12/26").
-   18 + 6 = 24rem, so the two address columns split what is left of the page
-   exactly and no column is left to absorb a remainder.
+   The dates block is derived FROM the shared edge rather than adding up to it:
+   dates + days is `--label-col` by construction, so the two address columns
+   split exactly what is left of the page and no column absorbs a remainder.
    The blanket cell widths are released here: left in force they fight the
    colgroup, and the spacer column swallows half the row. */
 #destinations th, #destinations td {
   width: auto;
 }
 #destinations col.dates {
-  width: 18rem;
+  width: calc(var(--label-col) - 6rem);
 }
 #destinations col.days {
   width: 6rem;
 }
 #destinations col.address {
-  width: calc(50% - 12rem);
+  width: calc((100% - var(--label-col)) / 2);
 }
 
 #details,
 #destinations,
 #items,
+#information,
 #replacement-costs {
   grid-column: 1 / -1;
   width: 100%;
@@ -171,8 +193,22 @@ th.center, td.center {
 #items thead th:not(:first-child) {
   width: auto;
 }
+/* #totals starts ON the alignment edge, so its label column shares a left edge
+   with #destinations column 3 and #items column 2, and its money column ends on
+   the right margin with the #items Total column.
+   Full-bleed + a left margin, NOT `justify-self: end` in grid column 2. The
+   wrapper is `1fr 1fr`, so column 2 begins at 357px while the shared edge is at
+   216px — the old placement could not reach it at any justification, and a
+   negative margin would have hard-coded the 141px difference between two
+   numbers that are each free to move.
+   The money column is what right-aligns against #items Total, not a column
+   boundary: the items grid divides its remainder by the column count, so every
+   internal edge to the right of --label-col moves between 6 and 9 columns
+   (measured: the Total column opens at 606px, 623px, 634px or 643px). The two
+   edges that hold at every count are this one and the right margin. */
 #totals {
-  justify-self: end;
+  grid-column: 1 / -1;
+  margin-left: var(--label-col);
   margin-bottom: 4em;
 }
 th.total,

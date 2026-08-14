@@ -15,6 +15,32 @@ const hasRentals = it.orders.orderHasRentals(lineItems);
 const hasTax = it.orders.orderHasTax(lineItems);
 const replacementItems = lineItems.filter(i => i.price.replacement_cents != null);
 
+// The Type column exists for ONE job: a product stocked both for sale and for
+// rent needs the column to say which one this line is. The other four members
+// of DOC_LINE_ITEM_TYPES — replacement, service, surcharge, transaction_fee —
+// answer a question nobody asked, in raw enum spelling, and one of them does
+// not fit: `transaction_fee` is a single unbreakable token measured at 71px
+// against the 61px the 9-column grid gives the column, so it overflowed its
+// cell on `discounts-and-fee`. Diagnosed in the v66 draft recovered on
+// 2026-08-14 (branch recovered/quote-12unit-grid-2026-08-12).
+const DISAMBIGUATED_ITEM_TYPES = new Set(["rental", "sale"]);
+
+// A quote is read, not reconciled. A column of $0.00 and 0 is noise that hides
+// the figures that matter, so a numeric cell renders nothing at all at zero.
+//
+// NON-ZERO rather than "greater than zero", deliberately. Core lets a flat
+// discount exceed its own line, so `subtotal_discounted_cents` is allowed to go
+// negative and its sign is load-bearing — a negative is a credit the reader
+// must see, and it is the one case where a blank cell would be a lie rather
+// than a tidy-up. Both helpers also swallow null, which is what lets the tax
+// cell drop its separate existence guard.
+//
+// GRAND TOTALS ARE DELIBERATELY EXEMPT — the #totals block and the replacement
+// footer print their figure at zero, because a total of zero is a fact about
+// the quote rather than an absent value.
+const numberCell = (n) => n ? n : "";
+const moneyCell = (c) => c ? it.money.formatCents(c) : "";
+
 // How deep a line item is nested UNDER ANOTHER LINE ITEM — 0 for a top-level
 // line, 1 for its component, 2 for a component of a component.
 //
@@ -333,12 +359,12 @@ const replacementLine = (item) => {
             <br><%= item.description %>
             <% } %>
           </td>
-          <td class="capitalize"><%= item.type %></td>
-          <td><%= item.quantity %></td>
+          <td class="capitalize"><% if (DISAMBIGUATED_ITEM_TYPES.has(item.type)) { %><%= item.type %><% } %></td>
+          <td><%= numberCell(item.quantity) %></td>
           <% if (hasRentals) { %>
           <td><%= item.type === "rental" && item.price.chargeable_days ? item.price.chargeable_days + ' days' : '' %></td>
           <% } %>
-          <td><%= it.money.formatCents(item.price.base_cents) %></td>
+          <td><%= moneyCell(item.price.base_cents) %></td>
           <% if (hasDiscount) { %>
           <td>
             <%/* Parenthesised: a discount is a deduction, and the accounting
@@ -346,12 +372,16 @@ const replacementLine = (item) => {
                  Both arms get the parens — a `percent` discount is the same
                  deduction expressed as a rate, so bracketing only the flat one
                  would make the column's two shapes look like different kinds
-                 of number. Empty cell when there is no discount, NOT `(  )`. */%>
+                 of number. Empty cell when there is no discount, NOT `(  )`.
+
+                 Padded inside the brackets — `( 20% )`, not `(20%)`. At the 9px
+                 root the glyphs sit tight enough that an unpadded bracket reads
+                 as part of the number rather than around it. */%>
             <% if (item.price.discount) { %>
             <% if (item.price.discount.type === "percent") { %>
-            (<%= item.price.discount.rate %>%)
+            <% if (item.price.discount.rate) { %>( <%= item.price.discount.rate %>% )<% } %>
             <% } else { %>
-            (<%= it.money.formatCents(item.price.discount.amount_cents) %>)
+            <% if (item.price.discount.amount_cents) { %>( <%= it.money.formatCents(item.price.discount.amount_cents) %> )<% } %>
             <% } %>
             <% } %>
           </td>
@@ -363,15 +393,14 @@ const replacementLine = (item) => {
             // lines where the discount mattered most. The bug was invisible
             // because neither fixture carried a discount until templates#57.
           %>
-          <td><%= it.money.formatCents(item.price.subtotal_discounted_cents ?? item.price.subtotal_cents) %></td>
+          <td><%= moneyCell(item.price.subtotal_discounted_cents ?? item.price.subtotal_cents) %></td>
           <% if (hasTax) { %>
-          <td>
-            <% if (item.price.taxes && item.price.taxes.length > 0) { %>
-            <%= it.money.formatCents(item.price.taxes.reduce((sum, t) => sum + t.amount_cents, 0)) %>
-            <% } %>
-          </td>
+          <%/* The `taxes && taxes.length > 0` guard is gone because `moneyCell`
+               subsumes it: an empty array reduces to 0 and renders blank, which
+               is the same cell the guard produced. One test, not two. */%>
+          <td><%= moneyCell((item.price.taxes || []).reduce((sum, t) => sum + t.amount_cents, 0)) %></td>
           <% } %>
-          <td class="total"><%= it.money.formatCents(item.price.total_cents) %></td>
+          <td class="total"><%= moneyCell(item.price.total_cents) %></td>
         </tr>
         <% } %>
       <% }) %>
@@ -397,7 +426,10 @@ const replacementLine = (item) => {
       <% if (totals.discount_amount_cents > 0) { %>
       <tr>
         <th scope="row">Discount: </th>
-        <td>(<%= it.money.formatCents(totals.discount_amount_cents) %>)</td>
+        <%/* Padded inside the brackets, matching the Discount column in #items —
+             the two are the same deduction at two scales and must not look like
+             two different conventions. */%>
+        <td>( <%= it.money.formatCents(totals.discount_amount_cents) %> )</td>
       </tr>
       <tr>
         <th scope="row">Subtotal after Discount: </th>
@@ -455,12 +487,12 @@ const replacementLine = (item) => {
       %>
       <tr>
         <td><%= item.name %></td>
-        <td><%= it.money.formatCents(r.unitCostCents) %></td>
-        <td><%= it.money.formatCents(r.unitTaxCents) %></td>
-        <td class="total"><%= it.money.formatCents(r.unitTotalCents) %></td>
-        <td class="center"><%= r.qty %></td>
-        <td><%= it.money.formatCents(r.lineTaxCents) %></td>
-        <td class="total"><%= it.money.formatCents(r.lineTotalCents) %></td>
+        <td><%= moneyCell(r.unitCostCents) %></td>
+        <td><%= moneyCell(r.unitTaxCents) %></td>
+        <td class="total"><%= moneyCell(r.unitTotalCents) %></td>
+        <td class="center"><%= numberCell(r.qty) %></td>
+        <td><%= moneyCell(r.lineTaxCents) %></td>
+        <td class="total"><%= moneyCell(r.lineTotalCents) %></td>
       </tr>
       <% }) %>
       <%/* The last row of the <tbody>, NOT a <tfoot> — deliberately, and against
@@ -474,7 +506,10 @@ const replacementLine = (item) => {
       <tr class="grand-total">
         <th scope="row" colspan="4">Total Replacement Cost</th>
         <td></td>
-        <td><%= it.money.formatCents(rTax) %></td>
+        <td><%= moneyCell(rTax) %></td>
+        <%/* A GRAND TOTAL, so it prints at zero — `formatCents`, not `moneyCell`.
+             A replacement total of $0.00 is a statement about the order; a blank
+             cell where the reader expects the summed figure reads as a fault. */%>
         <td class="total"><%= it.money.formatCents(rTotal) %></td>
       </tr>
     </tbody>
