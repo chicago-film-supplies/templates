@@ -56,6 +56,11 @@
       "slug": "rental-discount-taxed",
       "label": "9-column ceiling, single page",
       "description": "The 9-column ceiling readable in a single view: Duration, Discount and Tax all on, over four rentals in one group with one 20% discount and 15% rental tax. This is the fixture for eyeballing column widths under `table-layout: fixed` — the tightest grid the template can produce, small enough to take in at once. long-multi-group renders the same nine columns but over ~90 rows across several pages, which answers a different question (page breaks, not widths); a reader who sees only the column count will otherwise delete one of the two as a duplicate. Captured from prod order 943."
+    },
+    {
+      "slug": "long-multi-group",
+      "label": "Long order: page breaks + components",
+      "description": "The only fixture under PAGE-BREAK pressure and the only one with real components — two things no other fixture in the family has. ~90 items across 10 groups on one destination, 24 charge days, plus a second long table below it (replacement total $28,847.87), so it is the only fixture that shows group banner rows recurring across pages and whether the items header repeats. It is also the component-indentation fixture: 31 line items are nested under another LINE ITEM rather than under a divider (the Rolling Set Kit carries 16, the pop-up tent 6), which is what the one-em-per-level indent exists to render — every other fixture bottoms out at a group, so the indent is uniformly 0 and the code is unexercised. Brings a third tax profile (tax_rantoul, Rantoul Sales Tax) and `custom-` prefixed line uids alongside repeated product uids. It is the largest file in the repo by a wide margin; that is the cost of the only page-break and component coverage there is, so do not hand-trim it or it stops being a captured document. Captured from prod order 985."
     }
   ],
   "render": {
