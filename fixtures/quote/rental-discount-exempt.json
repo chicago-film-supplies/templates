@@ -1,0 +1,386 @@
+{
+  "uid": "DrMjeM6MrJ5us4IDPye4",
+  "number": 989,
+  "status": "quoted",
+  "organization": {
+    "uid": "hCdYsTi9NDWxq4ufvHhV",
+    "name": "Morgan Owen",
+    "crms_id": 550,
+    "tax_profile": "tax_applied",
+    "xero_id": "d3d08972-9bf6-45f8-93bf-d67e8722993d",
+    "billing_address": {
+      "city": "Chicago",
+      "country_name": "United States",
+      "full": "8194 Maple Ave",
+      "name": "Sage Maddox",
+      "postcode": "60109",
+      "region": "IL",
+      "street": "5231 Elm Ln",
+      "street2": "",
+      "mapbox_id": "Sample text for mapbox_id......................................",
+      "address_coordinates": null,
+      "user_coordinates": null
+    }
+  },
+  "destinations": [
+    {
+      "dates": {
+        "delivery_start": "2026-08-21T10:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1787324400,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-08-21T10:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1787324400,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-08-24T10:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1787583600,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-08-24T10:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1787583600,
+          "_nanoseconds": 0
+        },
+        "charge_start": "2026-08-21T10:00:00.000-05:00",
+        "charge_start_fs": {
+          "_seconds": 1787324400,
+          "_nanoseconds": 0
+        },
+        "charge_end": "2026-08-24T10:00:00.000-05:00",
+        "charge_end_fs": {
+          "_seconds": 1787583600,
+          "_nanoseconds": 0
+        },
+        "days_active": 2,
+        "days_charged": 2
+      },
+      "delivery": {
+        "uid": "vTn8CTAwwJHEJZLBzsOw",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "172 Magnolia Rd",
+          "name": "Eastvale",
+          "postcode": "65048",
+          "region": "IL",
+          "street": "3408 Cypress Ter",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "collection": {
+        "uid": "vTn8CTAwwJHEJZLBzsOw",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "5609 Elm Ln",
+          "name": "Westmont",
+          "postcode": "65538",
+          "region": "IL",
+          "street": "7695 Spruce Ln",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "customer_collecting": true,
+      "customer_returning": true
+    }
+  ],
+  "items": [
+    {
+      "uid": "564f27fc-e634-4045-90be-69a60d7841fb",
+      "type": "destination",
+      "name": "Fillmore",
+      "path": [
+        "564f27fc-e634-4045-90be-69a60d7841fb"
+      ],
+      "uid_delivery": "vTn8CTAwwJHEJZLBzsOw",
+      "uid_collection": "vTn8CTAwwJHEJZLBzsOw",
+      "description": ""
+    },
+    {
+      "uid": "fada5bab-35c3-4419-8ab9-cabd25a79e84",
+      "type": "group",
+      "name": "Tables & Chairs",
+      "path": [
+        "564f27fc-e634-4045-90be-69a60d7841fb",
+        "fada5bab-35c3-4419-8ab9-cabd25a79e84"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "aosey66Ih8tTaoWKQXmO",
+      "type": "rental",
+      "name": "6' Folding Table",
+      "description": "",
+      "quantity": 10,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 8000,
+        "chargeable_days": 2,
+        "formula": "five_day_week",
+        "subtotal_cents": 6000,
+        "subtotal_discounted_cents": 0,
+        "discount": {
+          "rate": 100,
+          "type": "percent",
+          "amount_cents": 6000
+        },
+        "taxes": [],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 989,
+      "uid_order": "DrMjeM6MrJ5us4IDPye4",
+      "path": [
+        "564f27fc-e634-4045-90be-69a60d7841fb",
+        "fada5bab-35c3-4419-8ab9-cabd25a79e84",
+        "aosey66Ih8tTaoWKQXmO"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 53,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "urf6KT60uszcM0etGDMX",
+      "type": "rental",
+      "name": "Folding Chair",
+      "description": "",
+      "quantity": 40,
+      "price": {
+        "base_cents": 200,
+        "replacement_cents": 1600,
+        "chargeable_days": 2,
+        "formula": "five_day_week",
+        "subtotal_cents": 8000,
+        "subtotal_discounted_cents": 0,
+        "discount": {
+          "rate": 100,
+          "type": "percent",
+          "amount_cents": 8000
+        },
+        "taxes": [],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 989,
+      "uid_order": "DrMjeM6MrJ5us4IDPye4",
+      "path": [
+        "564f27fc-e634-4045-90be-69a60d7841fb",
+        "fada5bab-35c3-4419-8ab9-cabd25a79e84",
+        "urf6KT60uszcM0etGDMX"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 28,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "3014b680-6cb7-43bd-8049-68d5813448bd",
+      "type": "group",
+      "name": "Tents",
+      "path": [
+        "564f27fc-e634-4045-90be-69a60d7841fb",
+        "3014b680-6cb7-43bd-8049-68d5813448bd"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "J7svp77V0tLx6xBaKRBx",
+      "type": "rental",
+      "name": "10' x 10' Pop Up Tent (White)",
+      "description": "",
+      "quantity": 10,
+      "price": {
+        "base_cents": 6000,
+        "replacement_cents": 50000,
+        "chargeable_days": 2,
+        "formula": "five_day_week",
+        "subtotal_cents": 60000,
+        "subtotal_discounted_cents": 30000,
+        "discount": {
+          "rate": 50,
+          "type": "percent",
+          "amount_cents": 30000
+        },
+        "taxes": [],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 30000
+      },
+      "stock_method": "bulk",
+      "order_number": 989,
+      "uid_order": "DrMjeM6MrJ5us4IDPye4",
+      "path": [
+        "564f27fc-e634-4045-90be-69a60d7841fb",
+        "3014b680-6cb7-43bd-8049-68d5813448bd",
+        "J7svp77V0tLx6xBaKRBx"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 139,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "3kzv0sanOljc25psMVkU",
+      "type": "rental",
+      "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+      "description": "",
+      "quantity": 40,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 3000,
+        "chargeable_days": 2,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 989,
+      "uid_order": "DrMjeM6MrJ5us4IDPye4",
+      "path": [
+        "564f27fc-e634-4045-90be-69a60d7841fb",
+        "3014b680-6cb7-43bd-8049-68d5813448bd",
+        "J7svp77V0tLx6xBaKRBx",
+        "3kzv0sanOljc25psMVkU"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 473,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Wnj0LODXW6zCYRmnJoxQ",
+      "type": "rental",
+      "name": "20lb Shot Bag",
+      "description": "",
+      "quantity": 40,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 9000,
+        "chargeable_days": 2,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 989,
+      "uid_order": "DrMjeM6MrJ5us4IDPye4",
+      "path": [
+        "564f27fc-e634-4045-90be-69a60d7841fb",
+        "3014b680-6cb7-43bd-8049-68d5813448bd",
+        "J7svp77V0tLx6xBaKRBx",
+        "Wnj0LODXW6zCYRmnJoxQ"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 138,
+      "coa_revenue": 4000
+    }
+  ],
+  "tax_profile": "tax_exempt",
+  "totals": {
+    "discount_amount_cents": 44000,
+    "subtotal_cents": 74000,
+    "subtotal_discounted_cents": 30000,
+    "taxes": [],
+    "transaction_fees": [],
+    "total_cents": 30000,
+    "replacement_total_cents": 1124000
+  },
+  "invoices": [],
+  "query_by_invoices": [],
+  "query_by_items": [
+    "aosey66Ih8tTaoWKQXmO",
+    "urf6KT60uszcM0etGDMX",
+    "J7svp77V0tLx6xBaKRBx",
+    "3kzv0sanOljc25psMVkU",
+    "Wnj0LODXW6zCYRmnJoxQ"
+  ],
+  "query_by_contacts": [],
+  "query_by_dates": [
+    "2026-08-21",
+    "2026-08-24"
+  ],
+  "bookings_breakdown": {
+    "quoted": 0,
+    "reserved": 0,
+    "prepped": 0,
+    "out": 0,
+    "returned": 0,
+    "lost": 0,
+    "damaged": 0
+  },
+  "crms_id": 1016,
+  "crms_status": "Provisional",
+  "subject": "Tables, Chairs, Tents",
+  "reference": null,
+  "xero_id": "800b76aa-83db-4900-b781-f30d52f080ca",
+  "uid_thread": "ZCbToQ41Kw1pwgruGpAz",
+  "version": 8,
+  "created_at": {
+    "_seconds": 1786389789,
+    "_nanoseconds": 939000000
+  },
+  "updated_at": {
+    "_seconds": 1786717577,
+    "_nanoseconds": 287000000
+  }
+}

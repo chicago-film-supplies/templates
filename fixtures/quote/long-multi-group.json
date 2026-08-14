@@ -1,0 +1,3973 @@
+{
+  "uid": "5aWWMJXV5SuEDLFbd6AU",
+  "number": 985,
+  "status": "reserved",
+  "organization": {
+    "uid": "Omyms3GkmyIreWjSuh2K",
+    "name": "Sample text for name.........",
+    "crms_id": 536,
+    "tax_profile": "tax_rantoul",
+    "xero_id": "64f5c266-62e1-40cc-9ff6-45b37efc6ce2",
+    "billing_address": {
+      "city": "Rantoul",
+      "country_name": "United States",
+      "full": "138 Chestnut St",
+      "name": "Sample text for name.........",
+      "postcode": "67957",
+      "region": "IL",
+      "street": "7240 Chestnut St",
+      "street2": "",
+      "mapbox_id": "Sample text for mapbox_id......................................",
+      "address_coordinates": null,
+      "user_coordinates": null
+    }
+  },
+  "destinations": [
+    {
+      "dates": {
+        "delivery_start": "2026-08-11T09:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1786456800,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-08-11T09:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1786456800,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-09-21T09:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1789999200,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-09-21T09:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1789999200,
+          "_nanoseconds": 0
+        },
+        "charge_start": "2026-08-17T09:00:00.000-05:00",
+        "charge_start_fs": {
+          "_seconds": 1786975200,
+          "_nanoseconds": 0
+        },
+        "charge_end": "2026-09-18T15:00:00.000-05:00",
+        "charge_end_fs": {
+          "_seconds": 1789761600,
+          "_nanoseconds": 0
+        },
+        "days_active": 29,
+        "days_charged": 24
+      },
+      "delivery": {
+        "uid": "WSkB95dp3FArz5a98CMn",
+        "address": {
+          "city": "Rantoul",
+          "country_name": "United States",
+          "full": "8873 Magnolia Rd",
+          "name": "Sample text for name.........",
+          "postcode": "63529",
+          "region": "IL",
+          "street": "814 Maple Ave",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "collection": {
+        "uid": "WSkB95dp3FArz5a98CMn",
+        "address": {
+          "city": "Rantoul",
+          "country_name": "United States",
+          "full": "5501 Magnolia Rd",
+          "name": "Sample text for name.........",
+          "postcode": "63216",
+          "region": "IL",
+          "street": "1175 Maple Ave",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "customer_collecting": true,
+      "customer_returning": true
+    }
+  ],
+  "items": [
+    {
+      "uid": "2c585535-eae6-4285-995c-0dd1cec08b9b",
+      "type": "destination",
+      "name": "Waterloo West Productions LLC",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b"
+      ],
+      "uid_delivery": "WSkB95dp3FArz5a98CMn",
+      "uid_collection": "WSkB95dp3FArz5a98CMn",
+      "description": ""
+    },
+    {
+      "uid": "2e7b3b4f-0089-465e-976c-9681cf9af433",
+      "type": "group",
+      "name": "Janitorial",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "2e7b3b4f-0089-465e-976c-9681cf9af433"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "kCysq2sl0TF4Ov1JQK2u",
+      "type": "rental",
+      "name": "Pop Up Garbage Can",
+      "description": "",
+      "quantity": 10,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 6000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 28800,
+        "subtotal_discounted_cents": 28800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 2592
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 31392
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "2e7b3b4f-0089-465e-976c-9681cf9af433",
+        "kCysq2sl0TF4Ov1JQK2u"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 113,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "dr3ffAK5baCXBqk4sblF",
+      "type": "rental",
+      "name": "Butt Bucket (Small)",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 4000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 11520,
+        "subtotal_discounted_cents": 11520,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1037
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 12557
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "2e7b3b4f-0089-465e-976c-9681cf9af433",
+        "dr3ffAK5baCXBqk4sblF"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 340,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "A3ZY8iWelKwaJSnRRHSu",
+      "type": "rental",
+      "name": "Broom & Dustpan",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 3000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 2880,
+        "subtotal_discounted_cents": 2880,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 259
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 3139
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "2e7b3b4f-0089-465e-976c-9681cf9af433",
+        "A3ZY8iWelKwaJSnRRHSu"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 310,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "6Ps1MW3eNEoHNje5gQ4u",
+      "type": "rental",
+      "name": "Indoor/Outdoor Pushbroom (24\")",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 3000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 2880,
+        "subtotal_discounted_cents": 2880,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 259
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 3139
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "2e7b3b4f-0089-465e-976c-9681cf9af433",
+        "6Ps1MW3eNEoHNje5gQ4u"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 283,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "XML05X6cXsF5re79mn2J",
+      "type": "rental",
+      "name": "Trash Grabber",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 6000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 5760,
+        "subtotal_discounted_cents": 5760,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 518
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 6278
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "2e7b3b4f-0089-465e-976c-9681cf9af433",
+        "XML05X6cXsF5re79mn2J"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 532,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+      "type": "group",
+      "name": "Power, Lights & Tools",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "custom-d832e2c1-724b-46d5-8393-fdb3c56a23c8",
+      "type": "rental",
+      "name": "Locations Toolkit",
+      "description": "Include crowbar, bolt cutters...",
+      "quantity": 1,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 0,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "none",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "custom-d832e2c1-724b-46d5-8393-fdb3c56a23c8"
+      ],
+      "inclusion_type": null,
+      "zero_priced": true,
+      "crms_id": null
+    },
+    {
+      "uid": "Ep1uiJRVTLCF9DfiNJNB",
+      "type": "rental",
+      "name": "Rolling Set Kit",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 0,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "none",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB"
+      ],
+      "inclusion_type": null,
+      "zero_priced": true,
+      "crms_id": 656,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "21RWP35IDWuWNCt7Dg40",
+      "type": "sale",
+      "name": "2\" Gaff Tape (White)",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 2600,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 5200,
+        "subtotal_discounted_cents": 5200,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 468
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 5668
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "21RWP35IDWuWNCt7Dg40"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 52,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "Ohx5bgTbtZESkiB4qj6T",
+      "type": "sale",
+      "name": "Safety Stripe Adhesive Marking Tape (2\" x 54')",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 1044,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 1044,
+        "subtotal_discounted_cents": 1044,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 94
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 1138
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "Ohx5bgTbtZESkiB4qj6T"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 134,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "rYxQapfObjx5jhQbhZGw",
+      "type": "sale",
+      "name": "Blue Painters Tape (1.88\") - 3M",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 800,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 800,
+        "subtotal_discounted_cents": 800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 72
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 872
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "rYxQapfObjx5jhQbhZGw"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 67,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "XNt6JGG686pBZaBc0iuu",
+      "type": "sale",
+      "name": "Caution Tape (3\" x 1000')",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 1200,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 1200,
+        "subtotal_discounted_cents": 1200,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 108
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 1308
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "XNt6JGG686pBZaBc0iuu"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 525,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "ibf5SWAr9jf5xUfhxOWh",
+      "type": "sale",
+      "name": "Flagging Tape (1\" x 600')",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 1200,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 2400,
+        "subtotal_discounted_cents": 2400,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 216
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 2616
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "ibf5SWAr9jf5xUfhxOWh"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 88,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "MNPnsialWf4aOjI1p4bB",
+      "type": "sale",
+      "name": "Paper Towel Roll",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 400,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 1600,
+        "subtotal_discounted_cents": 1600,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 144
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 1744
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "MNPnsialWf4aOjI1p4bB"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 76,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "VrlGspm4eiAmLocYyFpY",
+      "type": "sale",
+      "name": "Toilet Paper Roll",
+      "description": "",
+      "quantity": 9,
+      "price": {
+        "base_cents": 300,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 2700,
+        "subtotal_discounted_cents": 2700,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 243
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 2943
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "VrlGspm4eiAmLocYyFpY"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 77,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "GZzSkx6J3vVA2Zo76GR6",
+      "type": "sale",
+      "name": "Toilet Scrubber",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 600,
+        "subtotal_discounted_cents": 600,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 54
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 654
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "GZzSkx6J3vVA2Zo76GR6"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 79,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "Bd0cPoN3sZcLLTpofzJT",
+      "type": "sale",
+      "name": "Plunger",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 800,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 800,
+        "subtotal_discounted_cents": 800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 72
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 872
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "Bd0cPoN3sZcLLTpofzJT"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 78,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "hHTccSBSEGSTusFOYfXi",
+      "type": "sale",
+      "name": "Glass Cleaning Wipes",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 400,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 400,
+        "subtotal_discounted_cents": 400,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 36
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 436
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "hHTccSBSEGSTusFOYfXi"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 75,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "0hcovC74cLhIUjzUr2Oq",
+      "type": "sale",
+      "name": "Nitrile Gloves (150 Pack)",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 1800,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 1800,
+        "subtotal_discounted_cents": 1800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 162
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 1962
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "0hcovC74cLhIUjzUr2Oq"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 415,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "R0HfaiAnq19HisConBJJ",
+      "type": "sale",
+      "name": "Febreze Air Freshener",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 700,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 700,
+        "subtotal_discounted_cents": 700,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 63
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 763
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "R0HfaiAnq19HisConBJJ"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 87,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "HvcanRL1tvtfJE2pbvJP",
+      "type": "sale",
+      "name": "Resolve Carpet Cleaner",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 1000,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 1000,
+        "subtotal_discounted_cents": 1000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 90
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 1090
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "HvcanRL1tvtfJE2pbvJP"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 84,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "qqsoKZzSJGBXWpvPTZbl",
+      "type": "sale",
+      "name": "Hand Soap",
+      "description": "",
+      "quantity": 6,
+      "price": {
+        "base_cents": 400,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 2400,
+        "subtotal_discounted_cents": 2400,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 216
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 2616
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "qqsoKZzSJGBXWpvPTZbl"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 81,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "ePJgrlQYm5AEoKUpVcYz",
+      "type": "rental",
+      "name": "25' Extension Cord",
+      "description": "",
+      "quantity": 3,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 5000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 8640,
+        "subtotal_discounted_cents": 8640,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 778
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 9418
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "ePJgrlQYm5AEoKUpVcYz"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 110,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "O7ooOKy2N8lNlxAFSdfh",
+      "type": "sale",
+      "name": "Garden Stakes (6 Pack)",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 1200,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 1200,
+        "subtotal_discounted_cents": 1200,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 108
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 1308
+      },
+      "stock_method": "none",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Ep1uiJRVTLCF9DfiNJNB",
+        "O7ooOKy2N8lNlxAFSdfh"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": false,
+      "crms_id": 563,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "0LtFyxGYui7JjwRVQHxm",
+      "type": "rental",
+      "name": "Dewalt Work Light",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 5000,
+        "replacement_cents": 25000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 96000,
+        "subtotal_discounted_cents": 96000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 8640
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 104640
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "0LtFyxGYui7JjwRVQHxm"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 101,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "eioftRapzd1n7lz2Y59z",
+      "type": "rental",
+      "name": "Dewalt Battery Charger (4 Port)",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 30000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "0LtFyxGYui7JjwRVQHxm",
+        "eioftRapzd1n7lz2Y59z"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 99,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Xuq7Ij3moxPgtZuLC6fg",
+      "type": "rental",
+      "name": "Milk Crate (12x12)",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 1200,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "0LtFyxGYui7JjwRVQHxm",
+        "Xuq7Ij3moxPgtZuLC6fg"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 414,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Dmaie3W1OoRGvo9BMDC7",
+      "type": "rental",
+      "name": "Dewalt Battery (9Ah)",
+      "description": "",
+      "quantity": 8,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 20000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "0LtFyxGYui7JjwRVQHxm",
+        "Dmaie3W1OoRGvo9BMDC7"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 98,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "1DJi1ZyEC9ZaVh49innd",
+      "type": "rental",
+      "name": "Dewalt Leaf Blower",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 3000,
+        "replacement_cents": 30000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 14400,
+        "subtotal_discounted_cents": 14400,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1296
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 15696
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "1DJi1ZyEC9ZaVh49innd"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 303,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Dmaie3W1OoRGvo9BMDC7",
+      "type": "rental",
+      "name": "Dewalt Battery (9Ah)",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 20000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "1DJi1ZyEC9ZaVh49innd",
+        "Dmaie3W1OoRGvo9BMDC7"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 98,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "d79aaKcylyQ6yD8dosbV",
+      "type": "rental",
+      "name": "Dewalt Dust Buster",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 1500,
+        "replacement_cents": 10000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 7200,
+        "subtotal_discounted_cents": 7200,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 648
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 7848
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "d79aaKcylyQ6yD8dosbV"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 305,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Dmaie3W1OoRGvo9BMDC7",
+      "type": "rental",
+      "name": "Dewalt Battery (9Ah)",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 20000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "d79aaKcylyQ6yD8dosbV",
+        "Dmaie3W1OoRGvo9BMDC7"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 98,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "yPWgHVeLvMbjDYiCqsVo",
+      "type": "rental",
+      "name": "Zendex Go Jacks",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 7500,
+        "replacement_cents": 200000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 36000,
+        "subtotal_discounted_cents": 36000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 3240
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 39240
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "yPWgHVeLvMbjDYiCqsVo"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 157,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "ZdMu2cmdYVfMNny58Tbh",
+      "type": "rental",
+      "name": "Bluetti AC200L Battery",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 10000,
+        "replacement_cents": 120000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 48000,
+        "subtotal_discounted_cents": 48000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 4320
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 52320
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "ZdMu2cmdYVfMNny58Tbh"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 515,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "bU3deNeiRBHBS1tQB7Bz",
+      "type": "rental",
+      "name": "2200 Watt Generator (Honda EU2200i/EB2200i)",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 10000,
+        "replacement_cents": 140000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 48000,
+        "subtotal_discounted_cents": 48000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 4320
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 52320
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "bU3deNeiRBHBS1tQB7Bz"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 155,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "MEf0ibXz5w5qRyA4CBZG",
+      "type": "rental",
+      "name": "5 Gallon Gas Can, Red",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 10000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 2880,
+        "subtotal_discounted_cents": 2880,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 259
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 3139
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "MEf0ibXz5w5qRyA4CBZG"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 102,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "5Wawrn29nQWVO5uhyjVA",
+      "type": "rental",
+      "name": "Power Strip",
+      "description": "",
+      "quantity": 5,
+      "price": {
+        "base_cents": 200,
+        "replacement_cents": 1000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 4800,
+        "subtotal_discounted_cents": 4800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 432
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 5232
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "5Wawrn29nQWVO5uhyjVA"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 142,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "SUCCAe23tMFoYsebGCzc",
+      "type": "rental",
+      "name": "Cube Tap",
+      "description": "",
+      "quantity": 10,
+      "price": {
+        "base_cents": 200,
+        "replacement_cents": 800,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 9600,
+        "subtotal_discounted_cents": 9600,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 864
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 10464
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "SUCCAe23tMFoYsebGCzc"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 143,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "XjlCqBfv6pabkUkBvQbg",
+      "type": "rental",
+      "name": "100' Extension Cord",
+      "description": "",
+      "quantity": 3,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 11000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 8640,
+        "subtotal_discounted_cents": 8640,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 778
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 9418
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "XjlCqBfv6pabkUkBvQbg"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 112,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "6gRiyx8sx7p3vlci53KX",
+      "type": "rental",
+      "name": "50' Extension Cord",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 7500,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 11520,
+        "subtotal_discounted_cents": 11520,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1037
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 12557
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "6gRiyx8sx7p3vlci53KX"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 111,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Ms2nlTfZZMoaR8yZwudF",
+      "type": "rental",
+      "name": "Long Milk Crate (18x12)",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 1200,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "6gRiyx8sx7p3vlci53KX",
+        "Ms2nlTfZZMoaR8yZwudF"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 471,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "5FpNR9uef1ELMu1WfTqr",
+      "type": "rental",
+      "name": "Ratchet Straps (4 Pack)",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 3600,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 5760,
+        "subtotal_discounted_cents": 5760,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 518
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 6278
+      },
+      "stock_method": "none",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "5FpNR9uef1ELMu1WfTqr"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 565,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "6jDjBeeNedv996NatdiV",
+      "type": "rental",
+      "name": "E Track D Ring",
+      "description": "",
+      "quantity": 6,
+      "price": {
+        "base_cents": 200,
+        "replacement_cents": 699,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 5760,
+        "subtotal_discounted_cents": 5760,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 518
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 6278
+      },
+      "stock_method": "none",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "6jDjBeeNedv996NatdiV"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 575,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Naz61CiqGBiXBN9hwYvw",
+      "type": "rental",
+      "name": "Spade Shovel",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 200,
+        "replacement_cents": 3000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 960,
+        "subtotal_discounted_cents": 960,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 86
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 1046
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "Naz61CiqGBiXBN9hwYvw"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 654,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "VrgwpTU1AO3FhoC9qAYg",
+      "type": "rental",
+      "name": "Bungee (4 Pack)",
+      "description": "",
+      "quantity": 5,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 3200,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 14400,
+        "subtotal_discounted_cents": 14400,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1296
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 15696
+      },
+      "stock_method": "none",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "VrgwpTU1AO3FhoC9qAYg"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 602,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "FRDFYTrrZOxgkeepWC5B",
+      "type": "rental",
+      "name": "A Clamp (#2)",
+      "description": "",
+      "quantity": 30,
+      "price": {
+        "base_cents": 100,
+        "replacement_cents": 200,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 14400,
+        "subtotal_discounted_cents": 14400,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1296
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 15696
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "FRDFYTrrZOxgkeepWC5B"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 469,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "custom-985c1a5a-44f4-45b9-9674-a792a46476b3",
+      "type": "rental",
+      "name": "Chains, Locks, Lockboxes Kit",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 1500,
+        "replacement_cents": 0,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 7200,
+        "subtotal_discounted_cents": 7200,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 648
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 7848
+      },
+      "stock_method": "none",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "custom-985c1a5a-44f4-45b9-9674-a792a46476b3"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": null
+    },
+    {
+      "uid": "z70EO9ukxQrwbmPTaYuw",
+      "type": "rental",
+      "name": "Golf Umbrella",
+      "description": "",
+      "quantity": 60,
+      "price": {
+        "base_cents": 200,
+        "replacement_cents": 1000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 57600,
+        "subtotal_discounted_cents": 57600,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 5184
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 62784
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "z70EO9ukxQrwbmPTaYuw"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 158,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "L0sQopJtx9Tvpd1b8vqT",
+      "type": "rental",
+      "name": "Traction Aids",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 1000,
+        "replacement_cents": 10000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 4800,
+        "subtotal_discounted_cents": 4800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 432
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 5232
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "L0sQopJtx9Tvpd1b8vqT"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 676,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "2gO0e05Wh4oe06C7sDas",
+      "type": "sale",
+      "name": "Keeper - 36\" Adjustable Bungee",
+      "description": "",
+      "quantity": 20,
+      "price": {
+        "base_cents": 800,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 16000,
+        "subtotal_discounted_cents": 16000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1440
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 17440
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "65d92e24-1625-425c-b006-4aa0bc8a62ab",
+        "2gO0e05Wh4oe06C7sDas"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 617,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "369aaf31-05c7-437a-9ca5-3293b891e40a",
+      "type": "group",
+      "name": "Traffic, Safety & Signage",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "jC2BBRgZL5mXAfYAu9bf",
+      "type": "rental",
+      "name": "Stop/Slow Paddle Sign",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 6000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 11520,
+        "subtotal_discounted_cents": 11520,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1037
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 12557
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "jC2BBRgZL5mXAfYAu9bf"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 114,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Go03DdnsOMexhOv24sFc",
+      "type": "rental",
+      "name": "A Frame Sign (Small)",
+      "description": "",
+      "quantity": 9,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 6000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 25920,
+        "subtotal_discounted_cents": 25920,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 2333
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 28253
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "Go03DdnsOMexhOv24sFc"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 160,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "U8WC4Js2oPaTdYpkvbcx",
+      "type": "rental",
+      "name": "18\" Traffic Cone",
+      "description": "",
+      "quantity": 80,
+      "price": {
+        "base_cents": 200,
+        "replacement_cents": 1600,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 76800,
+        "subtotal_discounted_cents": 76800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 6912
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 83712
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "U8WC4Js2oPaTdYpkvbcx"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 60,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "vZIztNjN7Ei3POqQWNtp",
+      "type": "rental",
+      "name": "A:B:C Fire Extinguisher",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 1000,
+        "replacement_cents": 8000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 4800,
+        "subtotal_discounted_cents": 4800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 432
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 5232
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "vZIztNjN7Ei3POqQWNtp"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 342,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "FLbBeO0R62vRs4AWiw2l",
+      "type": "rental",
+      "name": "Walking Sign Kit",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 2500,
+        "replacement_cents": 10000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 12000,
+        "subtotal_discounted_cents": 12000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1080
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 13080
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "FLbBeO0R62vRs4AWiw2l"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 291,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "RZWp0RITeUIGSE9mIfTb",
+      "type": "rental",
+      "name": "Driving Sign Kit",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 2500,
+        "replacement_cents": 4000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 24000,
+        "subtotal_discounted_cents": 24000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 2160
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 26160
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "RZWp0RITeUIGSE9mIfTb"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 293,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "0BIQ73UMiHTtd8mo0yNk",
+      "type": "rental",
+      "name": "Safety Vest (Duffel Bag of 50)",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 2500,
+        "replacement_cents": 0,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 24000,
+        "subtotal_discounted_cents": 24000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 2160
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 26160
+      },
+      "stock_method": "none",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "0BIQ73UMiHTtd8mo0yNk"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 151,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "L4yEx8oVkk9Vfj8EG14n",
+      "type": "rental",
+      "name": "Safety Vest (ANSI II)",
+      "description": "",
+      "quantity": 100,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 900,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "0BIQ73UMiHTtd8mo0yNk",
+        "L4yEx8oVkk9Vfj8EG14n"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 95,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "hSEZoPfyGEkRNmLpuFoX",
+      "type": "rental",
+      "name": "Duffel Bag for Safety Vests",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 6500,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "0BIQ73UMiHTtd8mo0yNk",
+        "hSEZoPfyGEkRNmLpuFoX"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 152,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "G8qcCRiAFZRTTAvjqSYT",
+      "type": "rental",
+      "name": "Floor Pyramid Sign - Caution",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 1000,
+        "replacement_cents": 9000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 9600,
+        "subtotal_discounted_cents": 9600,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 864
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 10464
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "G8qcCRiAFZRTTAvjqSYT"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 519,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "M74nbFAYNGfODoQj0UAY",
+      "type": "rental",
+      "name": "Floor Tent Storage Tube",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 8700,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "369aaf31-05c7-437a-9ca5-3293b891e40a",
+        "G8qcCRiAFZRTTAvjqSYT",
+        "M74nbFAYNGfODoQj0UAY"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 521,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "8eaac22f-7d69-473e-9824-96ce095cfe45",
+      "type": "group",
+      "name": "Tents",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "8eaac22f-7d69-473e-9824-96ce095cfe45"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "ZsN1H4wR7vgLQnIf8gzX",
+      "type": "rental",
+      "name": "10' x 10' Pop Up Tent (Black)",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 6000,
+        "replacement_cents": 50000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 115200,
+        "subtotal_discounted_cents": 115200,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 10368
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 125568
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "8eaac22f-7d69-473e-9824-96ce095cfe45",
+        "ZsN1H4wR7vgLQnIf8gzX"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 150,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "3kzv0sanOljc25psMVkU",
+      "type": "rental",
+      "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+      "description": "",
+      "quantity": 16,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 3000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "8eaac22f-7d69-473e-9824-96ce095cfe45",
+        "ZsN1H4wR7vgLQnIf8gzX",
+        "3kzv0sanOljc25psMVkU"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 473,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "HM7k3NDHG1GJ2uaykMKC",
+      "type": "rental",
+      "name": "Tent Canopy Rain Gutter",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 3000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "8eaac22f-7d69-473e-9824-96ce095cfe45",
+        "ZsN1H4wR7vgLQnIf8gzX",
+        "HM7k3NDHG1GJ2uaykMKC"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 475,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "WaQhdQliUvS0LCx5OUTv",
+      "type": "rental",
+      "name": "Tent Door (Black)",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 10000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "8eaac22f-7d69-473e-9824-96ce095cfe45",
+        "ZsN1H4wR7vgLQnIf8gzX",
+        "WaQhdQliUvS0LCx5OUTv"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 149,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Ms2nlTfZZMoaR8yZwudF",
+      "type": "rental",
+      "name": "Long Milk Crate (18x12)",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 1200,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "8eaac22f-7d69-473e-9824-96ce095cfe45",
+        "ZsN1H4wR7vgLQnIf8gzX",
+        "Ms2nlTfZZMoaR8yZwudF"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 471,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Wnj0LODXW6zCYRmnJoxQ",
+      "type": "rental",
+      "name": "20lb Shot Bag",
+      "description": "",
+      "quantity": 32,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 9000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "8eaac22f-7d69-473e-9824-96ce095cfe45",
+        "ZsN1H4wR7vgLQnIf8gzX",
+        "Wnj0LODXW6zCYRmnJoxQ"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 138,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "p2YQ9RZY8djeejSK2i0d",
+      "type": "rental",
+      "name": "Tent Side (Black)",
+      "description": "",
+      "quantity": 12,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 3000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "8eaac22f-7d69-473e-9824-96ce095cfe45",
+        "ZsN1H4wR7vgLQnIf8gzX",
+        "p2YQ9RZY8djeejSK2i0d"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 148,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "323f87b5-56fc-4d19-b031-673b390378a9",
+      "type": "group",
+      "name": "Fans & Heaters",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "323f87b5-56fc-4d19-b031-673b390378a9"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "fk9uxTikxKYZ5QjtssAK",
+      "type": "rental",
+      "name": "14\" Fan",
+      "description": "",
+      "quantity": 6,
+      "price": {
+        "base_cents": 1000,
+        "replacement_cents": 6000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 28800,
+        "subtotal_discounted_cents": 28800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 2592
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 31392
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "323f87b5-56fc-4d19-b031-673b390378a9",
+        "fk9uxTikxKYZ5QjtssAK"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 336,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "640573a1-84ef-40d4-b27e-3049f6118715",
+      "type": "group",
+      "name": "Surface Protection",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "640573a1-84ef-40d4-b27e-3049f6118715"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "9Z1RR8GFL41dduPgnVOM",
+      "type": "rental",
+      "name": "Furniture Pad",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 2000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 11520,
+        "subtotal_discounted_cents": 11520,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1037
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 12557
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "640573a1-84ef-40d4-b27e-3049f6118715",
+        "9Z1RR8GFL41dduPgnVOM"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 318,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "kETzgYqCmiCLZvjwBfpE",
+      "type": "rental",
+      "name": "3 ' x 5' Floor Mat",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 600,
+        "replacement_cents": 3000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 11520,
+        "subtotal_discounted_cents": 11520,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1037
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 12557
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "640573a1-84ef-40d4-b27e-3049f6118715",
+        "kETzgYqCmiCLZvjwBfpE"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 108,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "d5w9h96wJYvSPTDX3niD",
+      "type": "rental",
+      "name": "3' x 10' Floor Mat",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 1000,
+        "replacement_cents": 7000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 9600,
+        "subtotal_discounted_cents": 9600,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 864
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 10464
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "640573a1-84ef-40d4-b27e-3049f6118715",
+        "d5w9h96wJYvSPTDX3niD"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 408,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "018eb67c-4cf8-4a17-a751-866706bfb447",
+      "type": "group",
+      "name": "Carts & Ramps",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "018eb67c-4cf8-4a17-a751-866706bfb447"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "bw1VOxvwI21DI3MmYjZF",
+      "type": "rental",
+      "name": "E-Z Access 2' Folding Ramp",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 3000,
+        "replacement_cents": 30000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 28800,
+        "subtotal_discounted_cents": 28800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 2592
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 31392
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "018eb67c-4cf8-4a17-a751-866706bfb447",
+        "bw1VOxvwI21DI3MmYjZF"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 438,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "EIzqIswHEVKZvlW7w82E",
+      "type": "rental",
+      "name": "Magliner Gemini Jr",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 3000,
+        "replacement_cents": 70000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 14400,
+        "subtotal_discounted_cents": 14400,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1296
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 15696
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "018eb67c-4cf8-4a17-a751-866706bfb447",
+        "EIzqIswHEVKZvlW7w82E"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 91,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Vc6h3YvLOL9zmcpuDpXI",
+      "type": "rental",
+      "name": "Metro Rack (18\" x 36\")",
+      "description": "",
+      "quantity": 3,
+      "price": {
+        "base_cents": 1500,
+        "replacement_cents": 54000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 21600,
+        "subtotal_discounted_cents": 21600,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 1944
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 23544
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "018eb67c-4cf8-4a17-a751-866706bfb447",
+        "Vc6h3YvLOL9zmcpuDpXI"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 536,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "7c93d34f-f442-486e-9202-e9bf79e2d644",
+      "type": "group",
+      "name": "Expendables",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "7c93d34f-f442-486e-9202-e9bf79e2d644"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "W5ToUPozdrhr2yrVZTSe",
+      "type": "sale",
+      "name": "36\" Zip Ties (Pack of 50)",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 3500,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 3500,
+        "subtotal_discounted_cents": 3500,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 315
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 3815
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "7c93d34f-f442-486e-9202-e9bf79e2d644",
+        "W5ToUPozdrhr2yrVZTSe"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 589,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "OYvggZa70ccCCbcQ8o1H",
+      "type": "sale",
+      "name": "55 Gallon Heavy Duty Garbage Bags",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 2000,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 8000,
+        "subtotal_discounted_cents": 8000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 720
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 8720
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "7c93d34f-f442-486e-9202-e9bf79e2d644",
+        "OYvggZa70ccCCbcQ8o1H"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 105,
+      "coa_revenue": 4200
+    },
+    {
+      "uid": "30887096-dadb-4268-a2cf-b243dd64c1d8",
+      "type": "group",
+      "name": "Hair & Makeup",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "30887096-dadb-4268-a2cf-b243dd64c1d8"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "9e05fDrFWdLxv1g6kO08",
+      "type": "rental",
+      "name": "Makeup Mirror (18\" White)",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 3000,
+        "replacement_cents": 35000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 28800,
+        "subtotal_discounted_cents": 0,
+        "discount": {
+          "rate": 100,
+          "type": "percent",
+          "amount_cents": 28800
+        },
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "30887096-dadb-4268-a2cf-b243dd64c1d8",
+        "9e05fDrFWdLxv1g6kO08"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 678,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "b632f22e-9ba0-45c9-98a9-018d8fec0f51",
+      "type": "group",
+      "name": "Walkies & Hotspots",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "b632f22e-9ba0-45c9-98a9-018d8fec0f51"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "lMxUI8nQ7ZqMd4cWqmq0",
+      "type": "rental",
+      "name": "Six Bank Charger",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 1000,
+        "replacement_cents": 50000,
+        "chargeable_days": 24,
+        "formula": "five_day_week",
+        "subtotal_cents": 4800,
+        "subtotal_discounted_cents": 0,
+        "discount": {
+          "rate": 100,
+          "type": "percent",
+          "amount_cents": 4800
+        },
+        "taxes": [
+          {
+            "uid": "VDPGuO3vfCfI25V0DMW2",
+            "name": "Rantoul Sales Tax",
+            "rate": 9,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 985,
+      "uid_order": "5aWWMJXV5SuEDLFbd6AU",
+      "path": [
+        "2c585535-eae6-4285-995c-0dd1cec08b9b",
+        "b632f22e-9ba0-45c9-98a9-018d8fec0f51",
+        "lMxUI8nQ7ZqMd4cWqmq0"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 62,
+      "coa_revenue": 4000
+    }
+  ],
+  "tax_profile": "tax_rantoul",
+  "totals": {
+    "discount_amount_cents": 33600,
+    "subtotal_cents": 973424,
+    "subtotal_discounted_cents": 939824,
+    "taxes": [
+      {
+        "uid": "VDPGuO3vfCfI25V0DMW2",
+        "name": "Rantoul Sales Tax",
+        "rate": 9,
+        "type": "percent",
+        "amount_cents": 84584
+      }
+    ],
+    "transaction_fees": [],
+    "total_cents": 1024408,
+    "replacement_total_cents": 2884787
+  },
+  "invoices": [
+    {
+      "uid": "YFyNmNblf3sbkqo9JwOW",
+      "number": 2374,
+      "status": "issued"
+    }
+  ],
+  "query_by_invoices": [
+    "YFyNmNblf3sbkqo9JwOW"
+  ],
+  "query_by_items": [
+    "kCysq2sl0TF4Ov1JQK2u",
+    "dr3ffAK5baCXBqk4sblF",
+    "A3ZY8iWelKwaJSnRRHSu",
+    "6Ps1MW3eNEoHNje5gQ4u",
+    "XML05X6cXsF5re79mn2J",
+    "custom-d832e2c1-724b-46d5-8393-fdb3c56a23c8",
+    "Ep1uiJRVTLCF9DfiNJNB",
+    "21RWP35IDWuWNCt7Dg40",
+    "Ohx5bgTbtZESkiB4qj6T",
+    "rYxQapfObjx5jhQbhZGw",
+    "XNt6JGG686pBZaBc0iuu",
+    "ibf5SWAr9jf5xUfhxOWh",
+    "MNPnsialWf4aOjI1p4bB",
+    "VrlGspm4eiAmLocYyFpY",
+    "GZzSkx6J3vVA2Zo76GR6",
+    "Bd0cPoN3sZcLLTpofzJT",
+    "hHTccSBSEGSTusFOYfXi",
+    "0hcovC74cLhIUjzUr2Oq",
+    "R0HfaiAnq19HisConBJJ",
+    "HvcanRL1tvtfJE2pbvJP",
+    "qqsoKZzSJGBXWpvPTZbl",
+    "ePJgrlQYm5AEoKUpVcYz",
+    "O7ooOKy2N8lNlxAFSdfh",
+    "0LtFyxGYui7JjwRVQHxm",
+    "eioftRapzd1n7lz2Y59z",
+    "Xuq7Ij3moxPgtZuLC6fg",
+    "Dmaie3W1OoRGvo9BMDC7",
+    "1DJi1ZyEC9ZaVh49innd",
+    "d79aaKcylyQ6yD8dosbV",
+    "yPWgHVeLvMbjDYiCqsVo",
+    "ZdMu2cmdYVfMNny58Tbh",
+    "bU3deNeiRBHBS1tQB7Bz",
+    "MEf0ibXz5w5qRyA4CBZG",
+    "5Wawrn29nQWVO5uhyjVA",
+    "SUCCAe23tMFoYsebGCzc",
+    "XjlCqBfv6pabkUkBvQbg",
+    "6gRiyx8sx7p3vlci53KX",
+    "Ms2nlTfZZMoaR8yZwudF",
+    "5FpNR9uef1ELMu1WfTqr",
+    "6jDjBeeNedv996NatdiV",
+    "Naz61CiqGBiXBN9hwYvw",
+    "VrgwpTU1AO3FhoC9qAYg",
+    "FRDFYTrrZOxgkeepWC5B",
+    "custom-985c1a5a-44f4-45b9-9674-a792a46476b3",
+    "z70EO9ukxQrwbmPTaYuw",
+    "L0sQopJtx9Tvpd1b8vqT",
+    "2gO0e05Wh4oe06C7sDas",
+    "jC2BBRgZL5mXAfYAu9bf",
+    "Go03DdnsOMexhOv24sFc",
+    "U8WC4Js2oPaTdYpkvbcx",
+    "vZIztNjN7Ei3POqQWNtp",
+    "FLbBeO0R62vRs4AWiw2l",
+    "RZWp0RITeUIGSE9mIfTb",
+    "0BIQ73UMiHTtd8mo0yNk",
+    "L4yEx8oVkk9Vfj8EG14n",
+    "hSEZoPfyGEkRNmLpuFoX",
+    "G8qcCRiAFZRTTAvjqSYT",
+    "M74nbFAYNGfODoQj0UAY",
+    "ZsN1H4wR7vgLQnIf8gzX",
+    "3kzv0sanOljc25psMVkU",
+    "HM7k3NDHG1GJ2uaykMKC",
+    "WaQhdQliUvS0LCx5OUTv",
+    "Wnj0LODXW6zCYRmnJoxQ",
+    "p2YQ9RZY8djeejSK2i0d",
+    "fk9uxTikxKYZ5QjtssAK",
+    "9Z1RR8GFL41dduPgnVOM",
+    "kETzgYqCmiCLZvjwBfpE",
+    "d5w9h96wJYvSPTDX3niD",
+    "bw1VOxvwI21DI3MmYjZF",
+    "EIzqIswHEVKZvlW7w82E",
+    "Vc6h3YvLOL9zmcpuDpXI",
+    "W5ToUPozdrhr2yrVZTSe",
+    "OYvggZa70ccCCbcQ8o1H",
+    "9e05fDrFWdLxv1g6kO08",
+    "lMxUI8nQ7ZqMd4cWqmq0"
+  ],
+  "query_by_contacts": [],
+  "query_by_dates": [
+    "2026-08-11",
+    "2026-09-21"
+  ],
+  "bookings_breakdown": {
+    "quoted": 0,
+    "reserved": 327,
+    "prepped": 0,
+    "out": 0,
+    "returned": 0,
+    "lost": 0,
+    "damaged": 0
+  },
+  "crms_id": 1012,
+  "crms_status": "Open",
+  "subject": "Location Van - Gable",
+  "reference": null,
+  "xero_id": "2e2f6da6-ba00-454e-8f3e-45ced1705684",
+  "uid_thread": "VvTBCEza8uThTMspY4fL",
+  "version": 35,
+  "created_at": {
+    "_seconds": 1786046032,
+    "_nanoseconds": 27000000
+  },
+  "updated_at": {
+    "_seconds": 1786542548,
+    "_nanoseconds": 924000000
+  }
+}

@@ -1,13 +1,38 @@
-<%/* draft draft/quote/157e0dfc */%>
+<%/* draft draft/quote/71fbda54 */%>
 <%
 const order = it.doc;
 const { destinations, items, totals } = order;
 const CHICAGO = it.tz("America/Chicago");
-const lineItems = items.filter(i => i.type !== "group" && i.type !== "destination");
+// Divider rows are structure, not stock. They are interleaved with the real
+// line items in one array, and `path` records BOTH kinds of ancestor — which is
+// why the indent below has to subtract them rather than assume how many there
+// are. One predicate, so the two views cannot drift apart.
+const isDivider = (i) => i.type === "group" || i.type === "destination";
+const lineItems = items.filter(i => !isDivider(i));
+const dividerUids = new Set(items.filter(isDivider).map(i => i.uid));
 const hasDiscount = it.orders.orderHasDiscount(lineItems);
 const hasRentals = it.orders.orderHasRentals(lineItems);
 const hasTax = it.orders.orderHasTax(lineItems);
 const replacementItems = lineItems.filter(i => i.price.replacement_cents != null);
+
+// How deep a line item is nested UNDER ANOTHER LINE ITEM — 0 for a top-level
+// line, 1 for its component, 2 for a component of a component.
+//
+// This used to be `item.path.length - 3`, which is a proxy for depth rather
+// than depth: it hard-codes an assumption that both divider levels
+// (destination + group) are always present. When a line sits directly under a
+// destination with no group, its path is `[dest, item]` and the formula gives
+// −1em — invalid CSS, silently dropped — while ITS component gets 0em and
+// renders flush with its parent. That second half is the real defect; the
+// negative value was only the visible half.
+//
+// `path` is non-empty and self-inclusive on every item (the workspace
+// items-array invariant), so `at(-1)` is the item itself: drop it, then count
+// the ancestors that are real line items. Independent of how many divider
+// levels happen to be present. Divider uids are per-order UUIDs and product
+// uids are Firestore ids, so the two sets cannot collide.
+const componentDepth = (item) =>
+  (item.path ?? []).slice(0, -1).filter((uid) => !dividerUids.has(uid)).length;
 
 // Replacement cost, in integer cents, computed the way CORE computes it.
 //
@@ -86,19 +111,35 @@ const replacementLine = (item) => {
     <%~ it.logo %>
   </div>
   <section id="bill-to">
+    <%
+    // `billing_address` is `.optional()` on the organization snapshot AND
+    // `Address` is itself `.nullable()`, so an order can legitimately carry
+    // neither — the old unguarded chain threw on the first `.street` (#25).
+    //
+    // The lines are assembled rather than emitted as bare spans for the same
+    // reason: a separator only belongs there when both sides of it are present.
+    // `street2` defaults to `""`, so the old markup printed a leading comma on
+    // every order without a suite number.
+    const billing = order.organization?.billing_address ?? {};
+    const streetLine = [billing.street, billing.street2].filter(Boolean).join(", ");
+    const cityLine = [
+      [billing.city, billing.region].filter(Boolean).join(", "),
+      billing.postcode,
+    ].filter(Boolean).join(" ");
+    // `country_name` is stored with a space. Matching "UnitedStates" never
+    // matched anything, so the country line printed on every domestic quote.
+    const foreign = billing.country_name && billing.country_name !== "United States";
+    %>
     <h1>Quote #<%= order.number %></h1>
     <div><%= order.organization.name %></div>
-    <div>
-      <span><%= order.organization.billing_address.street %></span>
-      <span>, <%= order.organization.billing_address.street2 %></span>
-    </div>
-    <div>
-      <span><%= order.organization.billing_address.city %></span>
-      <span>, <%= order.organization.billing_address.region %></span>
-      <span> <%= order.organization.billing_address.postcode %></span>
-    </div>
-    <% if (order.organization.billing_address.country_name != "UnitedStates") { %>
-    <div><%= order.organization.billing_address.country_name %></div>
+    <% if (streetLine) { %>
+    <div><%= streetLine %></div>
+    <% } %>
+    <% if (cityLine) { %>
+    <div><%= cityLine %></div>
+    <% } %>
+    <% if (foreign) { %>
+    <div><%= billing.country_name %></div>
     <% } %>
   </section>
   <section id="cfs">
@@ -107,40 +148,69 @@ const replacementLine = (item) => {
     <div>team@chicagofilmsupplies.com</div>
     <div>312.818.3008</div>
   </section>
-<section id="details">
-  <table>
-    <tbody>
-      <tr>
-        <th scope="row">Date:</th>
-        <td><%= it.dateFns.format(it.dateFns.parseISO(it.now), 'MMMM d, yyyy') %></td>
-      </tr>
-      <tr>
-        <th scope="row">Order Number:</th>
-        <td><%= order.number %></td>
-      </tr>
-      <% if (order.reference) { %>
-      <tr>
-        <th scope="row">Reference:</th>
-        <td><%= order.reference %></td>
-      </tr>
-      <% } %>
-      <% if (order.subject) { %>
-      <tr>
-        <th scope="row">Subject:</th>
-        <td><%= order.subject %></td>
-      </tr>
-      <% } %>
-    </tbody>
-  </table>
-</section>
 
+<table id="details">
+  <thead>
+    <tr>
+      <th scope="col">Date:</th>
+      <th scope="col">Subject:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= it.dateFns.format(it.dateFns.parseISO(it.now), 'MMMM d, yyyy') %></td>
+      <%/* An empty cell, not an absent one: under `table-layout: fixed` a short
+           row leaves a real trailing gap rather than being absorbed. */%>
+      <% if (order.subject) { %>
+      <td><%= order.subject %></td>
+      <% } else { %>
+      <td></td>
+      <% } %>
+    </tr>
+  </tbody>
+  <thead>
+    <tr>
+      <th scope="col">Order Number:</th>
+      <th scope="col">Reference:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= order.number %></td>
+      <% if (order.reference) { %>
+      <td><%= order.reference %></td>
+      <% } else { %>
+      <td></td>
+      <% } %>
+    </tr>
+  </tbody>
+</table>
+
+<%/* Column widths live on the colgroup — see styles/quote.css. `table-layout:
+     fixed` sizes a table from its FIRST ROW, and this table has one
+     <thead>/<tbody> pair per destination, so a width on a body cell can never
+     take effect. */%>
 <table id="destinations">
+  <colgroup>
+    <col class="dates">
+    <col class="days">
+    <col class="address">
+    <col class="address">
+  </colgroup>
 <% destinations.forEach(function(dest, destIndex) { %>
     <%
     const d = dest.dates || {};
     const legend = it.orders.getDestinationsLegend([dest]);
     const startLabel = legend.start || "Delivery";
     const endLabel = legend.end || "Pickup";
+    // Every date boundary on a destination is nullable, so each cell below is
+    // gated on the values it actually reads rather than on the destination
+    // existing (#25). `d` is that gate, computed once — re-dereferencing
+    // `dest.dates.*` at the call site is what made the guard and the read
+    // disagree.
+    const hasActiveWindow = Boolean(d.delivery_start && d.collection_start);
+    const hasChargeWindow = Boolean(d.charge_start && d.charge_end);
+    const showCharged = hasChargeWindow && !it.orders.isSameAsDeliveryDates(d);
     // Address lines (no contact — contact rides its own column).
     const addrLines = (ep) => {
       if (!ep || !ep.address) return [];
@@ -167,10 +237,14 @@ const replacementLine = (item) => {
   <tbody>
     <tr>
     <td class="dates">
-      <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.delivery_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.collection_start), 'EEE M/d/yy') %>
+      <% if (hasActiveWindow) { %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(d.collection_start), 'EEE M/d/yy') %>
+      <% } %>
     </td>
     <td>
-      <%= it.dates.formatChargeDays(dest.dates.days_active).periodLabel %>
+      <% if (d.days_active != null) { %>
+      <%= it.dates.formatChargeDays(d.days_active).periodLabel %>
+      <% } %>
     </td>
     <td class="address">
       <% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
@@ -182,7 +256,7 @@ const replacementLine = (item) => {
     <tr>
       <td colspan="2">
       <!-- Charge window — only when it differs from delivery/collection -->
-      <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
+      <% if (showCharged) { %>
       <span class="bold">Dates Charged: </span>
       <% } %>
       </td>
@@ -191,18 +265,18 @@ const replacementLine = (item) => {
     </tr>
     <tr>
       <td>
-      <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(dest.dates.charge_end), 'EEE M/d/yy') %>
+      <% if (showCharged) { %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(d.charge_end), 'EEE M/d/yy') %>
       <% } %>
       </td>
       <td>
         <!-- Charge window — only when it differs from delivery/collection -->
-        <% if (!it.orders.isSameAsDeliveryDates(d)) { %>
-        <%= it.dates.formatChargeDays(dest.dates.days_charged).periodLabel %>
+        <% if (showCharged && d.days_charged != null) { %>
+        <%= it.dates.formatChargeDays(d.days_charged).periodLabel %>
         <% } %>
       </td>
-      <td class="address"><% if (dest.delivery) { %><%= dest.delivery.instructions || "" %><% } %></td>
-      <td class="address"><%= dest.collection.instructions || "" %></td>
+      <td class="address"><%= dest.delivery?.instructions ?? "" %></td>
+      <td class="address"><%= dest.collection?.instructions ?? "" %></td>
     </tr>
   </tbody>
 <% }) %>
@@ -214,7 +288,7 @@ const replacementLine = (item) => {
   <table>
     <thead>
       <tr>
-        <th scope="col">Item Description</th>
+        <th scope="col" class="wide">Item Description</th>
         <th scope="col">Type</th>
         <th scope="col">Qty</th>
         <% if (hasRentals) { %>
@@ -232,25 +306,28 @@ const replacementLine = (item) => {
       </tr>
     </thead>
     <tbody>
+      <%/* SIX unconditional columns — Item Description, Type, Qty, Unit Price,
+           Subtotal, Total — plus the three conditionals. The base read `5` and
+           every banner row spanned one column short of its own table. */%>
+      <% const bannerSpan = 6 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0); %>
       <% items.forEach(item => { %>
         <% if (item.type === "group") { %>
         <tr>
-          <td colspan="<%= 5 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0) %>">
+          <td class="wide" colspan="<%= bannerSpan %>">
             <strong><%= item.name %></strong>
           </td>
         </tr>
         <% } else if (item.type === "destination") { %>
         <% if (destinations.length > 1) { %>
         <tr>
-          <td colspan="<%= 5 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0) %>">
+          <td class="wide" colspan="<%= bannerSpan %>">
             <%= item.name %>
           </td>
         </tr>
         <% } %>
         <% } else { %>
-        <% const isComponent = (item.path?.length ?? 0) > 0; %>
         <tr>
-          <td style="<%= isComponent ? 'padding-left: ' + (item.path.length - 3) + 'em' : '' %>">
+          <td style="padding-left: <%= componentDepth(item) %>em">
             <%= item.name %>
             <% if (item.description) { %>
             <br><%= item.description %>
