@@ -6,6 +6,17 @@ HTML/Eta templates rendered server-side (via `api-cloudrun`) into PDFs using Got
 
 **Git-canonical.** Git is the source of truth for template *content*; Firestore is a rebuildable projection (family doc + `templates-versions`). This repo is the canonical content store and an ad-hoc local-dev/preview harness; the production editing surface lives in `manager/`.
 
+**Editing an open draft: MCP tools, not raw git.** The two stores do not sync in *either* direction, so whichever one you write is the only one that moves.
+
+- `templates_propose_edit` writes the Firestore draft and **never reaches git** — `commit_draft` / `release_draft` are what do. A draft can accumulate arbitrary work invisible to `git log`, and deleting it destroys that work with no warning. This is not hypothetical: 18 edits (v41 → v66, 2026-08-11/12) were lost that way and had to be reconstructed from a session transcript. **templates#79.**
+- A `git commit` on a `draft/*` branch **never reaches Firestore.** The manager preview and `templates_render_preview` go on serving the pre-edit content. Measured 2026-08-14 on `draft/quote/32918fe7`: the Firestore family was last written at 14:38:45 CDT (draft creation) and the git commit landed at 15:06:45 — the draft never moved, and the edit was invisible to every surface except the git working tree and the PR diff.
+
+So while a draft is open, author through `templates_create_draft` → `templates_propose_edit` → `templates_commit_draft` → `templates_release_draft` (which opens the PR — **agents open, humans merge**). That is the one path that leaves both stores in step, and it is what the manager and the golden gate read. If you have already edited via git, re-apply the same content through `templates_propose_edit` to resync rather than leaving the two divergent.
+
+Raw git stays correct for everything that is *not* template content under an open draft: `scripts/`, workflows, fixtures on disk, this file, and reviewing the PR a release opened.
+
+⚠️ **`templates_render_preview` renders the PUBLISHED version, not your draft.** `POST /templates/render` accepts `uid_version`; the MCP tool does not pass it (**api-cloudrun#526**). Until that lands, `deno task preview` against the git working tree is the only way to see a draft edit rendered — which is itself an argument for keeping the working tree and the draft identical.
+
 **Environments.** Prod publishes from `main`; dev/staging publishes from `sandbox`. **`sandbox` exists to exercise the tooling & publish *workflow*, not to stage content** — it's a *disposable mirror* of `main`, force-resynced to fresh `main` as routine practice. Stage content the same way for both envs: **branch `main`** → draft → PR → merge. **Never author canonical content directly on `sandbox`** — a commit made only there never reaches prod and forks the branches (this caused templates#22).
 
 **Authoring reference:** the `cfs-template-authoring` skill (plugin `cfs-skills@cfs`, auto-installed via `.claude/settings.json`) is the canonical deep reference — render context (`it.*`), sidecar schema, overlay semantics, order data shape, price fields, fixtures/goldens. Consult it before writing template content. The pipeline side (lifecycle, publish invariants, golden gate, RBAC) is `api-cloudrun/.claude/skills/templates/SKILL.md`.

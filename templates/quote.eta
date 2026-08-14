@@ -10,6 +10,30 @@ const CHICAGO = it.tz("America/Chicago");
 const isDivider = (i) => i.type === "group" || i.type === "destination";
 const lineItems = items.filter(i => !isDivider(i));
 const dividerUids = new Set(items.filter(isDivider).map(i => i.uid));
+
+// A `transaction_fee` is stored in `items[]` but is NOT a line of the order.
+// `ITEM_CONTRACTS.transaction_fee` in @cfs/core is `pricing: "from_total"`,
+// `fulfillable: false`, `replacement: "forbidden"` — it is priced FROM the
+// document rather than from a shelf, and nobody ever picks one.
+//
+// It must not appear in the items grid, because `totals.transaction_fees` is
+// DERIVED from these very items (`getTransactionFeeTotals(costTransactionFees(
+// items, ...))`), so rendering both puts the same money on the page twice and
+// a customer reads it as being charged twice. Measured on `discounts-and-fee`:
+// the Card Processing Fee is $14.79 as a line and $14.79 again in the totals.
+//
+// The totals row is the better of the two survivors — it carries the RATE
+// ("Card Processing Fee 2.9%:"), where the line is a degenerate row with an
+// empty Type, no unit price and no tax. And the fee is genuinely outside the
+// line-item arithmetic: `totals.subtotal_cents` excludes it, and
+// `total_cents` adds it only at the end, after tax.
+//
+// Consequence worth knowing: the Total column no longer sums to
+// `totals.total_cents` — it sums to `subtotal_discounted + tax`, and the totals
+// block adds the fee on top. That is the ordinary shape of a quote.
+const isDocumentFee = (i) => i.type === "transaction_fee";
+const shownItems = items.filter(i => !isDocumentFee(i));
+const shownLineItems = lineItems.filter(i => !isDocumentFee(i));
 const hasDiscount = it.orders.orderHasDiscount(lineItems);
 const hasRentals = it.orders.orderHasRentals(lineItems);
 const hasTax = it.orders.orderHasTax(lineItems);
@@ -309,7 +333,10 @@ const replacementLine = (item) => {
 </table>
 
 <!-- Items -->
-<% if (lineItems.length > 0) { %>
+<%/* `shownLineItems`, not `lineItems`: an order whose only non-divider entry is
+     a transaction fee has nothing to put in this grid, and an empty table with
+     a header row reads as a rendering fault. */%>
+<% if (shownLineItems.length > 0) { %>
 <section id="items">
   <table>
     <thead>
@@ -336,7 +363,7 @@ const replacementLine = (item) => {
            Subtotal, Total — plus the three conditionals. The base read `5` and
            every banner row spanned one column short of its own table. */%>
       <% const bannerSpan = 6 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0); %>
-      <% items.forEach(item => { %>
+      <% shownItems.forEach(item => { %>
         <% if (item.type === "group") { %>
         <tr>
           <td class="wide" colspan="<%= bannerSpan %>">
