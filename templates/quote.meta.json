@@ -41,6 +41,11 @@
       "slug": "rental-discount-exempt",
       "label": "Discounted rentals, tax exempt",
       "description": "8 columns via Duration + Discount with Tax OFF — the only fixture that lays a Discount column out with no Tax column next to it, because the organization is tax_exempt and totals.taxes is empty. Two of its five rentals are 100% discounted, so subtotal_discounted_cents is 0: the falsy-zero case that made `||` print the pre-discount subtotal. Also carries two sibling groups under one destination. templates#69 listed this order as 9 columns; measured 2026-08-14 it is 8. Captured from prod order 989."
+    },
+    {
+      "slug": "rental-taxed",
+      "label": "Taxed rental, no discount",
+      "description": "8 columns via Duration + Tax with Discount OFF — the commonest real shape (a taxed rental order nobody discounted) and the only fixture in the family that renders it. templates#69 dropped this order believing mixed-two-tax-rates covered the same combination; measured 2026-08-14 that order carries a 100%-discounted line and renders 9 columns, so without this entry the set had no Duration+Tax 8-column case at all and the two 8-column shapes collapsed to one. Deliberately minimal — one rental in one group — because its job is the column combination, not content. Captured from prod order 991."
     }
   ],
   "render": {
