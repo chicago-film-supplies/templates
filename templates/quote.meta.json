@@ -20,7 +20,7 @@
     {
       "slug": "discounts-and-fee",
       "label": "Discounts + transaction fee",
-      "description": "The money-coverage fixture: a percent discount, a flat (dollars-per-unit) discount, and a percent_of_total transaction fee — the three shapes no other fixture exercises, which left 5 of quote.eta's 19 it.currency sites in branches nothing renders. Every money value is computed by @cfs/core/utils/orders rather than typed by hand. Organization, contacts and instructions are invented and the address is a public venue, so it is PII-free by construction."
+      "description": "The only fixture carrying a TRANSACTION FEE and a FLAT (dollars-per-unit) discount, and it is hand-built because it has to be: measured 2026-08-14 across 400 dev orders, zero carry a transaction fee, so this shape cannot be captured. Do not \"clean it up\" into a capture. It holds all three money shapes no captured order provides — a percent discount, a flat discount, and a percent_of_total transaction fee — which together are the only thing that renders the totals block's transaction-fee rows and the flat-discount arm of the Discount cell. Every money value is computed by @cfs/core/utils/orders rather than typed by hand. Organization, contacts and instructions are invented and the address is a public venue, so it is PII-free by construction."
     },
     {
       "slug": "service-untaxed",
