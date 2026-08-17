@@ -131,8 +131,21 @@ jobs:
             # Retry-with-backoff to absorb Gotenberg cold start (B6). Only a
             # `renderer-unavailable` verdict (or transport error) is retried;
             # a real diff fails immediately.
+            #
+            # FIVE attempts, not three. Prod Gotenberg runs `minScale=0` with CPU
+            # throttling, so it is warm during business hours from real document
+            # renders and stone cold otherwise — and this gate runs on whatever
+            # schedule a PR arrives. Measured 2026-08-17 at 23:12 Chicago on a
+            # Saturday, the first run to ever reach a real verdict burned
+            # attempts 1 and 2 (`HTTP 504` then `HTTP 503`) and succeeded on 3:
+            # zero headroom. Every other run in the preceding sample was during
+            # Thursday working hours and needed none. Attempts cost only CI
+            # wall-clock on a path that is already asynchronous, and a
+            # `renderer-unavailable` verdict is NOT a visual regression — it is a
+            # non-answer, which is the worst outcome for a required status check.
+            attempts=5
             verdict=""; body=""
-            for attempt in 1 2 3; do
+            for attempt in $(seq 1 $attempts); do
               resp=$(curl -sS -m 180 -w '\n%{http_code}' \
                 -H "Authorization: Bearer $ID_TOKEN" \
                 -H "Content-Type: application/json" \
@@ -149,7 +162,13 @@ jobs:
                 verdict="renderer-unavailable"
               fi
 
-              backoff=$((10 * attempt * 2))  # 10s, 40s, 90s
+              # Don't sleep after the LAST attempt — there is nothing left to
+              # wait for, and the old loop burned a full backoff before giving up.
+              [ "$attempt" -ge "$attempts" ] && break
+
+              # 20s, 40s, 60s, 80s. The previous comment here claimed
+              # "10s, 40s, 90s", which no arithmetic in this file produces.
+              backoff=$((20 * attempt))
               echo "renderer unavailable (attempt $attempt) — retrying in ${backoff}s"
               sleep "$backoff"
             done
