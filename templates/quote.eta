@@ -545,3 +545,4 @@ const replacementLine = (item) => {
 <% } %>
   <footer></footer>
 </div>
+<% /* no-op probe: api-cloudrun#325 step 3 — must render byte-identically. */ %>
