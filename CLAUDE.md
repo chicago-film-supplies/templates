@@ -77,28 +77,35 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
 **A util namespace this harness cannot provide is a hard error, deliberately.** `UTIL_MODULES` in `scripts/preview.ts` must mirror the server's (`api-cloudrun/src/lib/templates/eta.ts`); if it doesn't, the resolver throws and names the fix. It used to skip silently, and that is how `money` came to be missing here while the server injected it — and `money` is in core's `ALWAYS_ON_UTIL_NAMESPACES`, so *every* template requests it. The result was that the first `it.money.*` call rendered correctly in production and died here with `Cannot read properties of undefined`, which reads as a template bug rather than a harness one. This repo has no test suite, so the throw is the guarantee (the server side is covered by `renderUtilNamespaces.test.ts`). **Do not re-add a silent skip.**
 
-## Goldens are DEFERRED, not missing
+## Goldens are LIVE on `main` (blessed 2026-08-17) — and absent on `sandbox`
 
-`goldens/` holds a README and two `.gitkeep` and **zero PNGs**, so every fixture
-yields verdict `no-golden` → **PASS** and `visual-diff` cannot fail. That is the
-intended state, not a gap to close.
+`goldens/main/quote/` holds **all 9 PNGs**, one per fixture (`acaafcd`), so the
+`visual-diff` gate on a `main` PR now genuinely compares and **can fail**. That
+is a change of state, not of policy: `quote` graduated. A golden is a *freeze*,
+and you freeze a thing once it has stopped moving.
 
-**There is no live template yet.** `quote` is the only one and it is still WIP,
-so a golden would lock a design that is still moving — every iteration would
-need re-blessing, which is churn, not signal. A golden is a *freeze*, and you
-freeze a thing once it has stopped moving.
+⚠️ **`goldens/sandbox/` is still empty**, so a dev PR (base `sandbox`) still
+yields `no-golden` → PASS on every fixture. **Dev is not gated.** Do not read a
+green dev run as evidence a rendering change is safe — only the `main` PR's run
+is comparing anything. Re-bless both trees from
+`api-cloudrun/scripts/rebless-goldens.ts`.
 
-This is the same convention `manager` already documents for its Playwright
+This supersedes the old "goldens are DEFERRED, not missing" note, which said
+`goldens/` held zero PNGs and that `visual-diff` *cannot* fail. That was true
+until 2026-08-17 and is now the opposite of the truth — a meaningful visual
+change is expected to fail the check, and the fix is to review the diff in the
+manager and approve, or re-bless, **not** to assume CI is green because it
+always was.
+
+The blessing convention is the one `manager` documents for its Playwright
 screenshots (*"convergence, not freeze… a surface gets a `toHaveScreenshot`
 pixel lock only once it reaches the design-system standard"*, via its
-`GRADUATED` list). Bless `goldens/main/<template>/*` and
-`goldens/sandbox/<template>/*` from `api-cloudrun/scripts/rebless-goldens.ts`
-when a template **graduates** — not before.
+`GRADUATED` list).
 
-⚠️ **What a golden would NOT have caught, so do not reach for one as the
-answer.** A golden compares what was rendered; it is silent about a branch that
-never ran. Fixture *coverage* and golden *stability* are different problems, and
-only the first one is live today.
+⚠️ **What a golden does NOT catch, so do not reach for one as the answer.** A
+golden compares what was rendered; it is silent about a branch that never ran.
+Fixture *coverage* and golden *stability* are different problems, and blessing
+the baseline closed only the second one.
 
 The set was widened for exactly that reason — 3 fixtures to **9** on
 2026-08-14, seven of them captured from real prod orders — and the argument
