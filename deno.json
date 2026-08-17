@@ -17,12 +17,12 @@
   },
   "imports": {
     "@bgub/eta": "jsr:@bgub/eta@^4.6.0",
-    "@cfs/core/schemas": "jsr:@cfs/core@10.0.0-beta.190/schemas",
-    "@cfs/core/utils/orders": "jsr:@cfs/core@10.0.0-beta.190/utils/orders",
-    "@cfs/core/utils/invoices": "jsr:@cfs/core@10.0.0-beta.190/utils/invoices",
-    "@cfs/core/utils/dates": "jsr:@cfs/core@10.0.0-beta.190/utils/dates",
-    "@cfs/core/utils/icons": "jsr:@cfs/core@10.0.0-beta.190/utils/icons",
-    "@cfs/core/utils/money": "jsr:@cfs/core@10.0.0-beta.190/utils/money",
+    "@cfs/core/schemas": "jsr:@cfs/core@10.0.0-beta.191/schemas",
+    "@cfs/core/utils/orders": "jsr:@cfs/core@10.0.0-beta.191/utils/orders",
+    "@cfs/core/utils/invoices": "jsr:@cfs/core@10.0.0-beta.191/utils/invoices",
+    "@cfs/core/utils/dates": "jsr:@cfs/core@10.0.0-beta.191/utils/dates",
+    "@cfs/core/utils/icons": "jsr:@cfs/core@10.0.0-beta.191/utils/icons",
+    "@cfs/core/utils/money": "jsr:@cfs/core@10.0.0-beta.191/utils/money",
     "date-fns": "npm:date-fns@^4.4.0",
     "@date-fns/tz": "npm:@date-fns/tz@^1.5.0"
   },
