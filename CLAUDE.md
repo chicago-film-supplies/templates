@@ -18,6 +18,19 @@ So while a draft is open, author through `templates_create_draft` → `templates
 
 Raw git stays correct for everything that is *not* template content under an open draft: `scripts/`, workflows, fixtures on disk, this file, and reviewing the PR a release opened.
 
+### Who merges: it depends on what the PR CHANGES, not on who opened it
+
+⚠️ **"Agents open, humans merge" is about template CONTENT, and reading it as a blanket rule is what left pin bumps sitting open.** The two kinds of PR that reach this repo are not the same risk:
+
+| PR | merged by | why |
+|---|---|---|
+| **template content** (anything a `templates_release_draft` opens) | **a human** | it changes what a customer receives, and `visual-diff` green means "rendered without erroring", not "renders correctly" |
+| **`@cfs/core` pin bump** — only `deno.json` + `deno.lock`, all six exactly-pinned entries | **agents merge automatically** | mechanical and verifiable: nothing here imports the propagation catalog, `deno check` over the tracked TypeScript either passes or does not, and the alternative is a PR per publish accumulating unmerged while the other three repos have already moved |
+
+**Alex, 2026-08-18: "merge automatically"** — standing, for the pin-bump row only. It does not extend to a PR that touches template content, a fixture, a golden or a workflow, even when an agent opened it and even when CI is green. If a bump PR touches anything beyond `deno.json`/`deno.lock`, it is not this row.
+
+⚠️ **This repo is the durable home for that rule.** It also lives in the workspace `~/cfs/CLAUDE.md`, which is **untracked and machine-local** (api-cloudrun#530) and therefore invisible to every other machine and every cloud agent — so state it here, and do not cite that path.
+
 ⚠️ **`templates_render_preview` renders the PUBLISHED version, not your draft.** `POST /templates/render` accepts `uid_version`; the MCP tool does not pass it (**api-cloudrun#526**). Until that lands, `deno task preview` against the git working tree is the only way to see a draft edit rendered — which is itself an argument for keeping the working tree and the draft identical.
 
 **Environments.** Prod publishes from `main`; dev/staging publishes from `sandbox`. **`sandbox` exists to exercise the tooling & publish *workflow*, not to stage content** — it's a *disposable mirror* of `main`, force-resynced to fresh `main` as routine practice. Stage content the same way for both envs: **branch `main`** → draft → PR → merge. **Never author canonical content directly on `sandbox`** — a commit made only there never reaches prod and forks the branches (this caused templates#22).
