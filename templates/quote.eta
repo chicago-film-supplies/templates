@@ -497,7 +497,23 @@ const replacementLine = (item) => {
 <% } %>
 
 <section id="information">
-  <% if (replacementItems.length > 0) { %>
+  <%/* The sentence says "your rental order", and on a replacement-only quote
+       both halves of it are false: there is no rental, and the figure it quotes
+       is $0.00. Measured on `replacement-only` (prod order 976) — a lost
+       Surveillance Kit whose own `replacement_cents` is 0, so the note read
+       "The total replacement cost for all items on your rental order is: $0.00"
+       on a document with neither.
+
+       Either half on its own is enough to make it true, so the test is an OR
+       rather than an AND: a rental order states its replacement exposure even
+       when that happens to total zero, and a non-rental order that DOES carry
+       replacement cost still owes the customer the figure.
+
+       The `replacementItems` guard stays in front of both. It is what the
+       Replacement Costs table below is gated on, and dropping it would let a
+       rental order with no priced replacement anywhere print this note with no
+       table under it to substantiate it. */%>
+  <% if (replacementItems.length > 0 && (hasRentals || rTotal > 0)) { %>
   <p>The total replacement cost for all items on your rental order is: <%= it.money.formatCents(rTotal) %></p>
   <% } %>
 </section>
