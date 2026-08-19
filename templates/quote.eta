@@ -39,6 +39,22 @@ const hasRentals = it.orders.orderHasRentals(lineItems);
 const hasTax = it.orders.orderHasTax(lineItems);
 const replacementItems = lineItems.filter(i => i.price.replacement_cents != null);
 
+// Does anything on this quote actually GO anywhere?
+//
+// A `replacement` line is not a thing we hand to a customer — it is us
+// recovering the cost of an item that was lost or damaged while already in
+// their possession. So a quote whose every line is a replacement has no
+// delivery, no collection, no addresses and no contacts, and #destinations
+// blocks 2 and 3 (the two address columns) are describing a movement that never
+// happens. They are dropped entirely rather than left empty: a pair of headed
+// columns with nothing under them reads as missing data rather than as
+// inapplicable.
+//
+// `shownLineItems`, not `lineItems` — a `transaction_fee` is not a line of the
+// order (see the note above), so a card fee riding along on a replacement-only
+// quote must not resurrect the address columns.
+const hasDeliverableItems = shownLineItems.some(i => i.type !== "replacement");
+
 // The Type column exists for ONE job: a product stocked both for sale and for
 // rent needs the column to say which one this line is. The other four members
 // of DOC_LINE_ITEM_TYPES — replacement, service, surcharge, transaction_fee —
@@ -240,12 +256,19 @@ const replacementLine = (item) => {
      fixed` sizes a table from its FIRST ROW, and this table has one
      <thead>/<tbody> pair per destination, so a width on a body cell can never
      take effect. */%>
-<table id="destinations">
+<%/* The dates block is FOUR columns now, not two: [start] [→] [end] [duration].
+     Their widths still sum to `--label-col`, which is what keeps block 2 opening
+     on the shared alignment edge — see styles/quote.css. */%>
+<table id="destinations"<% if (!hasDeliverableItems) { %> class="dates-only"<% } %>>
   <colgroup>
-    <col class="dates">
+    <col class="date">
+    <col class="arrow">
+    <col class="date">
     <col class="days">
+    <% if (hasDeliverableItems) { %>
     <col class="address">
     <col class="address">
+    <% } %>
   </colgroup>
 <% destinations.forEach(function(dest, destIndex) { %>
     <%
@@ -279,16 +302,37 @@ const replacementLine = (item) => {
     %>
   <thead>
     <tr>
-    <th scope="col" colspan="2">Dates: </th>
+    <th scope="col" colspan="4">Dates: </th>
+    <% if (hasDeliverableItems) { %>
     <th scope="col"><%= startLabel %></th>
     <th scope="col"><%= endLabel %></th>
+    <% } %>
     </tr>
   </thead>
   <tbody>
     <tr>
-    <td class="dates">
-      <% if (hasActiveWindow) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(d.collection_start), 'EEE M/d/yy') %>
+    <td class="date">
+      <% if (d.delivery_start) { %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy') %>
+      <% } %>
+    </td>
+    <%/* The arrow and the end date are RENTAL furniture. A sale-only order is
+         handed over and never comes back, so it has no end of anything — and the
+         old hyphenated range printed `Tue 8/11/26 - Tue 8/11/26`, a window one
+         day wide that does not exist. Gating both on `hasRentals` states that,
+         where the range shape could only imply it.
+         The three cells are gated on three different things, which is the point
+         of splitting them. The arrow keeps `hasActiveWindow` — it is the only
+         one that needs BOTH ends, because it draws the span between them. The
+         dates each read their own boundary: every boundary on a destination is
+         nullable, and one guard over the whole range used to hide a start date
+         we had whenever the end was missing. */%>
+    <td class="arrow">
+      <% if (hasRentals && hasActiveWindow) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
+    </td>
+    <td class="date">
+      <% if (hasRentals && d.collection_start) { %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.collection_start), 'EEE M/d/yy') %>
       <% } %>
     </td>
     <td>
@@ -296,27 +340,41 @@ const replacementLine = (item) => {
       <%= it.dates.formatChargeDays(d.days_active).periodLabel %>
       <% } %>
     </td>
+    <% if (hasDeliverableItems) { %>
     <td class="address">
       <% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
     </td>
     <td class="address">
       <% addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
     </td>
+    <% } %>
     </tr>
     <tr>
-      <td colspan="2">
+      <td colspan="4">
       <!-- Charge window — only when it differs from delivery/collection -->
       <% if (showCharged) { %>
       <span class="bold">Dates Charged: </span>
       <% } %>
       </td>
+      <% if (hasDeliverableItems) { %>
       <td class="address"><%= contactLine(dest.delivery) %></td>
       <td class="address"><%= contactLine(dest.collection) %></td>
+      <% } %>
     </tr>
     <tr>
-      <td>
+      <%/* Split across the same four columns as the active window above, so the
+           two ranges read as one stacked pair rather than as two layouts. */%>
+      <td class="date">
       <% if (showCharged) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_start), 'EEE M/d/yy') %> - <%= it.dateFns.format(it.dateFns.parseISO(d.charge_end), 'EEE M/d/yy') %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_start), 'EEE M/d/yy') %>
+      <% } %>
+      </td>
+      <td class="arrow">
+      <% if (showCharged && hasRentals) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
+      </td>
+      <td class="date">
+      <% if (showCharged && hasRentals) { %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_end), 'EEE M/d/yy') %>
       <% } %>
       </td>
       <td>
@@ -325,8 +383,10 @@ const replacementLine = (item) => {
         <%= it.dates.formatChargeDays(d.days_charged).periodLabel %>
         <% } %>
       </td>
+      <% if (hasDeliverableItems) { %>
       <td class="address"><%= dest.delivery?.instructions ?? "" %></td>
       <td class="address"><%= dest.collection?.instructions ?? "" %></td>
+      <% } %>
     </tr>
   </tbody>
 <% }) %>
@@ -513,7 +573,13 @@ const replacementLine = (item) => {
         const r = replacementLine(item);
       %>
       <tr>
-        <td><%= item.name %></td>
+        <%/* Indented by the SAME `componentDepth` the items grid uses — one
+             function, so a component cannot read as a top-level line in one
+             table and as a child in the other. A component whose parent carries
+             no replacement cost is indented under a parent that is absent from
+             THIS table; that is the honest rendering, because the nesting is a
+             fact about the order rather than about the table. */%>
+        <td style="padding-left: <%= componentDepth(item) %>em"><%= item.name %></td>
         <td><%= moneyCell(r.unitCostCents) %></td>
         <td><%= moneyCell(r.unitTaxCents) %></td>
         <td class="total"><%= moneyCell(r.unitTotalCents) %></td>
