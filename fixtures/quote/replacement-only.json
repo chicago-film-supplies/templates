@@ -1,0 +1,229 @@
+{
+  "uid": "VtLsq1lLaM4bRvU2QxlO",
+  "number": 976,
+  "status": "reserved",
+  "organization": {
+    "uid": "x0fdH2hFqKY9HsOsEmi4",
+    "name": "Sample text for name......",
+    "crms_id": 503,
+    "tax_profile": "tax_frankfort",
+    "xero_id": "20631d8f-e91e-49d8-9cbe-b8b534e94d77",
+    "billing_address": {
+      "city": "Frankfort",
+      "country_name": "United States",
+      "full": "406 Aspen Dr",
+      "name": "Sample text for name......",
+      "postcode": "61789",
+      "region": "IL",
+      "street": "7711 Elm Ln",
+      "street2": "",
+      "mapbox_id": "Sample text for mapbox_id......................................",
+      "address_coordinates": null,
+      "user_coordinates": null
+    }
+  },
+  "destinations": [
+    {
+      "dates": {
+        "delivery_start": "2026-08-03T09:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1785765600,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-08-03T09:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1785765600,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-08-03T17:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1785794400,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-08-03T17:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1785794400,
+          "_nanoseconds": 0
+        },
+        "charge_start": "2026-08-03T09:00:00.000-05:00",
+        "charge_start_fs": {
+          "_seconds": 1785765600,
+          "_nanoseconds": 0
+        },
+        "charge_end": "2026-08-03T17:00:00.000-05:00",
+        "charge_end_fs": {
+          "_seconds": 1785794400,
+          "_nanoseconds": 0
+        },
+        "days_active": 1,
+        "days_charged": 1
+      },
+      "delivery": {
+        "uid": "vTn8CTAwwJHEJZLBzsOw",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "172 Magnolia Rd",
+          "name": "Eastvale",
+          "postcode": "65048",
+          "region": "IL",
+          "street": "3408 Cypress Ter",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "collection": {
+        "uid": "vTn8CTAwwJHEJZLBzsOw",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "5609 Elm Ln",
+          "name": "Westmont",
+          "postcode": "65538",
+          "region": "IL",
+          "street": "7695 Spruce Ln",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "customer_collecting": true,
+      "customer_returning": true
+    }
+  ],
+  "items": [
+    {
+      "uid": "78f224c7-0164-49e2-a510-88dae08c1d50",
+      "type": "destination",
+      "name": "Fillmore",
+      "path": [
+        "78f224c7-0164-49e2-a510-88dae08c1d50"
+      ],
+      "uid_delivery": "vTn8CTAwwJHEJZLBzsOw",
+      "uid_collection": "vTn8CTAwwJHEJZLBzsOw",
+      "description": ""
+    },
+    {
+      "uid": "7c0a3dda-e32c-43fd-90af-3ad3c57d3291",
+      "type": "group",
+      "name": "Replacements",
+      "path": [
+        "78f224c7-0164-49e2-a510-88dae08c1d50",
+        "7c0a3dda-e32c-43fd-90af-3ad3c57d3291"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "nd9Vf726vTqgZjPcyZSu",
+      "type": "replacement",
+      "name": "Replacement: Surveillance Kit",
+      "description": "",
+      "quantity": 4,
+      "price": {
+        "base_cents": 13500,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 54000,
+        "subtotal_discounted_cents": 54000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "0sfD0ca1LvwWR0pTJtqw",
+            "name": "Frankfort Sales Tax",
+            "rate": 8,
+            "type": "percent",
+            "amount_cents": 4320
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "name": "Chicago Sales Tax",
+            "rate": 10.25,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 58320
+      },
+      "stock_method": "none",
+      "order_number": 976,
+      "uid_order": "VtLsq1lLaM4bRvU2QxlO",
+      "path": [
+        "78f224c7-0164-49e2-a510-88dae08c1d50",
+        "7c0a3dda-e32c-43fd-90af-3ad3c57d3291",
+        "nd9Vf726vTqgZjPcyZSu"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 247,
+      "coa_revenue": 4210
+    }
+  ],
+  "tax_profile": "tax_frankfort",
+  "totals": {
+    "discount_amount_cents": 0,
+    "subtotal_cents": 54000,
+    "subtotal_discounted_cents": 54000,
+    "taxes": [
+      {
+        "uid": "0sfD0ca1LvwWR0pTJtqw",
+        "name": "Frankfort Sales Tax",
+        "rate": 8,
+        "type": "percent",
+        "amount_cents": 4320
+      }
+    ],
+    "transaction_fees": [],
+    "total_cents": 58320,
+    "replacement_total_cents": 0
+  },
+  "invoices": [
+    {
+      "uid": "E0MfaT3PqtwqenuUznnV",
+      "number": 2348,
+      "status": "issued"
+    }
+  ],
+  "query_by_invoices": [
+    "E0MfaT3PqtwqenuUznnV"
+  ],
+  "query_by_items": [
+    "nd9Vf726vTqgZjPcyZSu"
+  ],
+  "query_by_contacts": [],
+  "query_by_dates": [
+    "2026-08-03"
+  ],
+  "bookings_breakdown": {
+    "quoted": 0,
+    "reserved": 0,
+    "prepped": 0,
+    "out": 0,
+    "returned": 0,
+    "lost": 0,
+    "damaged": 0
+  },
+  "crms_id": 1003,
+  "crms_status": "Open",
+  "subject": "Walkie L&D",
+  "reference": null,
+  "xero_id": "043798cb-9c76-4fe6-8eff-871bd0a0312b",
+  "uid_thread": "z2e2zzJ5gwtzw5W8UuI1",
+  "version": 4,
+  "created_at": {
+    "_seconds": 1785787009,
+    "_nanoseconds": 325000000
+  },
+  "updated_at": {
+    "_seconds": 1786500666,
+    "_nanoseconds": 608000000
+  }
+}
