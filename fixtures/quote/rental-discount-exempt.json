@@ -6,7 +6,6 @@
     "uid": "hCdYsTi9NDWxq4ufvHhV",
     "name": "Morgan Owen",
     "crms_id": 550,
-    "tax_profile": "tax_applied",
     "xero_id": "d3d08972-9bf6-45f8-93bf-d67e8722993d",
     "billing_address": {
       "city": "Chicago",
@@ -335,7 +334,6 @@
       "coa_revenue": 4000
     }
   ],
-  "tax_profile": "tax_exempt",
   "totals": {
     "discount_amount_cents": 44000,
     "subtotal_cents": 74000,

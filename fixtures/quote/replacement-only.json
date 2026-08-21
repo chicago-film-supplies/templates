@@ -6,7 +6,6 @@
     "uid": "x0fdH2hFqKY9HsOsEmi4",
     "name": "Sample text for name......",
     "crms_id": 503,
-    "tax_profile": "tax_frankfort",
     "xero_id": "20631d8f-e91e-49d8-9cbe-b8b534e94d77",
     "billing_address": {
       "city": "Frankfort",
@@ -167,7 +166,6 @@
       "coa_revenue": 4210
     }
   ],
-  "tax_profile": "tax_frankfort",
   "totals": {
     "discount_amount_cents": 0,
     "subtotal_cents": 54000,

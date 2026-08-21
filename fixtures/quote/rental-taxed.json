@@ -6,7 +6,6 @@
     "uid": "5spRplcKLjcyqfryluqA",
     "name": "Sample text for name..................................................",
     "crms_id": 540,
-    "tax_profile": "tax_applied",
     "xero_id": "e0b6ff57-e677-4911-bce7-2008c0eb3c78",
     "billing_address": {
       "city": "Chicago",
@@ -167,7 +166,6 @@
       "coa_revenue": 4000
     }
   ],
-  "tax_profile": "tax_applied",
   "totals": {
     "discount_amount_cents": 0,
     "subtotal_cents": 12000,

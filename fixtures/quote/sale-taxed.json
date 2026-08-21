@@ -6,7 +6,6 @@
     "uid": "nTpq3YIY4cth5todd4PV",
     "name": "Riley M Adler",
     "crms_id": 524,
-    "tax_profile": "tax_applied",
     "xero_id": "6891f42e-193e-4db1-bfa3-834555b6ce32",
     "billing_address": {
       "city": "Evanston",
@@ -167,7 +166,6 @@
       "coa_revenue": 4200
     }
   ],
-  "tax_profile": null,
   "totals": {
     "discount_amount_cents": 0,
     "subtotal_cents": 39000,

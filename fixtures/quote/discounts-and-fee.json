@@ -4,10 +4,8 @@
   "status": "quoted",
   "subject": "Riverwalk Summer Series \u2014 lighting + tables",
   "reference": "PO-51200",
-  "tax_profile": "tax_applied",
   "version": 3,
   "organization": {
-    "tax_profile": "tax_applied",
     "uid": "LakeshoreStageCo0001",
     "name": "Lakeshore Stage Company",
     "crms_id": null,
