@@ -6,7 +6,6 @@
     "uid": "XbPouPV72q0pUY4t1c3h",
     "name": "Sample text for name.............",
     "crms_id": 223,
-    "tax_profile": "tax_applied",
     "xero_id": "cde0a1cb-700f-4b74-8661-fd33d98229cd",
     "billing_address": {
       "city": "Los Angeles",
@@ -312,7 +311,6 @@
       "coa_revenue": 4000
     }
   ],
-  "tax_profile": "tax_applied",
   "totals": {
     "discount_amount_cents": 190000,
     "subtotal_cents": 950000,

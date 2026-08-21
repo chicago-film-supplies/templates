@@ -6,7 +6,6 @@
     "uid": "2wtsuMafEGI3WY6KsD3X",
     "name": "Jordan Glenn",
     "crms_id": 515,
-    "tax_profile": "tax_applied",
     "xero_id": "e6853c3f-f5f9-4628-aa3d-52bae2892985",
     "billing_address": {
       "city": "Bolingbrook",
@@ -152,7 +151,6 @@
       "coa_revenue": 4100
     }
   ],
-  "tax_profile": "tax_applied",
   "totals": {
     "discount_amount_cents": 0,
     "subtotal_cents": 35000,

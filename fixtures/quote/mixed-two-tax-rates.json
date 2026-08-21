@@ -6,7 +6,6 @@
     "uid": "SiJSnxBysKnvnUqu35fj",
     "name": "Logan Ingram",
     "crms_id": 539,
-    "tax_profile": "tax_applied",
     "xero_id": "74b21e6d-17c3-4980-829d-4845e9db76ff",
     "billing_address": {
       "city": "Chicago",
@@ -950,7 +949,6 @@
       "coa_revenue": 4110
     }
   ],
-  "tax_profile": null,
   "totals": {
     "discount_amount_cents": 10000,
     "subtotal_cents": 262500,

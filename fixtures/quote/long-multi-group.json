@@ -6,7 +6,6 @@
     "uid": "Omyms3GkmyIreWjSuh2K",
     "name": "Sample text for name.........",
     "crms_id": 536,
-    "tax_profile": "tax_rantoul",
     "xero_id": "64f5c266-62e1-40cc-9ff6-45b37efc6ce2",
     "billing_address": {
       "city": "Rantoul",
@@ -3836,7 +3835,6 @@
       "coa_revenue": 4000
     }
   ],
-  "tax_profile": "tax_rantoul",
   "totals": {
     "discount_amount_cents": 33600,
     "subtotal_cents": 973424,
