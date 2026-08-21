@@ -92,7 +92,8 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
 ## Goldens are LIVE on `main` (blessed 2026-08-17) — and absent on `sandbox`
 
-`goldens/main/quote/` holds **all 9 PNGs**, one per fixture (`acaafcd`), so the
+`goldens/main/quote/` holds **all 10 PNGs**, one per fixture (blessed `acaafcd`,
+extended to 10 by `ebbe2f2` / #104), so the
 `visual-diff` gate on a `main` PR now genuinely compares and **can fail**. That
 is a change of state, not of policy: `quote` graduated. A golden is a *freeze*,
 and you freeze a thing once it has stopped moving.
@@ -120,8 +121,9 @@ golden compares what was rendered; it is silent about a branch that never ran.
 Fixture *coverage* and golden *stability* are different problems, and blessing
 the baseline closed only the second one.
 
-The set was widened for exactly that reason — 3 fixtures to **9** on
-2026-08-14, seven of them captured from real prod orders — and the argument
+The set was widened for exactly that reason — 3 fixtures to 9 on 2026-08-14 and
+to **10** on 2026-08-21 (`replacement-only`), eight of them captured from real
+prod orders — and the argument
 still holds at the new size. Measured against the current set: 121 line items,
 10 of them discounted across 5 fixtures, and 1 transaction fee in 1 fixture.
 The items grid is now covered at **every column count it can produce, 6 through
@@ -133,9 +135,10 @@ golden run untouched:
 
 | branch | why nothing covers it |
 |---|---|
-| the foreign-country line in `#bill-to` | all 9 `billing_address.country_name` are `United States` |
+| the foreign-country line in `#bill-to` | all 10 `billing_address.country_name` are `United States` |
 | an absent `billing_address` | the field is `.optional()` and `Address` is `.nullable()`, but no fixture omits it |
-| a destination with no delivery/collection window | every boundary is nullable; all 9 fixtures set them |
+| a destination with no delivery/collection window | every boundary is nullable; all 10 fixtures set them |
+| **a `flat` (per-unit) TAX** | every tax across all 10 fixtures is `percent`. The one `"type": "flat"` in `discounts-and-fee` is a *discount*. So the flat arm of every tax cell has never rendered — and it is the arm that reads the QUANTITY and ignores the subtotal, which is what let a $0.00 replacement row carry $12.00 (core#62) |
 
 Those three are guards, not layout, so a golden was never going to speak to
 them — which is the point of keeping this note rather than replacing it with a

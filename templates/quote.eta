@@ -37,7 +37,27 @@ const shownLineItems = lineItems.filter(i => !isDocumentFee(i));
 const hasDiscount = it.orders.orderHasDiscount(lineItems);
 const hasRentals = it.orders.orderHasRentals(lineItems);
 const hasTax = it.orders.orderHasTax(lineItems);
-const replacementItems = lineItems.filter(i => i.price.replacement_cents != null);
+// NON-ZERO, not "present". `replacement_cents` is a field on EVERY priced line
+// — schema-required whenever `stock_method !== "none"` — so a sale, a service
+// and a `replacement` twin all carry it, and all carry it at 0 because none of
+// them has anything to replace. Nothing writes `null`: measured across this
+// fixture set, 0 nulls against 38 lines sitting at exactly 0. So `!= null` was
+// a no-op and this table listed every priced line — 22 blank rows of 78 on
+// `long-multi-group`, 10 of 18 on `mixed-two-tax-rates`, and a heading plus one
+// blank row on the three single-line fixtures.
+//
+// Dropping them moves no money: `long-multi-group` still totals $28,847.87.
+// The section says "your rental order", which is the rule this now implements.
+//
+// It also stopped being merely untidy: the FLAT arm of the tax calculation
+// reads the QUANTITY and ignores the subtotal, so once a per-unit levy exists
+// (the $0.05/bottle water tax) a $0.00 replacement row carries real money into
+// the grand total — 240 bottles is $12.00 of levy on nothing. core#62.
+//
+// Truthy rather than `> 0`, matching `calculateReplacementTotals` exactly so the
+// rows and the footer cannot disagree: a NEGATIVE replacement cost is
+// meaningless rather than absent, and is better shown than silently dropped.
+const replacementItems = lineItems.filter(i => i.price.replacement_cents);
 
 // Does anything on this quote actually GO anywhere?
 //
@@ -497,17 +517,21 @@ const replacementLine = (item) => {
 <% } %>
 
 <section id="information">
-  <%/* The sentence says "your rental order", and on a replacement-only quote
-       both halves of it are false: there is no rental, and the figure it quotes
-       is $0.00. Measured on `replacement-only` (prod order 976) — a lost
-       Surveillance Kit whose own `replacement_cents` is 0, so the note read
-       "The total replacement cost for all items on your rental order is: $0.00"
-       on a document with neither.
+  <%/* The sentence says "your rental order", and this used to print it on a
+       replacement-only quote where both halves were false — no rental, and a
+       $0.00 figure. Measured on `replacement-only` (prod order 976): a lost
+       Surveillance Kit whose own `replacement_cents` is 0.
 
-       Either half on its own is enough to make it true, so the test is an OR
-       rather than an AND: a rental order states its replacement exposure even
-       when that happens to total zero, and a non-rental order that DOES carry
-       replacement cost still owes the customer the figure.
+       ⚠️ THAT CASE IS NOW HANDLED UPSTREAM. `replacementItems` filters on a
+       NON-ZERO replacement value, so the Surveillance Kit no longer enters the
+       set and the leading guard alone suppresses the note. This OR is no longer
+       doing the job it was written for; the reasoning is kept to explain why it
+       is still here rather than deleted.
+
+       What it still catches is narrow and does NOT reduce to the leading guard:
+       a non-empty set can still sum to zero — a line at quantity 0, or a
+       negative replacement value cancelling a positive one (the filter passes
+       negatives deliberately, so corruption stays visible).
 
        The `replacementItems` guard stays in front of both. It is what the
        Replacement Costs table below is gated on, and dropping it would let a
