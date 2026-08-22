@@ -197,7 +197,17 @@ const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
 // Keyed by PATH, never by uid: `item.uid` repeats within one document (18% of
 // prod orders), so two hidden components can share a uid and their money would
 // collide onto one row. `path` is the row identity.
-const pathKey = (item) => (item.path ?? []).join(" ");
+//
+// The separator is NUL, BUILT rather than written as a unicode escape. This
+// file is authored through `templates_propose_edit`, whose payload is JSON, and
+// a JSON round-trip decodes such an escape into a real NUL BYTE in the source.
+// The file still behaves identically — a literal NUL inside a JS string
+// literal is the same character — but it puts a control byte in a text file
+// that git is one edit away from treating as binary, and it mutates a line
+// nobody meant to touch. `String.fromCharCode` says the same thing in
+// characters that survive the trip.
+const PATH_SEP = String.fromCharCode(0);
+const pathKey = (item) => (item.path ?? []).join(PATH_SEP);
 const hiddenPaths = new Set();
 const rolledUp = new Map();
 if (hideZeroPricedComponents) {
@@ -210,7 +220,7 @@ if (hideZeroPricedComponents) {
     // whatever actually renders.
     let up = (hidden.path ?? []).slice(0, -1);
     while (up.length > 0) {
-      const key = up.join(" ");
+      const key = up.join(PATH_SEP);
       const ancestor = byPath.get(key);
       if (ancestor && !eligibleKeys.has(key)) {
         const acc = rolledUp.get(key) || { tax: 0, subtotal: 0, total: 0 };
