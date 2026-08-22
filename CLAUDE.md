@@ -62,7 +62,7 @@ The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta
 
 ## Template context (summary)
 
-**Always on:** `it.doc` (the **source** document — a template never reads its target, it produces it), `it.version`, `it.params`, `it.now` (frozen render timestamp — never `new Date()`), `it.holidays` (CFS holiday ISO dates `YYYY-MM-DD[]`, live snapshot — feeds the `it.dates.*` holiday helpers, which throw if omitted; absent in layouts), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.money` (`@cfs/core/utils/money`), `it.dates` (`@cfs/core/utils/dates`), `it.icons` (`@cfs/core/utils/icons`).
+**Always on:** `it.doc` (the **source** document — a template never reads its target, it produces it), `it.version`, `it.params` (the sidecar's declared `params[]`, resolved through core's `resolveRenderParams`; preview a non-default state with `deno task preview <name> <fixture> --param <key>=true`), `it.now` (frozen render timestamp — never `new Date()`), `it.holidays` (CFS holiday ISO dates `YYYY-MM-DD[]`, live snapshot — feeds the `it.dates.*` holiday helpers, which throw if omitted; absent in layouts), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.money` (`@cfs/core/utils/money`), `it.dates` (`@cfs/core/utils/dates`), `it.icons` (`@cfs/core/utils/icons`).
 
 ⚠️ **`it.currency` is gone.** Phase 11 Phase E withdrew currency.js from the render context entirely, `money-lint.yml`'s budget is **zero**, and `quote.eta` has no remaining call sites — so any `it.currency` reference now fails CI *and* would throw at render. Use `it.money.formatCents(doc.total_cents)`.
 
@@ -92,7 +92,10 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
 ## Goldens are LIVE on `main` (blessed 2026-08-17) — and absent on `sandbox`
 
-`goldens/main/quote/` holds **all 9 PNGs**, one per fixture (`acaafcd`), so the
+`goldens/main/quote/` holds **all 11 PNGs**, one per fixture (blessed `acaafcd`,
+extended to 10 by `ebbe2f2` / #104, 6 of them re-blessed by #108 for the
+non-zero replacement filter, and an 11th added by #108 for the flat-tax
+component), so the
 `visual-diff` gate on a `main` PR now genuinely compares and **can fail**. That
 is a change of state, not of policy: `quote` graduated. A golden is a *freeze*,
 and you freeze a thing once it has stopped moving.
@@ -120,9 +123,11 @@ golden compares what was rendered; it is silent about a branch that never ran.
 Fixture *coverage* and golden *stability* are different problems, and blessing
 the baseline closed only the second one.
 
-The set was widened for exactly that reason — 3 fixtures to **9** on
-2026-08-14, seven of them captured from real prod orders — and the argument
-still holds at the new size. Measured against the current set: 121 line items,
+The set was widened for exactly that reason — 3 fixtures to 9 on 2026-08-14, to
+**10** on 2026-08-21 (`replacement-only`) and to **11** the same day
+(`taxed-zero-priced-component`, the family's only SYNTHETIC fixture and its only
+`flat` tax), eight of them captured from real prod orders — and the argument
+still holds at the new size. Measured against the current set: 124 line items,
 10 of them discounted across 5 fixtures, and 1 transaction fee in 1 fixture.
 The items grid is now covered at **every column count it can produce, 6 through
 9**, including both 8-column shapes (Duration+Discount and Duration+Tax), which
@@ -133,17 +138,24 @@ golden run untouched:
 
 | branch | why nothing covers it |
 |---|---|
-| the foreign-country line in `#bill-to` | all 9 `billing_address.country_name` are `United States` |
+| the foreign-country line in `#bill-to` | all 10 `billing_address.country_name` are `United States` |
 | an absent `billing_address` | the field is `.optional()` and `Address` is `.nullable()`, but no fixture omits it |
-| a destination with no delivery/collection window | every boundary is nullable; all 9 fixtures set them |
+| a destination with no delivery/collection window | every boundary is nullable; all 10 fixtures set them |
+| a `flat` (per-unit) **FEE** | `transaction_fee` is legitimate at a flat amount (`calculateTransactionFeeAmount` prices one) but the only fee in the set is `discounts-and-fee`'s 2.9% card fee, so the fee row's non-percent arm is still unrendered. Its colon was fixed blind, alongside the tax row's |
 
-Those three are guards, not layout, so a golden was never going to speak to
-them — which is the point of keeping this note rather than replacing it with a
-screenshot.
+Those are guards, not layout, so a golden was never going to speak to them —
+which is the point of keeping this note rather than replacing it with a
+screenshot. The `flat` TAX row that used to head this table is **gone from it**:
+`taxed-zero-priced-component` renders that arm now, and finding it immediately
+put a bare "Water Bottle Tax" beside "Subtotal:" and "Total:" because the row's
+colon had been living inside the `percent` branch. An uncovered branch is not
+dormant — it is wrong in a way nobody has looked at yet.
 
 ## Dependencies
 
 `@cfs/core` is **exact-pinned** (`jsr:@cfs/core@10.0.0-beta.N/...`, one entry per subpath), and moves in lockstep with `api-cloudrun/deno.json` + `manager/package.json` on every publish — same day, same version, per `feedback_bump_all_core_consumers_lockstep`.
+
+⚠️ **SEVEN entries, and they are named here rather than counted**: `schemas`, plus `utils/` × `orders`, `invoices`, `dates`, `icons`, `money`, `templates`. It was six until `templates` joined it (the harness resolves render params through core's own `resolveRenderParams` rather than reimplementing them). A bump PR that moves six of seven leaves one subpath stranded on the old version and still looks complete, which is why the list is written out — check the names, not the number.
 
 **It used to be a floating caret range, and the range is exactly what let this repo drift.** The point of floating was that preview would track whatever the API renders with; what it actually did was let `main` sit on `^beta.62` while api-cloudrun was 50+ betas ahead, because nothing re-resolved the lock and nothing failed when it didn't. A pin cannot drift silently — it either matches the other two repos or it is visibly wrong. Bump it by editing the specifiers and running `deno install`.
 

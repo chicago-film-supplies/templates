@@ -37,7 +37,27 @@ const shownLineItems = lineItems.filter(i => !isDocumentFee(i));
 const hasDiscount = it.orders.orderHasDiscount(lineItems);
 const hasRentals = it.orders.orderHasRentals(lineItems);
 const hasTax = it.orders.orderHasTax(lineItems);
-const replacementItems = lineItems.filter(i => i.price.replacement_cents != null);
+// NON-ZERO, not "present". `replacement_cents` is a field on EVERY priced line
+// — schema-required whenever `stock_method !== "none"` — so a sale, a service
+// and a `replacement` twin all carry it, and all carry it at 0 because none of
+// them has anything to replace. Nothing writes `null`: measured across this
+// fixture set, 0 nulls against 38 lines sitting at exactly 0. So `!= null` was
+// a no-op and this table listed every priced line — 22 blank rows of 78 on
+// `long-multi-group`, 10 of 18 on `mixed-two-tax-rates`, and a heading plus one
+// blank row on the three single-line fixtures.
+//
+// Dropping them moves no money: `long-multi-group` still totals $28,847.87.
+// The section says "your rental order", which is the rule this now implements.
+//
+// It also stopped being merely untidy: the FLAT arm of the tax calculation
+// reads the QUANTITY and ignores the subtotal, so once a per-unit levy exists
+// (the $0.05/bottle water tax) a $0.00 replacement row carries real money into
+// the grand total — 240 bottles is $12.00 of levy on nothing. core#62.
+//
+// Truthy rather than `> 0`, matching `calculateReplacementTotals` exactly so the
+// rows and the footer cannot disagree: a NEGATIVE replacement cost is
+// meaningless rather than absent, and is better shown than silently dropped.
+const replacementItems = lineItems.filter(i => i.price.replacement_cents);
 
 // Does anything on this quote actually GO anywhere?
 //
@@ -81,6 +101,33 @@ const DISAMBIGUATED_ITEM_TYPES = new Set(["rental", "sale"]);
 const numberCell = (n) => n ? n : "";
 const moneyCell = (c) => c ? it.money.formatCents(c) : "";
 
+// The tax a line carries, in cents. Factored out because three things need it
+// now: the Tax column prints it, the money cells to its LEFT have to know
+// whether the row owes anything before they can decide what a zero looks like,
+// and the component roll-up below moves it onto another row.
+//
+// NOT named `lineTaxCents` — the replacement fold further down already binds
+// that name in its own scope, and a same-named outer const would shadow-trap
+// the next editor who moves either one.
+const itemTaxCents = (item) => (item.price.taxes || []).reduce((sum, t) => sum + t.amount_cents, 0);
+
+// A zero money cell on a row that OWES TAX prints an em-dash, not a blank.
+//
+// The blank-at-zero rule above predates a tax that can charge a $0.00 line. The
+// FLAT arm reads the QUANTITY and ignores the subtotal, so a mandatory
+// zero-priced component — 240 bottles at $0.05 each — bills $12.00 while its
+// unit price and its subtotal are both genuinely $0.00. Under the plain rule
+// that row renders as `240 | | | $12.00 | $12.00`: two empty cells beside a
+// real charge, which reads as missing data rather than as an answer. An
+// em-dash says the value was computed and is nothing, which is the distinction
+// a blank cannot make. templates#107.
+//
+// Row-scoped rather than global, and that is the whole design: on an ordinary
+// row a zero unit price sits beside a zero tax and a zero total, and dashing
+// those would restore exactly the column of noise the blank rule exists to
+// remove. Only a row whose own tax contradicts its blank cells gets one.
+const moneyCellOn = (c, taxCents) => c ? it.money.formatCents(c) : (taxCents ? "—" : "");
+
 // How deep a line item is nested UNDER ANOTHER LINE ITEM — 0 for a top-level
 // line, 1 for its component, 2 for a component of a component.
 //
@@ -99,6 +146,60 @@ const moneyCell = (c) => c ? it.money.formatCents(c) : "";
 // uids are Firestore ids, so the two sets cannot collide.
 const componentDepth = (item) =>
   (item.path ?? []).slice(0, -1).filter((uid) => !dividerUids.has(uid)).length;
+
+// ── Declared param: hide_zero_priced_components (default false) ────────────
+//
+// A mandatory zero-priced component is structure rather than something the
+// customer chose — the 240 bottles inside 10 cases of water. Some readers want
+// the case and not the bottles, so the row can be hidden.
+//
+// 🔴 Hiding it must ROLL ITS MONEY ONTO THE PARENT, exactly. The #totals block
+// reads the server-computed `totals` on the document, which count the tax on that row
+// whether or not it is rendered — so a hidden row whose $12.00 goes nowhere
+// makes the items table stop reconciling with its own footer, which is a worse
+// document than the one with the extra row in it.
+//
+// Only a COMPONENT is eligible (`componentDepth > 0`). A top-level zero-priced
+// line is something the customer ordered at no charge — the Locations Toolkit
+// on `long-multi-group` — and hiding that would delete a line of the order.
+const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
+
+// Keyed by PATH, never by uid: `item.uid` repeats within one document (18% of
+// prod orders), so two hidden components can share a uid and their money would
+// collide onto one row. `path` is the row identity.
+const pathKey = (item) => (item.path ?? []).join("\u0000");
+const hiddenPaths = new Set();
+const rolledUp = new Map();
+if (hideZeroPricedComponents) {
+  const byPath = new Map(lineItems.map(i => [pathKey(i), i]));
+  const eligible = lineItems.filter(i => i.zero_priced === true && componentDepth(i) > 0);
+  const eligibleKeys = new Set(eligible.map(pathKey));
+  eligible.forEach(hidden => {
+    // Walk up to the nearest ancestor that is a line item AND is itself still
+    // visible, so a component of a hidden component rolls all the way to
+    // whatever actually renders.
+    let up = (hidden.path ?? []).slice(0, -1);
+    while (up.length > 0) {
+      const key = up.join("\u0000");
+      const ancestor = byPath.get(key);
+      if (ancestor && !eligibleKeys.has(key)) {
+        const acc = rolledUp.get(key) || { tax: 0, subtotal: 0, total: 0 };
+        acc.tax += itemTaxCents(hidden);
+        acc.subtotal += hidden.price.subtotal_discounted_cents ?? hidden.price.subtotal_cents;
+        acc.total += hidden.price.total_cents;
+        rolledUp.set(key, acc);
+        hiddenPaths.add(pathKey(hidden));
+        return;
+      }
+      up = up.slice(0, -1);
+    }
+    // No visible ancestor line item — its parent is a divider, or the tree is
+    // shaped in a way this does not model. The row STAYS, because losing the
+    // money silently is the one outcome that must not happen. It is absent from
+    // `hiddenPaths`, so nothing else has to know.
+  });
+}
+const renderedItems = shownItems.filter(i => !hiddenPaths.has(pathKey(i)));
 
 // Replacement cost, in integer cents, computed the way CORE computes it.
 //
@@ -423,7 +524,7 @@ const replacementLine = (item) => {
            Subtotal, Total — plus the three conditionals. The base read `5` and
            every banner row spanned one column short of its own table. */%>
       <% const bannerSpan = 6 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0); %>
-      <% shownItems.forEach(item => { %>
+      <% renderedItems.forEach(item => { %>
         <% if (item.type === "group") { %>
         <tr>
           <td class="wide" colspan="<%= bannerSpan %>">
@@ -439,6 +540,13 @@ const replacementLine = (item) => {
         </tr>
         <% } %>
         <% } else { %>
+        <%/* The money on the row itself plus anything rolled onto it from a hidden
+             zero-priced component. With the param off, `rolled` is undefined
+             everywhere and these are the stored figures on the line. */%>
+        <% const rolled = rolledUp.get(pathKey(item)); %>
+        <% const rowTaxCents = itemTaxCents(item) + (rolled ? rolled.tax : 0); %>
+        <% const rowSubtotalCents = (item.price.subtotal_discounted_cents ?? item.price.subtotal_cents) + (rolled ? rolled.subtotal : 0); %>
+        <% const rowTotalCents = item.price.total_cents + (rolled ? rolled.total : 0); %>
         <tr>
           <td style="padding-left: <%= componentDepth(item) %>em">
             <%= item.name %>
@@ -451,7 +559,7 @@ const replacementLine = (item) => {
           <% if (hasRentals) { %>
           <td><%= item.type === "rental" && item.price.chargeable_days ? item.price.chargeable_days + ' days' : '' %></td>
           <% } %>
-          <td><%= moneyCell(item.price.base_cents) %></td>
+          <td><%= moneyCellOn(item.price.base_cents, rowTaxCents) %></td>
           <% if (hasDiscount) { %>
           <td>
             <%/* Parenthesised: a discount is a deduction, and the accounting
@@ -480,14 +588,14 @@ const replacementLine = (item) => {
             // lines where the discount mattered most. The bug was invisible
             // because neither fixture carried a discount until templates#57.
           %>
-          <td><%= moneyCell(item.price.subtotal_discounted_cents ?? item.price.subtotal_cents) %></td>
+          <td><%= moneyCellOn(rowSubtotalCents, rowTaxCents) %></td>
           <% if (hasTax) { %>
           <%/* The `taxes && taxes.length > 0` guard is gone because `moneyCell`
                subsumes it: an empty array reduces to 0 and renders blank, which
                is the same cell the guard produced. One test, not two. */%>
-          <td><%= moneyCell((item.price.taxes || []).reduce((sum, t) => sum + t.amount_cents, 0)) %></td>
+          <td><%= moneyCell(rowTaxCents) %></td>
           <% } %>
-          <td class="total"><%= moneyCell(item.price.total_cents) %></td>
+          <td class="total"><%= moneyCell(rowTotalCents) %></td>
         </tr>
         <% } %>
       <% }) %>
@@ -497,17 +605,21 @@ const replacementLine = (item) => {
 <% } %>
 
 <section id="information">
-  <%/* The sentence says "your rental order", and on a replacement-only quote
-       both halves of it are false: there is no rental, and the figure it quotes
-       is $0.00. Measured on `replacement-only` (prod order 976) — a lost
-       Surveillance Kit whose own `replacement_cents` is 0, so the note read
-       "The total replacement cost for all items on your rental order is: $0.00"
-       on a document with neither.
+  <%/* The sentence says "your rental order", and this used to print it on a
+       replacement-only quote where both halves were false — no rental, and a
+       $0.00 figure. Measured on `replacement-only` (prod order 976): a lost
+       Surveillance Kit whose own `replacement_cents` is 0.
 
-       Either half on its own is enough to make it true, so the test is an OR
-       rather than an AND: a rental order states its replacement exposure even
-       when that happens to total zero, and a non-rental order that DOES carry
-       replacement cost still owes the customer the figure.
+       ⚠️ THAT CASE IS NOW HANDLED UPSTREAM. `replacementItems` filters on a
+       NON-ZERO replacement value, so the Surveillance Kit no longer enters the
+       set and the leading guard alone suppresses the note. This OR is no longer
+       doing the job it was written for; the reasoning is kept to explain why it
+       is still here rather than deleted.
+
+       What it still catches is narrow and does NOT reduce to the leading guard:
+       a non-empty set can still sum to zero — a line at quantity 0, or a
+       negative replacement value cancelling a positive one (the filter passes
+       negatives deliberately, so corruption stays visible).
 
        The `replacementItems` guard stays in front of both. It is what the
        Replacement Costs table below is gated on, and dropping it would let a
@@ -542,7 +654,16 @@ const replacementLine = (item) => {
       <% totals.taxes.forEach(tax => { %>
       <% if (tax.amount_cents !== 0) { %>
       <tr>
-        <th scope="row"><%= tax.name %><% if (tax.type === "percent") { %> <%= tax.rate %>%:<% } %></th>
+        <%/* The colon belongs to the ROW, not to the rate. It used to sit inside
+             the `percent` branch, so the first FLAT tax to reach this block —
+             the per-unit water levy — printed "Water Bottle Tax" bare while
+             "Subtotal:", "Total:" and every percent tax beside it kept theirs.
+             Invisible until now for the documented reason: no fixture carried a
+             flat tax, so this arm had never rendered. A flat tax shows no rate
+             because its rate is money-per-unit of a unit this block cannot name
+             — the row says WHAT was charged, and the items table above says on
+             what. */%>
+        <th scope="row"><%= tax.name %><% if (tax.type === "percent") { %> <%= tax.rate %>%<% } %>:</th>
         <td><%= it.money.formatCents(tax.amount_cents) %></td>
       </tr>
       <% } %>
@@ -550,7 +671,10 @@ const replacementLine = (item) => {
       <% totals.transaction_fees.forEach(fee => { %>
       <% if (fee.amount_cents !== 0) { %>
       <tr>
-        <th scope="row"><%= fee.name %><% if (fee.type === "percent") { %> <%= fee.rate %>%:<% } %></th>
+        <%/* Same rule as the tax row above — a flat-amount fee is legitimate
+             (`calculateTransactionFeeAmount` prices one) and no fixture has one
+             yet, so its colon would have gone missing the same way. */%>
+        <th scope="row"><%= fee.name %><% if (fee.type === "percent") { %> <%= fee.rate %>%<% } %>:</th>
         <td><%= it.money.formatCents(fee.amount_cents) %></td>
       </tr>
       <% } %>

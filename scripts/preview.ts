@@ -26,6 +26,7 @@ import * as iconUtils from "@cfs/core/utils/icons";
 import { CFS_LOGO_SVG } from "@cfs/core/utils/icons";
 import * as moneyUtils from "@cfs/core/utils/money";
 import { availableUtilNamespaces } from "@cfs/core/schemas";
+import { resolveRenderParams } from "@cfs/core/utils/templates";
 import type { TemplateCollectionType } from "@cfs/core/schemas";
 
 /**
@@ -133,6 +134,7 @@ interface Sidecar {
   collection_source?: TemplateCollectionType;
   collection_target?: TemplateCollectionType;
   depends_on?: { components?: string[] };
+  params?: { key: string; type: "boolean"; label?: string; default?: boolean; required?: boolean }[];
   render?: RenderConfig;
 }
 
@@ -141,6 +143,34 @@ const sidecar: Sidecar = JSON.parse(
 );
 const components = sidecar.depends_on?.components ?? [];
 const renderConfig = sidecar.render ?? {};
+
+/**
+ * `it.params` — the template's declared render params, resolved the way the
+ * SERVER resolves them.
+ *
+ * Through core's own `resolveRenderParams`, not a local reimplementation, for
+ * the same reason `UTIL_MODULES` above must mirror `eta.ts`: a harness that
+ * decides defaults, unknown keys or required-ness on its own terms renders a
+ * different document than production while looking correct here. It was absent
+ * entirely until `quote` declared its first param, so `it.params.<key>` threw
+ * `Cannot read properties of undefined` in preview while the server injected a
+ * resolved object.
+ *
+ * Override one from the CLI to see the other state:
+ *   deno task preview quote <fixture> --param hide_zero_priced_components=true
+ * An unknown key or a non-boolean value throws here exactly as it 422s there.
+ */
+const paramOverrides: Record<string, unknown> = {};
+for (const arg of Deno.args) {
+  if (!arg.startsWith("--param")) continue;
+  const spec = arg.startsWith("--param=") ? arg.slice("--param=".length) : Deno.args[Deno.args.indexOf(arg) + 1];
+  if (!spec || !spec.includes("=")) {
+    throw new Error(`--param needs <key>=<true|false>, got: ${spec ?? "(nothing)"}`);
+  }
+  const [key, raw] = spec.split("=", 2);
+  paramOverrides[key] = raw === "true" ? true : raw === "false" ? false : raw;
+}
+const params = resolveRenderParams(sidecar.params ?? [], paramOverrides);
 
 // Overlay the stylesheet: component styles first, then the template's own.
 const styleParts: string[] = [];
@@ -195,6 +225,7 @@ for (const namespace of utilNamespaces) {
 const ctx = {
   doc,
   version: 1,
+  params,
   now: NOW,
   dateFns,
   tz,
