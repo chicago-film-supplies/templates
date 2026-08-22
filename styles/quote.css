@@ -35,20 +35,28 @@ body {
      blocks, not four columns: the dates block (`--label-col`, spanned by the
      "Dates:" header), then the two address blocks splitting what is left.
 
-     It is pinned to the LEFT EDGE OF THE 4th-FROM-LAST #items COLUMN at every
-     column count the grid can emit, so the totals block always sits over the
-     last four columns rather than over a fraction that moves with the header.
-     #items gives its description column `--label-col` and splits the remainder
-     equally between the other n-1 columns, so that edge is
-     `--label-col + (100% - --label-col) x (n - 5) / (n - 1)`.
+     It sits ON an #items column boundary at every column count the grid can
+     emit — specifically the boundary NEAREST THE HALF-WAY POINT. #items gives
+     its description column `--label-col` and splits the remainder equally
+     between the other n-1 columns, so its boundaries are
+     `--label-col + m x (100% - --label-col) / (n - 1)`, and the template picks
+     `m = floor((n-1)/2)`.
+
+     Two constraints, one edge: the totals block lines up with a real column of
+     the grid above it, AND the two address blocks either side of the edge stay
+     close to equal (244/244 at 7 and 9 columns, 195/293 and 209/279 at 6 and
+     8). Pinning it to a FIXED position from the right — the 4th-from-last
+     column — satisfies the first and abandons the second: at six columns that
+     lands on 313.6px and leaves the delivery address 97.6px against the return
+     block's 390.4px.
 
      ⚠️ The FRACTION is supplied by the template, not computed here, because `n`
      is a property of the DOCUMENT (6 + Duration? + Discount? + Tax?) and CSS
      cannot see it. quote.eta emits `--block-3-fraction` inline on this element
      from the same `itemColumnCount` the banner `colspan` reads, so the edge and
      the grid it aligns to cannot disagree. The 0.5 fallback below is the
-     9-column value — the stylesheet standing alone renders what it rendered
-     before the fraction existed.
+     odd-column-count value — the stylesheet standing alone renders what it
+     rendered before the fraction existed.
 
      ⚠️ DECLARED HERE, not on `html`, and that is load-bearing. A custom
      property is substituted where it is DECLARED, not where it is used: with
@@ -71,16 +79,18 @@ body {
      ⚠️ It used to be THREE columns, the extra boundary being a literal `50%`
      that only the letterhead used — #bill-to left of it, #cfs right-aligned to
      the right of it. That is unrepresentable now: `--dest-block-3` tracks an
-     #items column, and at six columns it lands at 313.6px against the 704px
-     page, i.e. LEFT of the half-way mark. `calc(var(--dest-block-3) - 50%)`
-     then computed −38.4px, which grid clamps to 0 while the third column keeps
-     its full width — so the grid measured 742.4px inside a 704px page, and
+     #items column, and at six columns it lands at 411.2px against the 704px
+     page — but at an earlier revision of this rule it landed at 313.6px, i.e.
+     LEFT of the half-way mark. `calc(var(--dest-block-3) - 50%)` then computed
+     −38.4px, which grid clamps to 0 while the third column keeps its full
+     width — so the grid measured 742.4px inside a 704px page, and
      #destinations, sized at `width: 100%` of a table in an overflowing grid,
      put its third block at 487.2px instead of 313.6px. An overflow, not a
-     rounding error.
-     Dropping the boundary loses nothing: #cfs is RIGHT-ALIGNED, so where its
-     box starts has never been what positions it. The letterhead reads
-     identically with the split at block 3.
+     rounding error. The current fraction happens to stay right of 50% at every
+     count, but nothing in the rule GUARANTEES that, so the boundary stays gone.
+     Dropping it loses nothing: #cfs is RIGHT-ALIGNED, so where its box starts
+     has never been what positions it. The letterhead reads identically with the
+     split at block 3.
 
      `column-gap: 0` is load-bearing, not a tidy-up: a gap would make the
      boundary a RANGE rather than an edge, and #totals would start one gap right
@@ -222,9 +232,9 @@ th.center, td.center {
   width: calc(var(--label-col) - 17rem);
 }
 /* The address area is n-1 EQUAL columns — the same n-1 the items grid splits
-   its own remainder into — and the two blocks are colspans over them: delivery
-   takes the first n-5, return takes the last FOUR. That is where block 3 opens,
-   and "the last four columns" is exactly what #totals sits over.
+   its own remainder into — and the two blocks are colspans over them, split at
+   `floor((n-1)/2)`. That is where block 3 opens and where #totals begins, and
+   it is why the two blocks come out near-equal instead of at a fixed ratio.
    `width: auto` (inherited from the rule above) is the whole mechanism: the
    fixed table layout hands the leftover to its auto columns EQUALLY, so the
    sub-columns match the items grid by construction rather than by arithmetic.
@@ -240,7 +250,7 @@ th.center, td.center {
    `calc((100% - var(--label-col)) / 2)`, was therefore never in force either;
    it was indistinguishable from the fallback because at the half-way edge the
    fallback IS the answer. `--dest-block-3` still drives #grid-wrapper, where
-   grid tracks resolve the mixture correctly (measured 313.594px at six
+   grid tracks resolve the mixture correctly (measured 411.2px at six
    columns). Do not move the split back onto a <col>. */
 
 /* LEFT-aligned, which is what actually reads as centred between the two dates.
@@ -362,16 +372,17 @@ th.center, td.center {
    drift: a table's first baseline sits exactly one `--cell-pad-y` below its box,
    and matching it is the whole trick.
 
-   #totals aligns to #destinations, to the right margin, AND to the left edge of
-   the 4th-from-last #items column, at every column count. That last one used to
-   be false and documented as impossible here — block 3 sat at the half-way mark
-   and #items internal edges move with the column count, so it landed on an edge
-   at 7 and 9 columns and missed at 6 and 8 (at 8 the neighbours were 425 and
-   495, straddling 460). It is true now because `--dest-block-3` is derived from
-   the column count rather than fixed: measured across all eleven fixtures,
-   #totals, #details, #information and #destinations block 3 share one edge with
-   the 4th-from-last items column — 321.6px at 6 columns, 386.7 at 7, 433.1 at 8
-   and 468 at 9. */
+   #totals aligns to #destinations, to the right margin, AND to a real #items
+   column boundary, at every column count. That last one used to be false and
+   documented as impossible here — block 3 sat at a fixed half-way mark while
+   the #items boundaries move with the column count, so it landed on one at 7
+   and 9 columns and missed at 6 and 8 (at 8 the neighbours were 425 and 495,
+   straddling 460). It is true now because `--dest-block-3` is derived from the
+   column count: measured across all eleven fixtures, #totals, #details,
+   #information and #destinations block 3 share one edge with the nearest-to-
+   half items boundary — 411.2px at 6 columns, 460 at 7, 425.1 at 8, 460 at 9.
+   The column it lands on reads sensibly at every count, which is a consequence
+   rather than a target: Unit Price at 6 and 8, Subtotal at 7, Discount at 9. */
 #information,
 #totals {
   align-self: start;

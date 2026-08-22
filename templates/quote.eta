@@ -43,30 +43,45 @@ const hasTax = it.orders.orderHasTax(lineItems);
 //
 // Two things read it and they must not drift apart: the `colspan` on a banner
 // row (which has to span its own table exactly), and `--block-3-fraction`
-// below, which pins the second alignment edge of the page to the LEFT EDGE OF
-// THE 4th-FROM-LAST column, so #totals always sits over the last four columns.
-//
-// #items sizes its description column at `--label-col` and splits the rest
-// equally between the other n-1 columns, so that edge sits a fraction
-// `(n - 5) / (n - 1)` of the way through the remainder — 1/2 at nine columns,
-// which is where the half-way constant this replaced came from.
+// below, which puts the second alignment edge of the page ON an items column
+// boundary rather than at an arbitrary percentage.
 const itemColumnCount = 6 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0);
 
-// #destinations divides its address area into the SAME n-1 equal columns, and
-// spans them: delivery takes the first n-5, return takes the last four. So the
-// return block opens on `--dest-block-3` by construction rather than by a width
-// that has to be kept in step with one.
+// WHICH boundary: the one NEAREST THE HALF-WAY POINT, rounding left.
 //
-// The return span is always FOUR — (n-1) - (n-5) — which is the same sentence
-// as the requirement: the totals block sits over the last four columns of the
-// grid, whatever the grid is.
+// #items gives its description column `--label-col` and splits the remainder
+// equally between the other n-1 columns, so its interior boundaries sit at
+// `--label-col + m x (remainder / (n-1))` for m = 1..n-2. Choosing
+// `m = floor((n-1)/2)` picks the one closest to the middle of that remainder,
+// which is what keeps the two #destinations address blocks close to equal:
+//
+//     n=6  m=2  ->  195 / 293      n=8  m=3  ->  209 / 279
+//     n=7  m=3  ->  244 / 244      n=9  m=4  ->  244 / 244
+//
+// The exact halves at 7 and 9 are structural, not luck: n odd means n-1 is
+// even, so a boundary lands exactly on the middle. For even n there is none,
+// and the two straddling boundaries are equally far off — a genuine tie, broken
+// LEFT so the totals block gets the wider half. It needs it: "Subtotal after
+// Discount:" is the longest label on the page.
+//
+// ONE rule, deliberately, rather than a column-count breakpoint. "4th-from-last
+// above 8 columns, 3rd-from-last below" produces these exact numbers too (it
+// works out to the 3rd from last at 6 and 7, the 4th at 8 and 9) — but it
+// states a threshold the layout does not have, and the next person to add a
+// conditional column has to rediscover which side of it the new count falls on.
+// Nearest-to-half re-derives itself.
+const addressBoundary = Math.floor((itemColumnCount - 1) / 2);
+
+// #destinations divides its address area into the SAME n-1 equal columns and
+// spans them, so block 3 opens on `--dest-block-3` by construction rather than
+// by a width that has to be kept in step with one.
 //
 // Spans rather than two sized <col>s because a sized <col> cannot express this:
 // Blink silently ignores a table column width that mixes a percentage with a
 // length, which is what `--dest-block-3 - --label-col` is. See styles/quote.css.
 const addressColumnCount = itemColumnCount - 1;
-const deliverySpan = itemColumnCount - 5;
-const returnSpan = 4;
+const deliverySpan = addressBoundary;
+const returnSpan = addressColumnCount - addressBoundary;
 // NON-ZERO, not "present". `replacement_cents` is a field on EVERY priced line
 // — schema-required whenever `stock_method !== "none"` — so a sale, a service
 // and a `replacement` twin all carry it, and all carry it at 0 because none of
@@ -317,7 +332,7 @@ const replacementLine = (item) => {
      because it depends on the DOCUMENT — how many conditional columns the items
      grid turned on — and CSS cannot see that. Everything that reads
      `--dest-block-3` is inside this element. See styles/quote.css. */%>
-<div id="grid-wrapper" style="--block-3-fraction: calc(<%= itemColumnCount - 5 %> / <%= itemColumnCount - 1 %>)">
+<div id="grid-wrapper" style="--block-3-fraction: calc(<%= addressBoundary %> / <%= addressColumnCount %>)">
   <div id="logo">
     <%~ it.logo %>
   </div>
