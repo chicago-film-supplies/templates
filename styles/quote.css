@@ -27,6 +27,16 @@ html {
 body {
   font-family: ui-sans-serif, system-ui, sans-serif;
   color: #121212;
+  /* THE PAGE MARGIN IS THE SIDECAR'S, and this is what makes that true.
+     `margin_left`/`margin_right` (0.5in) are handed to Chromium as print
+     margins, and api-cloudrun pads the footer partial by the same figure
+     (`injectPartHorizontalMargins` in gotenberg.ts) so the two agree. The body
+     was then adding the UA default `margin: 8px` on top of it — measured in a
+     real PDF at 0.583in against the footer's 0.500in, a 6pt/8px step that
+     nothing chose and no rule stated.
+     Zeroing it makes `margin_*` the ONE number both surfaces read: widen the
+     page by editing the sidecar, not by editing this. */
+  margin: 0;
 }
 #grid-wrapper {
   /* THE SECOND ALIGNMENT EDGE — where #destinations opens its THIRD block (the
@@ -44,11 +54,11 @@ body {
 
      Two constraints, one edge: the totals block lines up with a real column of
      the grid above it, AND the two address blocks either side of the edge stay
-     close to equal (244/244 at 7 and 9 columns, 195/293 and 209/279 at 6 and
+     close to equal (252/252 at 7 and 9 columns, 202/302 and 216/288 at 6 and
      8). Pinning it to a FIXED position from the right — the 4th-from-last
      column — satisfies the first and abandons the second: at six columns that
-     lands on 313.6px and leaves the delivery address 97.6px against the return
-     block's 390.4px.
+     lands on 316.8px and leaves the delivery address 100.8px against the
+     return block's 403.2px.
 
      ⚠️ The FRACTION is supplied by the template, not computed here, because `n`
      is a property of the DOCUMENT (6 + Duration? + Discount? + Tax?) and CSS
@@ -78,16 +88,18 @@ body {
 
      ⚠️ It used to be THREE columns, the extra boundary being a literal `50%`
      that only the letterhead used — #bill-to left of it, #cfs right-aligned to
-     the right of it. That is unrepresentable now: `--dest-block-3` tracks an
-     #items column, and at six columns it lands at 411.2px against the 704px
-     page — but at an earlier revision of this rule it landed at 313.6px, i.e.
-     LEFT of the half-way mark. `calc(var(--dest-block-3) - 50%)` then computed
-     −38.4px, which grid clamps to 0 while the third column keeps its full
-     width — so the grid measured 742.4px inside a 704px page, and
-     #destinations, sized at `width: 100%` of a table in an overflowing grid,
-     put its third block at 487.2px instead of 313.6px. An overflow, not a
-     rounding error. The current fraction happens to stay right of 50% at every
-     count, but nothing in the rule GUARANTEES that, so the boundary stays gone.
+     the right of it. That is unrepresentable once `--dest-block-3` tracks an
+     #items column, because the boundary is free to fall LEFT of the half-way
+     mark: `calc(var(--dest-block-3) - 50%)` then goes negative, grid clamps
+     that track to 0 while the third keeps its full width, and the grid measures
+     WIDER than the page. Measured on an earlier revision of this rule (and at
+     the 704px content box that predated `body { margin: 0 }`): a six-column
+     quote put block 3 at 313.6px, computed −38.4px for the middle track, and
+     laid out 742.4px of grid inside a 704px page — #destinations, sized
+     `width: 100%` of a table in an overflowing grid, then put its third block
+     at 487.2px. An overflow, not a rounding error.
+     `floor((n-1)/2)` happens to stay right of 50% at every count the grid can
+     emit, but nothing in the rule GUARANTEES that, so the boundary stays gone.
      Dropping it loses nothing: #cfs is RIGHT-ALIGNED, so where its box starts
      has never been what positions it. The letterhead reads identically with the
      split at block 3.
@@ -250,7 +262,7 @@ th.center, td.center {
    `calc((100% - var(--label-col)) / 2)`, was therefore never in force either;
    it was indistinguishable from the fallback because at the half-way edge the
    fallback IS the answer. `--dest-block-3` still drives #grid-wrapper, where
-   grid tracks resolve the mixture correctly (measured 411.2px at six
+   grid tracks resolve the mixture correctly (measured 417.6px at six
    columns). Do not move the split back onto a <col>. */
 
 /* LEFT-aligned, which is what actually reads as centred between the two dates.
@@ -275,7 +287,7 @@ th.center, td.center {
 /* A quote with nothing but `replacement` lines drops blocks 2 and 3 (see
    templates/quote.eta), and what is left is the dates block alone. Its columns
    are absolute, so at `width: 100%` a fixed-layout table would scale all four up
-   ~3.7x to fill the page — the arrow would drift halfway across the sheet and
+   ~3.3x to fill the page — the arrow would drift halfway across the sheet and
    the header rule would underline an empty right half. Sizing the table to the
    block it now contains is what keeps it reading as the same table with two
    columns removed. */
@@ -380,7 +392,7 @@ th.center, td.center {
    straddling 460). It is true now because `--dest-block-3` is derived from the
    column count: measured across all eleven fixtures, #totals, #details,
    #information and #destinations block 3 share one edge with the nearest-to-
-   half items boundary — 411.2px at 6 columns, 460 at 7, 425.1 at 8, 460 at 9.
+   half items boundary — 417.6px at 6 columns, 468 at 7, 432 at 8, 468 at 9.
    The column it lands on reads sensibly at every count, which is a consequence
    rather than a target: Unit Price at 6 and 8, Subtotal at 7, Discount at 9. */
 #information,
