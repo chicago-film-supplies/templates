@@ -93,7 +93,8 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 ## Goldens are LIVE on `main` (blessed 2026-08-17) — and absent on `sandbox`
 
 `goldens/main/quote/` holds **all 10 PNGs**, one per fixture (blessed `acaafcd`,
-extended to 10 by `ebbe2f2` / #104), so the
+extended to 10 by `ebbe2f2` / #104, and 6 of them re-blessed by #108 for the
+non-zero replacement filter), so the
 `visual-diff` gate on a `main` PR now genuinely compares and **can fail**. That
 is a change of state, not of policy: `quote` graduated. A golden is a *freeze*,
 and you freeze a thing once it has stopped moving.
@@ -138,7 +139,7 @@ golden run untouched:
 | the foreign-country line in `#bill-to` | all 10 `billing_address.country_name` are `United States` |
 | an absent `billing_address` | the field is `.optional()` and `Address` is `.nullable()`, but no fixture omits it |
 | a destination with no delivery/collection window | every boundary is nullable; all 10 fixtures set them |
-| **a `flat` (per-unit) TAX** | every tax across all 10 fixtures is `percent`. The one `"type": "flat"` in `discounts-and-fee` is a *discount*. So the flat arm of every tax cell has never rendered — and it is the arm that reads the QUANTITY and ignores the subtotal, which is what let a $0.00 replacement row carry $12.00 (core#62) |
+| **a `flat` (per-unit) TAX** | every tax across all 10 fixtures is `percent`. The one `"type": "flat"` in `discounts-and-fee` is a *discount*. So the flat arm of every tax cell has never rendered — and it is the arm that reads the QUANTITY and ignores the subtotal. It can no longer put money on a $0.00 **replacement** row: that row leaves the table entirely under the non-zero filter (core#62, `@cfs/core@10.0.0-beta.226`, and `quote.eta` #108). The **item** table is still exposed — a populated Tax beside a blank Unit Price — which is templates#107 |
 
 Those three are guards, not layout, so a golden was never going to speak to
 them — which is the point of keeping this note rather than replacing it with a
