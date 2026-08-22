@@ -55,8 +55,8 @@ const itemColumnCount = 6 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasT
 // `m = floor((n-1)/2)` picks the one closest to the middle of that remainder,
 // which is what keeps the two #destinations address blocks close to equal:
 //
-//     n=6  m=2  ->  195 / 293      n=8  m=3  ->  209 / 279
-//     n=7  m=3  ->  244 / 244      n=9  m=4  ->  244 / 244
+//     n=6  m=2  ->  202 / 302      n=8  m=3  ->  216 / 288
+//     n=7  m=3  ->  252 / 252      n=9  m=4  ->  252 / 252
 //
 // The exact halves at 7 and 9 are structural, not luck: n odd means n-1 is
 // even, so a boundary lands exactly on the middle. For even n there is none,
