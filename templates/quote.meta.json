@@ -10,7 +10,14 @@
       "base"
     ]
   },
-  "params": [],
+  "params": [
+    {
+      "key": "hide_zero_priced_components",
+      "type": "boolean",
+      "label": "Hide zero-priced components",
+      "default": false
+    }
+  ],
   "fixtures": [
     {
       "slug": "multi-dest",
@@ -55,12 +62,17 @@
     {
       "slug": "long-multi-group",
       "label": "Long order: page breaks + components",
-      "description": "The only fixture under PAGE-BREAK pressure and the only one with real components — two things no other fixture in the family has. ~90 items across 10 groups on one destination, 24 charge days, plus a second long table below it (replacement total $28,847.87), so it is the only fixture that shows group banner rows recurring across pages and whether the items header repeats. It is also the component-indentation fixture: 31 line items are nested under another LINE ITEM rather than under a divider (the Rolling Set Kit carries 16, the pop-up tent 6), which is what the one-em-per-level indent exists to render — every other fixture bottoms out at a group, so the indent is uniformly 0 and the code is unexercised. Brings a third tax profile (tax_rantoul, Rantoul Sales Tax) and `custom-` prefixed line uids alongside repeated product uids. It is the largest file in the repo by a wide margin; that is the cost of the only page-break and component coverage there is, so do not hand-trim it or it stops being a captured document. Captured from prod order 985."
+      "description": "The only fixture under PAGE-BREAK pressure and the only one with real components — two things no other fixture in the family has. ~90 items across 10 groups on one destination, 24 charge days, plus a second long table below it (replacement total $28,847.87), so it is the only fixture that shows group banner rows recurring across pages and whether the items header repeats. It is also the component-indentation fixture: 31 line items are nested under another LINE ITEM rather than under a divider (the Rolling Set Kit carries 16, the pop-up tent 6), which is what the one-em-per-level indent exists to render — every other fixture bottoms out at a group, so the indent is uniformly 0 and the code is unexercised. Brings a third jurisdiction's tax (Rantoul Sales Tax) and `custom-` prefixed line uids alongside repeated product uids. It is the largest file in the repo by a wide margin; that is the cost of the only page-break and component coverage there is, so do not hand-trim it or it stops being a captured document. Captured from prod order 985."
     },
     {
       "slug": "replacement-only",
       "label": "Replacement only, nothing delivered",
       "description": "The only fixture whose every line is a `replacement`, and therefore the only one that renders #destinations WITHOUT its two address blocks — a replacement charge recovers the cost of an item already lost or damaged in the customer's possession, so there is no delivery, no collection, no address and no contact to print. It is also the only fixture where the dates block stands alone at `--label-col` rather than heading a full-width table. Nothing else covers this: orders 978 and 975 are the near misses, and each carries one `sale` line alongside its replacements, which correctly keeps the address columns on. Captured from prod order 976."
+    },
+    {
+      "slug": "taxed-zero-priced-component",
+      "label": "Flat per-unit levy on a zero-priced component",
+      "description": "The only fixture carrying a `flat` (per-unit) TAX, and therefore the only one that renders that arm of the tax cell at all — every tax in every other fixture is `percent` (the one \"type\": \"flat\" in `discounts-and-fee` is a *discount*). The flat arm reads the QUANTITY and ignores the subtotal, so it is the one branch that can put real money on a line whose Unit Price and Subtotal are $0.00: 10 cases of water carry a mandatory zero-priced `Bottled Water ( /bottle )` child at 24 bottles each, and the Water Bottle Tax bills 240 × $0.05 = $12.00 against a $0.00 subtotal. That is the shape behind templates#107 and manager#306, and it is what the em-dash cell rule and the `hide_zero_priced_components` param are both about. It also pins the non-zero replacement filter from the other side: the child carries `replacement_cents: 0`, so it must owe tax in the items table while being absent from the Replacement Costs table. SYNTHETIC, and it has to be — the levy model was applied to the catalog on 2026-08-20 and is charged on each document's NEXT write, so no stored order carries this shape yet and there was nothing to capture. Built from the already-PII-masked `sale-taxed` document (prod order 992) with the component line added, using the real product `N8brmUmmSzHs523aJAMd` and the real tax `jvsOUs8nR4DXElcVNqJc` verbatim, so the shape is the writer's rather than an invention. Replace it with a capture once a real order has been written through the levy."
     }
   ],
   "render": {
