@@ -52,7 +52,7 @@
     {
       "slug": "mixed-two-tax-rates",
       "label": "Two tax rates, mixed item types",
-      "description": "The only fixture with TWO tax rates in one order — Chicago Rental Tax 15% on the rentals and Chicago Sales Tax 10.25% on the sales — so it is the only one where the totals block emits more than a single tax row. Also the widest item-type spread in the family: rental, sale, replacement, service and surcharge in one document, with the service and surcharge untaxed beside taxed lines, plus repeated product uids across rows. It renders 9 columns (a 100%-discounted rental turns the Discount column on); rental-discount-taxed and long-multi-group share that count and are kept for different reasons — see their descriptions. Captured from prod order 993."
+      "description": "The only fixture with TWO tax rates in one order — Chicago Rental Tax 15% on the rentals and Chicago Sales Tax 10.25% on the sales — so it is the only one where the totals block emits more than a single tax row. Note that `taxed-zero-priced-component` also emits two tax rows, but they are a percent and a flat and the flat one is that fixture's whole point; this is the only place two PERCENT rates stack. Also the widest item-type spread in the family: rental, sale, replacement, service and surcharge in one document, with the service and surcharge untaxed beside taxed lines, plus repeated product uids across rows. It renders 9 columns (a 100%-discounted rental turns the Discount column on); rental-discount-taxed, long-multi-group and fee-flat-card share that count and are each kept for a different reason — see their descriptions. Captured from prod order 993."
     },
     {
       "slug": "rental-discount-taxed",
