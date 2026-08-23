@@ -2,7 +2,7 @@
   "version": "5",
   "specifiers": {
     "jsr:@bgub/eta@^4.6.0": "4.6.0",
-    "jsr:@cfs/core@10.0.0-beta.236": "10.0.0-beta.236",
+    "jsr:@cfs/core@10.0.0-beta.237": "10.0.0-beta.237",
     "npm:@date-fns/tz@^1.4.1": "1.5.0",
     "npm:@date-fns/tz@^1.5.0": "1.5.0",
     "npm:currency.js@^2.0.4": "2.0.4",
@@ -14,8 +14,8 @@
     "@bgub/eta@4.6.0": {
       "integrity": "fe872004cd6c64ca25c7e71fd80bbbad7d8d552cefd31828bddddb7db0f79eb1"
     },
-    "@cfs/core@10.0.0-beta.236": {
-      "integrity": "b308bdc887293f09a0e636090be59cb5714e9f59fc9da7218faca9104040571f",
+    "@cfs/core@10.0.0-beta.237": {
+      "integrity": "55dec7e73058f9f64a0a6d7b6f92cd486679517bf27cba163386e8cec7d67a81",
       "dependencies": [
         "npm:@date-fns/tz@^1.4.1",
         "npm:currency.js",
@@ -41,7 +41,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@bgub/eta@^4.6.0",
-      "jsr:@cfs/core@10.0.0-beta.236",
+      "jsr:@cfs/core@10.0.0-beta.237",
       "npm:@date-fns/tz@^1.5.0",
       "npm:date-fns@^4.4.0"
     ]
