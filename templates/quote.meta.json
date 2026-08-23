@@ -57,7 +57,7 @@
     {
       "slug": "rental-discount-taxed",
       "label": "9-column ceiling, single page",
-      "description": "The 9-column ceiling readable in a single view: Duration, Discount and Tax all on, over four rentals in one group with one 20% discount and 15% rental tax. This is the fixture for eyeballing column widths under `table-layout: fixed` — the tightest grid the template can produce, small enough to take in at once. long-multi-group renders the same nine columns but over ~90 rows across several pages, which answers a different question (page breaks, not widths); a reader who sees only the column count will otherwise delete one of the two as a duplicate. Captured from prod order 943."
+      "description": "The 9-column ceiling readable in a single view: Duration, Discount and Tax all on, over four rentals in one group with one 20% discount and 15% rental tax. This is the fixture for eyeballing column widths under `table-layout: fixed` — the tightest grid the template can produce, small enough to take in at once. Three other fixtures now render the same nine columns and each answers a DIFFERENT question, so a reader who sees only the column count will delete one of the four as a duplicate: long-multi-group spreads them over ~90 rows across several pages (page breaks, not widths), mixed-two-tax-rates uses them to carry two tax rates and five item types, and fee-flat-card uses them to carry a flat transaction fee. This one is the width reference and nothing else — keep it small. Captured from prod order 943."
     },
     {
       "slug": "long-multi-group",
