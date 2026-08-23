@@ -11,6 +11,30 @@ on:
       - sandbox
       - "sandbox/e2e-*"
 
+# One run per ref, and the newest wins.
+#
+# ⚠️ **Justified on VERDICT UNAMBIGUITY, not on cost.** The manager now derives
+# the operator's next action from "the latest golden verdict", which has to mean
+# something: PR #113 accumulated 24 runs, seven of them inside a 116-second
+# window, and every one of them was writing `golden_results` back onto the same
+# `templates-versions` doc. Racing writers meant the verdict on screen was
+# whichever run finished last, not the one for the current head.
+#
+# The per-run cost is NOT the argument (a run is 22–39s, of which 14.2s is all
+# 11 Gotenberg renders warm; a no-op run is 9s).
+#
+# ⚠️ A cancelled run leaves a non-success conclusion on the SUPERSEDED sha.
+# That is safe and must not be "fixed" later: branch protection evaluates the
+# check on the HEAD sha, and the golden tree is read at the PR head too.
+#
+# `templates-lint` and `money-lint` deliberately get NO group. They are fast,
+# they write nothing back, and a stale lint verdict on a superseded sha costs
+# nothing — the ambiguity this solves is specific to a workflow that persists a
+# result the UI then reads.
+concurrency:
+  group: visual-diff-${{ github.ref }}
+  cancel-in-progress: true
+
 # WIF needs id-token write; contents read to diff changed files.
 permissions:
   contents: read
