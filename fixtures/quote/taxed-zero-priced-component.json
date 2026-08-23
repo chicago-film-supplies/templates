@@ -1,11 +1,13 @@
 {
-  "uid": "qZ7mTfL2nR4vKp8dXeWb",
-  "number": 993,
+  "uid": "S20xjunK2qYSdH1PVY2X",
+  "number": 1004,
   "status": "reserved",
   "organization": {
     "uid": "nTpq3YIY4cth5todd4PV",
     "name": "Riley M Adler",
     "crms_id": 524,
+    "jurisdiction_claim": null,
+    "tax_exempt": false,
     "xero_id": "6891f42e-193e-4db1-bfa3-834555b6ce32",
     "billing_address": {
       "city": "Evanston",
@@ -24,98 +26,74 @@
   "destinations": [
     {
       "dates": {
-        "delivery_start": "2026-08-11T09:00:00.000-05:00",
+        "delivery_start": "2026-08-20T09:00:00.000-05:00",
         "delivery_start_fs": {
-          "_seconds": 1786456800,
+          "_seconds": 1787234400,
           "_nanoseconds": 0
         },
-        "delivery_end": "2026-08-11T09:00:00.000-05:00",
+        "delivery_end": "2026-08-20T09:00:00.000-05:00",
         "delivery_end_fs": {
-          "_seconds": 1786456800,
+          "_seconds": 1787234400,
           "_nanoseconds": 0
         },
-        "collection_start": "2026-08-11T17:00:00.000-05:00",
+        "collection_start": "2026-08-20T17:00:00.000-05:00",
         "collection_start_fs": {
-          "_seconds": 1786485600,
+          "_seconds": 1787263200,
           "_nanoseconds": 0
         },
-        "collection_end": "2026-08-11T17:00:00.000-05:00",
+        "collection_end": "2026-08-20T17:00:00.000-05:00",
         "collection_end_fs": {
-          "_seconds": 1786485600,
+          "_seconds": 1787263200,
           "_nanoseconds": 0
         },
-        "charge_start": "2026-08-11T09:00:00.000-05:00",
+        "charge_start": "2026-08-20T09:00:00.000-05:00",
         "charge_start_fs": {
-          "_seconds": 1786456800,
+          "_seconds": 1787234400,
           "_nanoseconds": 0
         },
-        "charge_end": "2026-08-11T17:00:00.000-05:00",
+        "charge_end": "2026-08-20T17:00:00.000-05:00",
         "charge_end_fs": {
-          "_seconds": 1786485600,
+          "_seconds": 1787263200,
           "_nanoseconds": 0
         },
         "days_active": 1,
         "days_charged": 1
       },
       "delivery": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "172 Magnolia Rd",
-          "name": "Eastvale",
-          "postcode": "65048",
-          "region": "IL",
-          "street": "3408 Cypress Ter",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
+        "uid": "1uCW4OqIMBUxP1nNkt9y",
+        "address": null,
+        "instructions": null,
         "contact": null
       },
       "collection": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "5609 Elm Ln",
-          "name": "Westmont",
-          "postcode": "65538",
-          "region": "IL",
-          "street": "7695 Spruce Ln",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
+        "uid": "jebrCTkAxabWK4NKonTX",
+        "address": null,
+        "instructions": null,
         "contact": null
       },
-      "customer_collecting": true,
-      "customer_returning": true
+      "customer_collecting": false,
+      "customer_returning": false
     }
   ],
   "items": [
     {
-      "uid": "f221ce25-6fe9-44da-8b18-271225d95906",
+      "uid": "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
       "type": "destination",
-      "name": "Fillmore",
+      "name": "Destination 2",
       "path": [
-        "f221ce25-6fe9-44da-8b18-271225d95906"
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0"
       ],
-      "uid_delivery": "vTn8CTAwwJHEJZLBzsOw",
-      "uid_collection": "vTn8CTAwwJHEJZLBzsOw",
+      "uid_delivery": "1uCW4OqIMBUxP1nNkt9y",
+      "uid_collection": "jebrCTkAxabWK4NKonTX",
       "description": ""
     },
     {
-      "uid": "9c387134-faa5-42b5-b69e-0b67d04e501b",
+      "uid": "ade4ac39-2a53-4ba4-93cb-cffad41a63a0",
       "type": "group",
       "name": "Crafty",
       "path": [
-        "f221ce25-6fe9-44da-8b18-271225d95906",
-        "9c387134-faa5-42b5-b69e-0b67d04e501b"
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+        "ade4ac39-2a53-4ba4-93cb-cffad41a63a0"
       ],
       "description": ""
     },
@@ -135,41 +113,41 @@
         "discount": null,
         "taxes": [
           {
-            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "uid": "dtTboGtD0f2iwRlDGOBH",
             "name": "Chicago Sales Tax",
-            "rate": 10.25,
+            "rate": 10.5,
             "type": "percent",
-            "amount_cents": 3998
+            "amount_cents": 4095
           }
         ],
         "taxes_base": [
           {
-            "uid": "NJc430kShJ0GRj7uvaQZ",
+            "uid": "dtTboGtD0f2iwRlDGOBH",
             "name": "Chicago Sales Tax",
-            "rate": 10.25,
+            "rate": 10.5,
             "type": "percent"
           }
         ],
-        "total_cents": 42998
+        "total_cents": 43095
       },
       "stock_method": "bulk",
-      "order_number": 993,
-      "uid_order": "qZ7mTfL2nR4vKp8dXeWb",
+      "order_number": 1004,
+      "uid_order": "S20xjunK2qYSdH1PVY2X",
       "path": [
-        "f221ce25-6fe9-44da-8b18-271225d95906",
-        "9c387134-faa5-42b5-b69e-0b67d04e501b",
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+        "ade4ac39-2a53-4ba4-93cb-cffad41a63a0",
         "VQim9zNSP2k4gdhBEdnX"
       ],
       "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 610,
-      "coa_revenue": 4200
+      "zero_priced": null,
+      "coa_revenue": 4200,
+      "taxed_as": null
     },
     {
       "uid": "N8brmUmmSzHs523aJAMd",
       "type": "sale",
       "name": "Bottled Water ( /bottle )",
-      "description": "",
+      "description": "The taxable unit of a case of bottled water. Carries the Chicago Bottled Water Tax; never sold on its own.",
       "quantity": 240,
       "price": {
         "base_cents": 0,
@@ -181,6 +159,13 @@
         "discount": null,
         "taxes": [
           {
+            "uid": "dtTboGtD0f2iwRlDGOBH",
+            "name": "Chicago Sales Tax",
+            "rate": 10.5,
+            "type": "percent",
+            "amount_cents": 0
+          },
+          {
             "uid": "jvsOUs8nR4DXElcVNqJc",
             "name": "Water Bottle Tax",
             "rate": 0.05,
@@ -190,27 +175,27 @@
         ],
         "taxes_base": [
           {
-            "uid": "jvsOUs8nR4DXElcVNqJc",
-            "name": "Water Bottle Tax",
-            "rate": 0.05,
-            "type": "flat"
+            "uid": "dtTboGtD0f2iwRlDGOBH",
+            "name": "Chicago Sales Tax",
+            "rate": 10.5,
+            "type": "percent"
           }
         ],
         "total_cents": 1200
       },
       "stock_method": "none",
-      "order_number": 993,
-      "uid_order": "qZ7mTfL2nR4vKp8dXeWb",
+      "order_number": 1004,
+      "uid_order": "S20xjunK2qYSdH1PVY2X",
       "path": [
-        "f221ce25-6fe9-44da-8b18-271225d95906",
-        "9c387134-faa5-42b5-b69e-0b67d04e501b",
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+        "ade4ac39-2a53-4ba4-93cb-cffad41a63a0",
         "VQim9zNSP2k4gdhBEdnX",
         "N8brmUmmSzHs523aJAMd"
       ],
       "inclusion_type": "mandatory",
       "zero_priced": true,
-      "crms_id": null,
-      "coa_revenue": 4200
+      "coa_revenue": 4200,
+      "taxed_as": null
     }
   ],
   "totals": {
@@ -219,11 +204,11 @@
     "subtotal_discounted_cents": 39000,
     "taxes": [
       {
-        "uid": "NJc430kShJ0GRj7uvaQZ",
+        "uid": "dtTboGtD0f2iwRlDGOBH",
         "name": "Chicago Sales Tax",
-        "rate": 10.25,
+        "rate": 10.5,
         "type": "percent",
-        "amount_cents": 3998
+        "amount_cents": 4095
       },
       {
         "uid": "jvsOUs8nR4DXElcVNqJc",
@@ -234,41 +219,49 @@
       }
     ],
     "transaction_fees": [],
-    "total_cents": 44198,
+    "total_cents": 44295,
     "replacement_total_cents": 0
   },
-  "invoices": [],
-  "query_by_invoices": [],
+  "invoices": [
+    {
+      "uid": "wDBAH05fWHmNi5m94an8",
+      "number": 2390,
+      "status": "issued"
+    }
+  ],
+  "query_by_invoices": [
+    "wDBAH05fWHmNi5m94an8"
+  ],
   "query_by_items": [
     "VQim9zNSP2k4gdhBEdnX",
     "N8brmUmmSzHs523aJAMd"
   ],
   "query_by_contacts": [],
   "query_by_dates": [
-    "2026-08-11"
+    "2026-08-20"
   ],
   "bookings_breakdown": {
     "quoted": 0,
-    "reserved": 0,
+    "reserved": 10,
     "prepped": 0,
     "out": 0,
     "returned": 0,
     "lost": 0,
     "damaged": 0
   },
-  "crms_id": null,
+  "crms_id": 1031,
   "crms_status": "Open",
-  "subject": "10 Open Water",
+  "subject": "10 Cases Water",
   "reference": null,
-  "xero_id": null,
-  "uid_thread": "hA9qDrEZuLRyzhNtPmxi",
-  "version": 4,
+  "xero_id": "1244c253-8fd7-4ff6-961f-62eed7380d6d",
+  "uid_thread": "twbFMagvsyOKqK8uHjHQ",
+  "version": 9,
   "created_at": {
-    "_seconds": 1786474161,
-    "_nanoseconds": 973000000
+    "_seconds": 1787266116,
+    "_nanoseconds": 148000000
   },
   "updated_at": {
-    "_seconds": 1786474192,
-    "_nanoseconds": 943000000
+    "_seconds": 1787415520,
+    "_nanoseconds": 665000000
   }
 }
