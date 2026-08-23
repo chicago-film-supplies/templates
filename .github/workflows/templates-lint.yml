@@ -1,6 +1,6 @@
 name: templates-lint
 
-# Two always-on guards on every PR.
+# Three always-on guards on every PR.
 #
 # 1. FIXTURES (scripts/lint-fixtures.ts) — every fixtures/<gp>/*.json must satisfy
 #    the same schema the API enforces on save, and carry no customer PII. Fixtures
@@ -38,6 +38,20 @@ jobs:
       # gate pass while the API 422s — which is the exact drift it exists to catch.
       - name: Lint fixtures (schema + PII)
         run: deno task lint:fixtures
+
+      # 3. CITATIONS — every backticked `path.ext` in this repo's prose still
+      #    resolves. Rules are `@cfs/core/utils/citations`, shared with core,
+      #    api-cloudrun and manager so the four repos cannot disagree about one
+      #    citation.
+      #
+      #    ⚠️ **This job is a FLOOR, not the real check.** CI holds only this
+      #    repo, and almost everything this repo's prose names lives in
+      #    api-cloudrun — those citations report UNVERIFIABLE here rather than
+      #    broken. Measured at landing: 1 broken in a full workspace, 0 in a CI
+      #    checkout. Run `deno task lint:citations` locally, where the siblings
+      #    are present, before trusting a green run here.
+      - name: Lint citations
+        run: deno task lint:citations
 
       - name: Scan templates for hardcoded PII
         run: |
