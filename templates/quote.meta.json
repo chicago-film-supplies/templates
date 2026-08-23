@@ -22,7 +22,7 @@
     {
       "slug": "multi-dest",
       "label": "Multi-destination",
-      "description": "The only MULTI-DESTINATION fixture, and it is hand-built because it has to be: measured 2026-08-14 over the 200 most recent dev orders, every single one has exactly one destination, so this shape cannot be captured. Do not \"clean it up\" into a capture. Two destinations — customer-collecting from our counter (charge window == delivery window) plus a we-deliver stage with a divergent charge window — which is the only thing that exercises per-destination banner rows in the items table, the legend variants, and the conditional Dates Charged row. Items, prices and taxes are drawn from real orders; the organization, contacts and instructions are invented and both addresses are public corporate venues, so it is PII-free by construction and is NOT run through applyPii."
+      "description": "The only MULTI-DESTINATION fixture, and it is hand-built because it has to be: measured 2026-08-23 over ALL 994 prod orders — not the 200-order dev sample this note used to rest on — every single one has exactly one destination, so this shape cannot be captured. Do not \"clean it up\" into a capture. Two destinations — customer-collecting from our counter (charge window == delivery window) plus a we-deliver stage with a divergent charge window — which is the only thing that exercises per-destination banner rows in the items table, the legend variants, and the conditional Dates Charged row. Items, prices and taxes are drawn from real orders; the organization, contacts and instructions are invented and both addresses are public corporate venues, so it is PII-free by construction and is NOT run through applyPii."
     },
     {
       "slug": "discounts-and-fee",
