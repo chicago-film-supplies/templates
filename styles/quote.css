@@ -18,16 +18,6 @@ html {
      doing the arithmetic (`18 + 6 = 24rem`) that nothing checked. */
   --label-col: 24rem;
 
-  /* Where #destinations' THIRD block opens — the return/pickup column, headed
-     "In Store Return" or "Pickup". #destinations is three blocks, not four
-     columns: the dates block (`--label-col`, spanned by the "Dates:" header),
-     then the two address columns splitting what is left. So block 3 starts one
-     address column in, and #totals is aligned to it.
-     Derived, not typed: it is `--label-col + (100% - --label-col) / 2`, which
-     is the same expression `#destinations col.address` is sized by. Writing the
-     literal would let the two drift the first time the dates block changes. */
-  --dest-block-3: calc((100% + var(--label-col)) / 2);
-
   /* Vertical cell padding. Named because it is not only padding: it is the gap
      between a table cell box and its first text baseline, which is what
      anything sitting BESIDE a table has to match to share that baseline. */
@@ -37,27 +27,90 @@ html {
 body {
   font-family: ui-sans-serif, system-ui, sans-serif;
   color: #121212;
+  /* THE PAGE MARGIN IS THE SIDECAR'S, and this is what makes that true.
+     `margin_left`/`margin_right` (0.5in) are handed to Chromium as print
+     margins, and api-cloudrun pads the footer partial by the same figure
+     (`injectPartHorizontalMargins` in gotenberg.ts) so the two agree. The body
+     was then adding the UA default `margin: 8px` on top of it — measured in a
+     real PDF at 0.583in against the footer's 0.500in, a 6pt/8px step that
+     nothing chose and no rule stated.
+     Zeroing it makes `margin_*` the ONE number both surfaces read: widen the
+     page by editing the sidecar, not by editing this. */
+  margin: 0;
 }
-/* THE PAGE GRID. Three columns, because the page has exactly two vertical
-   boundaries anything is placed against: the half-way split the letterhead
-   uses, and `--dest-block-3`, where #destinations opens its return column and
-   #totals begins.
-
-   The boundaries are what is declared; the three widths are just the gaps
-   between them (50%, then up to block 3, then the rest). Expressed that way so
-   the grid cannot drift from the table it aligns to — both read the same
-   custom property.
-
-   `column-gap: 0` is load-bearing, not a tidy-up: a gap would make each
-   boundary a RANGE rather than an edge, and #totals would start one gap right
-   of where #destinations block 3 does. Horizontal separation is bought with
-   alignment instead — #cfs is right-aligned into its column, so the letterhead
-   blocks sit far apart without a gutter. Row gap keeps its 1rem. */
 #grid-wrapper {
+  /* THE SECOND ALIGNMENT EDGE — where #destinations opens its THIRD block (the
+     return/pickup column, headed "In Store Return" or "Pickup"), where #details
+     and #information stop, and where #totals begins. #destinations is three
+     blocks, not four columns: the dates block (`--label-col`, spanned by the
+     "Dates:" header), then the two address blocks splitting what is left.
+
+     It sits ON an #items column boundary at every column count the grid can
+     emit — specifically the boundary NEAREST THE HALF-WAY POINT. #items gives
+     its description column `--label-col` and splits the remainder equally
+     between the other n-1 columns, so its boundaries are
+     `--label-col + m x (100% - --label-col) / (n - 1)`, and the template picks
+     `m = floor((n-1)/2)`.
+
+     Two constraints, one edge: the totals block lines up with a real column of
+     the grid above it, AND the two address blocks either side of the edge stay
+     close to equal (252/252 at 7 and 9 columns, 202/302 and 216/288 at 6 and
+     8). Pinning it to a FIXED position from the right — the 4th-from-last
+     column — satisfies the first and abandons the second: at six columns that
+     lands on 316.8px and leaves the delivery address 100.8px against the
+     return block's 403.2px.
+
+     ⚠️ The FRACTION is supplied by the template, not computed here, because `n`
+     is a property of the DOCUMENT (6 + Duration? + Discount? + Tax?) and CSS
+     cannot see it. quote.eta emits `--block-3-fraction` inline on this element
+     from the same `itemColumnCount` the banner `colspan` reads, so the edge and
+     the grid it aligns to cannot disagree. The 0.5 fallback below is the
+     odd-column-count value — the stylesheet standing alone renders what it
+     rendered before the fraction existed.
+
+     ⚠️ DECLARED HERE, not on `html`, and that is load-bearing. A custom
+     property is substituted where it is DECLARED, not where it is used: with
+     `--dest-block-3` declared on `html` it resolved against the `html` value of
+     `--block-3-fraction` and an inline override on this element changed
+     nothing — measured, every fixture stayed on the old half-way edge. Declared
+     on the element that carries the inline value, it resolves against that
+     value and descendants inherit the result. */
+  --block-3-fraction: 0.5;
+  --dest-block-3: calc(
+    var(--label-col) + (100% - var(--label-col)) * var(--block-3-fraction)
+  );
+
   display: grid;
+  /* THE PAGE GRID — TWO columns, split on `--dest-block-3`. That is the only
+     vertical boundary the page has: everything on it either starts at the left
+     margin, stops at that edge (#details, #information), or begins there
+     (#totals), and the full-width tables span both.
+
+     ⚠️ It used to be THREE columns, the extra boundary being a literal `50%`
+     that only the letterhead used — #bill-to left of it, #cfs right-aligned to
+     the right of it. That is unrepresentable once `--dest-block-3` tracks an
+     #items column, because the boundary is free to fall LEFT of the half-way
+     mark: `calc(var(--dest-block-3) - 50%)` then goes negative, grid clamps
+     that track to 0 while the third keeps its full width, and the grid measures
+     WIDER than the page. Measured on an earlier revision of this rule (and at
+     the 704px content box that predated `body { margin: 0 }`): a six-column
+     quote put block 3 at 313.6px, computed −38.4px for the middle track, and
+     laid out 742.4px of grid inside a 704px page — #destinations, sized
+     `width: 100%` of a table in an overflowing grid, then put its third block
+     at 487.2px. An overflow, not a rounding error.
+     `floor((n-1)/2)` happens to stay right of 50% at every count the grid can
+     emit, but nothing in the rule GUARANTEES that, so the boundary stays gone.
+     Dropping it loses nothing: #cfs is RIGHT-ALIGNED, so where its box starts
+     has never been what positions it. The letterhead reads identically with the
+     split at block 3.
+
+     `column-gap: 0` is load-bearing, not a tidy-up: a gap would make the
+     boundary a RANGE rather than an edge, and #totals would start one gap right
+     of where #destinations block 3 does. Horizontal separation is bought with
+     alignment instead — #cfs is right-aligned into its column, so the letterhead
+     blocks sit far apart without a gutter. Row gap keeps its 1rem. */
   grid-template-columns:
-    50%
-    calc(var(--dest-block-3) - 50%)
+    var(--dest-block-3)
     calc(100% - var(--dest-block-3));
   column-gap: 0;
   row-gap: 1rem;
@@ -66,7 +119,7 @@ body {
   grid-column: 1;
 }
 #cfs {
-  grid-column: 2 / -1;
+  grid-column: 2;
 }
 #logo {
   grid-column: 1 / -1;
@@ -108,6 +161,16 @@ table {
 thead th {
   margin-bottom: 2px;
   border-bottom: 1px solid #121212;
+}
+/* #details is the exception: it is a two-column label/value block, not a grid,
+   and it carries TWO thead/tbody pairs (Date+Subject, then Order Number+
+   Reference). The rule above therefore drew a line under the labels twice in
+   the middle of the letterhead, reading as two tables stacked rather than as
+   one four-field block. The other three tables keep it — there the rule
+   separates a header row from the rows it heads, which is a job #details has
+   no equivalent of. */
+#details thead th {
+  border-bottom: 0;
 }
 /* Clear the <thead> border above — `thead + tbody`, not a bare `tbody`, because
    the rule only has a job where there IS a thead.
@@ -180,15 +243,41 @@ th.center, td.center {
 #destinations col.days {
   width: calc(var(--label-col) - 17rem);
 }
-#destinations col.address {
-  width: calc((100% - var(--label-col)) / 2);
-}
-/* Centred in its own column so the arrow sits between the two dates rather than
-   hard against the left edge of the gap — the dates are left-aligned and both
-   fall short of their columns, so a left-aligned arrow lands closer to the end
-   date than to the start one. */
+/* The address area is n-1 EQUAL columns — the same n-1 the items grid splits
+   its own remainder into — and the two blocks are colspans over them, split at
+   `floor((n-1)/2)`. That is where block 3 opens and where #totals begins, and
+   it is why the two blocks come out near-equal instead of at a fixed ratio.
+   `width: auto` (inherited from the rule above) is the whole mechanism: the
+   fixed table layout hands the leftover to its auto columns EQUALLY, so the
+   sub-columns match the items grid by construction rather than by arithmetic.
+
+   ⚠️ The obvious version of this — one <col> per block, sized
+   `calc(var(--dest-block-3) - var(--label-col))` — DOES NOT WORK, and fails
+   silently. Blink drops a table column width that mixes a percentage with a
+   length and falls back to auto: measured, `calc(20% + 10px)` on a <col> in a
+   600px fixed-layout table renders 299.5px (the even split) rather than 130px,
+   and the same expression on a first-row <th> does the same. A percentage
+   alone, `calc(30%)`, `calc(30% - 0px)` and `calc(30% * 1)` all resolve
+   correctly — it is specifically the mixture. The rule this replaced,
+   `calc((100% - var(--label-col)) / 2)`, was therefore never in force either;
+   it was indistinguishable from the fallback because at the half-way edge the
+   fallback IS the answer. `--dest-block-3` still drives #grid-wrapper, where
+   grid tracks resolve the mixture correctly (measured 417.6px at six
+   columns). Do not move the split back onto a <col>. */
+
+/* LEFT-aligned, which is what actually reads as centred between the two dates.
+   The column is a 2rem gap between two 7.5rem date columns whose content is
+   left-aligned and falls short of them — `Wed 12/22/26` is the widest date at
+   60.6px against 67.5px of column — so the visible gap the arrow sits in is not
+   the arrow's column but that column plus the ~7px of trailing whitespace the
+   start date leaves. Centring the arrow in the column therefore pushes it right
+   of the centre of the gap the reader sees; sitting it at the column's left
+   edge puts it back in the middle of that gap.
+   This inverts the previous rule, which centred for the same reason stated one
+   step short: it corrected for the END date being left-aligned and not for the
+   START date being so too. */
 #destinations td.arrow {
-  text-align: center;
+  text-align: left;
 }
 /* The glyph is a 9px replaced element on a 9px baseline, so it would otherwise
    sit bottom-on-baseline and ride high against the digits beside it. */
@@ -198,7 +287,7 @@ th.center, td.center {
 /* A quote with nothing but `replacement` lines drops blocks 2 and 3 (see
    templates/quote.eta), and what is left is the dates block alone. Its columns
    are absolute, so at `width: 100%` a fixed-layout table would scale all four up
-   ~3.7x to fill the page — the arrow would drift halfway across the sheet and
+   ~3.3x to fill the page — the arrow would drift halfway across the sheet and
    the header rule would underline an empty right half. Sizing the table to the
    block it now contains is what keeps it reading as the same table with two
    columns removed. */
@@ -213,13 +302,13 @@ th.center, td.center {
   width: 100%;
 }
 /* #details stops where #destinations block 3 opens, and its second column opens
-   where block 2 does. Both edges are the page grid's, not new numbers: columns
-   1-2 of #grid-wrapper span exactly `--dest-block-3`, so the table needs no
-   width of its own beyond filling its area, and `--label-col` below puts the
-   Subject/Reference column on the same edge as the delivery address above it.
+   where block 2 does. Both edges are the page grid's, not new numbers: column 1
+   of #grid-wrapper IS `--dest-block-3` wide, so the table needs no width of its
+   own beyond filling its area, and `--label-col` below puts the Subject/
+   Reference column on the same edge as the delivery address above it.
    Full-bleed was never a decision — it fell out of the blanket `1 / -1`. */
 #details {
-  grid-column: 1 / 3;
+  grid-column: 1;
   width: 100%;
 }
 
@@ -295,25 +384,29 @@ th.center, td.center {
    drift: a table's first baseline sits exactly one `--cell-pad-y` below its box,
    and matching it is the whole trick.
 
-   ⚠️ #totals aligns to #destinations and to the right margin. It does NOT align
-   to an #items column at every column count, and cannot: #items gives its
-   description column `--label-col` and divides the remainder by the column
-   count, so its internal edges move. Measured across the nine fixtures, block 3
-   lands on an #items edge at 7 and 9 columns and misses at 6 and 8 (at 8 the
-   neighbouring edges are 425 and 495, straddling 460). Closing that needs the
-   items columns sized on the same unit as the page — see templates#78. */
+   #totals aligns to #destinations, to the right margin, AND to a real #items
+   column boundary, at every column count. That last one used to be false and
+   documented as impossible here — block 3 sat at a fixed half-way mark while
+   the #items boundaries move with the column count, so it landed on one at 7
+   and 9 columns and missed at 6 and 8 (at 8 the neighbours were 425 and 495,
+   straddling 460). It is true now because `--dest-block-3` is derived from the
+   column count: measured across all eleven fixtures, #totals, #details,
+   #information and #destinations block 3 share one edge with the nearest-to-
+   half items boundary — 417.6px at 6 columns, 468 at 7, 432 at 8, 468 at 9.
+   The column it lands on reads sensibly at every count, which is a consequence
+   rather than a target: Unit Price at 6 and 8, Subtotal at 7, Discount at 9. */
 #information,
 #totals {
   align-self: start;
 }
 #information {
-  grid-column: 1 / 3;
+  grid-column: 1;
 }
 #information p {
   padding-top: var(--cell-pad-y);
 }
 #totals {
-  grid-column: 3;
+  grid-column: 2;
   margin-bottom: 4em;
 }
 /* The blanket `th, td { width: 6rem }` plus the 24rem first-child rule sum to
