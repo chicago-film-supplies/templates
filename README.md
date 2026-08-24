@@ -71,17 +71,26 @@ preview reflects your saved draft (not the published version).
 New branch ──▶ a draft PR opens automatically (golden check runs continuously)
    │  edit ──▶ Save (Firestore) ──▶ Commit (push to the branch)
    ▼
-Release ──▶ marks the PR ready + enables auto-merge-when-green
+Release ──▶ marks the review ready + arms auto-merge-when-green
    │
-   ├─ golden "match"  ──▶ auto-merges ──▶ publishes (no human step)
-   └─ golden "diff"   ──▶ blocked ──▶ in-app review: baseline vs candidate vs
-                                      diff ──▶ Approve & merge ──▶ publishes
+   ├─ visual check passes ──▶ publishes automatically (no further step)
+   └─ visual change found ──▶ held ──▶ review the per-fixture diffs in the
+                                       manager ──▶ **Approve the renders**
+                                       ──▶ the check re-runs ──▶ publishes
 ```
 
+⚠️ **There is no "Approve & merge" button, and there has not been one since the
+merge affordance was rebuilt.** The approval act is **approving the renders**
+(blessing): that writes the new baselines onto the draft branch, the visual
+check re-runs against them, and the already-armed auto-merge lands it. Nobody
+presses merge on the happy path.
+
 - **Merge is the publish authority.** Squash-merging the PR fires the GitHub
-  webhook → the API publishes the new version and advances `uid_active`.
-- A **meaningful visual change fails the golden check by design** — review the
-  diff in the manager and approve, or re-bless goldens, to merge.
+  webhook → the API publishes the new version and advances `uid_active`. GitHub
+  performs that merge itself once the required check passes.
+- A **meaningful visual change fails the golden check by design** — that is the
+  check doing its job. Review the per-fixture diffs in the manager and approve
+  the renders; there is one path, not two.
 - **Abandon** archives a draft (recoverable) and closes its PR.
 
 ## Start from an existing template (fork)
@@ -96,9 +105,10 @@ in the editor. The field-map is a best-effort head-start — loop-aliased refs
 ## Operations
 
 - **Permissions:** routes require `templates.{read,search,create,propose,release,merge,archive}`. After adding a permission to the catalog, **re-run `seed-rbac.ts --write` on each env** — the route/catalog can pass tests while the Firestore `roles/*` docs are stale (this caused a `templates.propose` 403 in QA).
-- **Golden gate:** `visual-diff` is a **required** status check on `main` (prod) and `sandbox` (dev). `enforce_admins=false` lets the App squash past a failing golden after a human approves the diff.
+- **Golden gate:** `visual-diff` is a **required** status check on `main` (prod). ⚠️ **It is NOT required on `sandbox`, and `goldens/sandbox/` is empty** — every dev PR yields `no-golden` → PASS, so **dev is not gated at all**. This line claimed otherwise until 2026-08-23; do not read a green dev run as evidence a rendering change is safe (templates#118). `enforce_admins=false` is set on `main`, but the App does not squash past a failing check — the check is cleared by approving the renders, which makes it pass.
+- **One run per ref:** `visual-diff` sets `cancel-in-progress`, so the newest run is the only verdict. A cancelled run leaves a non-success conclusion on the superseded sha; that is safe, because protection evaluates the head sha.
 - **Branches per env:** the API publishes from `main` (prod) and `sandbox` (dev) — the in-app base-ref gate decides which env a merge publishes to.
-- **Cross-repo bumps:** changing `@cfs/core` → publish its `beta` (semantic-release), then bump the pins in `api-cloudrun` + `manager` (+ this preview harness) in lockstep. ⚠️ This repo's `deno.json` pins **exact** versions, not a caret range, so `deno outdated --update` is not the mechanism and a floated range will not pick the bump up — edit the five subpath entries and re-run `deno install`.
+- **Cross-repo bumps:** changing `@cfs/core` → publish its `beta` (semantic-release), then bump the pins in `api-cloudrun` + `manager` (+ this preview harness) in lockstep. ⚠️ This repo's `deno.json` pins **exact** versions, not a caret range, so `deno outdated --update` is not the mechanism and a floated range will not pick the bump up — edit **every** `jsr:@cfs/core@<version>/` specifier and re-run `deno install`. ⚠️ **Bump by pattern, never by a remembered count** — this line said "five" while `deno.json` held seven, and a bump that moves all-but-one leaves a subpath stranded on the old version while still looking complete. A `sed` over the old version string cannot miss one.
 
 See `api-cloudrun/.claude/skills/templates/SKILL.md` for the deep data-model /
 publish-invariant reference.
