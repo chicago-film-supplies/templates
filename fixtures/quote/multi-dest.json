@@ -25,6 +25,7 @@
   },
   "destinations": [
     {
+      "uid": "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
       "dates": {
         "delivery_start": "2026-04-06T09:00:00.000-05:00",
         "delivery_end": "2026-04-06T09:00:00.000-05:00",
@@ -127,6 +128,7 @@
       "customer_returning": true
     },
     {
+      "uid": "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
       "dates": {
         "delivery_start": "2026-04-07T07:00:00.000-05:00",
         "delivery_end": "2026-04-07T07:00:00.000-05:00",

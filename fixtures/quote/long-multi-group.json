@@ -23,6 +23,7 @@
   },
   "destinations": [
     {
+      "uid": "2c585535-eae6-4285-995c-0dd1cec08b9b",
       "dates": {
         "delivery_start": "2026-08-11T09:00:00.000-05:00",
         "delivery_start_fs": {

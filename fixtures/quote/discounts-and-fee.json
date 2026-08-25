@@ -28,6 +28,7 @@
   },
   "destinations": [
     {
+      "uid": "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
       "customer_collecting": false,
       "customer_returning": false,
       "dates": {
