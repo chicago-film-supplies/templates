@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-25 • **Repo:** templates (+ api-cloudrun, manager, claude-plugins) • **Status:** ⏳ committed on four branches, none pushed or merged — merging waits on the destinations campaign
 **Origin:** the ask *"any work Claude Code does on a template branch should be viewable in the manager, before and after commit"*, and the templates#126 episode that showed why it wasn't.
-**Related:** templates#126 · templates#79 · api-cloudrun#524 / #526 / #530 / #553
+**Related:** api-cloudrun#667 (the queue entry for the landing below) · templates#126 · templates#79 · api-cloudrun#524 / #526 / #530 / #553
 
 ## START HERE
 
