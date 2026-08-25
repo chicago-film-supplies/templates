@@ -284,12 +284,16 @@ th.center, td.center {
 #destinations td.arrow svg {
   vertical-align: -0.1em;
 }
-/* `#destinations.dates-only` used to live here — the dates block alone at
-   `--label-col`, for a quote with nothing but `replacement` lines. That shape no
-   longer exists: a replacement-only quote has neither a delivery nor a
-   collection, so quote.eta drops the whole table rather than narrowing it, and
-   the class had no remaining author. Removed with it rather than left as a rule
-   nothing can select. */
+/* A quote with nothing but `replacement` lines drops blocks 2 and 3 (see
+   templates/quote.eta), and what is left is the dates block alone. Its columns
+   are absolute, so at `width: 100%` a fixed-layout table would scale all four up
+   ~3.3x to fill the page — the arrow would drift halfway across the sheet and
+   the header rule would underline an empty right half. Sizing the table to the
+   block it now contains is what keeps it reading as the same table with two
+   columns removed. */
+#destinations.dates-only {
+  width: var(--label-col);
+}
 
 #destinations,
 #items,
