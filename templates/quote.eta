@@ -2,6 +2,27 @@
 <%
 const order = it.doc;
 const { destinations, items, totals } = order;
+// EVERY date on this page is formatted THROUGH this, and that is not a style
+// preference — it is the difference between the right day and the next one.
+//
+// date-fns `format` renders in the LOCAL timezone of the JS runtime unless it
+// is given `{ in: … }`. Stored business datetimes are Chicago-offset INSTANTS,
+// and the render container sets no `TZ` (see the api-cloudrun Dockerfile, and
+// no `TZ` env in `infra/cloud-run-api.tf`), so it runs UTC. An unpinned format
+// therefore prints the UTC day: a 20:00 Chicago boundary is 01:00 UTC TOMORROW.
+//
+// Measured across all 996 prod orders: 56 carry a `delivery_start` or
+// `collection_start` that renders one day late, 58 including the charge window,
+// over 121 field renders. `it.now` is `chicagoNowIso()` on the same footing, so
+// unpinned it dates every quote rendered after 19:00 Chicago as tomorrow.
+//
+// It was invisible for two reasons, and both are worth knowing before anyone
+// "simplifies" the `{ in: CHICAGO }` away again. Local preview runs on a laptop
+// in Chicago, where the unpinned form is accidentally right. And NO fixture
+// crossed the boundary — the latest time in the set was 18:00 and `FROZEN_NOW`
+// is midday — so the golden gate compared this branch to itself and passed.
+// `evening-boundary` (prod order 872) exists to close exactly that hole: its
+// delivery is 19:00 CDT, which is 00:00 UTC to the second.
 const CHICAGO = it.tz("America/Chicago");
 // Divider rows are structure, not stock. They are interleaved with the real
 // line items in one array, and `path` records BOTH kinds of ancestor — which is
@@ -80,7 +101,23 @@ const addressBoundary = Math.floor((itemColumnCount - 1) / 2);
 // Blink silently ignores a table column width that mixes a percentage with a
 // length, which is what `--dest-block-3 - --label-col` is. See styles/quote.css.
 const addressColumnCount = itemColumnCount - 1;
-const deliverySpan = addressBoundary;
+
+// A COLLECTION LEG EXISTS ONLY IF SOMETHING IS COMING BACK.
+//
+// Nothing on a sale, a service or a surcharge is ever collected — the customer
+// keeps it — so a quote with no rental line has no return address, no contact,
+// no end date and no duration. Printing those columns headed and empty reads as
+// missing data; printing the range shape implies a window the order does not
+// have, which is the same argument the arrow and the end date already made for
+// themselves. This extends it to the two things it had not reached: the
+// duration cell and the whole return address block.
+//
+// When it is off, block 2 takes the ENTIRE address area rather than leaving the
+// right half bare. The page grid is untouched: `--block-3-fraction` tracks an
+// #items column boundary and is a fact about the items grid, not about this
+// table, so #totals, #details and #information keep the edge they share.
+const hasCollection = hasRentals;
+const deliverySpan = hasCollection ? addressBoundary : addressColumnCount;
 const returnSpan = addressColumnCount - addressBoundary;
 // NON-ZERO, not "present". `replacement_cents` is a field on EVERY priced line
 // — schema-required whenever `stock_method !== "none"` — so a sale, a service
@@ -102,7 +139,23 @@ const returnSpan = addressColumnCount - addressBoundary;
 // Truthy rather than `> 0`, matching `calculateReplacementTotals` exactly so the
 // rows and the footer cannot disagree: a NEGATIVE replacement cost is
 // meaningless rather than absent, and is better shown than silently dropped.
-const replacementItems = lineItems.filter(i => i.price.replacement_cents);
+//
+// `shownLineItems`, NOT `lineItems`, and the reason is the footer rather than
+// the rows. The Total Replacement Cost under this table comes from
+// `it.orders.calculateReplacementTotals`, which selects through `isPreTaxItem`
+// — and that predicate EXCLUDES `transaction_fee`, while `lineItems` includes
+// it. So the rows and the figure they must add up to were chosen by two
+// different rules that happen to agree, because no fee line carries a
+// replacement value (verified `undefined` on both fee fixtures). Agreeing by
+// coincidence is exactly what this file refuses to do elsewhere, and a fee is
+// priced FROM the document rather than off a shelf, so it can never have
+// anything to replace. One predicate, so the two cannot drift apart.
+const replacementItems = shownLineItems.filter(i => i.price.replacement_cents);
+
+// Does any replacement line carry a tax at all? Mirrors `orderHasTax` over this
+// table the way `hasTax` gates the Tax column in #items — see the table itself
+// for why two dead columns are worse than a zero.
+const hasReplacementTax = replacementItems.some(i => (i.price.taxes || []).length > 0);
 
 // Does anything on this quote actually GO anywhere?
 //
@@ -317,7 +370,23 @@ const replacementLine = (item) => {
   // The per-UNIT column is the line divided back down, not a separately-rounded
   // per-unit computation — deriving it the other way is what made the columns
   // fail to add up to their own footer.
-  const unitTaxCents = qty > 0 ? Math.round(lineTaxCents / qty) : 0;
+  //
+  // `roundDivHalfAwayFromZero` rather than `Math.round`, and it is the core
+  // primitive itself rather than a local spelling of one. `Math.round` is half UP,
+  // so it breaks symmetry on the negatives this table deliberately admits:
+  // `Math.round(-2.5)` is -2 where the magnitude-preserving answer is -3. The
+  // filter above passes a negative replacement value on purpose — meaningless
+  // is better shown than silently dropped — so `f(-x) === -f(x)` is a property
+  // this column needs and did not have. The core docblock states it in those
+  // words.
+  //
+  // `BigInt(qty)` is total here: an ORDER line quantity is `z.number().int()`
+  // (`@cfs/core` schemas/order.ts), so it is never fractional. Core scales by a
+  // private QTY_SCALE because the INVOICE surface does not have that guarantee;
+  // this file only ever renders orders. Guarded by `qty > 0` either way.
+  const unitTaxCents = qty > 0
+    ? Number(it.money.roundDivHalfAwayFromZero(BigInt(lineTaxCents), BigInt(qty)))
+    : 0;
   return {
     unitCostCents,
     qty,
@@ -384,7 +453,7 @@ const replacementLine = (item) => {
   </thead>
   <tbody>
     <tr>
-      <td><%= it.dateFns.format(it.dateFns.parseISO(it.now), 'MMMM d, yyyy') %></td>
+      <td><%= it.dateFns.format(it.dateFns.parseISO(it.now), 'MMMM d, yyyy', { in: CHICAGO }) %></td>
       <%/* An empty cell, not an absent one: under `table-layout: fixed` a short
            row leaves a real trailing gap rather than being absorbed. */%>
       <% if (order.subject) { %>
@@ -416,10 +485,29 @@ const replacementLine = (item) => {
      fixed` sizes a table from its FIRST ROW, and this table has one
      <thead>/<tbody> pair per destination, so a width on a body cell can never
      take effect. */%>
-<%/* The dates block is FOUR columns now, not two: [start] [→] [end] [duration].
+<%/* The dates block is FOUR columns, not two: [start] [→] [end] [duration].
      Their widths still sum to `--label-col`, which is what keeps block 2 opening
-     on the shared alignment edge — see styles/quote.css. */%>
-<table id="destinations"<% if (!hasDeliverableItems) { %> class="dates-only"<% } %>>
+     on the shared alignment edge — see styles/quote.css. The four <col>s stay
+     declared at every shape; a cell that is not rendered is spanned over rather
+     than removed, so the block keeps its width and the edge cannot move. */%>
+<%/* THE WHOLE TABLE IS RENTAL/DELIVERY FURNITURE, and a replacement-only quote
+     has none of it.
+
+     A `replacement` charge recovers the cost of an item already lost or damaged
+     in the customer possession: we buy the replacement, they pay us back. There
+     is no delivery — not to an address and not over our counter — and nothing
+     is ever collected, so every row of this table would be describing a
+     movement that does not happen. It used to render the dates block alone at
+     `--label-col`, which stated a delivery date for goods that are not
+     delivered.
+
+     Dropping the section outright rather than emptying it is the same call the
+     address blocks already made for themselves: a headed table with nothing
+     under it reads as missing data, where an absent one reads as inapplicable.
+     `hasDeliverableItems` also covers a quote with no shown lines at all, where
+     #items is likewise suppressed. */%>
+<% if (hasDeliverableItems) { %>
+<table id="destinations">
   <colgroup>
     <col class="date">
     <col class="arrow">
@@ -427,10 +515,8 @@ const replacementLine = (item) => {
     <col class="days">
     <%/* One <col> per address SUB-column, all auto and therefore all equal —
          the blocks are colspans over them. See styles/quote.css. */%>
-    <% if (hasDeliverableItems) { %>
     <% for (let i = 0; i < addressColumnCount; i++) { %>
     <col class="address">
-    <% } %>
     <% } %>
   </colgroup>
 <% destinations.forEach(function(dest, destIndex) { %>
@@ -446,7 +532,13 @@ const replacementLine = (item) => {
     // disagree.
     const hasActiveWindow = Boolean(d.delivery_start && d.collection_start);
     const hasChargeWindow = Boolean(d.charge_start && d.charge_end);
-    const showCharged = hasChargeWindow && !it.orders.isSameAsDeliveryDates(d);
+    // A charge WINDOW is a span, and a span needs an end. With no rental line
+    // the end date and the duration are both suppressed below, which would
+    // leave "Dates Charged:" labelling a lone start date — the same
+    // implied-window-that-does-not-exist the arrow and end date were split up to
+    // avoid. So the whole charged pair falls away with the collection leg.
+    const showCharged = hasCollection && hasChargeWindow &&
+      !it.orders.isSameAsDeliveryDates(d);
     // Address lines (no contact — contact rides its own column).
     const addrLines = (ep) => {
       if (!ep || !ep.address) return [];
@@ -466,36 +558,44 @@ const replacementLine = (item) => {
   <thead>
     <tr>
     <th scope="col" colspan="4">Dates: </th>
-    <% if (hasDeliverableItems) { %>
+    <%/* `deliverySpan` is the WHOLE address area when there is no collection
+         leg, so block 2 takes the width block 3 would have had rather than
+         leaving a bare headless half. */%>
     <th scope="col" colspan="<%= deliverySpan %>"><%= startLabel %></th>
+    <% if (hasCollection) { %>
     <th scope="col" colspan="<%= returnSpan %>"><%= endLabel %></th>
     <% } %>
     </tr>
   </thead>
   <tbody>
     <tr>
-    <td class="date">
+    <%/* Spanned, not omitted: the address cells that follow are positional, so
+         dropping three date cells would slide block 2 left into the dates
+         block. The four <col>s keep their widths either way. */%>
+    <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
       <% if (d.delivery_start) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy') %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy', { in: CHICAGO }) %>
       <% } %>
     </td>
-    <%/* The arrow and the end date are RENTAL furniture. A sale-only order is
-         handed over and never comes back, so it has no end of anything — and the
-         old hyphenated range printed `Tue 8/11/26 - Tue 8/11/26`, a window one
-         day wide that does not exist. Gating both on `hasRentals` states that,
-         where the range shape could only imply it.
-         The three cells are gated on three different things, which is the point
-         of splitting them. The arrow keeps `hasActiveWindow` — it is the only
-         one that needs BOTH ends, because it draws the span between them. The
-         dates each read their own boundary: every boundary on a destination is
-         nullable, and one guard over the whole range used to hide a start date
-         we had whenever the end was missing. */%>
+    <%/* ARROW, END DATE AND DURATION ARE ALL RENTAL FURNITURE, and they now
+         stand or fall together. A sale-only order is handed over and never comes
+         back, so it has no end of anything — the old hyphenated range printed
+         `Tue 8/11/26 - Tue 8/11/26`, a window one day wide that does not exist.
+         The arrow and the end date already said so; the DURATION did not, and a
+         period label with no span behind it is the same claim in another form.
+         Inside the block the three keep their own guards, which is the point of
+         splitting them. The arrow needs `hasActiveWindow` — it is the only one
+         that draws the span BETWEEN two ends, so it needs both. The dates each
+         read their own boundary: every boundary is nullable, and one guard over
+         the whole range used to hide a start date we had whenever the end was
+         missing. */%>
+    <% if (hasCollection) { %>
     <td class="arrow">
-      <% if (hasRentals && hasActiveWindow) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
+      <% if (hasActiveWindow) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
     </td>
     <td class="date">
-      <% if (hasRentals && d.collection_start) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.collection_start), 'EEE M/d/yy') %>
+      <% if (d.collection_start) { %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.collection_start), 'EEE M/d/yy', { in: CHICAGO }) %>
       <% } %>
     </td>
     <td>
@@ -503,10 +603,11 @@ const replacementLine = (item) => {
       <%= it.dates.formatChargeDays(d.days_active).periodLabel %>
       <% } %>
     </td>
-    <% if (hasDeliverableItems) { %>
+    <% } %>
     <td class="address" colspan="<%= deliverySpan %>">
       <% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
     </td>
+    <% if (hasCollection) { %>
     <td class="address" colspan="<%= returnSpan %>">
       <% addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
     </td>
@@ -519,25 +620,30 @@ const replacementLine = (item) => {
       <span class="bold">Dates Charged: </span>
       <% } %>
       </td>
-      <% if (hasDeliverableItems) { %>
       <td class="address" colspan="<%= deliverySpan %>"><%= contactLine(dest.delivery) %></td>
+      <% if (hasCollection) { %>
       <td class="address" colspan="<%= returnSpan %>"><%= contactLine(dest.collection) %></td>
       <% } %>
     </tr>
     <tr>
       <%/* Split across the same four columns as the active window above, so the
-           two ranges read as one stacked pair rather than as two layouts. */%>
-      <td class="date">
+           two ranges read as one stacked pair rather than as two layouts — and
+           collapsed by the same `hasCollection` shape, for the same reason.
+           `showCharged` already carries that condition, so these cells stay
+           empty rather than absent; the SPAN has to match row 1 either way or
+           the instructions columns slide. */%>
+      <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
       <% if (showCharged) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_start), 'EEE M/d/yy') %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_start), 'EEE M/d/yy', { in: CHICAGO }) %>
       <% } %>
       </td>
+      <% if (hasCollection) { %>
       <td class="arrow">
-      <% if (showCharged && hasRentals) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
+      <% if (showCharged) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
       </td>
       <td class="date">
-      <% if (showCharged && hasRentals) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_end), 'EEE M/d/yy') %>
+      <% if (showCharged) { %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_end), 'EEE M/d/yy', { in: CHICAGO }) %>
       <% } %>
       </td>
       <td>
@@ -546,14 +652,16 @@ const replacementLine = (item) => {
         <%= it.dates.formatChargeDays(d.days_charged).periodLabel %>
         <% } %>
       </td>
-      <% if (hasDeliverableItems) { %>
+      <% } %>
       <td class="address" colspan="<%= deliverySpan %>"><%= dest.delivery?.instructions ?? "" %></td>
+      <% if (hasCollection) { %>
       <td class="address" colspan="<%= returnSpan %>"><%= dest.collection?.instructions ?? "" %></td>
       <% } %>
     </tr>
   </tbody>
 <% }) %>
 </table>
+<% } %>
 
 <!-- Items -->
 <%/* `shownLineItems`, not `lineItems`: an order whose only non-divider entry is
@@ -757,13 +865,32 @@ const replacementLine = (item) => {
   <h1>Replacement Costs</h1>
   <table>
     <thead>
+      <%/* THE TWO SALES TAX COLUMNS ARE CONDITIONAL, exactly as the Tax column
+           in #items is, and that is what settles the blank-versus-zero question
+           this table used to pose rather than answer.
+           On a tax-exempt order every tax cell here is empty and the footer
+           printed `Total Replacement Cost | | | $11,240.00` — a blank beside a
+           figure, in a row whose own comment says a grand total prints at zero.
+           Both available answers were bad: `$0.00` in the footer puts the only
+           number in an otherwise empty column, and a blank contradicts the rule
+           two lines below it.
+           Hiding the columns removes the question instead of answering it. When
+           they are absent nothing is blank; when they are present the footer
+           prints through `formatCents` like every other grand total on the page,
+           at zero included. Gated on a tax being PRESENT rather than non-zero,
+           mirroring `orderHasTax`: a 0% rate that was applied is a fact worth
+           showing, where no rate at all is not a column. */%>
       <tr>
         <th scope="col">Item</th>
         <th scope="col">Unit Cost</th>
+        <% if (hasReplacementTax) { %>
         <th scope="col">Sales Tax</th>
+        <% } %>
         <th scope="col" class="total">Total</th>
         <th scope="col" class="center">Qty</th>
+        <% if (hasReplacementTax) { %>
         <th scope="col">Sales Tax</th>
+        <% } %>
         <th scope="col" class="total">Total</th>
       </tr>
     </thead>
@@ -785,10 +912,14 @@ const replacementLine = (item) => {
              fact about the order rather than about the table. */%>
         <td style="padding-left: <%= componentDepth(item) %>em"><%= item.name %></td>
         <td><%= moneyCell(r.unitCostCents) %></td>
+        <% if (hasReplacementTax) { %>
         <td><%= moneyCell(r.unitTaxCents) %></td>
+        <% } %>
         <td class="total"><%= moneyCell(r.unitTotalCents) %></td>
         <td class="center"><%= numberCell(r.qty) %></td>
+        <% if (hasReplacementTax) { %>
         <td><%= moneyCell(r.lineTaxCents) %></td>
+        <% } %>
         <td class="total"><%= moneyCell(r.lineTotalCents) %></td>
       </tr>
       <% }) %>
@@ -800,13 +931,22 @@ const replacementLine = (item) => {
            as if the table ended there at $28,847.87. There is no CSS that
            suppresses only the non-final repeat, and no way to label them apart
            without a mechanism outside the table. templates#74 finding 1. */%>
+      <%/* The label spans everything left of Qty, which is one column narrower
+           when the tax columns are off — 3 instead of 4. Derived from the same
+           flag the header reads, so the two cannot disagree. */%>
       <tr class="grand-total">
-        <th scope="row" colspan="4">Total Replacement Cost</th>
+        <th scope="row" colspan="<%= hasReplacementTax ? 4 : 3 %>">Total Replacement Cost</th>
         <td></td>
-        <td><%= moneyCell(rTax) %></td>
-        <%/* A GRAND TOTAL, so it prints at zero — `formatCents`, not `moneyCell`.
-             A replacement total of $0.00 is a statement about the order; a blank
-             cell where the reader expects the summed figure reads as a fault. */%>
+        <%/* GRAND TOTALS PRINT AT ZERO — `formatCents`, not `moneyCell`. A
+             replacement total of $0.00 is a statement about the order; a blank
+             cell where the reader expects the summed figure reads as a fault.
+             The tax cell follows the same rule as the total beside it now that
+             it only exists when something was taxed; it used to use `moneyCell`
+             and blank itself, which is the contradiction the header note above
+             describes. */%>
+        <% if (hasReplacementTax) { %>
+        <td><%= it.money.formatCents(rTax) %></td>
+        <% } %>
         <td class="total"><%= it.money.formatCents(rTotal) %></td>
       </tr>
     </tbody>
