@@ -12,6 +12,25 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0;
+    /* 1rem of clear air between the last line of the body and the first line
+       of this footer. It has to be bought HERE, not with `margin_bottom`:
+       Chromium hangs the body content edge and the footer frame off the same
+       band top, so raising the bottom margin moves BOTH and the gap does not
+       change. Measured before this rule, the footer reached 2pt ABOVE the
+       body content edge (754pt vs 756pt on letter) — the ~16px that usually
+       separates them was slack in the last line box, not a rule, and a page
+       whose content filled the column had them touching.
+       12px, not 1rem: this partial renders as its OWN document in an isolated
+       Chromium frame, where `rem` is its 10px root and not the 9px root of the
+       quote. 12px lands the gap at 7pt against 1rem = 6.75pt.
+       `margin_bottom` moved 0.5 -> 0.62in in the same change, which is what
+       keeps this padding from pushing the footer into the paper edge. The two
+       cancel: measured on letter, the footer ink still runs 754..775pt, exactly
+       where it sat before, 0.22in clear of the paper. Raising the band alone
+       would have moved the content edge with it and bought nothing; padding
+       alone would have driven the ink to 0.11in, inside the no-print zone of
+       most desktop printers. */
+    padding-top: 12px;
   }
   div {
     padding: .25em 0;

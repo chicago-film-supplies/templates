@@ -2,6 +2,8 @@
   "uid": "MultiDestQuoteFix001",
   "number": 1042,
   "status": "quoted",
+  "crms_id": null,
+  "uid_thread": "ThRd0MultiDest000010",
   "organization": {
     "uid": "LakeshorePicturesOrg",
     "name": "Lakeshore Pictures",

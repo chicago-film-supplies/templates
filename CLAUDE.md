@@ -6,11 +6,15 @@ HTML/Eta templates rendered server-side (via `api-cloudrun`) into PDFs using Got
 
 **Git-canonical — for PUBLISHED content.** Git is the source of truth for published template *content*; the Firestore family doc + `published` versions are a rebuildable projection of it. This repo is the canonical content store and an ad-hoc local-dev/preview harness; the production editing surface lives in `manager/`.
 
-⚠️ **A `draft` version is NOT a projection, and reading "Firestore is a rebuildable projection" as one rule is what makes the failures below invisible.** A draft's Firestore `content` map is **primary storage for work that exists nowhere else** — `save` writes Firestore only, and the branch is cut at create and then shadows it. For the lifetime of an uncommitted draft the invariant is inverted: the projection is the only copy. Published content is rebuildable; a draft is not.
+⚠️ **A `draft` version is NOT a projection, and reading "Firestore is a rebuildable projection" as one rule is what makes the failures below invisible.** A draft's Firestore `content` map is **primary storage for work that exists nowhere else**, and the branch is cut at create and then shadows it. For the lifetime of an uncommitted draft the invariant is inverted: the projection is the only copy. Published content is rebuildable; a draft is not.
+
+⚠️ **"`save` writes Firestore only" — which this paragraph used to say — predates staging and is no longer true.** Every save also commits to a `staging/<uid>` branch first, and a staging failure fails the save. Two consequences worth having: saved work is not actually unbacked (it is on a branch, just not the DRAFT branch), and the draft branch stays free of per-save commit noise.
+
+**That last part is the design intent, not a side effect** (Alex, 2026-08-23): staging is what keeps *involuntary* saves off the draft branch during rapid CSS iteration, so the draft branch's history is the operator's *deliberate* Commit presses. It is also why collapsing save into commit — which looks like a simplification, and would delete `staging/<uid>`, `committed_content_hash`, two dirty predicates and the Commit button — is the wrong trade. **The save/commit split is load-bearing. Do not "simplify" it away.**
 
 **Editing an open draft: MCP tools, not raw git.** The two stores do not sync in *either* direction, so whichever one you write is the only one that moves.
 
-- `templates_propose_edit` writes the Firestore draft and **never reaches git** — `commit_draft` / `release_draft` are what do. A draft can accumulate arbitrary work invisible to `git log`. This is not hypothetical: 18 edits (v41 → v66, 2026-08-11/12) were lost that way and had to be reconstructed from a session transcript. **templates#79.**
+- `templates_propose_edit` writes the Firestore draft, which **never reaches the DRAFT branch** — `commit_draft` / `release_draft` are what do. (It does reach `staging/<uid>`, per the note above; that branch is durability, not publication, and nothing reads it as content.) A draft can accumulate arbitrary work invisible to `git log`. This is not hypothetical: 18 edits (v41 → v66, 2026-08-11/12) were lost that way and had to be reconstructed from a session transcript. **templates#79.**
   - **The system now says so, so believe it rather than tracking it yourself.** `propose_edit` warns on every save that leaves the draft ahead of its branch; `templates_abandon_draft` refuses **422 `DRAFT_HAS_UNCOMMITTED_WORK`** (pass `force` to discard on purpose); and the manager badges the branch row and the editor **"not in git"**. All three read `committed_content_hash`, which is stamped at create as well as commit/release. **A silent abandon is now a bug, not the expected behaviour.**
 - A `git commit` on a `draft/*` branch **never reaches Firestore.** The manager preview and `templates_render_preview` go on serving the pre-edit content. Measured 2026-08-14 on `draft/quote/32918fe7`: the Firestore family was last written at 14:38:45 CDT (draft creation) and the git commit landed at 15:06:45 — the draft never moved, and the edit was invisible to every surface except the git working tree and the PR diff.
 
@@ -18,14 +22,34 @@ So while a draft is open, author through `templates_create_draft` → `templates
 
 Raw git stays correct for everything that is *not* template content under an open draft: `scripts/`, workflows, fixtures on disk, this file, and reviewing the PR a release opened.
 
+### Operator vocabulary — git is the engine, not the interface
+
+⚠️ **Manager users will not all have access to this GitHub org** (stated
+2026-08-23). So no repair path in the manager may route through github.com, and
+no operator-facing string may assume a reader can open a PR. A PR link may
+appear as an *extra*; it is never the repair.
+
+That constrains the words too. Operators see **Draft → Review → Publish**; PR
+numbers, branch names, `mergeable_state` and check names stay in the API, the
+logs and this repo. Two renames followed from saying what the code actually
+does, and they are the vocabulary to use here as well:
+
+| was | is | why |
+|---|---|---|
+| "Rebase" | **Update from main** | `rebaseDraftVersion` calls `repos.merge` (base → branch). A true rebase would force-push rewritten history, which we deliberately do not do — the old name promised exactly that. |
+| "Diff" (two different controls) | **Source diff** / **Visual diff** | one was a git diff of the source against the published version, the other a pixel overlay against the golden, and both could be active at once. |
+| "Approve & merge" | **Approve the renders** | merging was never the approval; blessing is. |
+
 ### Who merges: it depends on what the PR CHANGES, not on who opened it
 
 ⚠️ **"Agents open, humans merge" is about template CONTENT, and reading it as a blanket rule is what left pin bumps sitting open.** The two kinds of PR that reach this repo are not the same risk:
 
 | PR | merged by | why |
 |---|---|---|
-| **template content** (anything a `templates_release_draft` opens) | **a human** | it changes what a customer receives, and `visual-diff` green means "rendered without erroring", not "renders correctly" |
-| **`@cfs/core` pin bump** — only `deno.json` + `deno.lock`, all six exactly-pinned entries | **agents merge automatically** | mechanical and verifiable: nothing here imports the propagation catalog, `deno check` over the tracked TypeScript either passes or does not, and the alternative is a PR per publish accumulating unmerged while the other three repos have already moved |
+| **template content** (anything a `templates_release_draft` opens) | **a human authorizes; GitHub lands it** | it changes what a customer receives, and `visual-diff` green means "rendered without erroring", not "renders correctly" |
+| **`@cfs/core` pin bump** — only `deno.json` + `deno.lock`, **every** exactly-pinned entry (bump by pattern, never by a remembered count — see § Dependencies) | **agents merge automatically** | mechanical and verifiable: nothing here imports the propagation catalog, `deno check` over the tracked TypeScript either passes or does not, and the alternative is a PR per publish accumulating unmerged while the other three repos have already moved |
+
+⚠️ **"Humans merge" has not described the mechanism since auto-merge was enabled, and the intent it protects is intact — state the intent, not the button.** `releaseDraftVersion` arms auto-merge, so GitHub performs the landing; `README.md`'s lifecycle diagram has documented merge-when-green for as long. What a human actually does is **authorize twice**: at `release`, and again at **approving the renders** when there is a visual change. That bless press *is* the "renders correctly" judgment this rule exists to protect — the human judgment is real, the merge keystroke was never the thing carrying it. Nobody presses "Approve & merge"; no such button exists any more.
 
 **Alex, 2026-08-18: "merge automatically"** — standing, for the pin-bump row only. It does not extend to a PR that touches template content, a fixture, a golden or a workflow, even when an agent opened it and even when CI is green. If a bump PR touches anything beyond `deno.json`/`deno.lock`, it is not this row.
 
@@ -109,9 +133,20 @@ is comparing anything. Re-bless both trees from
 This supersedes the old "goldens are DEFERRED, not missing" note, which said
 `goldens/` held zero PNGs and that `visual-diff` *cannot* fail. That was true
 until 2026-08-17 and is now the opposite of the truth — a meaningful visual
-change is expected to fail the check, and the fix is to review the diff in the
-manager and approve, or re-bless, **not** to assume CI is green because it
-always was.
+change is **expected** to fail the check.
+
+**The clearing path is one path, not two.** Review the per-fixture diffs in the
+manager, then **approve the renders**: that commits the new baseline PNGs onto
+the draft branch, `visual-diff` re-runs against them at the PR head, and the
+auto-merge release already armed lands it. There is no merge to press, and
+"approve the diff **or** re-bless" described two paths where there is one — they
+are the same act.
+
+⚠️ **`visual-diff` now runs with `cancel-in-progress`**, so an in-flight run is
+superseded by the next push and **the newest run is the only verdict**. That
+matters beyond CI minutes: the manager derives the operator's next action from
+"the latest golden verdict", and racing runs writing back to the same document
+made that phrase ambiguous.
 
 The blessing convention is the one `manager` documents for its Playwright
 screenshots (*"convergence, not freeze… a surface gets a `toHaveScreenshot`
