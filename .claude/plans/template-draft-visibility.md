@@ -1,6 +1,6 @@
 # Making template-branch work visible in the manager, before and after commit
 
-**Date:** 2026-08-25 • **Repo:** templates (+ api-cloudrun, manager, claude-plugins) • **Status:** ⏳ implemented on four branches, none merged — merging waits on the destinations campaign
+**Date:** 2026-08-25 • **Repo:** templates (+ api-cloudrun, manager, claude-plugins) • **Status:** ⏳ committed on four branches, none pushed or merged — merging waits on the destinations campaign
 **Origin:** the ask *"any work Claude Code does on a template branch should be viewable in the manager, before and after commit"*, and the templates#126 episode that showed why it wasn't.
 **Related:** templates#126 · templates#79 · api-cloudrun#524 / #526 / #530 / #553
 
@@ -12,8 +12,8 @@ The work is **written and green**; what remains is landing it in a specific orde
 |---|---|---|
 | api-cloudrun | `feat/templates-patch-mode` | `7ce51785` |
 | templates | `chore/template-authoring-guard` | this doc's commit |
-| manager | `feat/template-editor-owned-files` | uncommitted → see Remaining |
-| claude-plugins | `docs/template-authoring-sidecar-writers` | uncommitted → see Remaining |
+| manager | `feat/template-editor-owned-files` | `5a3b045` |
+| claude-plugins | `docs/template-authoring-sidecar-writers` | `52f57f3` |
 
 Each lives in a worktree at **`~/cfs-tmpl/<repo>`**. ⚠️ **That path is load-bearing, not arbitrary.** They were first cut at `~/cfs/<repo>-tmpl` and both citation audits broke: the linters derive the workspace from the script's grandparent directory and the repo identity from the directory NAME, so `api-cloudrun-tmpl` matched no entry in their `REPOS` list — every cross-repo citation went ambiguous, `EXEMPT` keys stopped matching, and `deno task gate` failed on prose nobody had touched. Under `~/cfs-tmpl/api-cloudrun` the audits see a four-repo workspace (the CI shape) and pass. If you re-cut a worktree, name the directory after the repo and put it under a different parent.
 
@@ -49,19 +49,18 @@ So: make the MCP path cheap, then make the invisible path impossible.
 
 ## Remaining
 
-1. **Commit manager + claude-plugins.** Both worktrees are green and staged-ready; only the commits are outstanding.
-2. **Land, in this order** (the guard must not deny agents into a tool that cannot yet take patches; full-body `propose_edit` keeps working throughout, so a slip is expensive, not breaking):
+1. **Land, in this order** (the guard must not deny agents into a tool that cannot yet take patches; full-body `propose_edit` keeps working throughout, so a slip is expensive, not breaking):
    1. rebase `feat/templates-patch-mode` onto `origin/main`, merge → dev deploy;
    2. release-please PR → prod;
    3. templates PR — **a human authorizes**; after step 2, so the hook's instruction is true when it fires;
    4. claude-plugins — also after step 2: org-shared and auto-installed, so merging early tells every agent about a `propose_edit` argument that is not in prod yet;
    5. manager → `main` → preview deploy;
    6. `git worktree remove` all four, and prune the merged local `draft/quote/bd7dfc09`.
-3. **Verification that needs the deploy** (the rest already ran — see below):
+2. **Verification that needs the deploy** (the rest already ran — see below):
    - `templates_propose_edit` with `edits` through the real `cfs-templates` server;
    - against prod: an `edits` change to one line of `styles/quote.css` → manager shows it and badges "not in git" (**visible before commit**); `templates_render_preview` with `uid_version` returns the changed render; `templates_commit_draft` → badge clears, branch head carries it (**visible after commit**). Repeat on `partials/quote/footer.eta` to prove the previously-invisible file round-trips.
    - the manager locally against a dev draft (`deno task dev` + `VITE_API_URL=…npm run dev`): tabs for eta/css/footer, the render block editable in Details, a footer edit round-tripping into the PDF preview. ⚠️ Dev drafts base off `sandbox` and `goldens/sandbox/` is empty (templates#125 / #118) — a green golden verdict there proves nothing visual.
-4. **Delete this doc in the commit or PR that lands the last piece.**
+3. **Delete this doc in the commit or PR that lands the last piece.**
 
 ## Decisions, including what was rejected
 
