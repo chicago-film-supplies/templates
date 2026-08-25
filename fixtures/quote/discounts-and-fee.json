@@ -79,8 +79,6 @@
       "type": "destination",
       "name": "Navy Pier",
       "description": "",
-      "uid_delivery": "NavyPierDock00000001",
-      "uid_collection": "NavyPierDock00000001",
       "path": [
         "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c"
       ]
