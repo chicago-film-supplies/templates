@@ -18,9 +18,36 @@ HTML/Eta templates rendered server-side (via `api-cloudrun`) into PDFs using Got
   - **The system now says so, so believe it rather than tracking it yourself.** `propose_edit` warns on every save that leaves the draft ahead of its branch; `templates_abandon_draft` refuses **422 `DRAFT_HAS_UNCOMMITTED_WORK`** (pass `force` to discard on purpose); and the manager badges the branch row and the editor **"not in git"**. All three read `committed_content_hash`, which is stamped at create as well as commit/release. **A silent abandon is now a bug, not the expected behaviour.**
 - A `git commit` on a `draft/*` branch **never reaches Firestore.** The manager preview and `templates_render_preview` go on serving the pre-edit content. Measured 2026-08-14 on `draft/quote/32918fe7`: the Firestore family was last written at 14:38:45 CDT (draft creation) and the git commit landed at 15:06:45 — the draft never moved, and the edit was invisible to every surface except the git working tree and the PR diff.
 
-So while a draft is open, author through `templates_create_draft` → `templates_propose_edit` → `templates_commit_draft` → `templates_release_draft` (which opens the PR — **agents open, humans merge**). That is the one path that leaves both stores in step, and it is what the manager and the golden gate read. If you have already edited via git, re-apply the same content through `templates_propose_edit` to resync rather than leaving the two divergent.
+So while a draft is open, author through `templates_create_draft` → `templates_propose_edit` → `templates_commit_draft` → `templates_release_draft` (which opens the PR — **agents open, humans merge**). That is the one path that leaves both stores in step, and it is what the manager and the golden gate read.
 
-Raw git stays correct for everything that is *not* template content under an open draft: `scripts/`, workflows, fixtures on disk, this file, and reviewing the PR a release opened.
+**On a `draft/*` branch, raw git can no longer reach template content at all.** `.claude/hooks/draft-content-guard.sh` is a committed `PreToolUse` hook that denies `Edit`/`Write`/`MultiEdit` on `templates/*.eta`, `templates/*.meta.json`, `styles/*.css`, `partials/**` and `layouts/*.eta` whenever the file's checkout is on a `draft/*` branch, and its refusal carries the MCP call to make instead. It keys off the **branch**, not the repo, so a worktree on `main`, `sandbox` or a `chore/…` branch is untouched; and it is committed, so it reaches every machine and every cloud agent — unlike the workspace `CLAUDE.md`.
+
+⚠️ **The old advice here — *"if you have already edited via git, re-apply the same content through `templates_propose_edit` to resync"* — is now mostly unreachable, and following it for the sidecar is actively wrong.** The hook blocks the edit at source, so the divergence it repaired can now only arise from a checkout that predates the hook, an edit made on a non-draft branch that later became one, or a `git apply`/`sed` that never went through a tool the hook matches. When you do find such a divergence: re-apply through `propose_edit` for `.eta` / `.css` / `partials/**`; for `templates/<gp>.meta.json` do **not** — `propose_edit` refuses it, and the fix is `PATCH /templates/{uid}/metadata` or the fixture verbs (see § The sidecar).
+
+Raw git stays correct for everything that is *not* owned template content: `fixtures/`, `goldens/`, `scripts/`, `.github/`, `*.md`, `deno.json`, `.claude/` — and for **everything** on `main` or `sandbox`.
+
+### Patch mode — why the MCP path stopped being the expensive one
+
+`templates_propose_edit` takes **`edits`** as well as `content`: an array of `{path, old_string, new_string, replace_all?}` with the Edit tool's exact contract — `old_string` matches once unless `replace_all`, ambiguity and misses are 422s naming the count rather than a guessed replacement. `content` merges first, then `edits` apply to that result in array order, so one call can create a file and immediately patch it. The result still goes through `gateDraftContent`, which Eta-compiles every `.eta` value before the save is stored — so a patch that breaks the template is refused at the save, not discovered at render.
+
+**This is the whole reason the deny above is affordable.** `templates/quote.eta` is ~950 lines / 48 KB; a whole-body `content` save re-emitted ~13k tokens for a one-line change and gave the model 949 lines it wasn't trying to touch a chance to drift. That asymmetry is why prose kept losing to `Edit`. Prefer `edits` for an existing file and keep `content` for creating or genuinely rewriting one.
+
+### The sidecar: one writer per section, and none of them is a draft
+
+`templates/<git_path>.meta.json` is the one owned path with **no** authoring surface in a draft:
+
+| section | its one writer |
+|---|---|
+| `display_name`, `surfaces`, `depends_on` | `PATCH /templates/{uid}/metadata` (manager: the Details form) — commits on its own `meta/*` branch |
+| `render` (margins, `base_font_size`, `filename`, `footer`, `header`) | the same route — **new**; the manager's Details form is that block's first editing surface anywhere |
+| `fixtures[]` | the fixture verbs (`templates_capture_fixture` / `set` / `describe` / `remove_fixture`) — commit to the draft branch directly |
+| `params[]` | the draft's typed `params` (the `params` argument, or the manager's Params tab) — the sidecar copy is **derived from it at commit** |
+
+`templates_propose_edit` **422s on the sidecar** in both `content` and `edits`, and the guard hook denies a file edit of it. What a draft's content map holds is a **render input** — `extractRenderConfig` reads the `render` block out of it at render time, which is the whole reason `ownedContent.ts` keeps it in the map — and a render input is not an authoring surface.
+
+⚠️ **This closed a silent revert, and the revert is the reason the rule is this strict.** `commit_draft` / `release_draft` pushed the draft's whole content map, sidecar included. A dirty draft does not adopt a merged `meta/*` change on rebase (`content_refreshed: false`, § below), so the branch carried an operator's rename while the draft's map did not — and the next commit wrote the old name back over it. Nothing reported it; it appeared only as a line in the release PR's diff, in a file nobody opens that PR to read. Both verbs now resolve the sidecar **off the branch** and overlay the draft's `params`, then refresh the draft's own copy from what they pushed. A stale sidecar in a draft cannot revert anything, because it is never what gets committed.
+
+⚠️ **`serializeSidecarCanonical` used to DELETE every key it did not name, and `render` was not on its list.** Renaming `quote` through `PATCH /metadata` would have dropped its four margins, its base font size, its filename expression and `partials/quote/footer.eta` in the same commit. It is lossless now (`api-cloudrun/src/services/templates/sidecarFormat.ts`), and a `render` change is treated as **visual**: the PR is left open for a human, and the publish cuts a real version rather than a metadata-only projection — because the document renders differently.
 
 ### Operator vocabulary — git is the engine, not the interface
 
@@ -55,9 +82,29 @@ does, and they are the vocabulary to use here as well:
 
 ⚠️ **This repo is the durable home for that rule.** It also lives in the workspace `~/cfs/CLAUDE.md`, which is **untracked and machine-local** (api-cloudrun#530) and therefore invisible to every other machine and every cloud agent — so state it here, and do not cite that path.
 
-⚠️ **`templates_render_preview` renders the PUBLISHED version, not your draft.** `POST /templates/render` accepts `uid_version`; the MCP tool does not pass it (**api-cloudrun#526**). Until that lands, `deno task preview` against the git working tree is the only way to see a draft edit rendered — which is itself an argument for keeping the working tree and the draft identical.
+⚠️ **`templates_render_preview` DEFAULTS to the published version — pass `uid_version` to see your own edit.** This used to say the tool could not render a draft at all (api-cloudrun#526); that was true until `4c866579` (2026-08-19) and is now wrong in the direction that matters, because it pushed agents to `deno task preview` on the working tree and from there to editing the working tree. The tool declares `uid_version`, forwards it, and the route threads it: hand it the draft uid you just `propose_edit`ed and you get that draft rendered. `deno task preview` is still the right tool for iterating against the files on disk on `main` — it is not the way to see a draft.
 
 **Environments.** Prod publishes from `main`; dev/staging publishes from `sandbox`. **`sandbox` exists to exercise the tooling & publish *workflow*, not to stage content** — it's a *disposable mirror* of `main`, force-resynced to fresh `main` as routine practice. Stage content the same way for both envs: **branch `main`** → draft → PR → merge. **Never author canonical content directly on `sandbox`** — a commit made only there never reaches prod and forks the branches (this caused templates#22).
+
+### The owned-path surface — who may write what, and where you see it
+
+Source of truth for the set: `ownsTemplatePath` (`api-cloudrun/src/services/templates/ownedContent.ts`).
+
+| path | in the draft map | MCP writable | raw git on `draft/*` | manager |
+|---|---|---|---|---|
+| `templates/<gp>.eta` | yes | yes — `content` + `edits` | **denied** | tab |
+| `styles/<gp>.css` | yes | yes — `content` + `edits` | **denied** | tab |
+| `partials/<gp>/**` | yes | yes — `content` + `edits` | **denied** | tab |
+| `templates/<gp>.meta.json` | yes (render input) | **no — 422** | **denied** | Details form (identity + `render`), Params tab, Fixtures tab |
+| `layouts/base.eta`, `styles/base.css`, `partials/shared/**` | yes (frozen copy) | yes, but don't | **denied** | via the **base component** editor |
+| `fixtures/<gp>/*.json` | no (branch only) | the fixture verbs | allowed | Fixtures tab |
+| `goldens/**` | no | no | allowed | visual diff + approve the renders |
+
+The shared overlay is excluded from the template editor on purpose: those files belong to the `base` COMPONENT family, and editing a draft's frozen copy forks it — `rebaseDraftVersion` reconciles that divergence only while the draft is clean, so a dirty draft keeps the fork and its commit writes it onto the branch. Change them in a draft of the component family instead; consuming templates pick them up on their next publish.
+
+⚠️ **`partials/<gp>/**` was INVISIBLE in the manager until now, and had been all along.** It has been owned, MCP-writable and pushed by every draft commit since the pipeline existed, with no tab — so `partials/quote/footer.eta` could only be seen by its effect in the PDF preview. The editor now lists any `partials/<gp>/*` key present in the content map (never a bare `Object.keys(content)`, which would expose the shared overlay).
+
+**What templates#126 actually showed.** 187 lines of quote work were authored with raw `Edit`/`Write` on `draft/quote/bd7dfc09`, committed with raw git, released and merged. The **publish was correct** — `publishFromMerge` resolves content from the merged SHA, so git-canonical published the newer content and not the stale Firestore copy. The gap was never publishing: for the whole life of that draft the manager showed pre-edit content, the draft preview could not show the work, and `git log` was the only witness. Patch mode plus the guard hook is the fix for *that*, not for publishing.
 
 **Authoring reference:** the `cfs-template-authoring` skill (plugin `cfs-skills@cfs`, auto-installed via `.claude/settings.json`) is the canonical deep reference — render context (`it.*`), sidecar schema, overlay semantics, order data shape, price fields, fixtures/goldens. Consult it before writing template content. The pipeline side (lifecycle, publish invariants, golden gate, RBAC) is `api-cloudrun/.claude/skills/templates/SKILL.md`.
 
@@ -81,6 +128,8 @@ Fixtures are **files-authoritative for discovery**: the renderer globs `fixtures
 **Never hand-write a fixture from real data.** `PUT /templates/{uid}/fixtures/{slug}` (and the manager's JSON textarea) commit exactly what you give them — dev mirrors prod, so a dev order carries real customer names, contacts and addresses. Capture instead: the manager's capture action / MCP `templates_capture_fixture` runs the document through `applyPii` with a deterministic salt first. The PII pass in `lint:fixtures` is the net for when that is skipped.
 
 **A fixture write no longer desyncs the draft** (api-cloudrun#524, fixed). The fixture verbs commit `templates/<gp>.meta.json` straight to the branch; until the fix they did not touch the draft's Firestore `content`, so the next `commit_draft` — **or `release_draft`, which also commits** — wrote the pre-capture sidecar back over the branch, deleting every captured entry while the `fixtures/*.json` files survived. The verbs now mirror the sidecar into the draft, so the old workaround (a hand-written `propose_edit` carrying the branch's sidecar byte-for-byte) is obsolete; **if you find it in an older plan doc, do not re-apply it.** The last uncovered path is now covered too (api-cloudrun#553, fixed): `PATCH /templates/{uid}/metadata` still writes the same sidecar on its own `meta/*` branch, but `rebaseDraftVersion` adopts the merged head wholesale when the draft is **clean**, so a metadata edit reaches an open draft through a rebase. ⚠️ **The condition is load-bearing — a DIRTY draft does not pick it up.** Rebasing one reports `content_refreshed: false` and leaves the content map alone, because adopting the head would discard the uncommitted work. So if a metadata edit seems not to have landed in your draft: commit first, then rebase.
+
+⚠️ **The draft's stale sidecar can no longer REVERT that metadata edit, which is the half that used to hurt.** Not picking a change up is a display problem you notice; writing the old value back over it is a data problem you do not. `commit_draft` / `release_draft` resolve the sidecar off the branch now (§ The sidecar), so committing a dirty draft brings its copy forward instead of pushing it back — and the "commit first, then rebase" advice above now works in one step rather than needing the rebase to un-do a revert.
 
 The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta string, `footer`/`header` partial paths) drives Gotenberg PDF generation — full field semantics in the `cfs-template-authoring` skill.
 
