@@ -120,15 +120,27 @@ jobs:
 
           // Per-file budget of raw money arithmetic. Ratchets down, never up.
           //
-          // Six -> three. The replacement-cost GRAND totals stopped being
-          // hand-rolled entirely — `it.orders.calculateReplacementTotals` is the
-          // real function and the footer now agrees with the stored order by
-          // construction instead of by coincidence. What remains is the per-line
-          // decomposition, which has no exposed helper (`computeItemTaxAmountCents`
-          // is denylisted as a building block and there is no stored per-line
-          // replacement field), so it is spelled out in core's own order.
+          // Six -> three -> two. Three: the replacement-cost GRAND totals stopped
+          // being hand-rolled entirely — `it.orders.calculateReplacementTotals` is
+          // the real function and the footer now agrees with the stored order by
+          // construction instead of by coincidence.
+          //
+          // Two: the per-UNIT tax column stopped dividing money by hand.
+          // `Math.round(lineTaxCents / qty)` is half UP, so it was asymmetric on
+          // exactly the negative values that table deliberately admits —
+          // `Math.round(-2.5)` is -2 where the magnitude-preserving answer is -3.
+          // It is now `it.money.roundDivHalfAwayFromZero`, core's own primitive,
+          // whose docblock states the property the column needed: `f(-x) ===
+          // -f(x)`. Worth carrying forward: the site went away because an
+          // EXPORTED primitive replaced it, not because it was spelled more
+          // cleverly, and that is what the remaining two are waiting on too.
+          //
+          // What remains is the per-line subtotal and the percent tax arm, which
+          // have no exposed helper (`computeItemTaxAmountCents` is denylisted as a
+          // building block and there is no stored per-line replacement field), so
+          // they are spelled out in core's own order. api-cloudrun#450 Phase C3.
           const RAW_BUDGET: Record<string, number> = {
-            "templates/quote.eta": 3,
+            "templates/quote.eta": 2,
           };
 
           async function* walk(dir: string): AsyncGenerator<string> {
