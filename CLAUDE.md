@@ -106,7 +106,7 @@ An unknown name **throws** (listing near matches) rather than rendering nothing 
 
 Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
-**Collection-dependent — `it.orders` is NOT guaranteed:** the `@cfs/core/utils` namespaces a template gets are the union of its `collection_source` + `collection_target` namespaces (`orders` → `it.orders`, `invoices` → `it.invoices`; `quotes`/`packing_lists` contribute none). The quote template (orders → quotes) gets `it.orders` and NOT `it.invoices`; an invoices-source template gets the reverse. Resolved by `availableUtilNamespaces` (`@cfs/core/schemas`), which `api-cloudrun/src/lib/templates/eta.ts` (render), `goldenDiff.ts` (golden gate) and `scripts/preview.ts` (this harness) all funnel through, so preview, gate and prod cannot diverge. Calling a namespace your collections don't resolve to throws at render — and fails the golden gate. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
+**Collection-dependent — `it.orders` is NOT guaranteed:** the `@cfs/core/utils` namespaces a template gets are the union of its `collection_source` + `collection_target` namespaces (`orders` → `it.orders`, `invoices` → `it.invoices`; `quotes`/`packing_lists` contribute none). The quote template (orders → quotes) gets `it.orders` and NOT `it.invoices`; an invoices-source template gets the reverse. Resolved by `availableUtilNamespaces` (`@cfs/core/schemas`), which `api-cloudrun/src/lib/templates/eta.ts` (render), `api-cloudrun/src/services/templates/goldenDiff.ts` (golden gate) and `scripts/preview.ts` (this harness) all funnel through, so preview, gate and prod cannot diverge. Calling a namespace your collections don't resolve to throws at render — and fails the golden gate. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
 
 ## Local preview
 
@@ -190,13 +190,13 @@ dormant — it is wrong in a way nobody has looked at yet.
 
 `@cfs/core` is **exact-pinned** (`jsr:@cfs/core@10.0.0-beta.N/...`, one entry per subpath), and moves in lockstep with `api-cloudrun/deno.json` + `manager/package.json` on every publish — same day, same version, per `feedback_bump_all_core_consumers_lockstep`.
 
-⚠️ **SEVEN entries, and they are named here rather than counted**: `schemas`, plus `utils/` × `orders`, `invoices`, `dates`, `icons`, `money`, `templates`. It was six until `templates` joined it (the harness resolves render params through core's own `resolveRenderParams` rather than reimplementing them). A bump PR that moves six of seven leaves one subpath stranded on the old version and still looks complete, which is why the list is written out — check the names, not the number.
+⚠️ **EIGHT entries, and they are named here rather than counted**: `schemas`, plus `utils/` × `orders`, `invoices`, `dates`, `icons`, `money`, `templates`, `citations`. It was six until `templates` joined it, and seven until `citations` did (the harness resolves render params through core's own `resolveRenderParams` rather than reimplementing them). A bump PR that moves six of seven leaves one subpath stranded on the old version and still looks complete, which is why the list is written out — check the names, not the number.
 
 **It used to be a floating caret range, and the range is exactly what let this repo drift.** The point of floating was that preview would track whatever the API renders with; what it actually did was let `main` sit on `^beta.62` while api-cloudrun was 50+ betas ahead, because nothing re-resolved the lock and nothing failed when it didn't. A pin cannot drift silently — it either matches the other two repos or it is visibly wrong. Bump it by editing the specifiers and running `deno install`.
 
 The `minimumDependencyAge` exclusion for `jsr:@cfs/core` at the top of `deno.json` is load-bearing, not a convenience: Deno 2.9 refuses any package version younger than 24h, so without it `deno install` here fails outright for a full day after every core publish. The exclusion names that one first-party package and leaves the 24h supply-chain delay in force for everything else.
 
-**If a freshly published beta looks missing, suspect the JSR CDN before the publish** — `meta.json` has served stale for 6+ hours (workspace CLAUDE.md §2a).
+**If a freshly published beta looks missing, suspect the JSR CDN before the publish** — the registry's `https://jsr.io/@cfs/core/meta.json` endpoint has served stale for 6+ hours (workspace CLAUDE.md §2a). Compare it against a cache-busted `?cb=1` fetch.
 
 ## LLM Reference Docs
 

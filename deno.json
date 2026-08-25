@@ -18,6 +18,7 @@
   "imports": {
     "@bgub/eta": "jsr:@bgub/eta@^4.6.0",
     "@cfs/core/schemas": "jsr:@cfs/core@10.0.0-beta.254/schemas",
+    "@cfs/core/utils/citations": "jsr:@cfs/core@10.0.0-beta.254/utils/citations",
     "@cfs/core/utils/orders": "jsr:@cfs/core@10.0.0-beta.254/utils/orders",
     "@cfs/core/utils/templates": "jsr:@cfs/core@10.0.0-beta.254/utils/templates",
     "@cfs/core/utils/invoices": "jsr:@cfs/core@10.0.0-beta.254/utils/invoices",
@@ -31,6 +32,7 @@
     "preview": "deno run --allow-read --allow-write --allow-run --allow-env=PREVIEW_BROWSER scripts/preview.ts",
     "preview:watch": "deno run --watch=templates/,layouts/,styles/ --allow-read --allow-write --allow-run --allow-env=PREVIEW_BROWSER scripts/preview.ts --background",
     "fetch-llms-docs": "deno run --allow-net --allow-read --allow-write scripts/fetch-llms-docs.ts",
-    "lint:fixtures": "deno run --allow-read scripts/lint-fixtures.ts"
+    "lint:fixtures": "deno run --allow-read scripts/lint-fixtures.ts",
+    "lint:citations": "deno run --allow-read --allow-env scripts/lint-citations.ts"
   }
 }
