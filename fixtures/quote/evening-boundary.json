@@ -1,0 +1,326 @@
+{
+  "uid": "FthiM72vmgMlUFCNhEl6",
+  "number": 872,
+  "status": "reserved",
+  "organization": {
+    "uid": "6DdthD3C2SyP8OndbqHM",
+    "name": "Sage P Ingram",
+    "crms_id": 112,
+    "jurisdiction_claim": null,
+    "tax_exempt": false,
+    "xero_id": "150db5c2-ebec-4a5b-b72b-de87685a0ffd",
+    "billing_address": {
+      "city": "Chicago",
+      "country_name": "United States",
+      "full": "6944 Walnut Blvd",
+      "name": "Hayden P Ellsworth",
+      "postcode": "60109",
+      "region": "IL",
+      "street": "6400 Willow Way",
+      "street2": "",
+      "mapbox_id": "Sample text for mapbox_id......................................",
+      "address_coordinates": null,
+      "user_coordinates": null
+    }
+  },
+  "destinations": [
+    {
+      "dates": {
+        "delivery_start": "2026-04-30T19:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1777593600,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-04-30T19:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1777593600,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-05-04T15:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1777924800,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-05-04T15:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1777924800,
+          "_nanoseconds": 0
+        },
+        "charge_start": "2026-04-30T19:00:00.000-05:00",
+        "charge_start_fs": {
+          "_seconds": 1777593600,
+          "_nanoseconds": 0
+        },
+        "charge_end": "2026-05-04T15:00:00.000-05:00",
+        "charge_end_fs": {
+          "_seconds": 1777924800,
+          "_nanoseconds": 0
+        },
+        "days_active": 3,
+        "days_charged": 3
+      },
+      "delivery": {
+        "uid": "vTn8CTAwwJHEJZLBzsOw",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "172 Magnolia Rd",
+          "name": "Eastvale",
+          "postcode": "65048",
+          "region": "IL",
+          "street": "3408 Cypress Ter",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "collection": {
+        "uid": "vTn8CTAwwJHEJZLBzsOw",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "5609 Elm Ln",
+          "name": "Westmont",
+          "postcode": "65538",
+          "region": "IL",
+          "street": "7695 Spruce Ln",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "customer_collecting": true,
+      "customer_returning": true
+    }
+  ],
+  "items": [
+    {
+      "uid": "de6491d1-301c-43c8-bcf5-8125db8a6f8c",
+      "type": "destination",
+      "name": "Fillmore",
+      "path": [
+        "de6491d1-301c-43c8-bcf5-8125db8a6f8c"
+      ],
+      "uid_delivery": "vTn8CTAwwJHEJZLBzsOw",
+      "uid_collection": "vTn8CTAwwJHEJZLBzsOw",
+      "description": ""
+    },
+    {
+      "uid": "4f9f2297-8c3f-417b-a47a-4dee3cec8019",
+      "type": "group",
+      "name": "Power, Lights & Tools",
+      "path": [
+        "de6491d1-301c-43c8-bcf5-8125db8a6f8c",
+        "4f9f2297-8c3f-417b-a47a-4dee3cec8019"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "0LtFyxGYui7JjwRVQHxm",
+      "type": "rental",
+      "name": "Dewalt Work Light",
+      "description": "",
+      "quantity": 7,
+      "price": {
+        "base_cents": 5000,
+        "replacement_cents": 25000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 35000,
+        "subtotal_discounted_cents": 35000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 5250
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 40250
+      },
+      "stock_method": "bulk",
+      "order_number": 872,
+      "uid_order": "FthiM72vmgMlUFCNhEl6",
+      "path": [
+        "de6491d1-301c-43c8-bcf5-8125db8a6f8c",
+        "4f9f2297-8c3f-417b-a47a-4dee3cec8019",
+        "0LtFyxGYui7JjwRVQHxm"
+      ],
+      "inclusion_type": null,
+      "zero_priced": false,
+      "crms_id": 101,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "eioftRapzd1n7lz2Y59z",
+      "type": "rental",
+      "name": "Dewalt Battery Charger (4 Port)",
+      "description": "",
+      "quantity": 1,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 30000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 872,
+      "uid_order": "FthiM72vmgMlUFCNhEl6",
+      "path": [
+        "de6491d1-301c-43c8-bcf5-8125db8a6f8c",
+        "4f9f2297-8c3f-417b-a47a-4dee3cec8019",
+        "0LtFyxGYui7JjwRVQHxm",
+        "eioftRapzd1n7lz2Y59z"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 99,
+      "coa_revenue": 4000
+    },
+    {
+      "uid": "Dmaie3W1OoRGvo9BMDC7",
+      "type": "rental",
+      "name": "Dewalt Battery (9Ah)",
+      "description": "",
+      "quantity": 14,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 20000,
+        "chargeable_days": 3,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 872,
+      "uid_order": "FthiM72vmgMlUFCNhEl6",
+      "path": [
+        "de6491d1-301c-43c8-bcf5-8125db8a6f8c",
+        "4f9f2297-8c3f-417b-a47a-4dee3cec8019",
+        "0LtFyxGYui7JjwRVQHxm",
+        "Dmaie3W1OoRGvo9BMDC7"
+      ],
+      "inclusion_type": "default",
+      "zero_priced": true,
+      "crms_id": 98,
+      "coa_revenue": 4000
+    }
+  ],
+  "totals": {
+    "discount_amount_cents": 0,
+    "subtotal_cents": 35000,
+    "subtotal_discounted_cents": 35000,
+    "taxes": [
+      {
+        "uid": "VEW4Ivy7VNqgxFA5eJw6",
+        "name": "Chicago Rental Tax",
+        "rate": 15,
+        "type": "percent",
+        "amount_cents": 5250
+      }
+    ],
+    "transaction_fees": [],
+    "total_cents": 40250,
+    "replacement_total_cents": 557750
+  },
+  "invoices": [
+    {
+      "uid": "mWHez49pG4FvIfplABeA",
+      "number": 2266,
+      "status": "paid"
+    }
+  ],
+  "query_by_invoices": [
+    "mWHez49pG4FvIfplABeA"
+  ],
+  "query_by_items": [
+    "0LtFyxGYui7JjwRVQHxm",
+    "eioftRapzd1n7lz2Y59z",
+    "Dmaie3W1OoRGvo9BMDC7"
+  ],
+  "query_by_contacts": [],
+  "query_by_dates": [
+    "2026-04-30",
+    "2026-05-04"
+  ],
+  "bookings_breakdown": {
+    "quoted": 0,
+    "reserved": 0,
+    "prepped": 0,
+    "out": 0,
+    "returned": 22,
+    "lost": 0,
+    "damaged": 0
+  },
+  "crms_id": 898,
+  "crms_status": "Open",
+  "subject": "7x Worklights",
+  "reference": "PO #0355",
+  "xero_id": "16076279-33c4-4752-8eb4-f45371be8412",
+  "uid_thread": "gUyPIhkwUoaE1qAHjyhy",
+  "version": 26,
+  "created_at": {
+    "_seconds": 1777593588,
+    "_nanoseconds": 359000000
+  },
+  "updated_at": {
+    "_seconds": 1787354542,
+    "_nanoseconds": 332000000
+  }
+}
