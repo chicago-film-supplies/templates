@@ -10,5 +10,19 @@
   },
   "enabledPlugins": {
     "cfs-skills@cfs": true
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/draft-content-guard.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }
