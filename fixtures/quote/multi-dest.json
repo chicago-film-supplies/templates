@@ -237,8 +237,6 @@
       "type": "destination",
       "name": "Fillmore Counter",
       "description": "",
-      "uid_delivery": "Dst1CounterPickup001",
-      "uid_collection": "Dst1CounterPickup001",
       "path": [
         "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c"
       ]
@@ -387,8 +385,6 @@
       "type": "destination",
       "name": "Cinespace Stage 14",
       "description": "",
-      "uid_delivery": "Dst2StageDelivery001",
-      "uid_collection": "Dst2StageDelivery001",
       "path": [
         "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7"
       ]
