@@ -90,6 +90,22 @@ The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta
 
 ⚠️ **`it.currency` is gone.** Phase 11 Phase E withdrew currency.js from the render context entirely, `money-lint.yml`'s budget is **zero**, and `quote.eta` has no remaining call sites — so any `it.currency` reference now fails CI *and* would throw at render. Use `it.money.formatCents(doc.total_cents)`.
 
+### Dates: EVERY `format` needs `{ in: … }` — the default is the wrong timezone
+
+⚠️ **`it.dateFns.format(d, pattern)` renders in the LOCAL timezone of whatever machine is rendering, and that machine is UTC.** Nothing sets `TZ` on the render container (see `api-cloudrun`'s Dockerfile, and no `TZ` env in its `infra/cloud-run-api.tf`), while every stored business datetime is a **Chicago-offset instant**. So an unpinned format prints the UTC calendar day, and any boundary at or after 19:00 CDT / 18:00 CST is *the next day*.
+
+```eta
+<%# WRONG — prints the UTC day %>
+<%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy') %>
+<%# RIGHT %>
+<% const CHICAGO = it.tz("America/Chicago"); %>
+<%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy', { in: CHICAGO }) %>
+```
+
+This is not a hypothetical. Measured 2026-08-24 across **all 996 prod orders**: **56** carry a `delivery_start` or `collection_start` that rendered one day late — 58 including the charge window, 121 field renders. `it.now` is `chicagoNowIso()` and sits on the same footing, so unpinned it dated **every** quote rendered after 19:00 Chicago as tomorrow.
+
+**Both of the things that should have caught it are blind to it by construction, which is why the rule is written here rather than left to review.** Local `deno task preview` runs on a laptop in Chicago, where the unpinned form is accidentally correct. And the golden gate is deterministic *by freezing the clock*, not by fixing the zone — `FROZEN_NOW` is midday, and until `evening-boundary` (prod order 872, 19:00 CDT = 00:00 UTC exactly) no fixture crossed the boundary, so all 12 goldens compared the defect to itself and passed. Reproduce either way with `TZ=UTC deno task preview quote evening-boundary`.
+
 ### Icons
 
 `it.icons.svg(name, opts)` returns **inline SVG** for any lucide icon; `it.icons.has(name)` gates a data-driven name. Emit raw — `<%~ it.icons.svg("truck") %>`, not `<%= %>`.
@@ -116,13 +132,22 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
 ## Goldens are LIVE on `main` (blessed 2026-08-17) — and absent on `sandbox`
 
-`goldens/main/quote/` holds **all 11 PNGs**, one per fixture (blessed `acaafcd`,
+`goldens/main/quote/` holds **12 PNGs against 14 fixtures** (blessed `acaafcd`,
 extended to 10 by `ebbe2f2` / #104, 6 of them re-blessed by #108 for the
 non-zero replacement filter, and an 11th added by #108 for the flat-tax
 component), so the
 `visual-diff` gate on a `main` PR now genuinely compares and **can fail**. That
 is a change of state, not of policy: `quote` graduated. A golden is a *freeze*,
 and you freeze a thing once it has stopped moving.
+
+⚠️ **It is NOT "one per fixture", and that sentence stood here while it was
+false.** `billing-foreign-country` and `evening-boundary` have no PNG, and a
+fixture with no golden yields `no-golden` — an informational **PASS**. So the
+gate renders those two and then says nothing about them. Both were added
+expressly to close a dead branch, which is the one case where the gap costs
+exactly what the fixture was meant to buy. **templates#125.** Count the PNGs
+against `ls fixtures/quote/` before believing any claim of parity here,
+including this one.
 
 ⚠️ **`goldens/sandbox/` is still empty**, so a dev PR (base `sandbox`) still
 yields `no-golden` → PASS on every fixture. **Dev is not gated.** Do not read a
@@ -173,7 +198,7 @@ golden run untouched:
 
 | branch | why nothing covers it |
 |---|---|
-| the foreign-country line in `#bill-to` | all 10 `billing_address.country_name` are `United States` |
+| the foreign-country line in `#bill-to` | ⚠️ **a fixture exists** — `billing-foreign-country` — so the reason is no longer "nothing bills abroad". It is ungated because its GOLDEN is missing (templates#125). Do not build a second fixture for this |
 | an absent `billing_address` | the field is `.optional()` and `Address` is `.nullable()`, but no fixture omits it |
 | a destination with no delivery/collection window | every boundary is nullable; all 10 fixtures set them |
 | a `flat` (per-unit) **FEE** | `transaction_fee` is legitimate at a flat amount (`calculateTransactionFeeAmount` prices one) but the only fee in the set is `discounts-and-fee`'s 2.9% card fee, so the fee row's non-percent arm is still unrendered. Its colon was fixed blind, alongside the tax row's |
