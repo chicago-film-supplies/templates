@@ -1,0 +1,2 @@
+<%/* api-cloudrun#667 prod round-trip probe. A NEW file, so no existing template content is touched; this draft is abandoned immediately and its branch deleted. */%>
+<div>probe</div>
