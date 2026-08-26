@@ -8,9 +8,9 @@
  * they had not caused. A fixture hand-committed through git bypassed the only
  * gate that existed.
  *
- * Two checks, and both scan the WHOLE tree rather than the PR's changed files:
- * a `@cfs/core` bump or a `collection_source` flip changes no fixture file, and
- * that is exactly the drift this exists to catch.
+ * Four checks, and they all scan the WHOLE tree rather than the PR's changed
+ * files: a `@cfs/core` bump or a `collection_source` flip changes no fixture
+ * file, and that is exactly the drift this exists to catch.
  *
  *   1. SCHEMA — every `fixtures/<git_path>/*.json` parses against
  *      `schemaFor(<collection_source>)`, read from the family's sidecar. This is
@@ -27,11 +27,28 @@
  *      fixture file is a strict source document with nowhere to write it down,
  *      so the sidecar is the only place it can live.
  *
+ *   4. GOLDEN PARITY — on any branch where a family has graduated (its
+ *      `goldens/<branch>/<git_path>/` holds at least one PNG), every fixture has
+ *      a baseline and every baseline has a fixture. A fixture with no golden
+ *      renders and then yields `no-golden`, which is an informational PASS — so
+ *      the gate says nothing about exactly the branch the fixture was added to
+ *      cover. `billing-foreign-country` landed on `main` in #113 with no
+ *      baseline and stayed ungated for two days until #126 blessed it, and
+ *      `evening-boundary` sat in the same state inside the draft that became
+ *      #126 — nothing but a hand-count stood between it and shipping the same
+ *      way. That is the state this makes unrepresentable, because counting PNGs
+ *      against `ls fixtures/<git_path>/` is what kept failing.
+ *
  * Fails CLOSED: a fixtures dir with no sidecar, a sidecar with no
  * `collection_source`, an unmapped collection, or sidecar/file drift are all
- * errors. An unmapped collection is caught by `isCollectionName` BEFORE the
- * lookup — the previous shape read `schemas[key]`, got `undefined`, and would
- * otherwise have thrown a bare TypeError on `.safeParse`.
+ * errors. Check 4 is the one deliberate exception, and it fails OPEN by design:
+ * a family with NO baseline on a branch has not graduated, and saying so on
+ * every PR would be noise rather than a finding (`goldens/sandbox/` holds
+ * nothing at all — templates#118).
+ *
+ * An unmapped collection is caught by `isCollectionName` BEFORE the lookup —
+ * the previous shape read `schemas[key]`, got `undefined`, and would otherwise
+ * have thrown a bare TypeError on `.safeParse`.
  *
  * Run: deno task lint:fixtures
  */
@@ -76,6 +93,25 @@ try {
   Deno.exit(0);
 }
 fixtureDirs = fixtureDirs.sort();
+
+/**
+ * The branch trees under `goldens/`, e.g. `["main", "sandbox"]`.
+ *
+ * Read once rather than per family, and tolerant on purpose: no `goldens/` tree
+ * at all is a repo that has never blessed anything, and a loose file sitting
+ * beside the branch dirs — this repo keeps a README there — is not a branch.
+ * Neither is a finding.
+ */
+let goldenBranches: string[] = [];
+try {
+  for await (const entry of Deno.readDir("goldens")) {
+    if (entry.isDirectory) goldenBranches.push(entry.name);
+  }
+} catch { /* no goldens/ tree — nothing has graduated anywhere */ }
+goldenBranches = goldenBranches.sort();
+
+/** `<branch>/<git_path>` for every tree check 4 actually compared. */
+const graduated: string[] = [];
 
 // ── 1. Schema ───────────────────────────────────────────────────────
 
@@ -185,6 +221,60 @@ for (const gitPath of fixtureDirs) {
       );
     }
   }
+
+  // Golden parity, in both directions, per branch that has graduated.
+  //
+  // A fixture with no baseline is not a failure anywhere — `goldenDiff` renders
+  // it and returns `no-golden`, an informational PASS — so the one thing the
+  // fixture was added to gate is the one thing the gate stays silent about.
+  // Both misses this catches were exactly that shape, and neither was visible
+  // in a green CI run.
+  //
+  // The `>= 1 PNG` condition is what scopes it: a family with no baseline on a
+  // branch has not graduated there, and reporting every fixture on an empty
+  // tree would bury the real finding. That is also what keeps the empty
+  // `goldens/sandbox/` silent (templates#118) without this check having to know
+  // anything about which branch is which.
+  for (const branch of goldenBranches) {
+    const goldenDir = `goldens/${branch}/${gitPath}`;
+
+    const pngs = new Set<string>();
+    try {
+      for await (const entry of Deno.readDir(goldenDir)) {
+        if (entry.isFile && entry.name.endsWith(".png")) {
+          pngs.add(entry.name.slice(0, -".png".length));
+        }
+      }
+    } catch {
+      continue; // no tree for this family on this branch — not graduated
+    }
+    if (pngs.size === 0) continue; // ditto: an empty tree is not a graduation
+
+    graduated.push(`${branch}/${gitPath}`);
+
+    for (const slug of [...slugsOnDisk].sort()) {
+      if (pngs.has(slug)) continue;
+      note(
+        `${goldenDir}/${slug}.png`,
+        `missing — \`${gitPath}\` has graduated on \`${branch}\` (${pngs.size} baseline(s)) ` +
+          `but fixtures/${gitPath}/${slug}.json has none, so the visual diff renders it ` +
+          `and then returns \`no-golden\`: an informational PASS. Whatever this fixture ` +
+          `was added to cover is still ungated. Clear it by APPROVING THE RENDERS — the ` +
+          `visual-diff job runs regardless and has already uploaded the candidate, so the ` +
+          `baseline is one press away and it is the same press that clears a \`no-golden\` ` +
+          `verdict.`,
+      );
+    }
+    for (const slug of [...pngs].sort()) {
+      if (slugsOnDisk.has(slug)) continue;
+      note(
+        `${goldenDir}/${slug}.png`,
+        `orphaned — no fixtures/${gitPath}/${slug}.json renders it, so nothing will ever ` +
+          `compare against it. Usually a renamed or removed fixture: delete the baseline, ` +
+          `or restore the fixture if the rename was the mistake.`,
+      );
+    }
+  }
 }
 
 // ── 2. PII ──────────────────────────────────────────────────────────
@@ -264,9 +354,19 @@ if (problems.length) {
     "A fixture must satisfy the same schema the API enforces on save, or an\n" +
       "operator cannot edit it from the manager — they get a 422 listing failures\n" +
       "they did not cause. It must also say why it exists: a fixture set is a\n" +
-      "coverage argument, and the sidecar is the only place that can be written.\n",
+      "coverage argument, and the sidecar is the only place that can be written.\n" +
+      "\n" +
+      "And once a family has a baseline on a branch, every fixture needs one:\n" +
+      "a fixture with no golden is rendered and then passed informationally, so\n" +
+      "it buys no coverage at all. Approving the renders is what clears that.\n",
   );
   Deno.exit(1);
 }
 
-console.log(`lint-fixtures: ${checked} fixture(s) across ${fixtureDirs.length} family(ies) — schema OK, no PII.`);
+const goldenSummary = graduated.length
+  ? `goldens at parity (${graduated.join(", ")})`
+  : "no graduated golden tree";
+console.log(
+  `lint-fixtures: ${checked} fixture(s) across ${fixtureDirs.length} family(ies) — ` +
+    `schema OK, no PII, ${goldenSummary}.`,
+);
