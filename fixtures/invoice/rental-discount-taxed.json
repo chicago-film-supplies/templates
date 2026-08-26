@@ -1,0 +1,297 @@
+{
+  "uid": "BNkwS5cpmwYXx0sSdDL9",
+  "number": 1902,
+  "status": "paid",
+  "query_by_orders": [
+    "UTIdgPY8upuqt46EINjR"
+  ],
+  "number_orders": [
+    450
+  ],
+  "date": "2025-05-16T00:00:00.000-05:00",
+  "date_fs": {
+    "_seconds": 1747371600,
+    "_nanoseconds": 0
+  },
+  "due_date": "2025-05-31T00:00:00.000-05:00",
+  "due_date_fs": {
+    "_seconds": 1748667600,
+    "_nanoseconds": 0
+  },
+  "subject": "2 A Frames, 2 Shotbags",
+  "reference": null,
+  "external_notes": "Sample text for ex",
+  "internal_notes": null,
+  "organization": {
+    "uid": "nWlYCEzuc1we7xqF7aYZ",
+    "name": "Sample text for name................",
+    "crms_id": 253,
+    "jurisdiction_claim": null,
+    "tax_exempt": false,
+    "xero_id": "9b8826a3-2af5-4e89-b05c-d2de390db768",
+    "billing_address": {
+      "city": "Chicago",
+      "country_name": "United States",
+      "full": "Sample text for full............................................................",
+      "name": "Sample text for name................",
+      "postcode": "65306",
+      "region": "IL",
+      "street": "Sample text for street................................",
+      "street2": "",
+      "address_coordinates": null,
+      "user_coordinates": null
+    }
+  },
+  "destinations": [
+    {
+      "uid_order": "UTIdgPY8upuqt46EINjR",
+      "uid": "1f58c4d6-5ee9-4413-bcb0-844f5297b4da",
+      "dates": {
+        "delivery_start": "2025-04-22T09:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1745330400,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2025-04-22T09:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1745330400,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2025-05-16T15:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1747425600,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2025-05-16T15:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1747425600,
+          "_nanoseconds": 0
+        },
+        "charge_start": "2025-04-22T09:00:00.000-05:00",
+        "charge_start_fs": {
+          "_seconds": 1745330400,
+          "_nanoseconds": 0
+        },
+        "charge_end": "2025-05-16T15:00:00.000-05:00",
+        "charge_end_fs": {
+          "_seconds": 1747425600,
+          "_nanoseconds": 0
+        },
+        "days_active": 19,
+        "days_charged": 19
+      },
+      "delivery": {
+        "uid": "vTn8CTAwwJHEJZLBzsOw",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "7905 Maple Ave",
+          "name": "Eastvale",
+          "postcode": "65048",
+          "region": "IL",
+          "street": "3408 Cypress Ter",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "collection": {
+        "uid": "vTn8CTAwwJHEJZLBzsOw",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "6115 Oak St",
+          "name": "Westmont",
+          "postcode": "65538",
+          "region": "IL",
+          "street": "3259 Willow Way",
+          "street2": "",
+          "mapbox_id": "Sample text for mapbox_id......................................",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": "",
+        "contact": null
+      },
+      "customer_collecting": true,
+      "customer_returning": true
+    }
+  ],
+  "items": [
+    {
+      "uid": "UTIdgPY8upuqt46EINjR",
+      "type": "order",
+      "name": "Order #450",
+      "path": [
+        "UTIdgPY8upuqt46EINjR"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "1f58c4d6-5ee9-4413-bcb0-844f5297b4da",
+      "type": "destination",
+      "name": "Fillmore",
+      "path": [
+        "UTIdgPY8upuqt46EINjR",
+        "1f58c4d6-5ee9-4413-bcb0-844f5297b4da"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "c7f6fcbb-b597-4e6a-be87-0338313289f0",
+      "type": "group",
+      "name": "Traffic, Safety & Signage",
+      "path": [
+        "UTIdgPY8upuqt46EINjR",
+        "1f58c4d6-5ee9-4413-bcb0-844f5297b4da",
+        "c7f6fcbb-b597-4e6a-be87-0338313289f0"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "bRKsHMVgxtVQJ26FCRWH",
+      "type": "rental",
+      "name": "A Frame Sign (Large)",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 600,
+        "chargeable_days": 19,
+        "formula": "five_day_week",
+        "subtotal_cents": 4560,
+        "subtotal_discounted_cents": 4560,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "xmxiaT32ehsEnrgrKWW8",
+            "name": "Chicago Rental Tax",
+            "rate": 11,
+            "type": "percent",
+            "amount_cents": 502
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 5062
+      },
+      "path": [
+        "UTIdgPY8upuqt46EINjR",
+        "1f58c4d6-5ee9-4413-bcb0-844f5297b4da",
+        "c7f6fcbb-b597-4e6a-be87-0338313289f0",
+        "bRKsHMVgxtVQJ26FCRWH"
+      ],
+      "coa_revenue": 4000,
+      "tracking_category": "Traffic, Safety & Signage",
+      "xero_id": "3e180b21-225e-452c-ab3b-e42de2c54687",
+      "xero_tracking_option_id": "73cdcdd6-fed9-44b3-9438-8e344e2434da",
+      "crms_opportunity_id": 475,
+      "crms_id": 123
+    },
+    {
+      "uid": "Wnj0LODXW6zCYRmnJoxQ",
+      "type": "rental",
+      "name": "20lb Shot Bag",
+      "description": "",
+      "quantity": 2,
+      "price": {
+        "base_cents": 200,
+        "chargeable_days": null,
+        "formula": "five_day_week",
+        "subtotal_cents": 400,
+        "subtotal_discounted_cents": 0,
+        "discount": {
+          "rate": 100,
+          "type": "percent",
+          "amount_cents": 400
+        },
+        "taxes": [
+          {
+            "uid": "xmxiaT32ehsEnrgrKWW8",
+            "name": "Chicago Rental Tax",
+            "rate": 11,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "path": [
+        "UTIdgPY8upuqt46EINjR",
+        "1f58c4d6-5ee9-4413-bcb0-844f5297b4da",
+        "c7f6fcbb-b597-4e6a-be87-0338313289f0",
+        "bRKsHMVgxtVQJ26FCRWH",
+        "Wnj0LODXW6zCYRmnJoxQ"
+      ],
+      "coa_revenue": 4000,
+      "tracking_category": "Tents",
+      "xero_id": "64a79c7c-db51-49ba-a988-a44dfe5b216d",
+      "xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
+      "crms_opportunity_id": 475,
+      "crms_id": 138
+    }
+  ],
+  "totals": {
+    "subtotal_cents": 4960,
+    "subtotal_discounted_cents": 4560,
+    "discount_amount_cents": 400,
+    "taxes": [
+      {
+        "uid": "xmxiaT32ehsEnrgrKWW8",
+        "name": "Chicago Rental Tax",
+        "rate": 11,
+        "type": "percent",
+        "amount_cents": 502
+      }
+    ],
+    "transaction_fees": [],
+    "total_cents": 5062,
+    "amount_paid_cents": 5062,
+    "amount_due_cents": 0
+  },
+  "xero_id": "87f8e341-55b3-495f-88f6-9f907cba980c",
+  "uploadcare_uuid": "d675743e-83b0-4dad-8bed-3dd00aa4f4e1",
+  "pdf_generated_at": {
+    "_seconds": 1787672684,
+    "_nanoseconds": 693000000
+  },
+  "pdf_versions": [],
+  "crms_id": 635,
+  "crms_opportunity_ids": [
+    475
+  ],
+  "uid_thread": "WLO8e4OwSxG0qIJho8HS",
+  "version": 3,
+  "created_by": {
+    "uid": "manager-bot",
+    "name": "Riley Bishop"
+  },
+  "updated_by": {
+    "uid": "script",
+    "name": "Sample text for name...."
+  },
+  "created_at": {
+    "_seconds": 1764646754,
+    "_nanoseconds": 38000000
+  },
+  "updated_at": {
+    "_seconds": 1787672623,
+    "_nanoseconds": 640000000
+  }
+}
