@@ -843,9 +843,13 @@ const replacementLine = (item) => {
       <% totals.transaction_fees.forEach(fee => { %>
       <% if (fee.amount_cents !== 0) { %>
       <tr>
-        <%/* Same rule as the tax row above — a flat-amount fee is legitimate
-             (`calculateTransactionFeeAmount` prices one) and no fixture has one
-             yet, so its colon would have gone missing the same way. */%>
+        <%/* Same rule as the tax row above, and no longer reasoned about: the
+             flat arm RENDERS and is GATED. `fee-flat-card` (prod order 502,
+             added #113) carries a real $1.15 `flat` Card Fee, so this branch
+             sits under a blessed golden and a rate leaking into the flat arm —
+             or the colon slipping back inside the `percent` one — now fails
+             `visual-diff` instead of shipping unlooked-at. The percent arm is
+             `discounts-and-fee`'s 2.9% card fee. Both arms, both fixtures. */%>
         <th scope="row"><%= fee.name %><% if (fee.type === "percent") { %> <%= fee.rate %>%<% } %>:</th>
         <td><%= it.money.formatCents(fee.amount_cents) %></td>
       </tr>

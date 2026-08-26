@@ -179,24 +179,38 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
 **A util namespace this harness cannot provide is a hard error, deliberately.** `UTIL_MODULES` in `scripts/preview.ts` must mirror the server's (`api-cloudrun/src/lib/templates/eta.ts`); if it doesn't, the resolver throws and names the fix. It used to skip silently, and that is how `money` came to be missing here while the server injected it — and `money` is in core's `ALWAYS_ON_UTIL_NAMESPACES`, so *every* template requests it. The result was that the first `it.money.*` call rendered correctly in production and died here with `Cannot read properties of undefined`, which reads as a template bug rather than a harness one. This repo has no test suite, so the throw is the guarantee (the server side is covered by `renderUtilNamespaces.test.ts`). **Do not re-add a silent skip.**
 
-## Goldens are LIVE on `main` (blessed 2026-08-17) — and absent on `sandbox`
+## Goldens are LIVE on `main` (first blessed 2026-08-16) — and absent on `sandbox`
 
-`goldens/main/quote/` holds **12 PNGs against 14 fixtures** (blessed `acaafcd`,
-extended to 10 by `ebbe2f2` / #104, 6 of them re-blessed by #108 for the
-non-zero replacement filter, and an 11th added by #108 for the flat-tax
-component), so the
-`visual-diff` gate on a `main` PR now genuinely compares and **can fail**. That
-is a change of state, not of policy: `quote` graduated. A golden is a *freeze*,
-and you freeze a thing once it has stopped moving.
+`goldens/main/quote/` holds **14 PNGs against 14 fixtures** — full parity,
+reached in five blessings: nine by `acaafcd` / #83, `replacement-only` by
+`ebbe2f2` / #104 (2026-08-21), `taxed-zero-priced-component` by `6c37131` / #108
+(2026-08-22, which also re-blessed six of the nine for the non-zero replacement
+filter), `fee-flat-card` by `aa495eb` / #113 (2026-08-23), and
+`billing-foreign-country` + `evening-boundary` by `ef883c3` / #126 (2026-08-25).
+So the `visual-diff` gate on a `main` PR genuinely compares — PR #129's run reads
+`✓ quote: match across 14 fixture(s)`, which is the aggregate that would read
+`no-golden` if even one fixture lacked a baseline — and it **can fail**. That is a
+change of state, not of policy: `quote` graduated. A golden is a *freeze*, and
+you freeze a thing once it has stopped moving.
 
-⚠️ **It is NOT "one per fixture", and that sentence stood here while it was
-false.** `billing-foreign-country` and `evening-boundary` have no PNG, and a
-fixture with no golden yields `no-golden` — an informational **PASS**. So the
-gate renders those two and then says nothing about them. Both were added
-expressly to close a dead branch, which is the one case where the gap costs
-exactly what the fixture was meant to buy. **templates#125.** Count the PNGs
-against `ls fixtures/quote/` before believing any claim of parity here,
-including this one.
+⚠️ **Parity is LINT-ENFORCED now, so stop counting PNGs by hand — but know what
+the check does and does not claim.** `scripts/lint-fixtures.ts` check 4 fails when
+a family that has GRADUATED on a branch (≥ 1 PNG in `goldens/<branch>/<git_path>/`)
+has a fixture with no baseline, or a baseline with no fixture. It exists because
+the paragraph that stood here — *"`billing-foreign-country` and `evening-boundary`
+have no PNG"* — was true of two fixtures at once: a fixture with no golden yields
+`no-golden`, an informational **PASS**, so the gate renders it and then says
+nothing about the one branch it was added to cover. `billing-foreign-country`
+landed on `main` in #113 in that state and stayed ungated for two days; nothing
+in a green CI run mentioned it. `evening-boundary` was in the same state inside
+the draft that became #126 and was blessed in the same commit only because
+someone counted. **templates#125.**
+
+**A capture now turns `templates-lint` red until its golden is blessed, and that
+sequence is intended rather than a deadlock.** `visual-diff` is a separate job:
+it still runs, still renders the new fixture, still uploads the candidate. So the
+bless that clears the red is available immediately, and it is the same press that
+already clears a `no-golden` verdict.
 
 ⚠️ **`goldens/sandbox/` is still empty**, so a dev PR (base `sandbox`) still
 yields `no-golden` → PASS on every fixture. **Dev is not gated.** Do not read a
@@ -206,7 +220,7 @@ is comparing anything. Re-bless both trees from
 
 This supersedes the old "goldens are DEFERRED, not missing" note, which said
 `goldens/` held zero PNGs and that `visual-diff` *cannot* fail. That was true
-until 2026-08-17 and is now the opposite of the truth — a meaningful visual
+until `acaafcd` and is now the opposite of the truth — a meaningful visual
 change is **expected** to fail the check.
 
 **The clearing path is one path, not two.** Review the per-fixture diffs in the
@@ -233,32 +247,58 @@ Fixture *coverage* and golden *stability* are different problems, and blessing
 the baseline closed only the second one.
 
 The set was widened for exactly that reason — 3 fixtures to 9 on 2026-08-14, to
-**10** on 2026-08-21 (`replacement-only`) and to **11** the same day
-(`taxed-zero-priced-component`, the family's only SYNTHETIC fixture and its only
-`flat` tax), eight of them captured from real prod orders — and the argument
-still holds at the new size. Measured against the current set: 124 line items,
-10 of them discounted across 5 fixtures, and 1 transaction fee in 1 fixture.
-The items grid is now covered at **every column count it can produce, 6 through
-9**, including both 8-column shapes (Duration+Discount and Duration+Tax), which
-is what the banner-`colspan` bug needed and did not have.
+**10** on 2026-08-21 (`replacement-only`, #104), **11** on 2026-08-22
+(`taxed-zero-priced-component`, #108), **13** on 2026-08-23
+(`billing-foreign-country` and `fee-flat-card`, #113) and **14** on 2026-08-25
+(`evening-boundary`, #126) — and the argument still holds at the new size.
+**12 of the 14 are captured from real prod orders.** The two hand-built ones are
+`multi-dest` and `discounts-and-fee`, and each says in its sidecar why its shape
+cannot be captured at all rather than merely has not been.
+`taxed-zero-priced-component` used to be named here as the family's only
+SYNTHETIC fixture; #113 replaced it with a capture from prod order 1004, so that
+is no longer true of it or of anything else in the set.
+
+Measured against the current set on 2026-08-25: **131 priced rows** across 174
+item entries — the other 43 are destination and group dividers — **11 discounted
+lines across 6 fixtures**, **2 fee-bearing fixtures** covering both arms of the
+totals fee row (`discounts-and-fee` at `percent`, `fee-flat-card` at `flat`), and
+**15 destinations, every one carrying both a delivery and a collection window**.
+The items grid is covered at **every column count it can produce, 6 through 9**,
+including both 8-column shapes (Duration+Discount and Duration+Tax), which is
+what the banner-`colspan` bug needed and did not have.
 
 What still renders in **no** fixture, and would therefore survive a green
 golden run untouched:
 
 | branch | why nothing covers it |
 |---|---|
-| the foreign-country line in `#bill-to` | ⚠️ **a fixture exists** — `billing-foreign-country` — so the reason is no longer "nothing bills abroad". It is ungated because its GOLDEN is missing (templates#125). Do not build a second fixture for this |
-| an absent `billing_address` | the field is `.optional()` and `Address` is `.nullable()`, but no fixture omits it |
-| a destination with no delivery/collection window | every boundary is nullable; all 10 fixtures set them |
-| a `flat` (per-unit) **FEE** | `transaction_fee` is legitimate at a flat amount (`calculateTransactionFeeAmount` prices one) but the only fee in the set is `discounts-and-fee`'s 2.9% card fee, so the fee row's non-percent arm is still unrendered. Its colon was fixed blind, alongside the tax row's |
+| an absent `billing_address` | the field is `.optional()` and `Address` is `.nullable()`, but all 14 fixtures set one |
+| a destination with no delivery/collection window | every boundary is nullable; all 15 destinations set both |
 
 Those are guards, not layout, so a golden was never going to speak to them —
 which is the point of keeping this note rather than replacing it with a
-screenshot. The `flat` TAX row that used to head this table is **gone from it**:
-`taxed-zero-priced-component` renders that arm now, and finding it immediately
-put a bare "Water Bottle Tax" beside "Subtotal:" and "Total:" because the row's
-colon had been living inside the `percent` branch. An uncovered branch is not
-dormant — it is wrong in a way nobody has looked at yet.
+screenshot. **Three rows have left this table, and all three left the same way.**
+The `flat` TAX row went when `taxed-zero-priced-component` rendered that arm, and
+finding it immediately put a bare "Water Bottle Tax" beside "Subtotal:" and
+"Total:" because the row's colon had been living inside the `percent` branch. The
+foreign-country line in `#bill-to` went when `billing-foreign-country`'s golden
+landed in #126. The `flat` (per-unit) **FEE** went when `fee-flat-card` — prod
+order 502, carrying a real $1.15 Card Fee — was blessed in #113. An uncovered
+branch is not dormant; it is wrong in a way nobody has looked at yet.
+
+⚠️ **Each row left only when a fixture AND its golden had landed, never on one of
+the two**, and that is the whole reason parity is a lint rather than a habit. A
+fixture without a baseline is rendered and passed informationally, so it buys
+nothing: `billing-foreign-country` existed from #113 and its branch stayed
+ungated until #126 blessed the PNG two days later, which is why its row stayed in
+this table across that gap instead of leaving with the fixture.
+
+⚠️ **`billing-foreign-country`'s blessed golden carries a `Sample t` postcode on
+purpose — do not "repair" the baseline.** `applyPii`'s postcode branch is guarded
+on US ZIP only, so a Canadian `A1A 1A1` falls through every branch to the generic
+filler (api-cloudrun#627, still open). The country line, which is what the fixture
+is for, renders correctly. When #627 lands, re-capture the fixture and re-bless
+the golden together.
 
 ## Dependencies
 

@@ -8,6 +8,15 @@ same overlay `scripts/preview.ts` and the api-cloudrun render pipeline perform),
 rasterized HTML→PNG via Gotenberg's Chromium screenshot route with a **frozen**
 render timestamp so output is byte-deterministic.
 
+⚠️ **"One per fixture" is enforced, not just documented.** Once a family has at
+least one PNG on a branch it has GRADUATED there, and `deno task lint:fixtures`
+then fails on any fixture without a baseline, or any baseline without a fixture.
+A family with no PNG on a branch has not graduated and is skipped, which is what
+keeps the empty `sandbox` tree silent. The rule exists because a fixture with no
+golden is not a gap the CI reports — it renders and returns `no-golden`, an
+informational PASS — so the branch it was added to cover stays ungated while
+every check is green. Clear the failure by **approving the renders**.
+
 ```
 goldens/<branch>/<git_path>/<slug>.png
 ```
