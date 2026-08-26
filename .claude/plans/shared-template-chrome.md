@@ -1,9 +1,11 @@
 # Shared template chrome + the invoice and packing-list families
 
 > **Status 2026-08-26.** Phase 0, Phase 0b and Phase 1's body extraction are
-> built and verified. Phases 2–3 are **blocked on a deploy and two human
-> actions**, named under *Blocked on* below. This doc is written as one current
-> statement rather than a stack of updates — it says what is true today.
+> built and verified. The deploy and the MCP gap that blocked Phases 2–3 have
+> both **cleared**; what remains is **one human action** — registering the two
+> families in the manager — named under *Blocked on* below. This doc is written
+> as one current statement rather than a stack of updates — it says what is true
+> today.
 
 ## What this is
 
@@ -246,23 +248,29 @@ arithmetic sharing a line with a string, and on the down-ratchet.
 
 ## Blocked on
 
-**1. `api-cloudrun` prod deploy.** Not optional and not a preference. A templates
-PR based on `main` calls the **prod** API for `visual-diff` (`.github/workflows/visual-diff.yml`
-maps base branch → env), and `templates_render_preview` on a `main`-based draft
-does too. Until prod has `078e87c6` + `acf4c171`, the gate does not fetch
-partials and every golden for a body that includes one fails
-`EtaNameResolutionError`. It fails in the safe direction, but it blocks the
-merge. Sequence: push `main` → release-please cuts a PR → merging it deploys prod.
+**Registering the two new families** — the only one left. `POST /templates` and
+`.../fork` are deliberately **not** MCP verbs: registering permanently reserves a
+`git_path` (invariant S5) and fixes the immutable source/target collections. Do
+it in the manager. ⚠️ `starterSidecar` omits `depends_on` when the slug list is
+empty, which publishes a family with **no layout**, and every render then fails
+**409 `FAILED_PRECONDITION`** (`PreconditionError`, not a 422 — two comments in
+`api-cloudrun` said 422 and were corrected in the same change that closed
+api-cloudrun#684). So either fork from `quote`, or register with
+`depends_on: { components: ["base"] }`.
 
-**2. `gcloud auth application-default login`.** ADC is expired, so
-`api-cloudrun`'s pre-push test suite cannot run and the push is blocked.
+⚠️ **If it is registered without one anyway, that is now recoverable from an
+agent** rather than a trip back to the manager: `templates_set_metadata` can set
+`depends_on` after the fact. It opens a `meta/*` PR and leaves it OPEN, because
+the change is visual — a human merges it.
 
-**3. Registering the two new families.** `POST /templates` and `.../fork` are
-deliberately **not** MCP verbs: registering permanently reserves a `git_path`
-(invariant S5) and fixes the immutable source/target collections. Do it in the
-manager. ⚠️ `starterSidecar` omits `depends_on` when the slug list is empty,
-which publishes a family with no layout and 422s every render — so either fork
-from `quote` or register with `depends_on: { components: ["base"] }`.
+**Cleared 2026-08-26:**
+
+- ~~`api-cloudrun` prod deploy~~ — `v0.185.0` carries `078e87c6` + `acf4c171` and
+  deployed to prod (build `00b296f3`). A `main`-based templates PR now hits a
+  prod API that fetches partials, so a golden for a body that includes one no
+  longer fails `EtaNameResolutionError`.
+- ~~ADC expired~~ — re-authenticated.
+- ~~The MCP metadata gap~~ — see the section below.
 
 ---
 
@@ -392,38 +400,43 @@ state; do not just apply a one-line fix.
 
 ---
 
-## MCP surface still needed
+## MCP surface — LANDED 2026-08-26 (api-cloudrun#684)
 
-**No new API routes are required** — every route already exists. The
-autogenerator surfaces only protected **GET** routes; each hand-registered tool
-re-enters the Hono app via `runAsUser`, so the full RBAC chain fires and adding
-one weakens nothing.
-
-**One real blocker:**
+All three items below shipped. `/mcp/templates` now exposes **18** tools and
+carries a connect-time `instructions` blob stating the lifecycle chain and the
+sidecar's one-writer-per-section table.
 
 - **`templates_set_metadata` → `PATCH /templates/{uid}/metadata`.** The **only**
-  writer for `depends_on` and the entire `render` block. Both new families need
-  one, and `templates_propose_edit` **422s** on `templates/*.meta.json` by design.
-  Without this an agent physically cannot finish a family. It fits the
-  open-PR-only doctrine: a metadata change commits on its own `meta/*` branch,
-  and a **visual** `depends_on`/`render` change already leaves the PR open.
-
-**Two that remove hard stops cheaply:**
-
-- **Component discoverability.** `templates_list` returns only template families
-  and `templates_read` **404s on a component uid**, yet `resolveFamily` *does*
-  fall through to `template-components`, so `create_draft`/`propose_edit`/
-  `commit`/`release` all work once you have the uid — today obtainable only via
-  `db_template_components_query` on a **different MCP server**. The `base`
-  component is now seven files and the shared chrome's home.
-- **`templates_rebase_draft` → `POST /templates-versions/{uid}/rebase`.** Work
-  across three repos will strand drafts behind merged PRs, and rebase is how a
-  dirty draft picks up a merged `meta/*` change.
+  writer for `depends_on` and the entire `render` block, and the reason Phases
+  2–3 could not be finished by an agent at all. ⚠️ Both arguments **REPLACE
+  WHOLESALE** — read the current block from `templates_read` → a version's
+  `content["templates/<git_path>.meta.json"]` and send it back whole. Its
+  `render` argument reuses the render lib's own `RenderConfigSchema.strict()`,
+  so an unknown key is refused by the tool rather than 400'd by the route.
+  ⚠️ A `depends_on`/`render` change is **visual**: the PR is opened and LEFT
+  OPEN with `merged: false`. **That is success — do not retry**; a human merges
+  it. `name`/`surfaces` auto-merge when green.
+- **`templates_list_components` + `templates_read_component`.** ⚠️ **This turned
+  out to be an API change, not an MCP-only one, and the note it replaces had the
+  reason wrong.** `resolveFamily` does fall through, so the *lifecycle* verbs
+  always worked on a component uid — but there was **no GET route for components
+  at all** (`GET /template-components` and `/{uid}` did not exist; only `POST`
+  did), because the manager reads them straight from Firestore. Both routes are
+  now live under `templates.read`, and the autogenerator surfaces them on
+  `/mcp/cfs` as well. They deliberately do **not** fall through to the template
+  reads: a component family carries no `collection_source`/`surfaces`, so a
+  caller that got one back from `GET /templates/{uid}` would read it as a
+  template. A template uid is a 404 here and vice versa.
+- **`templates_rebase_draft` → `POST /templates-versions/{uid}/rebase`.**
+  ⚠️ Content is adopted only when the draft is **clean** — a dirty draft gets
+  `content_refreshed: false` and its next commit writes base's changes back out.
+  **Commit first, then rebase.**
 
 **Three deliberately absent — do not add:** `templates_merge` (merging *is* the
 publish authority), `bless-golden` (**approving the renders is the human
 authorization** the lifecycle protects), and `POST /templates` / `.../fork` (a
-decision, not a mechanical step).
+decision, not a mechanical step). Nothing that landed weakens open-PR-only:
+every new verb either opens a PR a human merges, or reads.
 
 ---
 
@@ -443,4 +456,5 @@ the body only, and `preview` inlines the footer *below* the body where its
 
 **CLEAR CONTEXT** before Phase 2. Phases 0/0b/1a are landed or committed and this
 doc carries every load-bearing fact from them. Phase 2 starts fresh against a
-deployed prod API and a registered `invoice` family.
+deployed prod API, the full 18-tool `/mcp/templates` surface, and a registered
+`invoice` family — the registration being the one step still waiting on a human.
