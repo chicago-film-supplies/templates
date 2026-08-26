@@ -402,47 +402,9 @@ const replacementLine = (item) => {
      grid turned on — and CSS cannot see that. Everything that reads
      `--dest-block-3` is inside this element. See styles/quote.css. */%>
 <div id="grid-wrapper" style="--block-3-fraction: calc(<%= addressBoundary %> / <%= addressColumnCount %>)">
-  <div id="logo">
-    <%~ it.logo %>
-  </div>
-  <section id="bill-to">
-    <%
-    // `billing_address` is `.optional()` on the organization snapshot AND
-    // `Address` is itself `.nullable()`, so an order can legitimately carry
-    // neither — the old unguarded chain threw on the first `.street` (#25).
-    //
-    // The lines are assembled rather than emitted as bare spans for the same
-    // reason: a separator only belongs there when both sides of it are present.
-    // `street2` defaults to `""`, so the old markup printed a leading comma on
-    // every order without a suite number.
-    const billing = order.organization?.billing_address ?? {};
-    const streetLine = [billing.street, billing.street2].filter(Boolean).join(", ");
-    const cityLine = [
-      [billing.city, billing.region].filter(Boolean).join(", "),
-      billing.postcode,
-    ].filter(Boolean).join(" ");
-    // `country_name` is stored with a space. Matching "UnitedStates" never
-    // matched anything, so the country line printed on every domestic quote.
-    const foreign = billing.country_name && billing.country_name !== "United States";
-    %>
-    <h1>Quote #<%= order.number %></h1>
-    <div><%= order.organization.name %></div>
-    <% if (streetLine) { %>
-    <div><%= streetLine %></div>
-    <% } %>
-    <% if (cityLine) { %>
-    <div><%= cityLine %></div>
-    <% } %>
-    <% if (foreign) { %>
-    <div><%= billing.country_name %></div>
-    <% } %>
-  </section>
-  <section id="cfs">
-    <h1>Chicago Film Supplies</h1>
-    <div>3100 W Fillmore St, Chicago, IL 60612</div>
-    <div>team@chicagofilmsupplies.com</div>
-    <div>312.818.3008</div>
-  </section>
+<%~ await includeAsync("@partials/shared/letterhead.eta", {
+     title: `Quote #${order.number}`, organization: order.organization,
+   }) %>
 
 <table id="details">
   <thead>
@@ -507,160 +469,10 @@ const replacementLine = (item) => {
      `hasDeliverableItems` also covers a quote with no shown lines at all, where
      #items is likewise suppressed. */%>
 <% if (hasDeliverableItems) { %>
-<table id="destinations">
-  <colgroup>
-    <col class="date">
-    <col class="arrow">
-    <col class="date">
-    <col class="days">
-    <%/* One <col> per address SUB-column, all auto and therefore all equal —
-         the blocks are colspans over them. See styles/quote.css. */%>
-    <% for (let i = 0; i < addressColumnCount; i++) { %>
-    <col class="address">
-    <% } %>
-  </colgroup>
-<% destinations.forEach(function(dest, destIndex) { %>
-    <%
-    const d = dest.dates || {};
-    const legend = it.orders.getDestinationsLegend([dest]);
-    const startLabel = legend.start || "Delivery";
-    const endLabel = legend.end || "Pickup";
-    // Every date boundary on a destination is nullable, so each cell below is
-    // gated on the values it actually reads rather than on the destination
-    // existing (#25). `d` is that gate, computed once — re-dereferencing
-    // `dest.dates.*` at the call site is what made the guard and the read
-    // disagree.
-    const hasActiveWindow = Boolean(d.delivery_start && d.collection_start);
-    const hasChargeWindow = Boolean(d.charge_start && d.charge_end);
-    // A charge WINDOW is a span, and a span needs an end. With no rental line
-    // the end date and the duration are both suppressed below, which would
-    // leave "Dates Charged:" labelling a lone start date — the same
-    // implied-window-that-does-not-exist the arrow and end date were split up to
-    // avoid. So the whole charged pair falls away with the collection leg.
-    const showCharged = hasCollection && hasChargeWindow &&
-      !it.orders.isSameAsDeliveryDates(d);
-    // Address lines (no contact — contact rides its own column).
-    const addrLines = (ep) => {
-      if (!ep || !ep.address) return [];
-      const a = ep.address;
-      return [
-        [a.street, a.street2].filter(Boolean).join(', '),
-        [a.city, a.region, a.postcode].filter(Boolean).join(', '),
-        (a.country_name && a.country_name !== "United States") ? a.country_name : null,
-      ].filter(Boolean);
-    };
-    const contactLine = (ep) => {
-      if (!ep || !ep.contact) return "";
-      const phone = ep.contact.phones && ep.contact.phones.length > 0 ? ep.contact.phones[0] : null;
-      return [ep.contact.name, phone].filter(Boolean).join(' · ');
-    };
-    %>
-  <thead>
-    <tr>
-    <th scope="col" colspan="4">Dates: </th>
-    <%/* `deliverySpan` is the WHOLE address area when there is no collection
-         leg, so block 2 takes the width block 3 would have had rather than
-         leaving a bare headless half. */%>
-    <th scope="col" colspan="<%= deliverySpan %>"><%= startLabel %></th>
-    <% if (hasCollection) { %>
-    <th scope="col" colspan="<%= returnSpan %>"><%= endLabel %></th>
-    <% } %>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-    <%/* Spanned, not omitted: the address cells that follow are positional, so
-         dropping three date cells would slide block 2 left into the dates
-         block. The four <col>s keep their widths either way. */%>
-    <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
-      <% if (d.delivery_start) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy', { in: CHICAGO }) %>
-      <% } %>
-    </td>
-    <%/* ARROW, END DATE AND DURATION ARE ALL RENTAL FURNITURE, and they now
-         stand or fall together. A sale-only order is handed over and never comes
-         back, so it has no end of anything — the old hyphenated range printed
-         `Tue 8/11/26 - Tue 8/11/26`, a window one day wide that does not exist.
-         The arrow and the end date already said so; the DURATION did not, and a
-         period label with no span behind it is the same claim in another form.
-         Inside the block the three keep their own guards, which is the point of
-         splitting them. The arrow needs `hasActiveWindow` — it is the only one
-         that draws the span BETWEEN two ends, so it needs both. The dates each
-         read their own boundary: every boundary is nullable, and one guard over
-         the whole range used to hide a start date we had whenever the end was
-         missing. */%>
-    <% if (hasCollection) { %>
-    <td class="arrow">
-      <% if (hasActiveWindow) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
-    </td>
-    <td class="date">
-      <% if (d.collection_start) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.collection_start), 'EEE M/d/yy', { in: CHICAGO }) %>
-      <% } %>
-    </td>
-    <td>
-      <% if (d.days_active != null) { %>
-      <%= it.dates.formatChargeDays(d.days_active).periodLabel %>
-      <% } %>
-    </td>
-    <% } %>
-    <td class="address" colspan="<%= deliverySpan %>">
-      <% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
-    </td>
-    <% if (hasCollection) { %>
-    <td class="address" colspan="<%= returnSpan %>">
-      <% addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
-    </td>
-    <% } %>
-    </tr>
-    <tr>
-      <td colspan="4">
-      <!-- Charge window — only when it differs from delivery/collection -->
-      <% if (showCharged) { %>
-      <span class="bold">Dates Charged: </span>
-      <% } %>
-      </td>
-      <td class="address" colspan="<%= deliverySpan %>"><%= contactLine(dest.delivery) %></td>
-      <% if (hasCollection) { %>
-      <td class="address" colspan="<%= returnSpan %>"><%= contactLine(dest.collection) %></td>
-      <% } %>
-    </tr>
-    <tr>
-      <%/* Split across the same four columns as the active window above, so the
-           two ranges read as one stacked pair rather than as two layouts — and
-           collapsed by the same `hasCollection` shape, for the same reason.
-           `showCharged` already carries that condition, so these cells stay
-           empty rather than absent; the SPAN has to match row 1 either way or
-           the instructions columns slide. */%>
-      <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
-      <% if (showCharged) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_start), 'EEE M/d/yy', { in: CHICAGO }) %>
-      <% } %>
-      </td>
-      <% if (hasCollection) { %>
-      <td class="arrow">
-      <% if (showCharged) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
-      </td>
-      <td class="date">
-      <% if (showCharged) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_end), 'EEE M/d/yy', { in: CHICAGO }) %>
-      <% } %>
-      </td>
-      <td>
-        <!-- Charge window — only when it differs from delivery/collection -->
-        <% if (showCharged && d.days_charged != null) { %>
-        <%= it.dates.formatChargeDays(d.days_charged).periodLabel %>
-        <% } %>
-      </td>
-      <% } %>
-      <td class="address" colspan="<%= deliverySpan %>"><%= dest.delivery?.instructions ?? "" %></td>
-      <% if (hasCollection) { %>
-      <td class="address" colspan="<%= returnSpan %>"><%= dest.collection?.instructions ?? "" %></td>
-      <% } %>
-    </tr>
-  </tbody>
-<% }) %>
-</table>
+<%~ await includeAsync("@partials/shared/destinations.eta", {
+     u: it.orders, destinations, addressColumnCount, hasCollection,
+     deliverySpan, returnSpan, CHICAGO,
+   }) %>
 <% } %>
 
 <!-- Items -->
@@ -668,112 +480,13 @@ const replacementLine = (item) => {
      a transaction fee has nothing to put in this grid, and an empty table with
      a header row reads as a rendering fault. */%>
 <% if (shownLineItems.length > 0) { %>
-<section id="items">
-  <table>
-    <thead>
-      <tr>
-        <th scope="col" class="wide">Item Description</th>
-        <th scope="col">Type</th>
-        <th scope="col">Qty</th>
-        <% if (hasRentals) { %>
-        <th scope="col">Duration</th>
-        <% } %>
-        <th scope="col">Unit Price</th>
-        <% if (hasDiscount) { %>
-        <th scope="col">Discount</th>
-        <% } %>
-        <th scope="col">Subtotal</th>
-        <% if (hasTax) { %>
-        <th scope="col">Tax</th>
-        <% } %>
-        <th scope="col" class="total">Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%/* The banner spans this table exactly. It is `itemColumnCount` rather
-           than a second copy of the arithmetic: the alignment edge of the page
-           is derived from the same number, and a banner that disagreed with
-           the header would take that edge with it. The base read `5` and every
-           banner row spanned one column short of its own table. */%>
-      <% const bannerSpan = itemColumnCount; %>
-      <% renderedItems.forEach(item => { %>
-        <% if (item.type === "group") { %>
-        <tr>
-          <td class="wide" colspan="<%= bannerSpan %>">
-            <strong><%= item.name %></strong>
-          </td>
-        </tr>
-        <% } else if (item.type === "destination") { %>
-        <% if (destinations.length > 1) { %>
-        <tr>
-          <td class="wide" colspan="<%= bannerSpan %>">
-            <%= item.name %>
-          </td>
-        </tr>
-        <% } %>
-        <% } else { %>
-        <%/* The money on the row itself plus anything rolled onto it from a hidden
-             zero-priced component. With the param off, `rolled` is undefined
-             everywhere and these are the stored figures on the line. */%>
-        <% const rolled = rolledUp.get(pathKey(item)); %>
-        <% const rowTaxCents = itemTaxCents(item) + (rolled ? rolled.tax : 0); %>
-        <% const rowSubtotalCents = (item.price.subtotal_discounted_cents ?? item.price.subtotal_cents) + (rolled ? rolled.subtotal : 0); %>
-        <% const rowTotalCents = item.price.total_cents + (rolled ? rolled.total : 0); %>
-        <tr>
-          <td style="padding-left: <%= componentDepth(item) %>em">
-            <%= item.name %>
-            <% if (item.description) { %>
-            <br><%= item.description %>
-            <% } %>
-          </td>
-          <td class="capitalize"><% if (DISAMBIGUATED_ITEM_TYPES.has(item.type)) { %><%= item.type %><% } %></td>
-          <td><%= numberCell(item.quantity) %></td>
-          <% if (hasRentals) { %>
-          <td><%= item.type === "rental" && item.price.chargeable_days ? item.price.chargeable_days + ' days' : '' %></td>
-          <% } %>
-          <td><%= moneyCellOn(item.price.base_cents, rowTaxCents) %></td>
-          <% if (hasDiscount) { %>
-          <td>
-            <%/* Parenthesised: a discount is a deduction, and the accounting
-                 convention reads it as one without a sign the eye can miss.
-                 Both arms get the parens — a `percent` discount is the same
-                 deduction expressed as a rate, so bracketing only the flat one
-                 would make the column's two shapes look like different kinds
-                 of number. Empty cell when there is no discount, NOT `(  )`.
-
-                 Padded inside the brackets — `( 20% )`, not `(20%)`. At the 9px
-                 root the glyphs sit tight enough that an unpadded bracket reads
-                 as part of the number rather than around it. */%>
-            <% if (item.price.discount) { %>
-            <% if (item.price.discount.type === "percent") { %>
-            <% if (item.price.discount.rate) { %>( <%= item.price.discount.rate %>% )<% } %>
-            <% } else { %>
-            <% if (item.price.discount.amount_cents) { %>( <%= it.money.formatCents(item.price.discount.amount_cents) %> )<% } %>
-            <% } %>
-            <% } %>
-          </td>
-          <% } %>
-          <%
-            // `??`, not `||`. A fully-discounted line has
-            // `subtotal_discounted_cents: 0`, which is falsy — so `||` fell
-            // through and printed the PRE-discount subtotal for exactly the
-            // lines where the discount mattered most. The bug was invisible
-            // because neither fixture carried a discount until templates#57.
-          %>
-          <td><%= moneyCellOn(rowSubtotalCents, rowTaxCents) %></td>
-          <% if (hasTax) { %>
-          <%/* The `taxes && taxes.length > 0` guard is gone because `moneyCell`
-               subsumes it: an empty array reduces to 0 and renders blank, which
-               is the same cell the guard produced. One test, not two. */%>
-          <td><%= moneyCell(rowTaxCents) %></td>
-          <% } %>
-          <td class="total"><%= moneyCell(rowTotalCents) %></td>
-        </tr>
-        <% } %>
-      <% }) %>
-    </tbody>
-  </table>
-</section>
+<%~ await includeAsync("@partials/shared/items-grid.eta", {
+     renderedItems, columnCount: itemColumnCount, hasRentals, hasDiscount, hasTax,
+     rolledUp, componentDepth, numberCell, moneyCell, moneyCellOn,
+     itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
+     showDestinationBanners: destinations.length > 1,
+     showOrderBanner: true,
+   }) %>
 <% } %>
 
 <section id="information">
@@ -803,65 +516,7 @@ const replacementLine = (item) => {
 </section>
 
 <!-- Totals -->
-<section id="totals">
-  <table>
-    <tbody>
-      <tr>
-        <th scope="row">Subtotal: </th>
-        <td><%= it.money.formatCents(totals.subtotal_cents) %></td>
-      </tr>
-      <% if (totals.discount_amount_cents > 0) { %>
-      <tr>
-        <th scope="row">Discount: </th>
-        <%/* Padded inside the brackets, matching the Discount column in #items —
-             the two are the same deduction at two scales and must not look like
-             two different conventions. */%>
-        <td>( <%= it.money.formatCents(totals.discount_amount_cents) %> )</td>
-      </tr>
-      <tr>
-        <th scope="row">Subtotal after Discount: </th>
-        <td><%= it.money.formatCents(totals.subtotal_discounted_cents) %></td>
-      </tr>
-      <% } %>
-      <% totals.taxes.forEach(tax => { %>
-      <% if (tax.amount_cents !== 0) { %>
-      <tr>
-        <%/* The colon belongs to the ROW, not to the rate. It used to sit inside
-             the `percent` branch, so the first FLAT tax to reach this block —
-             the per-unit water levy — printed "Water Bottle Tax" bare while
-             "Subtotal:", "Total:" and every percent tax beside it kept theirs.
-             Invisible until now for the documented reason: no fixture carried a
-             flat tax, so this arm had never rendered. A flat tax shows no rate
-             because its rate is money-per-unit of a unit this block cannot name
-             — the row says WHAT was charged, and the items table above says on
-             what. */%>
-        <th scope="row"><%= tax.name %><% if (tax.type === "percent") { %> <%= tax.rate %>%<% } %>:</th>
-        <td><%= it.money.formatCents(tax.amount_cents) %></td>
-      </tr>
-      <% } %>
-      <% }) %>
-      <% totals.transaction_fees.forEach(fee => { %>
-      <% if (fee.amount_cents !== 0) { %>
-      <tr>
-        <%/* Same rule as the tax row above, and no longer reasoned about: the
-             flat arm RENDERS and is GATED. `fee-flat-card` (prod order 502,
-             added #113) carries a real $1.15 `flat` Card Fee, so this branch
-             sits under a blessed golden and a rate leaking into the flat arm —
-             or the colon slipping back inside the `percent` one — now fails
-             `visual-diff` instead of shipping unlooked-at. The percent arm is
-             `discounts-and-fee`'s 2.9% card fee. Both arms, both fixtures. */%>
-        <th scope="row"><%= fee.name %><% if (fee.type === "percent") { %> <%= fee.rate %>%<% } %>:</th>
-        <td><%= it.money.formatCents(fee.amount_cents) %></td>
-      </tr>
-      <% } %>
-      <% }) %>
-      <tr>
-        <th scope="row">Total:</th>
-        <td><%= it.money.formatCents(totals.total_cents) %></td>
-      </tr>
-    </tbody>
-  </table>
-</section>
+<%~ await includeAsync("@partials/shared/totals.eta", { totals }) %>
 
 <!-- Replacement Costs -->
 <% if (replacementItems.length > 0) { %>
