@@ -432,6 +432,15 @@ sidecar's one-writer-per-section table.
   `content_refreshed: false` and its next commit writes base's changes back out.
   **Commit first, then rebase.**
 
+🔴 **NARROW EVERY FAMILY READ.** Verifying the above against deployed dev turned
+up a live defect and it is fixed in the same change: `templates_read` and
+`templates_read_component` return every version a family has ever had with its
+whole content map, so an unnarrowed call is **over the response cap and returns
+NOTHING** — `quote` measured 3,303,497 characters, `base` 106,083. Pass
+`uid_version` (`templates_list` / `templates_list_components` → `uid_active`, or
+a `draft_uids` entry) **and** `paths`. The sidecar you must read before replacing
+it is `paths: ["templates/<git_path>.meta.json"]`.
+
 **Three deliberately absent — do not add:** `templates_merge` (merging *is* the
 publish authority), `bless-golden` (**approving the renders is the human
 authorization** the lifecycle protects), and `POST /templates` / `.../fork` (a
