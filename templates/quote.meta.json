@@ -92,7 +92,7 @@
   ],
   "render": {
     "margin_top": 0.5,
-    "margin_bottom": 0.62,
+    "margin_bottom": 0.63,
     "margin_left": 0.5,
     "margin_right": 0.5,
     "filename": "Quote <%= it.doc.number %><% if (it.doc.reference) { %> - <%= it.doc.reference %><% } %>",
