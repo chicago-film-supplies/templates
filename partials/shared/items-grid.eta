@@ -1,0 +1,154 @@
+<%/* The items grid — the most intricate markup in the repo, and exactly the
+     code you do not want two divergent copies of. 6 to 9 columns, three of them
+     conditional; a banner row that must span its own table exactly; a component
+     indent derived from `path`; the `??`-not-`||` discounted-subtotal rule; and
+     the em-dash-on-a-taxed-zero cell.
+
+     Props — every one of them is a decision the DOCUMENT makes, handed in:
+       renderedItems         the rows to draw, dividers interleaved
+       columnCount           how wide a banner spans (see `bannerSpan` below)
+       hasRentals/hasDiscount/hasTax   which conditional columns are on
+       rolledUp              money moved off hidden zero-priced components
+       componentDepth        nesting depth UNDER A LINE ITEM, divider-agnostic
+       numberCell/moneyCell/moneyCellOn/itemTaxCents/pathKey   the cell rules
+       DISAMBIGUATED_ITEM_TYPES        which `type` values the Type column says
+       showDestinationBanners          suppressed at a single destination
+       showOrderBanner                 suppressed at a single source order
+
+     ⚠️ **Hierarchy-agnostic on purpose.** `componentDepth` already filters
+     divider uids out of the path, so this partial is indifferent to HOW MANY
+     divider levels exist — `[destination, group]` on an order,
+     `[order, destination, group]` on an invoice. api-cloudrun#538 would re-base
+     orders onto the invoice's three levels; when it lands, nothing here moves.
+
+     Both banner arms are gated on the same principle — a divider that names the
+     only member of its level is noise — but each gate is the CALLER's to
+     compute, because only the caller knows what its level contains. The quote
+     has no order level at all and passes nothing.
+
+     ⚠️ **Multi-order invoicing is not live**: it is a manager feature landing
+     after the CRMS cutover, so every invoice today bills exactly one order and
+     the order banner renders on none of them. The arm is here so that the
+     feature does not need this shared file reopened. */%>
+<%
+const {
+  renderedItems, columnCount, hasRentals, hasDiscount, hasTax,
+  rolledUp, componentDepth, numberCell, moneyCell, moneyCellOn,
+  itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
+  showDestinationBanners, showOrderBanner,
+} = it;
+%>
+<section id="items">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col" class="wide">Item Description</th>
+        <th scope="col">Type</th>
+        <th scope="col">Qty</th>
+        <% if (hasRentals) { %>
+        <th scope="col">Duration</th>
+        <% } %>
+        <th scope="col">Unit Price</th>
+        <% if (hasDiscount) { %>
+        <th scope="col">Discount</th>
+        <% } %>
+        <th scope="col">Subtotal</th>
+        <% if (hasTax) { %>
+        <th scope="col">Tax</th>
+        <% } %>
+        <th scope="col" class="total">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%/* The banner spans this table exactly. It is `itemColumnCount` rather
+           than a second copy of the arithmetic: the alignment edge of the page
+           is derived from the same number, and a banner that disagreed with
+           the header would take that edge with it. The base read `5` and every
+           banner row spanned one column short of its own table. */%>
+      <% const bannerSpan = columnCount; %>
+      <% renderedItems.forEach(item => { %>
+        <% if (item.type === "group") { %>
+        <tr>
+          <td class="wide" colspan="<%= bannerSpan %>">
+            <strong><%= item.name %></strong>
+          </td>
+        </tr>
+        <% } else if (item.type === "order") { %>
+        <% if (showOrderBanner) { %>
+        <tr>
+          <td class="wide" colspan="<%= bannerSpan %>">
+            <strong><%= item.name %></strong>
+          </td>
+        </tr>
+        <% } %>
+        <% } else if (item.type === "destination") { %>
+        <% if (showDestinationBanners) { %>
+        <tr>
+          <td class="wide" colspan="<%= bannerSpan %>">
+            <%= item.name %>
+          </td>
+        </tr>
+        <% } %>
+        <% } else { %>
+        <%/* The money on the row itself plus anything rolled onto it from a hidden
+             zero-priced component. With the param off, `rolled` is undefined
+             everywhere and these are the stored figures on the line. */%>
+        <% const rolled = rolledUp.get(pathKey(item)); %>
+        <% const rowTaxCents = itemTaxCents(item) + (rolled ? rolled.tax : 0); %>
+        <% const rowSubtotalCents = (item.price.subtotal_discounted_cents ?? item.price.subtotal_cents) + (rolled ? rolled.subtotal : 0); %>
+        <% const rowTotalCents = item.price.total_cents + (rolled ? rolled.total : 0); %>
+        <tr>
+          <td style="padding-left: <%= componentDepth(item) %>em">
+            <%= item.name %>
+            <% if (item.description) { %>
+            <br><%= item.description %>
+            <% } %>
+          </td>
+          <td class="capitalize"><% if (DISAMBIGUATED_ITEM_TYPES.has(item.type)) { %><%= item.type %><% } %></td>
+          <td><%= numberCell(item.quantity) %></td>
+          <% if (hasRentals) { %>
+          <td><%= item.type === "rental" && item.price.chargeable_days ? item.price.chargeable_days + ' days' : '' %></td>
+          <% } %>
+          <td><%= moneyCellOn(item.price.base_cents, rowTaxCents) %></td>
+          <% if (hasDiscount) { %>
+          <td>
+            <%/* Parenthesised: a discount is a deduction, and the accounting
+                 convention reads it as one without a sign the eye can miss.
+                 Both arms get the parens — a `percent` discount is the same
+                 deduction expressed as a rate, so bracketing only the flat one
+                 would make the column's two shapes look like different kinds
+                 of number. Empty cell when there is no discount, NOT `(  )`.
+
+                 Padded inside the brackets — `( 20% )`, not `(20%)`. At the 9px
+                 root the glyphs sit tight enough that an unpadded bracket reads
+                 as part of the number rather than around it. */%>
+            <% if (item.price.discount) { %>
+            <% if (item.price.discount.type === "percent") { %>
+            <% if (item.price.discount.rate) { %>( <%= item.price.discount.rate %>% )<% } %>
+            <% } else { %>
+            <% if (item.price.discount.amount_cents) { %>( <%= it.money.formatCents(item.price.discount.amount_cents) %> )<% } %>
+            <% } %>
+            <% } %>
+          </td>
+          <% } %>
+          <%
+            // `??`, not `||`. A fully-discounted line has
+            // `subtotal_discounted_cents: 0`, which is falsy — so `||` fell
+            // through and printed the PRE-discount subtotal for exactly the
+            // lines where the discount mattered most. The bug was invisible
+            // because neither fixture carried a discount until templates#57.
+          %>
+          <td><%= moneyCellOn(rowSubtotalCents, rowTaxCents) %></td>
+          <% if (hasTax) { %>
+          <%/* The `taxes && taxes.length > 0` guard is gone because `moneyCell`
+               subsumes it: an empty array reduces to 0 and renders blank, which
+               is the same cell the guard produced. One test, not two. */%>
+          <td><%= moneyCell(rowTaxCents) %></td>
+          <% } %>
+          <td class="total"><%= moneyCell(rowTotalCents) %></td>
+        </tr>
+        <% } %>
+      <% }) %>
+    </tbody>
+  </table>
+</section>

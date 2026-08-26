@@ -1,0 +1,87 @@
+<%/* The totals block.
+
+     Props:
+       totals      the document's server-computed totals
+       extraRows   rows appended after Total — the invoice's Amount Paid /
+                   Credits Applied / Amount Due. `[{label, value}]`, already
+                   formatted, because a partial that formatted them would be
+                   deciding what `?? 0` means for a field it cannot see.
+
+     ⚠️ Nothing here computes money. Values arrive already computed by
+     `@cfs/core/utils/*`; `money-lint.yml` fails CI on `.divide(`/`.multiply(`/
+     `.distribute(` in any `.eta`, and it walks `partials` too. */%>
+<%
+const { totals, extraRows } = it;
+%>
+<section id="totals">
+  <table>
+    <tbody>
+      <tr>
+        <th scope="row">Subtotal: </th>
+        <td><%= it.money.formatCents(totals.subtotal_cents) %></td>
+      </tr>
+      <% if (totals.discount_amount_cents > 0) { %>
+      <tr>
+        <th scope="row">Discount: </th>
+        <%/* Padded inside the brackets, matching the Discount column in #items —
+             the two are the same deduction at two scales and must not look like
+             two different conventions. */%>
+        <td>( <%= it.money.formatCents(totals.discount_amount_cents) %> )</td>
+      </tr>
+      <tr>
+        <th scope="row">Subtotal after Discount: </th>
+        <td><%= it.money.formatCents(totals.subtotal_discounted_cents) %></td>
+      </tr>
+      <% } %>
+      <% totals.taxes.forEach(tax => { %>
+      <% if (tax.amount_cents !== 0) { %>
+      <tr>
+        <%/* The colon belongs to the ROW, not to the rate. It used to sit inside
+             the `percent` branch, so the first FLAT tax to reach this block —
+             the per-unit water levy — printed "Water Bottle Tax" bare while
+             "Subtotal:", "Total:" and every percent tax beside it kept theirs.
+             Invisible until now for the documented reason: no fixture carried a
+             flat tax, so this arm had never rendered. A flat tax shows no rate
+             because its rate is money-per-unit of a unit this block cannot name
+             — the row says WHAT was charged, and the items table above says on
+             what. */%>
+        <th scope="row"><%= tax.name %><% if (tax.type === "percent") { %> <%= tax.rate %>%<% } %>:</th>
+        <td><%= it.money.formatCents(tax.amount_cents) %></td>
+      </tr>
+      <% } %>
+      <% }) %>
+      <% totals.transaction_fees.forEach(fee => { %>
+      <% if (fee.amount_cents !== 0) { %>
+      <tr>
+        <%/* Same rule as the tax row above, and no longer reasoned about: the
+             flat arm RENDERS and is GATED. `fee-flat-card` (prod order 502,
+             added #113) carries a real $1.15 `flat` Card Fee, so this branch
+             sits under a blessed golden and a rate leaking into the flat arm —
+             or the colon slipping back inside the `percent` one — now fails
+             `visual-diff` instead of shipping unlooked-at. The percent arm is
+             `discounts-and-fee`'s 2.9% card fee. Both arms, both fixtures. */%>
+        <th scope="row"><%= fee.name %><% if (fee.type === "percent") { %> <%= fee.rate %>%<% } %>:</th>
+        <td><%= it.money.formatCents(fee.amount_cents) %></td>
+      </tr>
+      <% } %>
+      <% }) %>
+      <tr>
+        <th scope="row">Total:</th>
+        <td><%= it.money.formatCents(totals.total_cents) %></td>
+      </tr>
+<%/* ⚠️ **These two tags sit at column 0 on purpose — do not "fix" the
+       indentation.** Eta's `autoTrim` slurps the newline AFTER a tag but keeps
+       the whitespace BEFORE it, so an indented loop that runs zero times still
+       emits its own indent: with `extraRows` absent (every quote), the ordinary
+       form left `</tbody>` six spaces further right than the markup it
+       replaced. Harmless to a renderer, but it makes this extraction stop being
+       byte-identical, which is the only exact evidence the golden gate's 0.001
+       whole-page threshold cannot give (templates#137). At column 0 the empty
+       case emits nothing at all. */%>
+<% (extraRows ?? []).forEach(row => { %>      <tr>
+        <th scope="row"><%= row.label %></th>
+        <td><%= row.value %></td>
+      </tr>
+<% }) %>    </tbody>
+  </table>
+</section>

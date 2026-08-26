@@ -1,0 +1,56 @@
+<%/* The letterhead — our identity, the customer's, and the logo between them.
+     ONE partial rather than three because the DOM says so: `#logo`, `#bill-to`
+     and `#cfs` are three siblings of `#grid-wrapper` in that order, and
+     `#bill-to` sits BETWEEN the two blocks that are purely ours. Splitting them
+     would mean three includes to reproduce one contiguous run of markup.
+
+     Props:
+       title         the document's own heading — "Quote #123", "Invoice #2390"
+       organization  the customer org (name + billing_address)
+
+     `it.logo` is inherited, not passed: it is injected into every render
+     context by `renderTemplate` and is not a fact about the document. */%>
+<%
+const { title, organization } = it;
+%>
+  <div id="logo">
+    <%~ it.logo %>
+  </div>
+  <section id="bill-to">
+    <%
+    // `billing_address` is `.optional()` on the organization snapshot AND
+    // `Address` is itself `.nullable()`, so an order can legitimately carry
+    // neither — the old unguarded chain threw on the first `.street` (#25).
+    //
+    // The lines are assembled rather than emitted as bare spans for the same
+    // reason: a separator only belongs there when both sides of it are present.
+    // `street2` defaults to `""`, so the old markup printed a leading comma on
+    // every order without a suite number.
+    const billing = organization?.billing_address ?? {};
+    const streetLine = [billing.street, billing.street2].filter(Boolean).join(", ");
+    const cityLine = [
+      [billing.city, billing.region].filter(Boolean).join(", "),
+      billing.postcode,
+    ].filter(Boolean).join(" ");
+    // `country_name` is stored with a space. Matching "UnitedStates" never
+    // matched anything, so the country line printed on every domestic quote.
+    const foreign = billing.country_name && billing.country_name !== "United States";
+    %>
+    <h1><%= title %></h1>
+    <div><%= organization.name %></div>
+    <% if (streetLine) { %>
+    <div><%= streetLine %></div>
+    <% } %>
+    <% if (cityLine) { %>
+    <div><%= cityLine %></div>
+    <% } %>
+    <% if (foreign) { %>
+    <div><%= billing.country_name %></div>
+    <% } %>
+  </section>
+  <section id="cfs">
+    <h1>Chicago Film Supplies</h1>
+    <div>3100 W Fillmore St, Chicago, IL 60612</div>
+    <div>team@chicagofilmsupplies.com</div>
+    <div>312.818.3008</div>
+  </section>
