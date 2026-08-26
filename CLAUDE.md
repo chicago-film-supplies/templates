@@ -126,12 +126,19 @@ templates/<name>.eta                    document body partial (rendered with `it
 templates/<name>.meta.json              sidecar: display_name, collection_source/target, surfaces[], depends_on.components[], params[], fixtures[], render{}
 layouts/<name>.eta                      component layout skeleton (wraps the body via `it.body`, injects `it.styles`)
 styles/<name>.css                       per-template OR per-component stylesheet
-partials/<template>/<part>.eta          render-config partials (footer/header), rendered with the same `it` context
+partials/<template>/<part>.eta          includable partial: a render-config part (footer/header) OR a body fragment
 partials/shared/<part>.eta              the same, but owned by the `base` COMPONENT and overlaid onto every family
 template-components/<name>.meta.json    component sidecar: display_name + files[] manifest
 fixtures/<template>/<slug>.json         deterministic source docs for golden visual-diff (operator-managed; PII sanitized on capture)
 goldens/<branch>/<template>/<slug>.png  branch-keyed golden screenshot, one per fixture
 ```
+
+⚠️ **A partial is no longer only a footer/header slot.** Until 2026-08-26 the
+only way a `partials/**` file reached a page was a sidecar `render.footer` /
+`render.header` naming it, and each of those renders as its own isolated
+document. A body may now `includeAsync` one, which is how the three families
+share chrome — see § Includes under *Template context*. Both uses live in the
+same directories and the same content map; what differs is who pulls the file in.
 
 Fixtures are **files-authoritative for discovery**: the renderer globs `fixtures/<template>/*.json` and the sidecar's `fixtures[]` supplies each entry's label and reason. An orphaned sidecar entry never breaks a render; zero fixtures yields a `no-fixtures` golden verdict (informational pass).
 
@@ -171,6 +178,52 @@ This is not a hypothetical. Measured 2026-08-24 across **all 996 prod orders**: 
 
 **Both of the things that should have caught it are blind to it by construction, which is why the rule is written here rather than left to review.** Local `deno task preview` runs on a laptop in Chicago, where the unpinned form is accidentally correct. And the golden gate is deterministic *by freezing the clock*, not by fixing the zone — `FROZEN_NOW` is midday, and until `evening-boundary` (prod order 872, 19:00 CDT = 00:00 UTC exactly) no fixture crossed the boundary, so all 12 goldens compared the defect to itself and passed. Reproduce either way with `TZ=UTC deno task preview quote evening-boundary`.
 
+### Includes — how the three families share chrome
+
+```eta
+<%~ await includeAsync("@partials/shared/bill-to.eta", { title: "Quote #123" }) %>
+```
+
+Four rules, each of which is a render failure if broken:
+
+- **`includeAsync`, never `include`.** The sync form resolves against a template
+  store the pipeline never writes to.
+- **The `@` prefix is mandatory, even when the file plainly exists.** Eta routes
+  any un-prefixed name to its filesystem resolver, which opens with
+  `if (!views) throw` — and the render pipeline has no `views` and never will,
+  because template content is git-canonical and arrives as a content map. `@` is
+  the branch that reads the in-memory store instead. "But the file is right
+  there" is precisely the case that fails.
+- **Emit raw (`<%~`).** `<%=` escapes the partial's own markup into text.
+- **The name must be a literal.** A computed one cannot be checked before render,
+  so the save gate refuses it rather than trusting it.
+
+**The props burden is much smaller than it looks.** Eta's codegen is
+`includeAsync = (t, d) => this.renderAsync(t, {...it, ...(d ?? {})})` — the
+parent's whole `it` is spread in **first**, so a partial inherits `it.doc`,
+`it.money`, `it.dates`, `it.icons`, `it.now`, `it.params`, `it.logo`,
+`it.dateFns`, `it.tz` and the resolved util namespaces for free. Only the
+caller's top-of-file **locals** need passing.
+
+⚠️ **A shared partial never NAMES a util namespace.** `it.orders` and
+`it.invoices` are resolved per family from its collections, so a partial that
+writes `it.orders.orderHasTax(…)` can only ever serve orders-source families and
+throws for the rest. Take the namespace object as a prop — conventionally `u` —
+and call `u.orderHasTax(…)`. Same rule for anything else family-dependent:
+**hand it in, don't reach for it.**
+
+⚠️ **The LAYOUT gets no partials, deliberately.** `layouts/base.eta` renders with
+`{doc, body, styles}` only, so an include there would compile, render, and see
+none of `it`. It is left unregistered rather than half-working — in production,
+in the golden gate and in `deno task preview` alike.
+
+**A bad include is refused at SAVE, not discovered at render.** The compile gate
+cannot see this class at all: `eta.compile()` builds the template function
+without executing it, so a name that resolves to nothing is well-formed JS. A
+separate guard (`validateIncludeTargets`, `api-cloudrun/src/lib/templates/eta.ts`)
+scans each `.eta` for include call sites and 400s on a missing key, the sync
+form, a missing `@`, or a computed name — naming the near match.
+
 ### Icons
 
 `it.icons.svg(name, opts)` returns **inline SVG** for any lucide icon; `it.icons.has(name)` gates a data-driven name. Emit raw — `<%~ it.icons.svg("truck") %>`, not `<%= %>`.
@@ -191,7 +244,9 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
 ## Local preview
 
-`deno task preview [name] [fixture-slug]` renders a template + fixture to `preview.html` with the same overlay the API performs (component styles → template styles → layout), prints the rendered `filename`, and inlines the footer partial below the body to confirm it parses. `deno task preview:watch` re-renders on change.
+`deno task preview [name] [fixture-slug]` renders a template + fixture to `preview.html` with the same overlay the API performs (component styles → template styles → layout), registers every `partials/shared/**` and `partials/<name>/**` file as an includable partial, prints the rendered `filename` and the partials it registered, and inlines the footer partial below the body to confirm it parses. `deno task preview:watch` re-renders on change — and **watches `partials/` too**, which it did not until 2026-08-26, so editing the shared footer used to trigger no re-render at all.
+
+⚠️ **The harness runs TWO Eta instances, and that is not an accident.** The document surfaces (body, footer, filename) render on the engine that has partials registered; the LAYOUT renders on a partial-free one, because production registers none there. One shared engine would make an include in `layouts/base.eta` work here and throw in prod — the exact direction this harness exists to prevent.
 
 **A util namespace this harness cannot provide is a hard error, deliberately.** `UTIL_MODULES` in `scripts/preview.ts` must mirror the server's (`api-cloudrun/src/lib/templates/eta.ts`); if it doesn't, the resolver throws and names the fix. It used to skip silently, and that is how `money` came to be missing here while the server injected it — and `money` is in core's `ALWAYS_ON_UTIL_NAMESPACES`, so *every* template requests it. The result was that the first `it.money.*` call rendered correctly in production and died here with `Cannot read properties of undefined`, which reads as a template bug rather than a harness one. This repo has no test suite, so the throw is the guarantee (the server side is covered by `renderUtilNamespaces.test.ts`). **Do not re-add a silent skip.**
 

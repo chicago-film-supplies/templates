@@ -80,6 +80,18 @@ const NOW = "2026-01-15T12:00:00.000-06:00";
 
 const eta = new Eta({ autoEscape: true, cache: false });
 
+/**
+ * The LAYOUT engine — deliberately partial-free.
+ *
+ * `renderDocument` registers partials for the body, footer, header and filename
+ * and NOT for the layout, whose context is `{doc, body, styles}`: an include
+ * there would compile, render, and see none of `it`. Mirroring that split needs
+ * a second engine, because `loadTemplate` writes into an instance-scoped store —
+ * one shared engine would make an include in the layout work here and throw in
+ * production, which is the direction this harness exists to prevent.
+ */
+const layoutEta = new Eta({ autoEscape: true, cache: false });
+
 // Positionals are [template name, fixture slug]; flags may appear anywhere.
 // Filtering them out first is what lets a TASK bake a flag in — `preview:watch`
 // passes `--background`, which `deno task` places BEFORE the args a caller
@@ -174,7 +186,16 @@ const params = resolveRenderParams(sidecar.params ?? [], paramOverrides);
 // Overlay the stylesheet: component styles first, then the template's own.
 const styleParts: string[] = [];
 for (const dep of components) {
-  styleParts.push(await Deno.readTextFile(`styles/${dep}.css`));
+  // A component need not ship a stylesheet — `base.meta.json`'s `files[]` is a
+  // manifest, not a promise of one file per kind — and the server concatenates
+  // whatever `styles/*.css` keys the content map happens to hold rather than
+  // demanding one per dependency. An unguarded read turned "this component has
+  // no CSS" into a NotFound crash naming a path the author never wrote.
+  try {
+    styleParts.push(await Deno.readTextFile(`styles/${dep}.css`));
+  } catch (err) {
+    if (!(err instanceof Deno.errors.NotFound)) throw err;
+  }
 }
 styleParts.push(await Deno.readTextFile(`styles/${name}.css`));
 const styles = styleParts.join("\n");
@@ -182,6 +203,45 @@ const styles = styleParts.join("\n");
 const layout = await Deno.readTextFile("layouts/base.eta");
 const templateBody = await Deno.readTextFile(`templates/${name}.eta`);
 const doc = JSON.parse(await Deno.readTextFile(fixtureFile));
+
+/**
+ * Register every includable partial under the `@` prefix the server uses.
+ *
+ * Both pools: `partials/shared/**` (owned by the `base` COMPONENT, overlaid onto
+ * every family) and `partials/<name>/**` (this family's own). The server resolves
+ * the same set out of the merged content map via `partialEntries`
+ * (`api-cloudrun/src/lib/templates/eta.ts`), so a key registered here and not
+ * there — or the reverse — is content that previews one way and renders another.
+ *
+ * The `@` prefix is not decoration. Eta routes any name WITHOUT it to its
+ * filesystem resolver, which throws on the absent `views` config; with it, the
+ * name reads the in-memory store `loadTemplate` writes. Authoring form:
+ *
+ *   <%~ await includeAsync("@partials/shared/bill-to.eta", { title: "…" }) %>
+ */
+async function* walkEta(dir: string): AsyncGenerator<string> {
+  let entries: Deno.DirEntry[];
+  try {
+    entries = [];
+    for await (const e of Deno.readDir(dir)) entries.push(e);
+  } catch (err) {
+    if (err instanceof Deno.errors.NotFound) return;
+    throw err;
+  }
+  entries.sort((a, b) => a.name.localeCompare(b.name));
+  for (const e of entries) {
+    if (e.isDirectory) yield* walkEta(`${dir}/${e.name}`);
+    else if (e.isFile && e.name.endsWith(".eta")) yield `${dir}/${e.name}`;
+  }
+}
+
+const partialKeys: string[] = [];
+for (const dir of ["partials/shared", `partials/${name}`]) {
+  for await (const key of walkEta(dir)) {
+    eta.loadTemplate(`@${key}`, await Deno.readTextFile(key), { async: true });
+    partialKeys.push(key);
+  }
+}
 
 /**
  * The `it.*` util namespaces this template gets — resolved from its sidecar's
@@ -233,7 +293,7 @@ const ctx = {
 };
 
 const body = await eta.renderStringAsync(templateBody, ctx);
-let html = await eta.renderStringAsync(layout, { ...ctx, body, styles });
+let html = await layoutEta.renderStringAsync(layout, { ...ctx, body, styles });
 
 // Render config (margins / base font size / dynamic filename / footer).
 // Mirrors the api-cloudrun render path: the footer is rendered via Eta with the
@@ -255,6 +315,9 @@ if (renderConfig.footer) {
 
 await Deno.writeTextFile(outputFile, html);
 console.log(`Rendered ${name} → ${outputFile}`);
+if (partialKeys.length > 0) {
+  console.log(`Partials: ${partialKeys.join(", ")}`);
+}
 // `!== undefined`, not a truthiness test: a 0in margin is a legitimate config
 // and would silence this line. The old form short-circuited on
 // `renderConfig.base_font_size ||`, so deleting that key (templates#114) would

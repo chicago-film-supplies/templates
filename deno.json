@@ -30,7 +30,7 @@
   },
   "tasks": {
     "preview": "deno run --allow-read --allow-write --allow-run --allow-env=PREVIEW_BROWSER scripts/preview.ts",
-    "preview:watch": "deno run --watch=templates/,layouts/,styles/ --allow-read --allow-write --allow-run --allow-env=PREVIEW_BROWSER scripts/preview.ts --background",
+    "preview:watch": "deno run --watch=templates/,layouts/,styles/,partials/ --allow-read --allow-write --allow-run --allow-env=PREVIEW_BROWSER scripts/preview.ts --background",
     "fetch-llms-docs": "deno run --allow-net --allow-read --allow-write scripts/fetch-llms-docs.ts",
     "lint:fixtures": "deno run --allow-read scripts/lint-fixtures.ts",
     "lint:citations": "deno run --allow-read --allow-env scripts/lint-citations.ts"
