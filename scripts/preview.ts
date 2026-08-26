@@ -21,6 +21,7 @@ import * as dateFns from "date-fns";
 import { tz } from "@date-fns/tz";
 import * as orderUtils from "@cfs/core/utils/orders";
 import * as invoiceUtils from "@cfs/core/utils/invoices";
+import * as fulfillmentUtils from "@cfs/core/utils/fulfillments";
 import * as dateUtils from "@cfs/core/utils/dates";
 import * as iconUtils from "@cfs/core/utils/icons";
 import { CFS_LOGO_SVG } from "@cfs/core/utils/icons";
@@ -59,6 +60,11 @@ import type { TemplateCollectionType } from "@cfs/core/schemas";
 const UTIL_MODULES: Record<string, unknown> = {
   orders: orderUtils,
   invoices: invoiceUtils,
+  // `fulfillments` is a template SOURCE collection: a packing list renders from
+  // what was PICKED rather than what was ordered. A fulfillments-sourced family
+  // resolves to `{dates, money, icons, fulfillments}` and gets NO `it.orders`,
+  // so this entry is the only thing that gives it document helpers at all.
+  fulfillments: fulfillmentUtils,
   dates: dateUtils,
   money: moneyUtils,
   icons: iconUtils,

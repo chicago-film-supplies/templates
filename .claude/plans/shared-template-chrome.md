@@ -444,9 +444,45 @@ in CRMS, uploads to Uploadcare and writes `orders/{uid}/documents/packing-list`;
 `services/quotes.ts` — more work than the invoice, which already has its PDF
 plumbing.
 
-Sidecar: `collection_source: "orders"` (there is no `fulfillments` source — the
-enum is `orders | invoices`), `collection_target: "packing_lists"`,
-`surfaces: ["fulfillment"]`. It gets `it.orders`, same as the quote.
+Sidecar: `collection_source: **"fulfillments"**`,
+`collection_target: "packing_lists"`, `surfaces: ["fulfillment"]`. It gets
+`it.fulfillments` and **no `it.orders`**.
+
+⚠️ **The source changed, and it is a real decision rather than a rename**
+(Alex, 2026-08-26; enum expanded in core `7770443`, published as beta.271). This
+doc previously said "there is no `fulfillments` source — the enum is
+`orders | invoices`", which was true of the enum and wrong about the document.
+
+**A packing list should say what was PICKED, not what was ordered, and only a
+fulfillment knows the difference.** A fulfillment line carries `quantity`
+beside `quantity_order`, and `path_substituted_for` when a picker swapped one
+item for another. None of that exists on the order, so an order-sourced packing
+list can only ever describe intent — which is the wrong document to hand a
+driver.
+
+The enum gained `fulfillments` as a **source only**. Nothing produces a
+fulfillment from a template, so it is deliberately absent from
+`TEMPLATE_TARGET_COLLECTIONS`.
+
+`src/utils/fulfillments.ts` is the namespace behind it — **re-exports over
+`utils/orders.ts`, never reimplementations.** A fulfillment's `items[]` is
+assignable to `LineItem` and its `destinations[]` is the same
+`DocDestinationType`, so the helpers were already written; what was missing was
+a name to reach them under. Mapping `fulfillments` to the string `"orders"`
+would have put `it.orders` on a document that is not an order.
+
+⚠️ **Two of the shared five are always false here, and that is correct.**
+`orderHasDiscount` and `orderHasTax` select through `isPreTaxItem`, which
+returns false when an item has no `price` — and a fulfillment line has none,
+because a packing list is not a money document. `orderHasRentals` reads `type`,
+and `rental` IS a `FULFILLMENT_LINE_ITEM_TYPES` member, so it answers truthfully
+and can still drive a collection leg.
+
+⚠️ **`surfaces` is a separate axis from `collection_source`** and always was.
+It is where "this appears on the fulfillment page" is expressed — *"client-agnostic
+detail surfaces… NOT route strings"* — so `surfaces: ["fulfillment"]` was
+already right when the source was still `orders`. Do not read the source change
+as having been about surfacing.
 
 **The leg param.** `it.orders.groupByDestination(items, destinations, …)` already
 returns `packing_list_delivery` (`rental` + `sale`) and `packing_list_collection`
