@@ -56,7 +56,15 @@ jobs:
       - name: Scan templates for hardcoded PII
         run: |
           deno run --allow-read - <<'TS'
-          // Scan templates/**/*.eta + layouts/**/*.eta for hardcoded customer PII.
+          // Scan templates/**, layouts/** and partials/** for hardcoded customer PII.
+          //
+          // ⚠️ `partials/` was NOT scanned until 2026-08-26, and it had never
+          // been — while money-lint has walked it all along. It is the worst
+          // root to omit: `partials/shared/**` is owned by the `base` COMPONENT
+          // and overlaid onto EVERY family, so one hardcoded line there ships on
+          // every document at once. The file living there today carries the
+          // company phone number, which only passes because it is allowlisted
+          // below — the guard was never consulted about it.
           // Heuristics (starting point — see workflow header):
           //   - email addresses whose domain is NOT chicagofilmsupplies.com
           //   - US phone-number patterns: (312) 555-1212 / 312-555-1212 /
@@ -80,7 +88,7 @@ jobs:
             }
           }
           const roots: string[] = [];
-          for (const d of ["templates", "layouts"]) {
+          for (const d of ["templates", "layouts", "partials"]) {
             try { await Deno.stat(d); roots.push(d); } catch { /* absent */ }
           }
           for (const root of roots) {
