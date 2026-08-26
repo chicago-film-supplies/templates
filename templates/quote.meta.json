@@ -96,6 +96,6 @@
     "margin_left": 0.5,
     "margin_right": 0.5,
     "filename": "Quote <%= it.doc.number %><% if (it.doc.reference) { %> - <%= it.doc.reference %><% } %>",
-    "footer": "partials/quote/footer.eta"
+    "footer": "partials/shared/footer.eta"
   }
 }

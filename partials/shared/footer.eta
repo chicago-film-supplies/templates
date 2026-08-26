@@ -1,6 +1,18 @@
 <style>
   body {
-    font-size: 10px;
+    /* NO font-size. This frame inherits the document's root from the overlay
+       stylesheet `api-cloudrun` injects at the top of this partial
+       (`injectPartDefaults`), so the footer is whatever size the quote is —
+       9px today via `styles/quote.css`, and automatically right if that moves.
+       It used to hardcode 10px, which was correct only by coincidence and went
+       silently wrong the day the quote became a 9px document (templates#114).
+       `color` stays: it is this partial's own choice, not the page's.
+
+       ⚠️ Do NOT write the literal opening head tag anywhere in this file, in a
+       comment or otherwise. `injectPartDefaults` finds its insertion point with
+       a regex over the whole string, so a mention of it in prose is matched as
+       if it were the document's own — and the entire overlay is spliced INTO
+       this comment. Cost me a render that showed the stylesheet as body text. */
     color: #121212;
   }
   a {
@@ -8,6 +20,7 @@
     color: #121212
   }
   footer {
+    font-size: 1rem;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -20,9 +33,14 @@
        body content edge (754pt vs 756pt on letter) — the ~16px that usually
        separates them was slack in the last line box, not a rule, and a page
        whose content filled the column had them touching.
-       12px, not 1rem: this partial renders as its OWN document in an isolated
-       Chromium frame, where `rem` is its 10px root and not the 9px root of the
-       quote. 12px lands the gap at 7pt against 1rem = 6.75pt.
+       12px, and deliberately ABSOLUTE rather than `rem`. The gap above the
+       footer is a fact about the PAGE — how much clear air sits between the last
+       body line and this band — so it must not move when the document's font
+       size does. (It was absolute for a second reason that is now gone: this
+       partial used to render with no stylesheet at all, so `rem` meant
+       Chromium's default rather than the quote's root. Since
+       `injectPartDefaults` the frame does inherit the overlay, and `1rem` here
+       would now track the quote — which is exactly what this rule does not want.)
        `margin_bottom` moved 0.5 -> 0.62in in the same change, which is what
        keeps this padding from pushing the footer into the paper edge. The two
        cancel: measured on letter, the footer ink still runs 754..775pt, exactly

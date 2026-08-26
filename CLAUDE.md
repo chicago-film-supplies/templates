@@ -102,7 +102,18 @@ Source of truth for the set: `ownsTemplatePath` (`api-cloudrun/src/services/temp
 
 The shared overlay is excluded from the template editor on purpose: those files belong to the `base` COMPONENT family, and editing a draft's frozen copy forks it — `rebaseDraftVersion` reconciles that divergence only while the draft is clean, so a dirty draft keeps the fork and its commit writes it onto the branch. Change them in a draft of the component family instead; consuming templates pick them up on their next publish.
 
-⚠️ **`partials/<gp>/**` was INVISIBLE in the manager until now, and had been all along.** It has been owned, MCP-writable and pushed by every draft commit since the pipeline existed, with no tab — so `partials/quote/footer.eta` could only be seen by its effect in the PDF preview. The editor now lists any `partials/<gp>/*` key present in the content map (never a bare `Object.keys(content)`, which would expose the shared overlay).
+⚠️ **`partials/<gp>/**` was INVISIBLE in the manager until now, and had been all along.** It has been owned, MCP-writable and pushed by every draft commit since the pipeline existed, with no tab — so the quote footer could only be seen by its effect in the PDF preview. The editor now lists any `partials/<gp>/*` key present in the content map (never a bare `Object.keys(content)`, which would expose the shared overlay).
+
+⚠️ **The quote footer is no longer one of them — it is `partials/shared/footer.eta`, a file of the `base` COMPONENT** (templates#140). It is listed in `template-components/base.meta.json`'s `files[]`, and `templates/quote.meta.json`'s `render.footer` points at it. **Edit it in a draft of the base component, not a quote draft** — editing a consuming template's frozen copy forks it, and `rebaseDraftVersion` reconciles that only while the draft is clean. `partials/<gp>/**` remains owned and writable for genuinely per-template partials; there just are not any right now.
+
+### ⚠️ Part partials render where CSS cannot reach, and nothing but production renders them
+
+A `render.footer`/`render.header` partial is its OWN document in an isolated Chromium frame that loads no external resources. It therefore sees no stylesheet of its own accord; `api-cloudrun`'s `injectPartDefaults` injects the document's overlay at the START of that frame's head as a DEFAULT the partial may override. Two consequences worth knowing before editing one:
+
+- **Do not restate the document's font size in a part partial.** It inherits the quote's root through the injected overlay, so `body { font-size: 10px }` is at best redundant and at worst silently wrong the day the document's root moves — which is exactly what happened (templates#114). Geometry that is a fact about the PAGE (`padding-top: 12px`) stays absolute on purpose.
+- ⚠️ **Never write the literal opening `head` tag in a part partial, even inside a CSS comment.** `injectPartDefaults` finds its insertion point with a regex over the whole string, so prose mentioning the tag is matched as if it were the document's own and the entire overlay is spliced there. Measured while writing templates#140: ~26 KB of CSS landed inside a comment, closed the `<style>` early, and the shipped footer rendered the stylesheet as body text. Anchored in api-cloudrun since, but the partial-side habit is still the cheaper guard.
+
+**Neither gate covers this frame.** The golden gate screenshots the body only (`renderGoldenHtml` takes `{body, layout, styles}`), and `deno task preview` inlines the footer *below* the body inside the same document, where its `<style>` leaks onto the whole preview. **Render a real PDF and look at it when you touch a part partial.** templates#137 tracks closing the gap.
 
 **What templates#126 actually showed.** 187 lines of quote work were authored with raw `Edit`/`Write` on `draft/quote/bd7dfc09`, committed with raw git, released and merged. The **publish was correct** — `publishFromMerge` resolves content from the merged SHA, so git-canonical published the newer content and not the stale Firestore copy. The gap was never publishing: for the whole life of that draft the manager showed pre-edit content, the draft preview could not show the work, and `git log` was the only witness. Patch mode plus the guard hook is the fix for *that*, not for publishing.
 
@@ -116,6 +127,7 @@ templates/<name>.meta.json              sidecar: display_name, collection_source
 layouts/<name>.eta                      component layout skeleton (wraps the body via `it.body`, injects `it.styles`)
 styles/<name>.css                       per-template OR per-component stylesheet
 partials/<template>/<part>.eta          render-config partials (footer/header), rendered with the same `it` context
+partials/shared/<part>.eta              the same, but owned by the `base` COMPONENT and overlaid onto every family
 template-components/<name>.meta.json    component sidecar: display_name + files[] manifest
 fixtures/<template>/<slug>.json         deterministic source docs for golden visual-diff (operator-managed; PII sanitized on capture)
 goldens/<branch>/<template>/<slug>.png  branch-keyed golden screenshot, one per fixture
