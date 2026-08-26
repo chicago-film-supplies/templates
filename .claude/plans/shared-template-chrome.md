@@ -165,7 +165,7 @@ The gate's set **is** `ownsTemplatePath` now, stated as a delegation.
   omit, because `partials/shared/**` is overlaid onto every family.
 - Guards the component-stylesheet read (a component need not ship CSS).
 
-### Phase 0b — the shared sub-interface (`core` `a0ceac4`, unpublished)
+### Phase 0b — the shared sub-interface (`core` `a0ceac4`, HELD unpublished)
 
 `getDestinationsLegend`, `isSameAsDeliveryDates`, `orderHasDiscount`,
 `orderHasRentals`, `orderHasTax` re-exported from `utils/invoices.ts`. Verified
@@ -179,6 +179,20 @@ set; each pair is the **same function object** (a name check alone stays green
 against a drifting hand-written copy); and every real family resolves to a
 namespace list containing one that carries the whole set. Catalogue regenerated
 (`it.invoices.*`: 13 → 18).
+
+⚠️ **The commit is deliberately NOT pushed, and that is a decision with a
+reason — do not just push it to tidy the branch.** A push to `core/beta`
+publishes `@cfs/core@10.0.0-beta.270` to JSR, and the workspace rule is that
+every consumer's pin moves in lockstep the same day: `api-cloudrun/deno.json`,
+`manager/package.json`, and `templates/deno.json` (**exact-pinned, eight entries
+— `schemas` plus `utils/`×`orders`,`invoices`,`dates`,`icons`,`money`,
+`templates`,`citations`; bump by `sed` over the version string, never by the
+count, which has been stale twice**). `api-cloudrun`'s bump cannot be pushed
+while ADC is expired, so publishing now would strand a half-done lockstep across
+four repos — worse than holding one clean commit.
+
+**Nothing consumes the re-exports until Phase 2.** Publish at the start of Phase
+2, when there is one publish, one bump and one real consumer.
 
 ### Phase 1a — the body extraction (`templates` branch `feat/shared-chrome-partials`)
 
