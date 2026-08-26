@@ -1,8 +1,27 @@
 /* base.css — component shared styles (consumed by every template). */
+
+/* THE GLOBAL DEFAULT FONT SIZE, and it lives on the ROOT so a template can opt
+   out with ONE declaration.
+   It used to sit on `body, table` as an absolute 10px, which meant a template
+   that wanted a different size had to restate it on every element that carried
+   an absolute rule — and `api-cloudrun` grew a second channel for it instead
+   (`render.base_font_size`, injected at the END of `<head>` so it beat the
+   template's own CSS). That injection is what made the shipped PDF a 10px
+   document while `deno task preview` and all 14 goldens were 9px (templates#114).
+   The rule now is one rule: a global DEFAULT at the root, never an override.
+   Everything below is `em`/`rem`, so a template's own `html { font-size: … }`
+   scales the whole document coherently — see `styles/quote.css`, which is that
+   declaration. An operator still changes the global from the manager's
+   base-component editor, which is what the sidecar knob was for. */
+html {
+  font-size: 10px;
+}
 body,
 table {
   font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: 10px;
+  /* Follows the root rather than restating it, so a template override reaches
+     these too. */
+  font-size: 1rem;
 }
 h1 {
   font-size: 1.5em;

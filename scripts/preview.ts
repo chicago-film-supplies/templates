@@ -123,7 +123,6 @@ interface RenderConfig {
   margin_bottom?: number;
   margin_left?: number;
   margin_right?: number;
-  base_font_size?: number;
   filename?: string;
   footer?: string;
   header?: string;
@@ -256,10 +255,13 @@ if (renderConfig.footer) {
 
 await Deno.writeTextFile(outputFile, html);
 console.log(`Rendered ${name} → ${outputFile}`);
-if (renderConfig.base_font_size || renderConfig.margin_top !== undefined) {
+// `!== undefined`, not a truthiness test: a 0in margin is a legitimate config
+// and would silence this line. The old form short-circuited on
+// `renderConfig.base_font_size ||`, so deleting that key (templates#114) would
+// have taken the margin log with it.
+if (renderConfig.margin_top !== undefined) {
   console.log(
-    `Render config: base_font_size=${renderConfig.base_font_size}, ` +
-      `margins=[${renderConfig.margin_top},${renderConfig.margin_right},` +
+    `Render config: margins=[${renderConfig.margin_top},${renderConfig.margin_right},` +
       `${renderConfig.margin_bottom},${renderConfig.margin_left}]`,
   );
 }
