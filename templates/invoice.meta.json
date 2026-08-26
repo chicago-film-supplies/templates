@@ -1,0 +1,26 @@
+{
+  "display_name": "Invoice",
+  "collection_source": "invoices",
+  "collection_target": "invoices",
+  "surfaces": ["invoice"],
+  "depends_on": {
+    "components": ["base"]
+  },
+  "params": [
+    {
+      "key": "hide_zero_priced_components",
+      "type": "boolean",
+      "label": "Hide zero-priced components",
+      "default": false
+    }
+  ],
+  "fixtures": [],
+  "render": {
+    "margin_top": 0.5,
+    "margin_bottom": 0.62,
+    "margin_left": 0.5,
+    "margin_right": 0.5,
+    "filename": "Invoice <%= it.doc.number %><% if (it.doc.reference) { %> - <%= it.doc.reference %><% } %>",
+    "footer": "partials/shared/footer.eta"
+  }
+}

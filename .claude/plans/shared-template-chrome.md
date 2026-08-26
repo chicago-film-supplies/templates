@@ -1,9 +1,10 @@
 # Shared template chrome + the invoice and packing-list families
 
-> **Status 2026-08-26.** Phase 0, Phase 0b and Phase 1's body extraction are
-> built and verified. Phases 2–3 are **blocked on a deploy and two human
-> actions**, named under *Blocked on* below. This doc is written as one current
-> statement rather than a stack of updates — it says what is true today.
+> **Status 2026-08-26.** Phases 0, 0b, 1a and **1b** are landed or committed, and
+> Phase 2 is **authored and locally verified**. One thing blocks everything left
+> and it is a GitHub Actions outage — see *Blocked on*. Registering a family
+> turned out NOT to need the manager, which this doc previously claimed twice.
+> Written as one current statement rather than a stack of updates.
 
 ## What this is
 
@@ -165,7 +166,7 @@ The gate's set **is** `ownsTemplatePath` now, stated as a delegation.
   omit, because `partials/shared/**` is overlaid onto every family.
 - Guards the component-stylesheet read (a component need not ship CSS).
 
-### Phase 0b — the shared sub-interface (`core` `a0ceac4`, HELD unpublished)
+### Phase 0b — the shared sub-interface (`core` `97ac103`, PUSHED)
 
 `getDestinationsLegend`, `isSameAsDeliveryDates`, `orderHasDiscount`,
 `orderHasRentals`, `orderHasTax` re-exported from `utils/invoices.ts`. Verified
@@ -180,19 +181,15 @@ against a drifting hand-written copy); and every real family resolves to a
 namespace list containing one that carries the whole set. Catalogue regenerated
 (`it.invoices.*`: 13 → 18).
 
-⚠️ **The commit is deliberately NOT pushed, and that is a decision with a
-reason — do not just push it to tidy the branch.** A push to `core/beta`
-publishes `@cfs/core@10.0.0-beta.270` to JSR, and the workspace rule is that
-every consumer's pin moves in lockstep the same day: `api-cloudrun/deno.json`,
-`manager/package.json`, and `templates/deno.json` (**exact-pinned, eight entries
-— `schemas` plus `utils/`×`orders`,`invoices`,`dates`,`icons`,`money`,
-`templates`,`citations`; bump by `sed` over the version string, never by the
-count, which has been stale twice**). `api-cloudrun`'s bump cannot be pushed
-while ADC is expired, so publishing now would strand a half-done lockstep across
-four repos — worse than holding one clean commit.
+**Pushed 2026-08-26**, superseding the earlier decision to hold it: Phase 2 is
+the consumer that justified publishing, exactly as planned. `templates/invoice.eta`
+calls all three `orderHas*` predicates through `it.invoices`, which only carries
+them from **beta.270**.
 
-**Nothing consumes the re-exports until Phase 2.** Publish at the start of Phase
-2, when there is one publish, one bump and one real consumer.
+⚠️ **It is pushed but NOT PUBLISHED** — the Actions outage stopped the Release
+workflow, so JSR is still serving `beta.269`. See § Blocked on for the bump
+sequence. Local verification of the invoice was done by temporarily resolving
+`@cfs/core` from the sibling checkout and reverting `deno.json` afterwards.
 
 ### Phase 1a — the body extraction (`templates` branch `feat/shared-chrome-partials`)
 
@@ -246,120 +243,197 @@ arithmetic sharing a line with a string, and on the down-ratchet.
 
 ## Blocked on
 
-**1. `api-cloudrun` prod deploy.** Not optional and not a preference. A templates
-PR based on `main` calls the **prod** API for `visual-diff` (`.github/workflows/visual-diff.yml`
-maps base branch → env), and `templates_render_preview` on a `main`-based draft
-does too. Until prod has `078e87c6` + `acf4c171`, the gate does not fetch
-partials and every golden for a body that includes one fails
-`EtaNameResolutionError`. It fails in the safe direction, but it blocks the
-merge. Sequence: push `main` → release-please cuts a PR → merging it deploys prod.
+**One thing, and it is an outage.** GitHub Actions has been in `major_outage`
+since 15:11 UTC 2026-08-26, so `core`'s Release workflow never ran and
+**`@cfs/core@10.0.0-beta.270` is not published**. `templates/deno.json` still
+pins `beta.269`, where `it.invoices.orderHasDiscount` does not exist — so
+`templates/invoice.eta` would throw at render. When Actions recovers:
 
-**2. `gcloud auth application-default login`.** ADC is expired, so
-`api-cloudrun`'s pre-push test suite cannot run and the push is blocked.
+1. confirm `beta.270` on JSR (the commit is pushed: `core` `97ac103`)
+2. bump the pin **by `sed` over the version string** in `templates/deno.json`
+   (**eight exact-pinned entries** — `schemas`, plus `utils/` × `orders`,
+   `invoices`, `dates`, `icons`, `money`, `templates`, `citations`), and in
+   `api-cloudrun/deno.json` + `manager/package.json` in lockstep
+3. `deno install` / `npm install` so the lockfiles match
 
-**3. Registering the two new families.** `POST /templates` and `.../fork` are
-deliberately **not** MCP verbs: registering permanently reserves a `git_path`
-(invariant S5) and fixes the immutable source/target collections. Do it in the
-manager. ⚠️ `starterSidecar` omits `depends_on` when the slug list is empty,
-which publishes a family with no layout and 422s every render — so either fork
-from `quote` or register with `depends_on: { components: ["base"] }`.
+⚠️ **REGISTERING THE FAMILIES IS NOT A MANUAL STEP, and this doc said twice that
+it was.** Merging a PR that ADDS `templates/<git_path>.meta.json` registers the
+family and publishes v1 — `classifyAffected` puts a sidecar with status
+`"added"` into `structural.registered` (`affected.ts:229`), and
+`publishResolvedTemplates` creates the family doc when the `git_path` query
+comes back empty. Verified against the test that already covers it
+(`tests/integration/templates/publish.test.ts:255`): family doc created,
+`uid_active` set, `semver 0.1.0`, thread cowritten, and
+**`depends_on.components` resolved from the sidecar's slugs**.
+
+`params` come from the sidecar too, on that same path
+(`publishFromMerge.ts:1060`, *"a git-first register/publish takes them from the
+merged sidecar"*). ⚠️ **The templates skill still carries a stale
+"register-on-merge `params: []`" note** — untrue since `af6469be` (2026-05-24),
+which fixed it and shipped the test at `publish.test.ts:305`. That note is what
+made this plan believe the manager was the only door. Correct it in the
+api-cloudrun change that retires the invoice placeholder.
+
+So `POST /templates` / `.../fork` stay non-MCP for the reason they always did —
+a `git_path` is permanently reserved and the source/target collections are
+immutable, which is a decision rather than a mechanical step — but the decision
+is expressed by **merging the sidecar**, which is already a human authorisation.
+
+⚠️ `starterSidecar` omits `depends_on` when the slug list is empty, which
+publishes a family with **no layout**, and every render then fails **409
+`FAILED_PRECONDITION`** (`PreconditionError`, not a 422). That only bites the
+manager/fork route; the sidecar committed here declares
+`depends_on: { components: ["base"] }` explicitly. If a family is registered
+without one anyway, `templates_set_metadata` sets it after the fact — it opens a
+`meta/*` PR and leaves it OPEN, because the change is visual.
+
+**Cleared 2026-08-26:**
+
+- ~~`api-cloudrun` prod deploy~~ — `v0.185.0` carries `078e87c6` + `acf4c171` and
+  is live on revision `api-cloudrun-00294-btn`. A `main`-based templates PR now
+  hits a prod API that fetches partials.
+- ~~ADC expired~~ — re-authenticated; the full suite ran green on the push
+  (1867 + 7 + 1). ⚠️ The first push was REJECTED by the pre-push hook, which
+  reported *"a real test failure, not a flake"*. It was a flake: every test
+  passed and the failure was the post-run cleanup sweep losing a TLS socket to
+  Firestore after 10m48s. It runs in 16–23s once its backlog is clear, and the
+  hook's serial retry reproduces the slow sweep rather than distinguishing it.
+- ~~The MCP metadata gap~~ — api-cloudrun#684, see below.
+- ~~Registering the families~~ — never was a blocker; see above.
 
 ---
 
-## Phase 1b — the CSS promotion (NOT done, and deliberately separated)
+## Phase 1b — the CSS promotion — **DONE** (`templates` `7363e10`)
 
-~250 of `styles/quote.css`'s 458 lines are document-agnostic and are the real
-carrier of the brand: the `:root` scale and `--label-col`, the `#grid-wrapper`
-page grid and `--dest-block-3`, `table-layout: fixed` and the `thead th` border
-chrome, `.wide`/`.total`/`.center`/`.capitalize`, the letterhead rules, and
-`#details, #items, #replacement-costs thead th:not(:first-child) { width: auto }`.
+41 rules moved out of `styles/quote.css` into `styles/base.css`: the page grid,
+the two alignment edges, the letterhead, the table chrome, and
+`#details`/`#destinations`/`#items`/`#totals` — the four sections every document
+body now assembles from `partials/shared/**`. `quote.css` 458 → 98 lines,
+`base.css` 59 → 537, `invoice.css` ~430 → 29.
 
-**Why it is not in Phase 1a:**
+**What forced it.** `styles/invoice.css` landed as a ~430-line copy of
+`quote.css`, because a family is overlaid from `base.css` plus its OWN sheet and
+nothing else (`ownsTemplatePath`). The duplication was the argument.
 
-1. **Byte-identity is impossible by construction.** The concatenated stylesheet
-   *is* in the rendered HTML, so any move shows in the diff — and a diff showing
-   the same rules in a different order says nothing about whether the cascade
-   changed.
-2. **The only automated check is `visual-diff`, and it cannot substantiate this
-   change.** Its 0.001 whole-page threshold reported `match` for four stale
-   goldens (templates#137); re-rendering an *unchanged* tree produces deltas up
-   to 0.000738, the same order of magnitude. Signal and noise overlap; what
-   separates them is that a real change is **contiguous**, which a whole-page
-   ratio throws away.
-3. **No local pixel evidence is available** — no Docker, no local Gotenberg.
-4. **The mixed selectors are the hard part.** `#destinations, #items,
-   #replacement-costs`, `#items th, #replacement-costs th, …` and the three-way
-   `thead th:not(:first-child)` rule each span shared and quote-only ids.
-   Splitting one means duplicating the selector across two files, which perturbs
-   source order in ways nothing available here can check.
-5. **Its benefit is realized in Phase 2**, which is blocked anyway. Without it
-   `styles/invoice.css` restates some brand rules — duplication, not breakage.
-   The cross-family bleed that *would* have been breakage is closed by
-   `acf4c171`.
+**What made it verifiable**, having been deferred once as unverifiable. A CSS
+move cannot be checked the way the rest of this campaign was — the concatenated
+stylesheet IS in the rendered HTML, so any move shows in an HTML diff, and a
+diff showing the same rules reordered says nothing about the cascade. The golden
+gate cannot settle it either (0.001 whole-page threshold, templates#137), and
+there is no local rasterizer.
 
-**Precondition: templates#137.** A contiguity-aware golden diff is what makes a
-CSS-only change verifiable. Do that first, then promote the CSS with the gate
-actually able to speak to it.
+**Make the move order-preserving, then check that directly.** Sheets concatenate
+`base.css` then `<family>.css`, so appending the rules to `base.css` **in their
+existing relative order** leaves the concatenated sequence untouched except for
+one rule — the quote's `html` font-size, which now follows the moved block
+instead of preceding it. Nothing in the block targets `html`.
+
+Every other pair whose relative order flipped was enumerated mechanically (7),
+and each cleared by **selector-subject disjointness**: `h1` vs `html`,
+`th, td` vs `#cfs`, `#totals` vs `#information` — different element names or
+different ids, so they can never match one element and their order cannot
+matter. Zero residual pairs.
+
+Then measured:
+
+- all 14 quote fixtures × both param states + `TZ=UTC evening-boundary`, before
+  and after: the document body **excluding the `<style>` block is
+  byte-identical across all 29**
+- the stylesheet lost no declaration and invented none
+- of 111 `(selector, property)` cascade keys, **0 winners changed** — and 27 of
+  those keys are declared more than once, i.e. are exactly the ones where source
+  order decides
+
+⚠️ **Keep the property.** Adding a rule to `base.css` that targets something a
+family sheet also targets, at equal specificity, silently moves the winner.
+Prefer a new selector over widening one of these. A root font size stays with
+the family — `base.css` keeps only the 10px global default, and both
+customer-facing families opt down to 9px in their own sheet.
 
 ---
 
-## Phase 2 — the `invoice` family
+## Phase 2 — the `invoice` family — **AUTHORED** (`templates` `bc184d6` + `658bc13`)
 
-Sidecar: `collection_source: "invoices"`, `collection_target: "invoices"`,
-`surfaces: ["invoice"]`, `depends_on.components: ["base"]`, one boolean param
-`hide_zero_priced_components`, and a `render` block with four margins, `filename`,
-and `footer: "partials/shared/footer.eta"`. **No `base_font_size`** — deleted in
-templates#138; a template sets its own root in `styles/invoice.css`.
+On branch `feat/invoice-family`, stacked on the Phase 1 branch. Not yet a PR:
+merging it against the `beta.269` pin would register a family whose body throws
+at render.
 
-Body:
+`templates/invoice.eta` (261 lines), `templates/invoice.meta.json`,
+`styles/invoice.css` (29 lines). The body is preamble plus four
+`includeAsync` calls — letterhead, destinations, items-grid, totals — so the
+invoice renders the same 6-to-9 column grid as the quote from one copy of it.
 
-- **`#details`** — Invoice #, Date, **Due Date**, Order Number(s) (`number_orders`),
-  Reference.
-- **`#destinations`** — `includeAsync` the shared partial.
-  ⚠️ **Join the pair to its divider on `destinations[].uid === item.uid`, never on
-  `uid_delivery`/`uid_collection`** — those are address-book ids two sections can
-  share, they move when an address is corrected, and they are being deleted
-  (#662/#663 closed). The `uid` join is what makes #664 moot here.
-- **`#items`** — the shared partial, with `showOrderBanner: true`. **The arm is
-  already in it**: an `order` divider renders a banner that always shows, unlike
-  the destination banner which is suppressed at `destinations.length === 1`. An
-  invoice that bills one order still says which, because that is the question the
-  invoice exists to answer.
-- **Per-order subtotals** under each `order` divider — new markup, no quote
-  precedent. `it.invoices.getOrderScopedItems(items, orderDividerUid)` is the
-  scoping primitive. Sum stored `price.total_cents`; **do not recompute** —
-  integer addition is closed.
-- **`#totals`** — the shared partial plus `extraRows` (Amount Paid / Credits
-  Applied / Amount Due, each `?? 0`). **The prop is already in it**, already
-  formatted by the caller, because a partial that formatted them would be
-  deciding what `?? 0` means for a field it cannot see.
-- **No `#information`, no `#replacement-costs`.**
+**The three schema differences, each handled rather than assumed:**
 
-⚠️ `templates/invoice.eta` gets money-lint `RAW_BUDGET` **0**. ⚠️ **Do not move
-`replacementLine` into a shared partial** — both of `quote.eta`'s two budgeted
-raw sites live in it, and the budget ratchets both ways.
+- **No `price.replacement_cents`** → no Replacement Costs table, and money-lint
+  `RAW_BUDGET` **0**. ⚠️ Both of `quote.eta`'s two budgeted raw-arithmetic sites
+  live in `replacementLine`; do not move that function into a shared partial.
+- **No `zero_priced`** → the hide-components param tests
+  `price.base_cents === 0 && componentDepth > 0`. Testing the order's flag would
+  make the param a silent no-op on every invoice.
+- **Three divider levels** `[order, destination, group]` → named once, in
+  `isDivider`. Everything downstream works off "is this uid a divider" rather
+  than a path LENGTH, which is why `componentDepth` is correct at both depths.
+  Verified on prod invoice 2390: its zero-priced component sits at path depth 5
+  and resolves to component depth 1.
+
+**Settlement is rollups and cannot be otherwise.** `payments[]` was deleted
+2026-08-03 and `InvoiceSchema` is a `z.strictObject`. Amount Paid / Credits
+Applied / Amount Due go in as `extraRows`, formatted by the caller because a
+shared partial cannot know what `?? 0` means for a field it cannot see. Credits
+are omitted at zero — "$0.00 credited" states an absence as a fact.
+
+⚠️ **The order banner is CONDITIONAL** (`number_orders.length > 1`), corrected
+from an earlier always-shown design. Per Alex: **multi-order invoicing is a
+manager feature that does not go live until after the CRMS cutover.** Measured
+2026-08-26, `number_orders` is 0 or 1 across the 200 most recent prod invoices,
+so an unconditional banner would put a redundant `Order #1004` row on every
+invoice we produce. Both banners now share one principle: a divider naming the
+only member of its level is noise.
+
+**Per-order subtotals are deliberately NOT built.** Their whole purpose is
+disambiguating a multi-order invoice, which cannot exist until after cutover,
+and they would need a hook in the shared items-grid for a case nothing can
+currently produce. Add them with the manager feature.
+`it.invoices.getOrderScopedItems(items, orderDividerUid)` is the scoping
+primitive; sum stored `price.total_cents` and **do not recompute** — integer
+addition is closed.
+
+**Verified locally** against three fixtures shaped from prod invoices 2390 and
+2364 (identity fields replaced, uncommitted):
+
+- 2390: 7 columns; the em-dash on the taxed zero-priced row — a $0.00 unit price
+  and subtotal beside a real $12.00 charge
+- param ON: the row hides and its $12.00 rolls onto the parent (Tax
+  $40.95 → $52.95, Total $430.95 → $442.95) while `#totals` still reads $442.95
+- 2364: Amount Paid $196.25, Credits Applied $25.00, Amount Due $110.25
+- two-order variant: both order banners, both destination banners, `#details`
+  pluralising to "Order Numbers: 1004, 1005"
+- the rendered stylesheet carries the page grid and `--label-col` from
+  `base.css` and no `#replacement-costs` rule
+
+### What is left for Phase 2
 
 **Fixtures.** 1,020 prod invoices — capture, never hand-write
-(`templates_capture_fixture` → `applyPii`). Each `description` must state what it
-covers that no sibling does. Minimum set: a multi-order invoice (two `order`
-dividers), a `part_paid` (invoice **#2364**: one $196.25 payment against
-$306.50), one with credits, a foreign billing address, the 6-column floor, the
-9-column ceiling, and **#2390** for the flat-tax zero-priced component.
+(`templates_capture_fixture` → `applyPii`). Each `description` must say what it
+covers that no sibling does. Minimum set: a `part_paid` (**#2364**), one with
+credits, a foreign billing address, the 6-column floor, the 9-column ceiling,
+and **#2390** for the flat-tax zero-priced component. ⚠️ **A multi-order fixture
+cannot be captured** — none exists in the corpus — so if that shape is ever
+wanted it must be hand-built and say so, like `multi-dest` on the quote.
 
-⚠️ **Golden parity is lint-enforced** (templates#135): `deno task lint:fixtures`
-fails on any fixture without a baseline — or any baseline without a fixture —
-**once a family has graduated on a branch**. It fails *open* before graduation.
-So the first bless commits the whole family to full parity in the same commit;
-land the fixture set before blessing, not incrementally after.
+⚠️ **Golden parity is lint-enforced** (templates#135) once a family has
+GRADUATED on a branch. It fails *open* before graduation, so land the whole
+fixture set before the first bless rather than incrementally after.
 
 **Then retire the placeholder.** Add `getInvoiceTemplateUid()` beside
 `getQuoteTemplateUid()` (`collection_source == "invoices"`,
 `collection_target == "invoices"`, prefer `git_path === "invoice"` — the deployed
 composite index already serves it), point `invoicePdf.ts` at `renderDocument`,
 and **delete `api-cloudrun/src/lib/templates/invoice.ts`**. Deleting beats a
-fallback: both compile, only deletion makes its call site a compile error.
-
----
+fallback: both compile, only deletion makes its call site a compile error. Fix
+the stale register-on-merge `params: []` note in the templates skill in the same
+change.
 
 ## Phase 3 — the `packing-list` family
 
@@ -370,9 +444,45 @@ in CRMS, uploads to Uploadcare and writes `orders/{uid}/documents/packing-list`;
 `services/quotes.ts` — more work than the invoice, which already has its PDF
 plumbing.
 
-Sidecar: `collection_source: "orders"` (there is no `fulfillments` source — the
-enum is `orders | invoices`), `collection_target: "packing_lists"`,
-`surfaces: ["fulfillment"]`. It gets `it.orders`, same as the quote.
+Sidecar: `collection_source: **"fulfillments"**`,
+`collection_target: "packing_lists"`, `surfaces: ["fulfillment"]`. It gets
+`it.fulfillments` and **no `it.orders`**.
+
+⚠️ **The source changed, and it is a real decision rather than a rename**
+(Alex, 2026-08-26; enum expanded in core `7770443`, published as beta.271). This
+doc previously said "there is no `fulfillments` source — the enum is
+`orders | invoices`", which was true of the enum and wrong about the document.
+
+**A packing list should say what was PICKED, not what was ordered, and only a
+fulfillment knows the difference.** A fulfillment line carries `quantity`
+beside `quantity_order`, and `path_substituted_for` when a picker swapped one
+item for another. None of that exists on the order, so an order-sourced packing
+list can only ever describe intent — which is the wrong document to hand a
+driver.
+
+The enum gained `fulfillments` as a **source only**. Nothing produces a
+fulfillment from a template, so it is deliberately absent from
+`TEMPLATE_TARGET_COLLECTIONS`.
+
+`src/utils/fulfillments.ts` is the namespace behind it — **re-exports over
+`utils/orders.ts`, never reimplementations.** A fulfillment's `items[]` is
+assignable to `LineItem` and its `destinations[]` is the same
+`DocDestinationType`, so the helpers were already written; what was missing was
+a name to reach them under. Mapping `fulfillments` to the string `"orders"`
+would have put `it.orders` on a document that is not an order.
+
+⚠️ **Two of the shared five are always false here, and that is correct.**
+`orderHasDiscount` and `orderHasTax` select through `isPreTaxItem`, which
+returns false when an item has no `price` — and a fulfillment line has none,
+because a packing list is not a money document. `orderHasRentals` reads `type`,
+and `rental` IS a `FULFILLMENT_LINE_ITEM_TYPES` member, so it answers truthfully
+and can still drive a collection leg.
+
+⚠️ **`surfaces` is a separate axis from `collection_source`** and always was.
+It is where "this appears on the fulfillment page" is expressed — *"client-agnostic
+detail surfaces… NOT route strings"* — so `surfaces: ["fulfillment"]` was
+already right when the source was still `orders`. Do not read the source change
+as having been about surfacing.
 
 **The leg param.** `it.orders.groupByDestination(items, destinations, …)` already
 returns `packing_list_delivery` (`rental` + `sale`) and `packing_list_collection`
@@ -392,55 +502,102 @@ state; do not just apply a one-line fix.
 
 ---
 
-## MCP surface still needed
+## MCP surface — LANDED 2026-08-26 (api-cloudrun#684)
 
-**No new API routes are required** — every route already exists. The
-autogenerator surfaces only protected **GET** routes; each hand-registered tool
-re-enters the Hono app via `runAsUser`, so the full RBAC chain fires and adding
-one weakens nothing.
-
-**One real blocker:**
+All three items below shipped. `/mcp/templates` now exposes **18** tools and
+carries a connect-time `instructions` blob stating the lifecycle chain and the
+sidecar's one-writer-per-section table.
 
 - **`templates_set_metadata` → `PATCH /templates/{uid}/metadata`.** The **only**
-  writer for `depends_on` and the entire `render` block. Both new families need
-  one, and `templates_propose_edit` **422s** on `templates/*.meta.json` by design.
-  Without this an agent physically cannot finish a family. It fits the
-  open-PR-only doctrine: a metadata change commits on its own `meta/*` branch,
-  and a **visual** `depends_on`/`render` change already leaves the PR open.
+  writer for `depends_on` and the entire `render` block, and the reason Phases
+  2–3 could not be finished by an agent at all. ⚠️ Both arguments **REPLACE
+  WHOLESALE** — read the current block from `templates_read` → a version's
+  `content["templates/<git_path>.meta.json"]` and send it back whole. Its
+  `render` argument reuses the render lib's own `RenderConfigSchema.strict()`,
+  so an unknown key is refused by the tool rather than 400'd by the route.
+  ⚠️ A `depends_on`/`render` change is **visual**: the PR is opened and LEFT
+  OPEN with `merged: false`. **That is success — do not retry**; a human merges
+  it. `name`/`surfaces` auto-merge when green.
+- **`templates_list_components` + `templates_read_component`.** ⚠️ **This turned
+  out to be an API change, not an MCP-only one, and the note it replaces had the
+  reason wrong.** `resolveFamily` does fall through, so the *lifecycle* verbs
+  always worked on a component uid — but there was **no GET route for components
+  at all** (`GET /template-components` and `/{uid}` did not exist; only `POST`
+  did), because the manager reads them straight from Firestore. Both routes are
+  now live under `templates.read`, and the autogenerator surfaces them on
+  `/mcp/cfs` as well. They deliberately do **not** fall through to the template
+  reads: a component family carries no `collection_source`/`surfaces`, so a
+  caller that got one back from `GET /templates/{uid}` would read it as a
+  template. A template uid is a 404 here and vice versa.
+- **`templates_rebase_draft` → `POST /templates-versions/{uid}/rebase`.**
+  ⚠️ Content is adopted only when the draft is **clean** — a dirty draft gets
+  `content_refreshed: false` and its next commit writes base's changes back out.
+  **Commit first, then rebase.**
 
-**Two that remove hard stops cheaply:**
-
-- **Component discoverability.** `templates_list` returns only template families
-  and `templates_read` **404s on a component uid**, yet `resolveFamily` *does*
-  fall through to `template-components`, so `create_draft`/`propose_edit`/
-  `commit`/`release` all work once you have the uid — today obtainable only via
-  `db_template_components_query` on a **different MCP server**. The `base`
-  component is now seven files and the shared chrome's home.
-- **`templates_rebase_draft` → `POST /templates-versions/{uid}/rebase`.** Work
-  across three repos will strand drafts behind merged PRs, and rebase is how a
-  dirty draft picks up a merged `meta/*` change.
+🔴 **NARROW EVERY FAMILY READ.** Verifying the above against deployed dev turned
+up a live defect and it is fixed in the same change: `templates_read` and
+`templates_read_component` return every version a family has ever had with its
+whole content map, so an unnarrowed call is **over the response cap and returns
+NOTHING** — `quote` measured 3,303,497 characters, `base` 106,083. Pass
+`uid_version` (`templates_list` / `templates_list_components` → `uid_active`, or
+a `draft_uids` entry) **and** `paths`. The sidecar you must read before replacing
+it is `paths: ["templates/<git_path>.meta.json"]`.
 
 **Three deliberately absent — do not add:** `templates_merge` (merging *is* the
 publish authority), `bless-golden` (**approving the renders is the human
 authorization** the lifecycle protects), and `POST /templates` / `.../fork` (a
-decision, not a mechanical step).
+decision, not a mechanical step). Nothing that landed weakens open-PR-only:
+every new verb either opens a PR a human merges, or reads.
 
 ---
 
 ## Verification recipe
 
-The exact-diff harness is the reusable part. `deno task preview quote <slug>` for
-every fixture, both param states, plus `TZ=UTC` for `evening-boundary`; diff the
-HTML. It is exact where the gate is thresholded, which is the whole lesson of
-templates#137. Anything beyond whitespace is a bug, not a re-bless.
+Three techniques, each earning its place because the golden gate cannot do the
+job (templates#137: a 0.001 whole-page threshold reported `match` for four stale
+goldens).
+
+**1. The exact HTML diff — for a markup refactor.** `deno task preview quote
+<slug>` over every fixture, both param states, plus `TZ=UTC` for
+`evening-boundary`; diff the HTML. Anything beyond whitespace is a bug, not a
+re-bless. This is what proved the Phase 1a extraction across 29 renders.
+
+**2. The server-path render — stronger than the harness.** The harness *mirrors*
+production; this drives it. Read each tree's owned blobs out of git through
+`ownsTemplatePath`, then `assembleOverlay` → `resolveNamespacesFromSidecar` +
+`resolveGoldenParams` → `renderGoldenHtml` — the exact chain `runGoldenDiff` and
+`rebless-goldens.ts` use — and compare. It is what confirmed the gate would pick
+the new partials up (1 → 5) before any of it deployed.
+
+**3. Cascade equivalence — for a stylesheet move.** An HTML diff cannot help,
+because the stylesheet is IN the HTML. Make the move order-preserving, enumerate
+the pairs whose relative order flips, clear them by selector-subject
+disjointness, and then assert two things over the rendered output: the body
+excluding `<style>` is byte-identical, and no `(selector, property)` **cascade
+winner** changed. Count how many keys are declared more than once — those are the
+only ones order can decide — and report it, or the check looks stronger than it
+is. This is what made Phase 1b landable after being deferred as unverifiable.
 
 Also: **render a real PDF and look at it whenever a `render.footer`/`header`
 partial changes.** Neither gate covers that frame — the golden gate screenshots
 the body only, and `preview` inlines the footer *below* the body where its
 `<style>` leaks onto the whole page. templates#137 tracks closing it.
 
+⚠️ **A local override is fine for verifying against unpublished core, but revert
+it.** Point `templates/deno.json`'s `@cfs/core` entries at `../core/src/...`,
+render, restore. Leaving it committed would make the harness diverge from the
+API, which is the one thing this repo's preview exists not to do.
+
 ## Context recommendation
 
-**CLEAR CONTEXT** before Phase 2. Phases 0/0b/1a are landed or committed and this
-doc carries every load-bearing fact from them. Phase 2 starts fresh against a
-deployed prod API and a registered `invoice` family.
+**CLEAR CONTEXT.** Phases 0, 0b, 1a and 1b are landed or committed; Phase 2 is
+authored and locally verified. This doc carries every load-bearing fact from all
+of them, and the remaining work is mechanical and gated on an outage: publish
+`beta.270`, bump four pins, merge three stacked branches in order, then capture
+the invoice fixture set.
+
+**The merge order matters and is not obvious:** `feat/shared-chrome-partials`
+(#144) → `feat/invoice-family`. ⚠️ **Do not merge with `--delete-branch` while
+another PR is stacked on it** — deleting the base auto-closes the stacked PR, and
+GitHub then refuses to reopen it even once the ref is restored. That cost #143,
+which had to be reopened as #144.

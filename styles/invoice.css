@@ -1,0 +1,29 @@
+/* invoice.css — what is TRUE OF AN INVOICE and of nothing else.
+
+   Almost nothing, which is the point. The document chrome — the page grid, the
+   two alignment edges, the letterhead, the table rules, #details,
+   #destinations, #items and #totals — lives in `styles/base.css` and reaches
+   this family through the `base` component, the same way it reaches the quote.
+   This file existed briefly as a ~430-line copy of `styles/quote.css`, because
+   a family is overlaid from `base.css` plus its own sheet and nothing else
+   (`ownsTemplatePath`); promoting the shared half is what deleted the copy.
+
+   An invoice has no #information note and no #replacement-costs table — an
+   invoice line carries no `price.replacement_cents` at all — so it needs none
+   of the rules the quote keeps for those. */
+
+/* THE INVOICE'S OWN ROOT SIZE, matched to the quote deliberately rather than
+   inherited by accident.
+
+   `base.css` defaults the root to 10px; both customer-facing documents opt down
+   to 9px so they read as the same company's paperwork at the same density.
+   Everything under the root is em/rem — including `--label-col`, whose 24rem is
+   216px here exactly as it is on a quote — so this one declaration sets the
+   whole document's scale coherently.
+
+   It is NOT in `base.css`: a root size is a fact about one document, and putting
+   it there would silently resize every family, including any future one that
+   wants a different density. */
+html {
+  font-size: 9px;
+}
