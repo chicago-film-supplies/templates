@@ -156,6 +156,54 @@ jobs:
             try { await Deno.stat(d); roots.push(d); } catch { /* absent */ }
           }
 
+          // Which lines of a source are inside an Eta comment block.
+          //
+          // ⚠️ **Prose about the rule is not a violation of it, and the previous
+          // test could not tell the difference.** It skipped a line STARTING with
+          // `//`, `*` or `<%/*` — so the first line of a `<%/* … */%>` block was
+          // exempt and every continuation line was not. A partial whose docblock
+          // explains "money-lint fails CI on `.divide(`/`.multiply(`" therefore
+          // reported three non-closed operations in a comment, and a props list
+          // reading `numberCell/moneyCell/moneyCellOn/itemTaxCents/pathKey`
+          // reported raw arithmetic. Neither line executes.
+          //
+          // Comments cannot compute, so exempting them weakens nothing: there is
+          // no code to hide in one. Line numbers are preserved (the set is of
+          // indices, not a rewritten string) so every finding still points at the
+          // line the author will read.
+          function commentLines(src: string): Set<number> {
+            const out = new Set<number>();
+            const lines = src.split("\n");
+            let inBlock = false;
+            lines.forEach((line, i) => {
+              let rest = line;
+              if (inBlock) {
+                out.add(i);
+                const close = rest.indexOf("*/");
+                if (close === -1) return;
+                inBlock = false;
+                rest = rest.slice(close + 2);
+              }
+              // `<%/* … */%>` (Eta) and `/* … */` (inside an eval tag) alike.
+              const open = rest.search(/<%\/\*|\/\*/);
+              if (open !== -1 && rest.indexOf("*/", open) === -1) {
+                inBlock = true;
+                out.add(i);
+              }
+              if (/^\s*(?:\/\/|\*|<%\/\*|<%#)/.test(line)) out.add(i);
+            });
+            return out;
+          }
+
+          // Rule 3 keys on a `*` or `/` beside a money-named identifier, which is
+          // arithmetic — and a `/` inside a STRING is never arithmetic. Without
+          // this, `includeAsync("@partials/shared/totals.eta", …)` reads as
+          // `/totals` and counts as a raw money operation, which would mean no
+          // shared partial may ever be NAMED for the thing it renders. Same class
+          // as the `<svg …/>` false positive the authoring docs warn about.
+          const stripStrings = (line: string) =>
+            line.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`/g, '""');
+
           const findings: string[] = [];
           const counts = new Map<string, number>();
           const rawCounts = new Map<string, number>();
@@ -167,13 +215,15 @@ jobs:
               files++;
               const src = await Deno.readTextFile(file);
               counts.set(file, [...src.matchAll(CURRENCY)].length);
+              const comments = commentLines(src);
               let raw = 0;
               src.split("\n").forEach((line, i) => {
                 // A comment line is prose about money, not arithmetic on it.
-                if (!/^\s*(?:\/\/|\*|<%\/\*)/.test(line) && RAW_MONEY_ARITH.test(line)) {
+                if (!comments.has(i) && RAW_MONEY_ARITH.test(stripStrings(line))) {
                   raw++;
                   rawSites.push(`${file}:${i + 1}  ${line.trim().slice(0, 100)}`);
                 }
+                if (comments.has(i)) return;
                 for (const m of line.matchAll(OPEN_OP)) {
                   findings.push(
                     `${file}:${i + 1}  non-closed money operation: ${m[0]}\n` +

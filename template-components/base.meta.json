@@ -3,6 +3,10 @@
   "files": [
     "layouts/base.eta",
     "styles/base.css",
-    "partials/shared/footer.eta"
+    "partials/shared/footer.eta",
+    "partials/shared/letterhead.eta",
+    "partials/shared/destinations.eta",
+    "partials/shared/items-grid.eta",
+    "partials/shared/totals.eta"
   ]
 }
