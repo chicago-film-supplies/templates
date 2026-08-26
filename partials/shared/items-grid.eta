@@ -13,7 +13,7 @@
        numberCell/moneyCell/moneyCellOn/itemTaxCents/pathKey   the cell rules
        DISAMBIGUATED_ITEM_TYPES        which `type` values the Type column says
        showDestinationBanners          suppressed at a single destination
-       showOrderBanner                 an invoice bills several orders; always shown
+       showOrderBanner                 suppressed at a single source order
 
      ⚠️ **Hierarchy-agnostic on purpose.** `componentDepth` already filters
      divider uids out of the path, so this partial is indifferent to HOW MANY
@@ -21,12 +21,15 @@
      `[order, destination, group]` on an invoice. api-cloudrun#538 would re-base
      orders onto the invoice's three levels; when it lands, nothing here moves.
 
-     ⚠️ **The two banner arms are gated differently, and that is not symmetry
-     waiting to be tidied.** A destination banner is noise when there is only
-     one destination — it names the only place everything goes. An ORDER banner
-     names which of several orders a section bills, and an invoice that bills
-     one order still says so, because "which order is this line from" is the
-     question the invoice exists to answer. */%>
+     Both banner arms are gated on the same principle — a divider that names the
+     only member of its level is noise — but each gate is the CALLER's to
+     compute, because only the caller knows what its level contains. The quote
+     has no order level at all and passes nothing.
+
+     ⚠️ **Multi-order invoicing is not live**: it is a manager feature landing
+     after the CRMS cutover, so every invoice today bills exactly one order and
+     the order banner renders on none of them. The arm is here so that the
+     feature does not need this shared file reopened. */%>
 <%
 const {
   renderedItems, columnCount, hasRentals, hasDiscount, hasTax,
