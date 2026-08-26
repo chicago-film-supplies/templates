@@ -1,0 +1,268 @@
+<%
+const invoice = it.doc;
+const { destinations, items, totals } = invoice;
+// EVERY date on this page is formatted THROUGH this. date-fns `format` renders
+// in the LOCAL timezone of the JS runtime unless given `{ in: … }`, stored
+// business datetimes are Chicago-offset INSTANTS, and the render container sets
+// no `TZ` — so an unpinned format prints the UTC day and any boundary at or
+// after 19:00 CDT is TOMORROW. Measured on the order corpus at 56 of 996
+// rendering a day late; an invoice’s `date` and `due_date` are
+// `chicagoStartOfDay`, i.e. midnight, which is the worst case for this.
+const CHICAGO = it.tz("America/Chicago");
+
+// ── Divider structure: THREE levels, not the order’s two ────────────────────
+//
+// An invoice can bill several orders, so its hierarchy is
+// [order, destination, group] where an order’s is [destination, group].
+// `path[0]` names the causal ORDER’s Firestore doc id.
+//
+// This predicate is the ONLY place the extra level is named. Everything
+// downstream — the component indent, the row identity, the roll-up — works off
+// "is this uid a divider", never off a path LENGTH, which is what keeps it
+// indifferent to how many divider levels exist. api-cloudrun#538 would re-base
+// orders onto these same three levels; when it lands, nothing here moves.
+const isDivider = (i) =>
+  i.type === "group" || i.type === "destination" || i.type === "order";
+const lineItems = items.filter(i => !isDivider(i));
+const dividerUids = new Set(items.filter(isDivider).map(i => i.uid));
+
+// A `transaction_fee` is stored in `items[]` but is NOT a line of the invoice:
+// it is priced FROM the document (`pricing: "from_total"`), and
+// `totals.transaction_fees` is derived from these very items — so rendering
+// both puts the same money on the page twice. The totals row is the better
+// survivor because it carries the rate.
+const isDocumentFee = (i) => i.type === "transaction_fee";
+const shownItems = items.filter(i => !isDocumentFee(i));
+const shownLineItems = lineItems.filter(i => !isDocumentFee(i));
+
+// `it.invoices`, NOT `it.orders`. An invoices→invoices family resolves to
+// {dates, money, icons, invoices} and gets no `it.orders` at all, so naming it
+// here would throw at render. These three are re-exported from
+// `@cfs/core/utils/invoices` for exactly this reason, and core’s
+// `tests/template-helpers.test.ts` asserts both namespaces carry the same
+// function objects rather than leaving that an assumption.
+const hasDiscount = it.invoices.orderHasDiscount(lineItems);
+const hasRentals = it.invoices.orderHasRentals(lineItems);
+const hasTax = it.invoices.orderHasTax(lineItems);
+
+// SIX unconditional columns — Item Description, Type, Qty, Unit Price,
+// Subtotal, Total — plus the three conditionals. 6 to 9, same as the quote,
+// because it is the same grid rendered by the same partial.
+const itemColumnCount = 6 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0);
+
+// The page’s second alignment edge: the #items column boundary NEAREST THE
+// HALF-WAY POINT, rounding left. See styles/quote.css for the derivation — the
+// rule is a fact about the shared grid, not about either family.
+const addressBoundary = Math.floor((itemColumnCount - 1) / 2);
+const addressColumnCount = itemColumnCount - 1;
+
+// A collection leg exists only if something is coming back. Nothing on a sale,
+// a service or a surcharge is ever collected, so an invoice with no rental line
+// has no return address, contact, end date or duration to print.
+const hasCollection = hasRentals;
+const deliverySpan = hasCollection ? addressBoundary : addressColumnCount;
+const returnSpan = addressColumnCount - addressBoundary;
+
+// An invoice is read, not reconciled: a numeric cell renders nothing at zero.
+// NON-ZERO rather than "> 0" — a flat discount may exceed its own line, so
+// `subtotal_discounted_cents` can legitimately go negative and its sign is
+// load-bearing.
+const numberCell = (n) => n ? n : "";
+const moneyCell = (c) => c ? it.money.formatCents(c) : "";
+const itemTaxCents = (item) => (item.price.taxes || []).reduce((sum, t) => sum + t.amount_cents, 0);
+
+// A zero money cell on a row that OWES TAX prints an em-dash, not a blank —
+// the FLAT tax arm reads the QUANTITY and ignores the subtotal, so a
+// zero-priced component can bill real money while its unit price and subtotal
+// are both genuinely $0.00. Row-scoped: only a row whose own tax contradicts
+// its blank cells gets one.
+const moneyCellOn = (c, taxCents) => c ? it.money.formatCents(c) : (taxCents ? "—" : "");
+
+// The Type column exists for ONE job: a product stocked both for sale and for
+// rent needs the column to say which this line is.
+const DISAMBIGUATED_ITEM_TYPES = new Set(["rental", "sale"]);
+
+// How deep a line sits UNDER ANOTHER LINE ITEM — 0 top-level, 1 for its
+// component. Counts real line-item ancestors rather than subtracting a fixed
+// number of divider levels, which is what makes the same helper correct at the
+// invoice’s three levels and the order’s two.
+const componentDepth = (item) =>
+  (item.path ?? []).slice(0, -1).filter((uid) => !dividerUids.has(uid)).length;
+
+// ── Declared param: hide_zero_priced_components (default false) ─────────────
+//
+// ⚠️ **The predicate is `base_cents === 0`, NOT `zero_priced`.** An invoice line
+// has no `zero_priced` field at all — `projectOrderItemToInvoiceItem` does not
+// carry it — so the order’s flag is simply absent here and testing for it would
+// make this param a silent no-op. Checking the stored amount is the same call
+// core already makes: `@cfs/core/utils/invoices` does its own zero-priced work
+// "on the stored amounts, never inferred from `zero_priced`".
+//
+// Only a COMPONENT is eligible (`componentDepth > 0`). A top-level zero-priced
+// line is something the customer was given at no charge, and hiding that would
+// delete a line of the invoice.
+const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
+
+// Keyed by PATH, never by uid: `item.uid` repeats within one document, so two
+// hidden components can share a uid and their money would collide onto one row.
+//
+// The separator is NUL, BUILT rather than written as an escape — this file can
+// be authored through `templates_propose_edit`, whose payload is JSON, and a
+// JSON round-trip decodes such an escape into a real NUL BYTE in the source.
+const PATH_SEP = String.fromCharCode(0);
+const pathKey = (item) => (item.path ?? []).join(PATH_SEP);
+const hiddenPaths = new Set();
+const rolledUp = new Map();
+if (hideZeroPricedComponents) {
+  const byPath = new Map(lineItems.map(i => [pathKey(i), i]));
+  const eligible = lineItems.filter(i => i.price.base_cents === 0 && componentDepth(i) > 0);
+  const eligibleKeys = new Set(eligible.map(pathKey));
+  eligible.forEach(hidden => {
+    // Walk up to the nearest ancestor that is a line item AND still visible, so
+    // a component of a hidden component rolls all the way to what renders.
+    let up = (hidden.path ?? []).slice(0, -1);
+    while (up.length > 0) {
+      const key = up.join(PATH_SEP);
+      const ancestor = byPath.get(key);
+      if (ancestor && !eligibleKeys.has(key)) {
+        const acc = rolledUp.get(key) || { tax: 0, subtotal: 0, total: 0 };
+        acc.tax += itemTaxCents(hidden);
+        acc.subtotal += hidden.price.subtotal_discounted_cents ?? hidden.price.subtotal_cents;
+        acc.total += hidden.price.total_cents;
+        rolledUp.set(key, acc);
+        hiddenPaths.add(pathKey(hidden));
+        return;
+      }
+      up = up.slice(0, -1);
+    }
+    // No visible ancestor line item. The row STAYS, because losing the money
+    // silently is the one outcome that must not happen — #totals counts the tax
+    // on a hidden row whether or not it renders, so a hidden row whose money
+    // goes nowhere makes the table stop reconciling with its own footer.
+  });
+}
+const renderedItems = shownItems.filter(i => !hiddenPaths.has(pathKey(i)));
+
+// ── Settlement ──────────────────────────────────────────────────────────────
+//
+// ⚠️ **`payments[]` was DELETED from the invoice on 2026-08-03**, and
+// `InvoiceSchema` is a `z.strictObject`, so an invoice cannot re-acquire one.
+// The per-settlement journal is a separate `settlements` collection reached by
+// `GET /settlements?uid_invoice=…`, and a template only ever receives `it.doc`.
+// So this document reports ROLLUPS and cannot itemise them; do not add a
+// payments table here, because there is no data behind it.
+//
+// `?? 0` on every read: `amount_credited_cents` and `amount_void_cents` are
+// bare `.optional()` with NO default, so an older invoice legitimately carries
+// neither.
+const amountPaidCents = totals.amount_paid_cents ?? 0;
+const amountCreditedCents = totals.amount_credited_cents ?? 0;
+const amountDueCents = totals.amount_due_cents ?? 0;
+
+// Rows appended after Total, formatted HERE rather than in the shared partial:
+// a partial that formatted them would be deciding what `?? 0` means for a field
+// it cannot see. Credits only appear when there are any — a "$0.00 credited"
+// row states an absence as if it were a fact.
+const settlementRows = [
+  { label: "Amount Paid:", value: it.money.formatCents(amountPaidCents) },
+];
+if (amountCreditedCents) {
+  settlementRows.push({ label: "Credits Applied:", value: it.money.formatCents(amountCreditedCents) });
+}
+settlementRows.push({ label: "Amount Due:", value: it.money.formatCents(amountDueCents) });
+
+// Does anything on this invoice actually GO anywhere? A `replacement` line
+// recovers the cost of an item lost or damaged in the customer’s possession —
+// nothing is delivered and nothing comes back — so an invoice whose every line
+// is a replacement has no addresses, contacts or dates to print, and a headed
+// table with nothing under it reads as missing data rather than inapplicable.
+const hasDeliverableItems = shownLineItems.some(i => i.type !== "replacement");
+
+// Both banners are conditional, and on the same principle: a divider that names
+// the only member of its level is noise. A single destination banner names the
+// one place everything goes; a single order banner names the one order every
+// line came from.
+//
+// ⚠️ MULTI-ORDER INVOICING IS NOT LIVE. It is a manager feature landing after
+// the CRMS cutover, so today every invoice bills exactly one order — measured
+// 2026-08-26 across the 200 most recent, `number_orders` is 0 or 1 throughout.
+// An unconditional order banner would therefore put a redundant `Order #1004`
+// row at the top of every invoice we currently produce. The arm still exists
+// and is exercised the moment a second order can be attached.
+const showDestinationBanners = destinations.length > 1;
+const showOrderBanner = (invoice.number_orders || []).length > 1;
+%>
+<div id="grid-wrapper" style="--block-3-fraction: calc(<%= addressBoundary %> / <%= addressColumnCount %>)">
+<%~ await includeAsync("@partials/shared/letterhead.eta", {
+     title: `Invoice #${invoice.number}`, organization: invoice.organization,
+   }) %>
+
+<table id="details">
+  <thead>
+    <tr>
+      <th scope="col">Date:</th>
+      <th scope="col">Due Date:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= it.dateFns.format(it.dateFns.parseISO(invoice.date), 'MMMM d, yyyy', { in: CHICAGO }) %></td>
+      <%/* An empty cell, not an absent one: under `table-layout: fixed` a short
+           row leaves a real trailing gap rather than being absorbed. */%>
+      <% if (invoice.due_date) { %>
+      <td><%= it.dateFns.format(it.dateFns.parseISO(invoice.due_date), 'MMMM d, yyyy', { in: CHICAGO }) %></td>
+      <% } else { %>
+      <td></td>
+      <% } %>
+    </tr>
+  </tbody>
+  <thead>
+    <tr>
+      <%/* PLURAL, because an invoice can bill several orders — that is the one
+           structural difference from the quote's #details block, and it is why
+           `number_orders` is an array where an order has a scalar `number`. */%>
+      <th scope="col">Order Number<%= (invoice.number_orders || []).length > 1 ? "s" : "" %>:</th>
+      <th scope="col">Reference:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= (invoice.number_orders || []).join(", ") %></td>
+      <% if (invoice.reference) { %>
+      <td><%= invoice.reference %></td>
+      <% } else { %>
+      <td></td>
+      <% } %>
+    </tr>
+  </tbody>
+</table>
+
+<%/* THE WHOLE TABLE IS RENTAL/DELIVERY FURNITURE, and a replacement-only
+     invoice has none of it — dropping the section outright rather than emptying
+     it, the same call the address blocks already make for themselves. */%>
+<% if (hasDeliverableItems && destinations.length > 0) { %>
+<%~ await includeAsync("@partials/shared/destinations.eta", {
+     u: it.invoices, destinations, addressColumnCount, hasCollection,
+     deliverySpan, returnSpan, CHICAGO,
+   }) %>
+<% } %>
+
+<!-- Items -->
+<%/* `shownLineItems`, not `lineItems`: an invoice whose only non-divider entry
+     is a transaction fee has nothing to put in this grid, and an empty table
+     with a header row reads as a rendering fault. */%>
+<% if (shownLineItems.length > 0) { %>
+<%~ await includeAsync("@partials/shared/items-grid.eta", {
+     renderedItems, columnCount: itemColumnCount, hasRentals, hasDiscount, hasTax,
+     rolledUp, componentDepth, numberCell, moneyCell, moneyCellOn,
+     itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
+     showDestinationBanners, showOrderBanner,
+   }) %>
+<% } %>
+
+<!-- Totals -->
+<%~ await includeAsync("@partials/shared/totals.eta", {
+     totals, extraRows: settlementRows,
+   }) %>
+  <footer></footer>
+</div>
