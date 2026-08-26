@@ -1,4 +1,4 @@
-<%/* draft draft/invoice/2ee61d2a */%>
+<%/* draft draft/invoice/1c2816c7 */%>
 <%
 const invoice = it.doc;
 const { destinations, items, totals } = invoice;
