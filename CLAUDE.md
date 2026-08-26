@@ -39,7 +39,7 @@ Raw git stays correct for everything that is *not* owned template content: `fixt
 | section | its one writer |
 |---|---|
 | `display_name`, `surfaces`, `depends_on` | `PATCH /templates/{uid}/metadata` (manager: the Details form) — commits on its own `meta/*` branch |
-| `render` (margins, `base_font_size`, `filename`, `footer`, `header`) | the same route — **new**; the manager's Details form is that block's first editing surface anywhere |
+| `render` (margins, `filename`, `footer`, `header`) | the same route — **new**; the manager's Details form is that block's first editing surface anywhere |
 | `fixtures[]` | the fixture verbs (`templates_capture_fixture` / `set` / `describe` / `remove_fixture`) — commit to the draft branch directly |
 | `params[]` | the draft's typed `params` (the `params` argument, or the manager's Params tab) — the sidecar copy is **derived from it at commit** |
 
@@ -131,7 +131,11 @@ Fixtures are **files-authoritative for discovery**: the renderer globs `fixtures
 
 ⚠️ **The draft's stale sidecar can no longer REVERT that metadata edit, which is the half that used to hurt.** Not picking a change up is a display problem you notice; writing the old value back over it is a data problem you do not. `commit_draft` / `release_draft` resolve the sidecar off the branch now (§ The sidecar), so committing a dirty draft brings its copy forward instead of pushing it back — and the "commit first, then rebase" advice above now works in one step rather than needing the rebase to un-do a revert.
 
-The sidecar's `render` block (`margin_*`, `base_font_size`, `filename` as an Eta string, `footer`/`header` partial paths) drives Gotenberg PDF generation — full field semantics in the `cfs-template-authoring` skill.
+The sidecar's `render` block (`margin_*`, `filename` as an Eta string, `footer`/`header` partial paths) drives Gotenberg PDF generation — full field semantics in the `cfs-template-authoring` skill.
+
+⚠️ **`base_font_size` is gone, and the thing that replaced it is a CSS rule, not another knob** (templates#114). It was injected by `api-cloudrun` as `<style>body,table,th,td{font-size:Npx}</style>` at the **END** of `<head>`, so it beat the template's own stylesheet by source order — which is how the shipped PDF came to be a 10px document while `deno task preview` and all 14 goldens were 9px. **The font size is now `styles/base.css`'s `html { font-size: 10px }` — a global DEFAULT at the root — and a template opts out with ONE declaration in its own stylesheet** (`styles/quote.css`'s `html { font-size: 9px }` already was that declaration; it stopped being a workaround and became the mechanism). Everything under it is `em`/`rem`, so the override scales the whole document coherently instead of leaving `html` behind at the old root. An operator still changes the global from the manager's base-component editor, which is what the knob was for.
+
+**The organising rule, for the next injection anyone is tempted to add: inject a global DEFAULT at the START of `<head>`, never an OVERRIDE at the end.** `injectPartHorizontalMargins` is the good shape and says so in its own comment (*"User styles declared later in the document still win"*); `injectBaseFontSize` was the same idea placed at the other end of the same element, and that placement was the whole defect. CSS is the authority everywhere it can reach — which is the main document. The header/footer frames are the one place it cannot reach (isolated Chromium documents that load no external resources), so injection is the only channel there, and it stays a start-of-head default.
 
 ## Template context (summary)
 
@@ -187,6 +191,8 @@ reached in five blessings: nine by `acaafcd` / #83, `replacement-only` by
 (2026-08-22, which also re-blessed six of the nine for the non-zero replacement
 filter), `fee-flat-card` by `aa495eb` / #113 (2026-08-23), and
 `billing-foreign-country` + `evening-boundary` by `ef883c3` / #126 (2026-08-25).
+All 14 were then re-blessed together for the root-sizing of `base.css`
+(templates#114, 2026-08-26).
 So the `visual-diff` gate on a `main` PR genuinely compares — PR #129's run reads
 `✓ quote: match across 14 fixture(s)`, which is the aggregate that would read
 `no-golden` if even one fixture lacked a baseline — and it **can fail**. That is a
@@ -245,6 +251,29 @@ pixel lock only once it reaches the design-system standard"*, via its
 golden compares what was rendered; it is silent about a branch that never ran.
 Fixture *coverage* and golden *stability* are different problems, and blessing
 the baseline closed only the second one.
+
+⚠️ **And it is silent about a change SMALLER THAN 0.1% OF THE PAGE, which on a
+mostly-white document is a great deal more than it sounds.** `comparePng`'s
+`DEFAULT_THRESHOLD` is `0.001` (`api-cloudrun/src/lib/templates/golden.ts`), so a
+verdict of `match` means "fewer than one pixel in a thousand moved", not "nothing
+moved". Measured 2026-08-26 against `main` at `19d7887`: **four of the fourteen
+goldens were STALE** and every one of them still read `match` —
+`sale-taxed` (delta 0.000738) and `service-untaxed` (0.000690) carried a whole
+`In Store Return` leg — its heading, its two address lines and the duration cell
+— that #126 had deliberately stopped rendering (`hasCollection = hasRentals`, so
+a sale-only order has no collection leg); `taxed-zero-priced-component` (0.000191)
+the same band; `rental-discount-exempt` (0.000673) a column shift in the
+replacement-charges table. #126 re-blessed the two fixtures it added and left the
+other four behind, and nothing in a green run said so for a day. They are
+corrected in the same re-bless as templates#114.
+
+**The lesson is not "lower the threshold"** — it exists to absorb Chromium's
+sub-pixel antialiasing noise, measured at up to 0.00074 across this very set when
+re-rendering an UNCHANGED tree, which is the same order of magnitude as the four
+stale deltas above. Signal and noise genuinely overlap at this scale, so the
+threshold cannot separate them. **What distinguishes them is that a real change
+is CONTIGUOUS and antialiasing noise is scattered**, which a delta over the whole
+page throws away. templates#137.
 
 The set was widened for exactly that reason — 3 fixtures to 9 on 2026-08-14, to
 **10** on 2026-08-21 (`replacement-only`, #104), **11** on 2026-08-22
