@@ -152,6 +152,7 @@ interface Sidecar {
   collection_target?: TemplateCollectionType;
   depends_on?: { components?: string[] };
   params?: { key: string; type: "boolean"; label?: string; default?: boolean; required?: boolean }[];
+  fixtures?: { slug: string; params?: Record<string, boolean> }[];
   render?: RenderConfig;
 }
 
@@ -173,11 +174,30 @@ const renderConfig = sidecar.render ?? {};
  * `Cannot read properties of undefined` in preview while the server injected a
  * resolved object.
  *
- * Override one from the CLI to see the other state:
+ * ⚠️ **A fixture's OWN declared state is the base, and `--param` overrides on
+ * top of it** (api-cloudrun#608). A fixture's `fixtures[]` entry may carry a
+ * `params` map — the state it is rendered and golden-gated at — and seeding
+ * from it is what keeps this harness showing the document the GATE freezes for
+ * that fixture. Without the seed a `collection_leg` fixture would preview its
+ * delivery leg here and be blessed on its collection leg in CI, which is the
+ * #325 divergence class one layer out: the harness deciding render inputs on
+ * its own terms, and looking correct while doing it.
+ *
+ * Override from the CLI to see any other state:
  *   deno task preview quote <fixture> --param hide_zero_priced_components=true
  * An unknown key or a non-boolean value throws here exactly as it 422s there.
  */
-const paramOverrides: Record<string, unknown> = {};
+// `resolveFixturePath` also accepts an arbitrary path, which is not a fixture of
+// this family and therefore declares no state — so match only inside the
+// family's own dir rather than on the basename, which would silently apply one
+// fixture's declared state to an unrelated file that happens to share its name.
+const fixtureDir = `fixtures/${name}/`;
+const fixtureSlug = fixtureFile.startsWith(fixtureDir) && fixtureFile.endsWith(".json")
+  ? fixtureFile.slice(fixtureDir.length, -".json".length)
+  : null;
+const paramOverrides: Record<string, unknown> = {
+  ...(sidecar.fixtures?.find((f) => f.slug === fixtureSlug)?.params ?? {}),
+};
 for (const arg of Deno.args) {
   if (!arg.startsWith("--param")) continue;
   const spec = arg.startsWith("--param=") ? arg.slice("--param=".length) : Deno.args[Deno.args.indexOf(arg) + 1];

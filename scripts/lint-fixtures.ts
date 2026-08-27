@@ -39,12 +39,32 @@
  *      way. That is the state this makes unrepresentable, because counting PNGs
  *      against `ls fixtures/<git_path>/` is what kept failing.
  *
+ *   5. PARAM COVERAGE — (a) every param state a fixture claims is one the family
+ *      declares in `params[]`, and (b) on a graduated family, every declared
+ *      boolean param has at least one fixture rendering each of its states.
+ *      A golden freezes ONE rendering per fixture, at the state that fixture
+ *      declares (api-cloudrun#608) — so a param nothing overrides is frozen at
+ *      its default and its other state is ungated for the LIFE of the family,
+ *      reachable by no threshold, no re-bless and no number of extra fixtures,
+ *      because every one of them renders at the default too. That is measured,
+ *      not hypothetical: `hide_zero_priced_components: true` hides component
+ *      rows and rolls their money onto the parent, and no golden had ever been
+ *      taken of it on either family declaring it.
+ *      ⚠️ It does NOT claim the coverage is GOOD — only that each state is
+ *      rendered by something. Whether the fixture chosen exercises the part of
+ *      the document the param moves is the `description`'s argument, i.e.
+ *      check 3's.
+ *
  * Fails CLOSED: a fixtures dir with no sidecar, a sidecar with no
  * `collection_source`, an unmapped collection, or sidecar/file drift are all
- * errors. Check 4 is the one deliberate exception, and it fails OPEN by design:
- * a family with NO baseline on a branch has not graduated, and saying so on
- * every PR would be noise rather than a finding (`goldens/sandbox/` holds
- * nothing at all — templates#118).
+ * errors. Checks 4 and 5b are the deliberate exceptions, and both fail OPEN by
+ * design: a family with NO baseline on a branch has not graduated, and saying
+ * so on every PR would be noise rather than a finding (`goldens/sandbox/` holds
+ * nothing at all — templates#118). ⚠️ **Check 5a is NOT graduation-scoped** —
+ * an undeclared param key is a typo rather than a coverage judgement, and it is
+ * not survivable downstream: the golden gate hands a fixture's state straight
+ * to core's `resolveRenderParams`, which throws on an unknown key and takes the
+ * family's whole visual-diff run with it.
  *
  * An unmapped collection is caught by `isCollectionName` BEFORE the lookup —
  * the previous shape read `schemas[key]`, got `undefined`, and would otherwise
@@ -69,7 +89,14 @@ async function* walk(dir: string): AsyncGenerator<string> {
 
 interface Sidecar {
   collection_source?: string;
-  fixtures?: { slug: string; label?: string; description?: string }[];
+  params?: { key: string; type?: string; default?: boolean; required?: boolean }[];
+  fixtures?: {
+    slug: string;
+    label?: string;
+    description?: string;
+    /** The param state this fixture is rendered and golden-gated at (api-cloudrun#608). */
+    params?: Record<string, boolean>;
+  }[];
 }
 
 /**
@@ -235,6 +262,15 @@ for (const gitPath of fixtureDirs) {
   // tree would bury the real finding. That is also what keeps the empty
   // `goldens/sandbox/` silent (templates#118) without this check having to know
   // anything about which branch is which.
+  /**
+   * Whether this family has graduated on ANY branch — check 5b's scope.
+   *
+   * Deliberately "any", not per-branch: a param's coverage is a property of the
+   * FIXTURE SET, which is branch-independent, while a baseline is per-branch.
+   * Asking it once per branch would report the same finding twice.
+   */
+  let graduatedHere = false;
+
   for (const branch of goldenBranches) {
     const goldenDir = `goldens/${branch}/${gitPath}`;
 
@@ -251,6 +287,7 @@ for (const gitPath of fixtureDirs) {
     if (pngs.size === 0) continue; // ditto: an empty tree is not a graduation
 
     graduated.push(`${branch}/${gitPath}`);
+    graduatedHere = true;
 
     for (const slug of [...slugsOnDisk].sort()) {
       if (pngs.has(slug)) continue;
@@ -273,6 +310,76 @@ for (const gitPath of fixtureDirs) {
           `compare against it. Usually a renamed or removed fixture: delete the baseline, ` +
           `or restore the fixture if the rename was the mistake.`,
       );
+    }
+  }
+
+  // ── 5. Param coverage ──────────────────────────────────────────────
+
+  const declaredParams = sidecar.params ?? [];
+  const declaredKeys = new Set(declaredParams.map((p) => p.key));
+
+  // 5a. Every key a fixture claims is one the family declares. Unscoped by
+  // graduation on purpose — this is a typo, not a coverage judgement, and the
+  // golden gate does not degrade on it: `resolveGoldenParams` hands the map
+  // straight to core's `resolveRenderParams`, which THROWS on an undeclared
+  // key and takes the whole family's visual-diff run with it. Better here.
+  for (const entry of sidecar.fixtures ?? []) {
+    for (const key of Object.keys(entry.params ?? {})) {
+      if (declaredKeys.has(key)) continue;
+      note(
+        sidecarPath,
+        `"${entry.slug}" declares the param state \`${key}\`, which this family does not ` +
+          `declare in \`params[]\`. The golden gate resolves a fixture's state through ` +
+          `core's \`resolveRenderParams\`, which throws on an unknown key — so this fails ` +
+          `the family's whole visual-diff run, not just this fixture. Declared here: ` +
+          `${declaredKeys.size === 0 ? "(none)" : [...declaredKeys].sort().join(", ")}.`,
+      );
+    }
+  }
+
+  // 5b. Every declared boolean param is golden-gated at BOTH of its states.
+  //
+  // A golden freezes ONE rendering per fixture, at the state that fixture
+  // declares (api-cloudrun#608). So a param nothing overrides is frozen at its
+  // default and its other state is ungated for the life of the family —
+  // reachable by no threshold, no re-bless and no number of extra fixtures,
+  // because every one of them renders at the default too. That is not
+  // hypothetical: `hide_zero_priced_components: true` hides component rows and
+  // rolls their money onto the parent, and no golden had ever been taken of it.
+  //
+  // ⚠️ Graduation-scoped, matching check 4 — a family mid-build has not chosen
+  // its fixture set yet, and reddening it on the first capture would be noise
+  // rather than a finding. The cost of that scoping is real and worth naming:
+  // a family that never blesses anything is never asked this question, which is
+  // check 4's job to catch, not this one's.
+  //
+  // ⚠️ What this does NOT claim: that the coverage is GOOD. It says some
+  // fixture renders each state, never that the fixture chosen exercises the
+  // part of the document the param actually moves. That argument is the
+  // `description`, and check 3 is what makes it exist.
+  if (graduatedHere && declaredParams.length > 0) {
+    for (const param of declaredParams) {
+      if (param.type !== undefined && param.type !== "boolean") continue;
+      // A fixture with no override renders at the param's own default — so the
+      // default state is covered by the mere existence of an ordinary fixture.
+      const fallback = param.default ?? false;
+      const covered = new Set<boolean>();
+      for (const slug of slugsOnDisk) {
+        const entry = (sidecar.fixtures ?? []).find((f) => f.slug === slug);
+        covered.add(entry?.params?.[param.key] ?? fallback);
+      }
+      for (const state of [false, true]) {
+        if (covered.has(state)) continue;
+        note(
+          sidecarPath,
+          `no fixture renders \`${param.key}\` at \`${state}\`, so that half of this ` +
+            `template is ungated: every golden freezes the other state and a green ` +
+            `visual-diff says nothing about it. No threshold, re-bless or extra fixture ` +
+            `reaches it — a fixture must SAY which state it renders at. Fix by capturing ` +
+            `one (or copying an existing fixture file) and giving its \`fixtures[]\` entry ` +
+            `\`"params": { "${param.key}": ${state} }\`, then approving its render.`,
+        );
+      }
     }
   }
 }
@@ -358,7 +465,13 @@ if (problems.length) {
       "\n" +
       "And once a family has a baseline on a branch, every fixture needs one:\n" +
       "a fixture with no golden is rendered and then passed informationally, so\n" +
-      "it buys no coverage at all. Approving the renders is what clears that.\n",
+      "it buys no coverage at all. Approving the renders is what clears that.\n" +
+      "\n" +
+      "A declared param needs a fixture at EACH of its states, for the same\n" +
+      "reason one rung down: a golden freezes one rendering per fixture, so a\n" +
+      "state nothing declares is never rendered by anything and a green run\n" +
+      "says nothing about it. More fixtures do not help — they all render the\n" +
+      "default. One of them has to say it renders the other state.\n",
   );
   Deno.exit(1);
 }
@@ -368,5 +481,5 @@ const goldenSummary = graduated.length
   : "no graduated golden tree";
 console.log(
   `lint-fixtures: ${checked} fixture(s) across ${fixtureDirs.length} family(ies) — ` +
-    `schema OK, no PII, ${goldenSummary}.`,
+    `schema OK, no PII, ${goldenSummary}, every declared param state rendered.`,
 );

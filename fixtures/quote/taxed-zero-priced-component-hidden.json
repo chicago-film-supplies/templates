@@ -1,0 +1,266 @@
+{
+  "uid": "S20xjunK2qYSdH1PVY2X",
+  "number": 1004,
+  "status": "reserved",
+  "organization": {
+    "uid": "nTpq3YIY4cth5todd4PV",
+    "name": "Riley M Adler",
+    "crms_id": 524,
+    "jurisdiction_claim": null,
+    "tax_exempt": false,
+    "xero_id": "6891f42e-193e-4db1-bfa3-834555b6ce32",
+    "billing_address": {
+      "city": "Evanston",
+      "country_name": "United States",
+      "full": "5922 Cypress Ter",
+      "name": "Morgan M Pierce",
+      "postcode": "63616",
+      "region": "IL",
+      "street": "3530 Oak St",
+      "street2": "",
+      "mapbox_id": "Sample text for mapbox_id......................................",
+      "address_coordinates": null,
+      "user_coordinates": null
+    }
+  },
+  "destinations": [
+    {
+      "uid": "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+      "dates": {
+        "delivery_start": "2026-08-20T09:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1787234400,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-08-20T09:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1787234400,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-08-20T17:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1787263200,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-08-20T17:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1787263200,
+          "_nanoseconds": 0
+        },
+        "charge_start": "2026-08-20T09:00:00.000-05:00",
+        "charge_start_fs": {
+          "_seconds": 1787234400,
+          "_nanoseconds": 0
+        },
+        "charge_end": "2026-08-20T17:00:00.000-05:00",
+        "charge_end_fs": {
+          "_seconds": 1787263200,
+          "_nanoseconds": 0
+        },
+        "days_active": 1,
+        "days_charged": 1
+      },
+      "delivery": {
+        "uid": "1uCW4OqIMBUxP1nNkt9y",
+        "address": null,
+        "instructions": null,
+        "contact": null
+      },
+      "collection": {
+        "uid": "jebrCTkAxabWK4NKonTX",
+        "address": null,
+        "instructions": null,
+        "contact": null
+      },
+      "customer_collecting": false,
+      "customer_returning": false
+    }
+  ],
+  "items": [
+    {
+      "uid": "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+      "type": "destination",
+      "name": "Destination 2",
+      "path": [
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "ade4ac39-2a53-4ba4-93cb-cffad41a63a0",
+      "type": "group",
+      "name": "Crafty",
+      "path": [
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+        "ade4ac39-2a53-4ba4-93cb-cffad41a63a0"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "VQim9zNSP2k4gdhBEdnX",
+      "type": "sale",
+      "name": "Open Water - 16oz Aluminum Bottle (24 Case)",
+      "description": "",
+      "quantity": 10,
+      "price": {
+        "base_cents": 3900,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 39000,
+        "subtotal_discounted_cents": 39000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "dtTboGtD0f2iwRlDGOBH",
+            "name": "Chicago Sales Tax",
+            "rate": 10.5,
+            "type": "percent",
+            "amount_cents": 4095
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "dtTboGtD0f2iwRlDGOBH",
+            "name": "Chicago Sales Tax",
+            "rate": 10.5,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 43095
+      },
+      "stock_method": "bulk",
+      "order_number": 1004,
+      "uid_order": "S20xjunK2qYSdH1PVY2X",
+      "path": [
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+        "ade4ac39-2a53-4ba4-93cb-cffad41a63a0",
+        "VQim9zNSP2k4gdhBEdnX"
+      ],
+      "inclusion_type": null,
+      "zero_priced": null,
+      "coa_revenue": 4200,
+      "taxed_as": null
+    },
+    {
+      "uid": "N8brmUmmSzHs523aJAMd",
+      "type": "sale",
+      "name": "Bottled Water ( /bottle )",
+      "description": "The taxable unit of a case of bottled water. Carries the Chicago Bottled Water Tax; never sold on its own.",
+      "quantity": 240,
+      "price": {
+        "base_cents": 0,
+        "replacement_cents": 0,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "dtTboGtD0f2iwRlDGOBH",
+            "name": "Chicago Sales Tax",
+            "rate": 10.5,
+            "type": "percent",
+            "amount_cents": 0
+          },
+          {
+            "uid": "jvsOUs8nR4DXElcVNqJc",
+            "name": "Water Bottle Tax",
+            "rate": 0.05,
+            "type": "flat",
+            "amount_cents": 1200
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "dtTboGtD0f2iwRlDGOBH",
+            "name": "Chicago Sales Tax",
+            "rate": 10.5,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 1200
+      },
+      "stock_method": "none",
+      "order_number": 1004,
+      "uid_order": "S20xjunK2qYSdH1PVY2X",
+      "path": [
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+        "ade4ac39-2a53-4ba4-93cb-cffad41a63a0",
+        "VQim9zNSP2k4gdhBEdnX",
+        "N8brmUmmSzHs523aJAMd"
+      ],
+      "inclusion_type": "mandatory",
+      "zero_priced": true,
+      "coa_revenue": 4200,
+      "taxed_as": null
+    }
+  ],
+  "totals": {
+    "discount_amount_cents": 0,
+    "subtotal_cents": 39000,
+    "subtotal_discounted_cents": 39000,
+    "taxes": [
+      {
+        "uid": "dtTboGtD0f2iwRlDGOBH",
+        "name": "Chicago Sales Tax",
+        "rate": 10.5,
+        "type": "percent",
+        "amount_cents": 4095
+      },
+      {
+        "uid": "jvsOUs8nR4DXElcVNqJc",
+        "name": "Water Bottle Tax",
+        "rate": 0.05,
+        "type": "flat",
+        "amount_cents": 1200
+      }
+    ],
+    "transaction_fees": [],
+    "total_cents": 44295,
+    "replacement_total_cents": 0
+  },
+  "invoices": [
+    {
+      "uid": "wDBAH05fWHmNi5m94an8",
+      "number": 2390,
+      "status": "issued"
+    }
+  ],
+  "query_by_invoices": [
+    "wDBAH05fWHmNi5m94an8"
+  ],
+  "query_by_items": [
+    "VQim9zNSP2k4gdhBEdnX",
+    "N8brmUmmSzHs523aJAMd"
+  ],
+  "query_by_contacts": [],
+  "query_by_dates": [
+    "2026-08-20"
+  ],
+  "bookings_breakdown": {
+    "quoted": 0,
+    "reserved": 10,
+    "prepped": 0,
+    "out": 0,
+    "returned": 0,
+    "lost": 0,
+    "damaged": 0
+  },
+  "crms_id": 1031,
+  "crms_status": "Open",
+  "subject": "10 Cases Water",
+  "reference": null,
+  "xero_id": "1244c253-8fd7-4ff6-961f-62eed7380d6d",
+  "uid_thread": "twbFMagvsyOKqK8uHjHQ",
+  "version": 9,
+  "created_at": {
+    "_seconds": 1787266116,
+    "_nanoseconds": 148000000
+  },
+  "updated_at": {
+    "_seconds": 1787415520,
+    "_nanoseconds": 665000000
+  }
+}
