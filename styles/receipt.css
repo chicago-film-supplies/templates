@@ -1,0 +1,50 @@
+/* receipt.css — what is TRUE OF A RECEIPT and of nothing else.
+
+   Almost nothing, which is the point, and it is the same point `invoice.css`
+   makes: the document chrome — the page grid, the alignment edges, the
+   letterhead, the table rules, #details and #items — lives in `styles/base.css`
+   and reaches this family through the `base` component. A family is overlaid
+   from `base.css` plus its own sheet and nothing else (`ownsTemplatePath`), so
+   anything copied here would be a second copy that drifts.
+
+   A receipt has no #destinations block, no #totals block and no money column at
+   all, so it needs none of the rules those carry. */
+
+/* THE RECEIPT'S OWN ROOT SIZE, matched to the quote and the invoice
+   deliberately rather than inherited by accident — the same declaration
+   `invoice.css` carries, for the same first reason and one more.
+
+   `base.css` defaults the root to 10px; every customer-facing document opts
+   down to 9px so they read as the same company's paperwork at the same density,
+   and a receipt is handed over in the same transaction as the invoice for the
+   goods on it. Everything under the root is em/rem — including `--label-col`,
+   whose 24rem is 216px here exactly as it is on a quote — so this one
+   declaration sets the whole document's scale coherently.
+
+   ⚠️ The second reason is the FOOTER, and it is why this is not a free choice.
+   `partials/shared/footer.eta` carries no font-size of its own: it inherits the
+   document's root through the overlay `api-cloudrun` injects into that isolated
+   frame (`injectPartDefaults`), while its `padding-top: 12px` stays absolute
+   because the gap above the band is a fact about the PAGE. The band's fit
+   inside `margin_bottom: 0.62in` was measured at a 9px root — ink running
+   754..775pt on letter, 0.22in clear of the paper — and a 10px root grows the
+   two footer rows by ~2.5pt, eating into that clearance. It still fits; it has
+   not been re-measured, and neither the golden gate nor `deno task preview`
+   renders that frame (templates#137). So a receipt at 10px would be legible in
+   a warehouse and unverified at the paper edge.
+
+   Legibility at a loading dock is a real argument for the larger root, and it
+   is the argument to make if this ever moves. Moving it means re-measuring the
+   footer band in a real PDF, not just previewing the body. */
+html {
+  font-size: 9px;
+}
+
+/* The Qty and Movement # columns: counts and a journal id, not prose.
+   `font-variant-numeric` rather than a monospace stack — the digits line up in
+   a column without changing the typeface mid-document. `.center` (base.css)
+   does the alignment; this is only about the glyphs. */
+#items th.center,
+#items td.center {
+  font-variant-numeric: tabular-nums;
+}

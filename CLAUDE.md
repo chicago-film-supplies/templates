@@ -140,7 +140,7 @@ goldens/<branch>/<template>/<slug>.png  branch-keyed golden screenshot, one per 
 ⚠️ **A partial is no longer only a footer/header slot.** Until 2026-08-26 the
 only way a `partials/**` file reached a page was a sidecar `render.footer` /
 `render.header` naming it, and each of those renders as its own isolated
-document. A body may now `includeAsync` one, which is how the two families
+document. A body may now `includeAsync` one, which is how the document families
 share chrome — see § Includes under *Template context*. Both uses live in the
 same directories and the same content map; what differs is who pulls the file in.
 
@@ -166,6 +166,46 @@ The sidecar's `render` block (`margin_*`, `filename` as an Eta string, `footer`/
 
 ⚠️ **`it.currency` is gone.** Phase 11 Phase E withdrew currency.js from the render context entirely, `money-lint.yml`'s budget is **zero**, and `quote.eta` has no remaining call sites — so any `it.currency` reference now fails CI *and* would throw at render. Use `it.money.formatCents(doc.total_cents)`.
 
+### ⚠️ A straight apostrophe in a `//` comment breaks the `.eta` parse
+
+Eta finds a tag's closing `%>` by lexing the tag body the way JavaScript would —
+it tracks `'`/`"` strings (newline-terminated, as in JS) and multi-line backtick
+template literals, so a real `const a = "%>"` is safe. What its lexer does **not**
+model is the `//` line comment. Inside one, a `'` opens a string as far as the
+scanner is concerned, the closing `%>` is swallowed, and you get
+`EtaParser Error: Bad template syntax — Unexpected token '%'` reported against
+the *generated function*, tens of lines from the apostrophe that caused it.
+
+```eta
+<%
+// the journal is append-only and a movement's id is derived   ← BREAKS
+const x = 1;
+%>
+```
+
+Probed against `@bgub/eta@4.6.0`, 2026-08-28 — the boundary is exactly this:
+
+| where the quote is | verdict |
+|---|---|
+| a `<%/* … */%>` comment TAG | ✅ safe, any count — a different scanner |
+| a `/* … */` comment inside `<% … %>` | ✅ safe, even across lines |
+| a `//` comment, balanced pair on ONE line | ✅ safe — `// "is this a divider", never a LENGTH` |
+| a `//` comment, `'` or `"` pair across two lines | 🔴 **breaks** |
+| a `//` comment, odd `'`, `"` or `` ` `` | 🔴 **breaks** |
+
+So, for prose in a `//` comment: **write the typographic `’` (U+2019)**, and keep
+a `"…"` phrase on one line. That is why `quote.eta` and `invoice.eta` carry no
+straight apostrophe in any `//` comment — measured, their only straight quotes
+are real JS (the `'MMMM d, yyyy'` date pattern) and `<%/* … */%>` tags. It reads as a typography
+preference and is actually a parser requirement.
+
+⚠️ **Almost nothing catches this.** `money-lint` reads paths; the golden gate
+compares pixels of a document that already rendered; `lint:fixtures` never opens
+an `.eta`. The API's `gateDraftContent` DOES Eta-compile every `.eta` on save —
+but only for content authored through `templates_propose_edit`, and a file
+written on `main` with raw git reaches CI with no compile step in front of it.
+**Run `deno task preview <family> <fixture>` before pushing an `.eta`.**
+
 ### Dates: EVERY `format` needs `{ in: … }` — the default is the wrong timezone
 
 ⚠️ **`it.dateFns.format(d, pattern)` renders in the LOCAL timezone of whatever machine is rendering, and that machine is UTC.** Nothing sets `TZ` on the render container (see `api-cloudrun`'s Dockerfile, and no `TZ` env in its `infra/cloud-run-api.tf`), while every stored business datetime is a **Chicago-offset instant**. So an unpinned format prints the UTC calendar day, and any boundary at or after 19:00 CDT / 18:00 CST is *the next day*.
@@ -182,13 +222,22 @@ This is not a hypothetical. Measured 2026-08-24 across **all 996 prod orders**: 
 
 **Both of the things that should have caught it are blind to it by construction, which is why the rule is written here rather than left to review.** Local `deno task preview` runs on a laptop in Chicago, where the unpinned form is accidentally correct. And the golden gate is deterministic *by freezing the clock*, not by fixing the zone — `FROZEN_NOW` is midday, and until `evening-boundary` (prod order 872, 19:00 CDT = 00:00 UTC exactly) no fixture crossed the boundary, so all 12 goldens compared the defect to itself and passed. Reproduce either way with `TZ=UTC deno task preview quote evening-boundary`.
 
-### Includes — how the two families share chrome
+### Includes — how the document families share chrome
 
-⚠️ **Two, not three** — `quote` and `invoice` are every document family that
-exists. This section said *three* when it was written (#142, 2026-08-26),
-counting a packing-list family that was designed but never registered; Phase 3
-is on hold pending a grain decision (templates#150), and a `git_path` is
-permanently reserved at create, so nothing is pre-registered against it.
+⚠️ **THREE, and the third shares only part of the chrome** — `quote`, `invoice`
+and `receipt` are every document family that exists. Read the set from
+`ls templates/*.meta.json`, never from a number in this file: this section said
+*three* when it was written (#142, 2026-08-26) while only two existed, counting a
+packing-list family that was designed but never registered. That one is still
+unregistered — Phase 3 is on hold pending a grain decision (templates#150), and a
+`git_path` is permanently reserved at create, so nothing is pre-registered
+against it.
+
+`receipt` (templates#154) includes `letterhead` and **nothing else**: it renders
+a movement SESSION, which carries no destinations, no items grid and no money, so
+`destinations.eta`, `items-grid.eta` and `totals.eta` have no document to read.
+That is not a partial family — a family takes the shared fragments its document
+has data for, and a receipt has one.
 
 ```eta
 <%~ await includeAsync("@partials/shared/bill-to.eta", { title: "Quote #123" }) %>
@@ -254,13 +303,17 @@ An unknown name **throws** (listing near matches) rather than rendering nothing 
 
 Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
-**Collection-dependent — `it.orders` is NOT guaranteed:** the `@cfs/core/utils` namespaces a template gets are the union of the always-on set (`it.dates`, `it.money`, `it.icons`) plus each of its `collection_source` + `collection_target` namespaces — `orders` → `it.orders`, `invoices` → `it.invoices`, `fulfillments` → `it.fulfillments`; `quotes` and `packing_lists` contribute none, because a template *produces* those rather than computing over them. The quote template (orders → quotes) gets `it.orders` and NOT `it.invoices`; an invoices-source template gets the reverse. Resolved by `availableUtilNamespaces` (`@cfs/core/schemas`), which `api-cloudrun/src/lib/templates/eta.ts` (render), `api-cloudrun/src/services/templates/goldenDiff.ts` (golden gate) and `scripts/preview.ts` (this harness) all funnel through, so preview, gate and prod cannot diverge. Calling a namespace your collections don't resolve to throws at render — and fails the golden gate. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
+**Collection-dependent — `it.orders` is NOT guaranteed:** the `@cfs/core/utils` namespaces a template gets are the union of the always-on set (`it.dates`, `it.money`, `it.icons`) plus each of its `collection_source` + `collection_target` namespaces — `orders` → `it.orders`, `invoices` → `it.invoices`, `fulfillments` → `it.fulfillments`, `movement-sessions` → `it.sessions`; `quotes`, `packing_lists` and `receipts` contribute none, because a template *produces* those rather than computing over them. The quote template (orders → quotes) gets `it.orders` and NOT `it.invoices`; an invoices-source template gets the reverse. Resolved by `availableUtilNamespaces` (`@cfs/core/schemas`), which `api-cloudrun/src/lib/templates/eta.ts` (render), `api-cloudrun/src/services/templates/goldenDiff.ts` (golden gate) and `scripts/preview.ts` (this harness) all funnel through, so preview, gate and prod cannot diverge. Calling a namespace your collections don't resolve to throws at render — and fails the golden gate. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
 
 ⚠️ **`it.fulfillments` is REAL, and the sentence above used to deny it.** It shipped in `@cfs/core@10.0.0-beta.272`; this paragraph listed `orders` and `invoices` only, and closed with *"calling a namespace your collections don't resolve to throws at render"* — so it told a future packing-list author that the one namespace their family resolves to would throw. Nothing in the repo would have contradicted it: no `fulfillments`-sourced family is registered, so no render exercises the mapping and no golden covers it. **A stale namespace list is a correctness bug, not a count** — check it against `TEMPLATE_COLLECTION_UTILS` (`core/src/schemas/template-context.ts`), which is the whole map in nine lines.
 
 `it.fulfillments` is a **re-export namespace over `utils/orders`**, not a mapping to the string `"orders"`. A fulfillment's items and destinations are the same structural shapes, so the helpers transfer; the document is not an order, so `it.orders` on one would be a lie. It also renders what was **picked** rather than what was ordered — a fulfillment line carries `quantity` beside `quantity_order`, and `path_substituted_for` when a picker swapped an item.
 
-**Three axes, and they are not the same axis.** `collection_source` is what `it.doc` **is** (`orders`, `invoices`, `fulfillments`); `collection_target` is what the render **produces** (`quotes`, `packing_lists`, `invoices`); `surfaces` is where the family is **offered** in the manager (`order`, `fulfillment`, `invoice`) and resolves no namespace at all. The three enums overlap by name and are not interchangeable: `fulfillments` is a source but never a target, `quotes`/`packing_lists` are targets but never sources — so **no template can read a packing list**, only write one — and `invoices` is the only collection on both lists, which is why the invoice family's source and target coincide.
+`it.sessions` (`@cfs/core/utils/sessions`, live on `receipt` since templates#154) is the opposite kind of namespace: **its own three helpers, not a re-export of anything.** `groupSessionItemsByOrder` splits a session's rows one group per order — a session can span orders, because `POST /returns` accepts whatever a worker was actually handed back — `sessionQuantity` sums units across a set of rows, and `sessionItemPlaces` turns a movement line's `location.from`/`to` into `{from, to}` labels. ⚠️ **It is deliberately NOT a re-export of `utils/movements.ts`**: that module is the LEDGER fold (`applyMovementToLedger`, `costOfUnits`), and a receipt is a statement about what a person handed over, not an accounting operation — putting the fold on it would advertise arithmetic no template should be doing. ⚠️ **`sessionItemPlaces` renders nothing today**: a `DocSource`'s `label` is `.optional()` and, measured 2026-08-28, not one stored custody movement in either env sets it, so a From/To column would be blank on every row of every document. Call it when a writer starts setting labels.
+
+**Three axes, and they are not the same axis.** `collection_source` is what `it.doc` **is** (`orders`, `invoices`, `fulfillments`, `movement-sessions`); `collection_target` is what the render **produces** (`quotes`, `packing_lists`, `invoices`, `receipts`); `surfaces` is where the family is **offered** in the manager (`order`, `fulfillment`, `invoice`) and resolves no namespace at all. The three enums overlap by name and are not interchangeable: `fulfillments` and `movement-sessions` are sources but never targets, `quotes`/`packing_lists`/`receipts` are targets but never sources — so **no template can read a packing list**, only write one — and `invoices` is the only collection on both lists, which is why the invoice family's source and target coincide.
+
+⚠️ **A `collection_source` is a document SHAPE, and it is not always a Firestore collection.** `movement-sessions` — the receipt's source — is the fold of `transactions where uuid_session == …`, rebuilt per call and **stored nowhere** (api-cloudrun#700). `isCollectionName("movement-sessions")` deliberately answers **false**; what resolves it is `TEMPLATE_COLLECTION_SCHEMAS` (`core/src/schemas/template-schemas.ts`). Anything in this repo that resolves a source must go through `templateSchemaFor`, not through the collection registry — `scripts/lint-fixtures.ts` did the latter and would have failed closed on the receipt's very first fixture, reporting a source the API validates fine as an unmapped collection.
 
 ## Local preview
 
@@ -272,9 +325,15 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
 ## Goldens are LIVE on `main` (first blessed 2026-08-16) — and absent on `sandbox`
 
-**Both live families have graduated on `main`**, each at full parity with its
-own fixture set: `goldens/main/quote/` holds 14 PNGs and `goldens/main/invoice/`
-holds 7. `quote` got there in five blessings — nine by `acaafcd` / #83,
+**Two of the three families have graduated on `main`**, each at full parity with
+its own fixture set: `goldens/main/quote/` holds 14 PNGs and
+`goldens/main/invoice/` holds 7. **`receipt` has neither a fixture nor a
+baseline** — it shipped as a family first (templates#154) because
+`templates_capture_fixture` needs the family to EXIST before it can capture
+against it, so until its fixture PR lands `visual-diff` reports `no-fixtures` for
+it: an informational PASS that says nothing at all about how it renders.
+
+`quote` got there in five blessings — nine by `acaafcd` / #83,
 `replacement-only` by `ebbe2f2` / #104 (2026-08-21),
 `taxed-zero-priced-component` by `6c37131` / #108 (2026-08-22, which also
 re-blessed six of the nine for the non-zero replacement filter), `fee-flat-card`
@@ -443,7 +502,7 @@ the golden together.
 
 `@cfs/core` is **exact-pinned** (`jsr:@cfs/core@10.0.0-beta.N/...`, one entry per subpath), and moves in lockstep with `api-cloudrun/deno.json` + `manager/package.json` on every publish — same day, same version, per `feedback_bump_all_core_consumers_lockstep`.
 
-⚠️ **NINE entries, and they are named here rather than counted**: `schemas`, plus `utils/` × `orders`, `invoices`, `fulfillments`, `dates`, `icons`, `money`, `templates`, `citations`. It was six until `templates` joined it, seven until `citations` did (the harness resolves render params through core's own `resolveRenderParams` rather than reimplementing them), and eight until `fulfillments` did. A bump PR that moves eight of nine leaves one subpath stranded on the old version and still looks complete, which is why the list is written out — check the names, not the number.
+⚠️ **TEN entries, and they are named here rather than counted**: `schemas`, plus `utils/` × `orders`, `invoices`, `fulfillments`, `sessions`, `dates`, `icons`, `money`, `templates`, `citations`. It was six until `templates` joined it, seven until `citations` did (the harness resolves render params through core's own `resolveRenderParams` rather than reimplementing them), eight until `fulfillments` did, and nine until `sessions` did (templates#154 — the receipt's namespace). A bump PR that moves nine of ten leaves one subpath stranded on the old version and still looks complete, which is why the list is written out — check the names, not the number.
 
 ⚠️ **This line was itself stale, which is the failure it warns about happening to the warning.** It read *EIGHT* and omitted `fulfillments` while `deno.json` had carried `@cfs/core/utils/fulfillments` since `10.0.0-beta.272` — so anyone bumping by this list rather than by pattern would have stranded exactly the subpath the list forgot. **Bump with a `sed` over `jsr:@cfs/core@<old>/`**, which cannot miss one; then read the names back to check nothing new appeared.
 

@@ -6,7 +6,15 @@
 
      Props:
        title         the document's own heading — "Quote #123", "Invoice #2390"
-       organization  the customer org (name + billing_address)
+       organization  the customer org (name + billing_address), or null
+
+     ⚠️ `organization` may be NULL, and null is an ANSWER rather than missing
+     data. A receipt renders a movement SESSION, and `POST /returns` deliberately
+     accepts bookings from different orders — so a session spanning two customers
+     is legitimate, and `MovementSession.organization` is `null` to say so. A
+     receipt must not print a customer name in that case; collapsing to the first
+     would put one customer's name on another's goods. An order and an invoice
+     always carry one, so this guard changes nothing they render.
 
      `it.logo` is inherited, not passed: it is injected into every render
      context by `renderTemplate` and is not a fact about the document. */%>
@@ -37,7 +45,9 @@ const { title, organization } = it;
     const foreign = billing.country_name && billing.country_name !== "United States";
     %>
     <h1><%= title %></h1>
+    <% if (organization?.name) { %>
     <div><%= organization.name %></div>
+    <% } %>
     <% if (streetLine) { %>
     <div><%= streetLine %></div>
     <% } %>
