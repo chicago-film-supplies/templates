@@ -1,0 +1,219 @@
+<%
+// ── What this document IS ───────────────────────────────────────────────────
+//
+// A receipt states what physically changed hands in ONE operator action. Its
+// source is a `movement-sessions` document: the fold of every movement sharing
+// one `uuid_session` (`@cfs/core/schemas/movement-session.ts`). That fold is
+// rebuilt per call and stored NOWHERE — api-cloudrun#700 — which is safe to
+// print twice because the journal is append-only and a movement’s id is
+// `{uuid_session}|{type}|{subject}`, so a retried action resolves to the same
+// documents rather than adding new ones.
+//
+// It is therefore NOT a money document. There is no price, no tax, no total and
+// no `it.money` call anywhere below, because a session carries no money at all.
+const session = it.doc;
+const { items, orders } = session;
+
+// EVERY date on this page is formatted THROUGH this. date-fns `format` renders
+// in the LOCAL timezone of the JS runtime unless given `{ in: … }`, stored
+// business datetimes are Chicago-offset INSTANTS, and the render container sets
+// no `TZ` — so an unpinned format prints the UTC day and any boundary at or
+// after 19:00 CDT is TOMORROW. A session’s `date` is the earliest movement’s
+// instant, i.e. whenever the worker pressed the button, so an evening check-in
+// is exactly the case that goes wrong unpinned.
+const CHICAGO = it.tz("America/Chicago");
+
+// `it.sessions`, NOT `it.orders`. A movement-sessions→receipts family resolves
+// to {dates, money, icons, sessions} and gets no `it.orders` at all, so naming
+// it here would throw at render AND fail the golden gate. `it.sessions` is a
+// namespace of its own rather than a re-export over `utils/movements.ts`: that
+// module is the LEDGER fold (`applyMovementToLedger`, `costOfUnits`), and a
+// receipt is a statement about what a person handed over, not an accounting
+// operation.
+//
+// ⚠️ A session can span ORDERS, and that is the point of the surface it comes
+// from: `POST /returns` accepts whatever a worker was actually handed back, so
+// an item from order A returned alongside order B is the driving case rather
+// than a data fault. A flat list would give the customer no way to see which of
+// their jobs each line settled.
+const groups = it.sessions.groupSessionItemsByOrder(items);
+
+// A movement TYPE, rendered the way the manager renders one.
+//
+// ⚠️ Deliberately a generic transform, not a lookup table. `@cfs/core` has no
+// movement-type label helper on purpose — the manager writes
+// `startCase(camelCase(t))` (`MovementTimeline.tsx`) and a hand-written map in
+// core would be a second authority that disagrees with it the first time either
+// side is edited, over WORDING, which is a template’s own business. This is the
+// same transform, so `check_in` reads "Check In" on both surfaces.
+const actionLabel = (type) =>
+  type.split("_").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+
+// The Reference column is CONDITIONAL because the field is usually empty:
+// `POST /returns` and the checkout write `reference: ""` unless the operator
+// typed one, while the journal-cutover migration wrote a sentence into every
+// row it reconstructed. A headed column that is blank on every row reads as
+// missing data rather than as inapplicable.
+const hasReference = items.some((item) => item.reference);
+
+// FOUR unconditional columns — Item Description, Action, Qty, Movement # — plus
+// the one conditional.
+const itemColumnCount = 4 + (hasReference ? 1 : 0);
+
+// The page’s second alignment edge: the #items column boundary NEAREST THE
+// HALF-WAY POINT, rounding left. Same derivation as the quote and the invoice
+// (see styles/base.css) — it is a fact about the shared page grid, not about
+// any one family, and it is what keeps #details stopping on a real column of
+// the table below it. This document has no #destinations and no #totals, so
+// #details and the letterhead are its only consumers.
+const edgeColumn = Math.floor((itemColumnCount - 1) / 2);
+const edgeColumns = itemColumnCount - 1;
+
+// A banner that names the only member of its level is noise — the same gate the
+// invoice applies to its own order banner. One order is the ordinary case; the
+// banner exists for the cross-order session the check-in surface can produce.
+const showOrderBanner = groups.length > 1;
+
+// ── What this template deliberately does NOT render ─────────────────────────
+//
+// Stated rather than left to be rediscovered, because each of these looks like
+// an omission and each is a decision:
+//
+// • `items[].lines[].location` — `it.sessions.sessionItemPlaces` exists to turn
+//   those into {from, to} LABELS, and a `DocSource`’s `label` is `.optional()`.
+//   Measured 2026-08-28 across every custody movement in both envs: not one
+//   carries a label, on the legacy migration path or on the live check-in path.
+//   A "From / To" column would therefore be blank on every row of every
+//   document — an uncovered branch is not dormant, it is wrong in a way nobody
+//   has looked at yet, and a permanently blank column is worse than no column.
+//   Add it when a writer starts setting labels, not before.
+//
+// • `items[].custody` — the breakdown-key transition (`out` → `returned`). It IS
+//   populated on every row, but it restates the Action column in internal
+//   vocabulary: a customer who has read the Action cell does not also need the
+//   breakdown keys behind it.
+//
+// • `items[].serialized_details` — `null` on every stored movement. Asset tags
+//   and scan input are explicitly out of scope (manager#312).
+//
+// • `session.types` and `session.numbers` — rollups of what the grid already
+//   prints per row. Printing them again in #details would put the same facts on
+//   the page twice.
+//
+// • Any signature line. A hand-off signature is a real thing to want on this
+//   document, and it is a decision about the WORKFLOW (who signs, for what, and
+//   whether an unsigned receipt means anything) rather than a layout choice, so
+//   it is not invented here.
+%>
+<div id="grid-wrapper" style="--block-3-fraction: calc(<%= edgeColumn %> / <%= edgeColumns %>)">
+<%/* ⚠️ `session.organization` is `{uid, name}` and NOTHING ELSE — a movement
+     session carries no billing address, so the letterhead’s street/city/country
+     lines never render on a receipt. That is the partial’s existing guarded
+     branch (`billing_address` is `.optional()` and `Address` is `.nullable()`),
+     not a new one, and #bill-to is left as title + customer name.
+
+     ⚠️ It may also be NULL, which is an ANSWER rather than missing data: a
+     session spanning two customers is `POST /returns` working as designed, and
+     a receipt must not print one customer’s name on another’s goods. The
+     partial guards the name for it. */%>
+<%~ await includeAsync("@partials/shared/letterhead.eta", {
+     title: "Receipt", organization: session.organization,
+   }) %>
+
+<table id="details">
+  <thead>
+    <tr>
+      <th scope="col">Date:</th>
+      <th scope="col">Recorded By:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <%/* The instant the action happened, to the minute. A receipt for goods
+           changing hands is a record of WHEN, and two check-ins on one day are
+           routine — a date alone could not tell them apart. */%>
+      <td><%= it.dateFns.format(it.dateFns.parseISO(session.date), 'MMMM d, yyyy · h:mm a', { in: CHICAGO }) %></td>
+      <td><%= session.created_by.name %></td>
+    </tr>
+  </tbody>
+  <thead>
+    <tr>
+      <%/* PLURAL when it is plural. A session spanning orders is the check-in
+           surface working as designed, not an anomaly to hide. */%>
+      <th scope="col">Order Number<%= orders.length > 1 ? "s" : "" %>:</th>
+      <th scope="col">Total Units:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <%/* An empty cell, not an absent one: under `table-layout: fixed` a short
+           row leaves a real trailing gap rather than being absorbed. A movement
+           swept into a session against no order leaves this genuinely empty. */%>
+      <td><%= orders.map((order) => order.number).join(", ") %></td>
+      <td><%= session.quantity %></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Items -->
+<section id="items">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col" class="wide">Item Description</th>
+        <th scope="col">Action</th>
+        <th scope="col" class="center">Qty</th>
+        <th scope="col" class="center">Movement #</th>
+        <% if (hasReference) { %>
+        <th scope="col">Reference</th>
+        <% } %>
+      </tr>
+    </thead>
+    <tbody>
+      <%/* The banner spans this table exactly, from the same number the header
+           is built from and the alignment edge above is derived from — a banner
+           that disagreed with the header would take that edge with it. */%>
+      <% const bannerSpan = itemColumnCount; %>
+      <% groups.forEach((group) => { %>
+        <% if (showOrderBanner) { %>
+        <tr>
+          <td class="wide" colspan="<%= bannerSpan %>">
+            <%/* `sessionQuantity` over the GROUP, where `session.quantity` is
+                 the same fold over the whole document — the helper is called
+                 here because this is the subtotal the document does not already
+                 carry. A null-order group is a real member: a manual movement
+                 swept into a session is still something the customer was
+                 handed, so it is banner-ed as such rather than dropped. */%>
+            <strong><%= group.order_number === null ? "No order" : `Order #${group.order_number}` %></strong>
+            — <%= it.sessions.sessionQuantity(group.items) %> units
+          </td>
+        </tr>
+        <% } %>
+        <% group.items.forEach((item) => { %>
+        <tr>
+          <%/* A movement carries `uid_product` and NO product name — which is
+               exactly what defeated the manager’s first session timeline, where
+               all twelve rows rendered identically. The fold joins it, because a
+               template cannot read Firestore. An unreadable or deleted product
+               leaves the row nameless rather than dropping it: a receipt that
+               silently omits a line the customer handed over is worse than one
+               that cannot name it. */%>
+          <td><%= item.name %></td>
+          <td><%= actionLabel(item.type) %></td>
+          <td class="center"><%= item.quantity %></td>
+          <%/* The row’s identity in the journal, and how a dispute gets settled
+               — `movement 881` addresses exactly one document. Unique across
+               `transactions`, which is also why no receipt counter is minted:
+               a second sequence would be a second hot document allocating a
+               number that adds no information. */%>
+          <td class="center"><%= item.number %></td>
+          <% if (hasReference) { %>
+          <td><%= item.reference %></td>
+          <% } %>
+        </tr>
+        <% }) %>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+</div>
