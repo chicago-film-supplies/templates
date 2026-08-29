@@ -35,6 +35,8 @@
     "preview:watch": "deno run --watch=templates/,layouts/,styles/,partials/ --allow-read --allow-write --allow-run --allow-env=PREVIEW_BROWSER scripts/preview.ts --background",
     "fetch-llms-docs": "deno run --allow-net --allow-read --allow-write scripts/fetch-llms-docs.ts",
     "lint:fixtures": "deno run --allow-read scripts/lint-fixtures.ts",
+    "//scan:fixture-history": "PII scan over every fixture blob that ever existed — the discharge condition for making this repo public. NOT lint:fixtures pointed at history; see the script header.",
+    "scan:fixture-history": "deno run --allow-read --allow-run=git scripts/scan-fixture-history.ts",
     "lint:citations": "deno run --allow-read --allow-env scripts/lint-citations.ts"
   }
 }
