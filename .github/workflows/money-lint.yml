@@ -78,6 +78,28 @@ on:
   push:
     branches: [main]
 
+# Per-PR group so a superseded push stops paying for a verdict nobody will read.
+#
+# Drafts here are long-lived open PRs that agents push to repeatedly and never
+# merge; every push fired three workflows to completion. One branch
+# (`draft/quote/cbf24103`) burned 75 billed minutes in a single week that way.
+#
+# ⚠️ **Distinct group name per workflow.** A group shared with `visual-diff` or
+# `templates-lint` would make them cross-cancel — one workflow's newer run
+# killing another workflow's live one, so the surviving verdict is for a check
+# that never ran. Same rule visual-diff.yml states for its own group.
+#
+# The key is the PR NUMBER on a PR and the SHA on a push, so a push-to-main run
+# lands in a group of one and can never be cancelled by a later push: a verdict
+# on a commit that is permanently on `main` is worth its whole minute.
+#
+# ⚠️ A cancelled run leaves the arm NOT-REPORTED on the superseded sha, not red.
+# The authoritative verdict is the newest run on the HEAD sha — which is what
+# branch protection evaluates.
+concurrency:
+  group: money-lint-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

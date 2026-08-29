@@ -379,6 +379,12 @@ it still runs, still renders the new fixture, still uploads the candidate. So th
 bless that clears the red is available immediately, and it is the same press that
 already clears a `no-golden` verdict.
 
+⚠️ **Read "red" on the newest run only.** Since `templates-lint` gained
+`cancel-in-progress`, a superseded push leaves the arm **not-reported** rather
+than red — the run was cancelled before it reached a verdict, which is not the
+same fact as a passing capture. The authoritative verdict is the newest run on
+the head sha, which is also what branch protection evaluates.
+
 ⚠️ **`goldens/sandbox/` is still empty**, so a dev PR (base `sandbox`) still
 yields `no-golden` → PASS on every fixture. **Dev is not gated.** Do not read a
 green dev run as evidence a rendering change is safe — only the `main` PR's run
@@ -397,11 +403,22 @@ auto-merge release already armed lands it. There is no merge to press, and
 "approve the diff **or** re-bless" described two paths where there is one — they
 are the same act.
 
-⚠️ **`visual-diff` now runs with `cancel-in-progress`**, so an in-flight run is
-superseded by the next push and **the newest run is the only verdict**. That
-matters beyond CI minutes: the manager derives the operator's next action from
-"the latest golden verdict", and racing runs writing back to the same document
-made that phrase ambiguous.
+⚠️ **All three workflows now run with `cancel-in-progress`** — `visual-diff`,
+`templates-lint` and `money-lint` alike — so an in-flight run is superseded by
+the next push and **the newest run on the head sha is the only verdict**. For
+`visual-diff` that matters beyond CI minutes: the manager derives the operator's
+next action from "the latest golden verdict", and racing runs writing back to
+the same document made that phrase ambiguous.
+
+⚠️ **The two lints were grouped for a DIFFERENT reason and the distinction is
+load-bearing.** They persist nothing, so there was never a verdict-ambiguity
+argument for them — they are grouped purely on cost, because drafts here are
+long-lived open PRs that agents push to repeatedly and GitHub bills a whole
+minute per job, so a 40-second lint on a superseded sha is a billed minute for
+an answer about code that no longer exists (`draft/quote/cbf24103` alone: 75
+billed minutes in a week). ⚠️ **Each has a DISTINCT group name** — a shared one
+would make them cross-cancel, and the surviving verdict would be for a check
+that never ran.
 
 The blessing convention is the one `manager` documents for its Playwright
 screenshots (*"convergence, not freeze… a surface gets a `toHaveScreenshot`
