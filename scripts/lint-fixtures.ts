@@ -58,6 +58,37 @@
  */
 import { templateSchemaFor } from "@cfs/core/schemas";
 
+/**
+ * REFUSE arguments rather than ignore them.
+ *
+ * ⚠️ This script scans `fixtures/` relative to the CWD and has never read argv.
+ * That is fine until someone believes otherwise — and someone did. The
+ * GitHub-Actions-spend plan gated publishing this repo (an IRREVERSIBLE
+ * disclosure) on "point the lint at every historical blob":
+ *
+ *     git cat-file -p "$o" > /tmp/fx.json
+ *     deno run -A scripts/lint-fixtures.ts /tmp/fx.json    # ← argument IGNORED
+ *
+ * Run as written that loop re-lints the WORKING TREE once per blob and prints
+ * `21 fixture(s) … no PII` seventy-two times, never opening a single historical
+ * object. A vacuous pass reads exactly like a real one, and it was about to
+ * discharge a decision that cannot be undone.
+ *
+ * Ignoring an argument is the silent failure; refusing it is the loud one. Use
+ * `scripts/scan-fixture-history.ts` for the history question.
+ */
+if (Deno.args.length > 0) {
+  console.error(
+    `lint-fixtures: takes no arguments, but got ${Deno.args.length} ` +
+      `(${Deno.args.map((a) => JSON.stringify(a)).join(", ")}).\n\n` +
+      `  It scans fixtures/ relative to the CWD. An argument was previously\n` +
+      `  IGNORED, so a loop passing one blob at a time silently re-linted the\n` +
+      `  working tree and reported clean for history it never read.\n\n` +
+      `  For history:  deno task scan:fixture-history\n`,
+  );
+  Deno.exit(2);
+}
+
 const problems: string[] = [];
 const note = (file: string, message: string) => problems.push(`${file}\n    ${message}`);
 
