@@ -1,0 +1,23 @@
+{
+  "display_name": "Receipt",
+  "collection_source": "movement-sessions",
+  "collection_target": "receipts",
+  "surfaces": [
+    "fulfillment"
+  ],
+  "depends_on": {
+    "components": [
+      "base"
+    ]
+  },
+  "params": [],
+  "fixtures": [],
+  "render": {
+    "margin_top": 0.5,
+    "margin_bottom": 0.62,
+    "margin_left": 0.5,
+    "margin_right": 0.5,
+    "filename": "Receipt<% if (it.doc.orders.length === 1) { %> - Order <%= it.doc.orders[0].number %><% } %> - <%= it.doc.date.slice(0, 10) %>",
+    "footer": "partials/shared/footer.eta"
+  }
+}

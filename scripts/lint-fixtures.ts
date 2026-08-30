@@ -66,13 +66,48 @@
  * to core's `resolveRenderParams`, which throws on an unknown key and takes the
  * family's whole visual-diff run with it.
  *
- * An unmapped collection is caught by `isCollectionName` BEFORE the lookup —
- * the previous shape read `schemas[key]`, got `undefined`, and would otherwise
- * have thrown a bare TypeError on `.safeParse`.
+ * An unmapped collection is caught BEFORE the lookup is used — the original
+ * shape read `schemas[key]`, got `undefined`, and would otherwise have thrown a
+ * bare TypeError on `.safeParse`. ⚠️ **The lookup is `templateSchemaFor`, not
+ * the Firestore collection registry**: a template source is a document SHAPE and
+ * need not be a collection at all (api-cloudrun#700), and resolving it through
+ * `isCollectionName` failed closed on `movement-sessions` — the receipt's
+ * source, which the API's own fixture write path validates fine.
  *
  * Run: deno task lint:fixtures
  */
-import { isCollectionName, schemaFor } from "@cfs/core/schemas";
+import { templateSchemaFor } from "@cfs/core/schemas";
+
+/**
+ * REFUSE arguments rather than ignore them.
+ *
+ * ⚠️ This script scans `fixtures/` relative to the CWD and has never read argv.
+ * That is fine until someone believes otherwise — and someone did. The
+ * GitHub-Actions-spend plan gated publishing this repo (an IRREVERSIBLE
+ * disclosure) on "point the lint at every historical blob":
+ *
+ *     git cat-file -p "$o" > /tmp/fx.json
+ *     deno run -A scripts/lint-fixtures.ts /tmp/fx.json    # ← argument IGNORED
+ *
+ * Run as written that loop re-lints the WORKING TREE once per blob and prints
+ * `21 fixture(s) … no PII` seventy-two times, never opening a single historical
+ * object. A vacuous pass reads exactly like a real one, and it was about to
+ * discharge a decision that cannot be undone.
+ *
+ * Ignoring an argument is the silent failure; refusing it is the loud one. Use
+ * `scripts/scan-fixture-history.ts` for the history question.
+ */
+if (Deno.args.length > 0) {
+  console.error(
+    `lint-fixtures: takes no arguments, but got ${Deno.args.length} ` +
+      `(${Deno.args.map((a) => JSON.stringify(a)).join(", ")}).\n\n` +
+      `  It scans fixtures/ relative to the CWD. An argument was previously\n` +
+      `  IGNORED, so a loop passing one blob at a time silently re-linted the\n` +
+      `  working tree and reported clean for history it never read.\n\n` +
+      `  For history:  deno task scan:fixture-history\n`,
+  );
+  Deno.exit(2);
+}
 
 const problems: string[] = [];
 const note = (file: string, message: string) => problems.push(`${file}\n    ${message}`);
@@ -164,20 +199,32 @@ for (const gitPath of fixtureDirs) {
     continue;
   }
 
-  // `isCollectionName` rather than a truthiness test on the lookup: the guard
-  // this already had now NARROWS as well as checks, so core can make the
-  // exported `schemas` precise without this call site changing again
-  // (api-cloudrun#444). The schema stays the WIDE view — `collection_source` is
-  // read out of a sidecar at runtime, so `schemaFor` can only return the whole
-  // document union and `safeParse` below wants none of it.
-  if (!isCollectionName(collection)) {
+  // 🔴 `templateSchemaFor`, NOT the Firestore collection registry
+  // (api-cloudrun#700). A template SOURCE names a document SHAPE, and it is not
+  // always a collection: `movement-sessions` is the fold of
+  // `transactions where uuid_session == …` that a receipt renders, and nothing
+  // is stored at that path. Under the old `isCollectionName` guard the receipt
+  // family's very first fixture would have been reported here as an unmapped
+  // collection — failing CLOSED on a source the API happily validates, since
+  // `schemaForCollection` (`api-cloudrun/src/services/templates/fixtureFormat.ts`)
+  // already resolves through this same map. This check exists to agree with the
+  // write path, so it must resolve a source the same way the write path does.
+  //
+  // The truthiness test is back deliberately, and it does NOT undo
+  // api-cloudrun#444's narrowing: `TEMPLATE_COLLECTION_SCHEMAS` is `Partial`, so
+  // `templateSchemaFor` returns `z.ZodType | undefined` and `undefined` IS the
+  // "no schema for this source" answer rather than a lookup that lost its type.
+  // The schema stays the WIDE view — `collection_source` is read out of a
+  // sidecar at runtime, so it can only ever be the whole document union, and
+  // `safeParse` below wants none of it.
+  const schema = templateSchemaFor(collection);
+  if (!schema) {
     note(
       sidecarPath,
-      `collection_source "${collection}" has no entry in @cfs/core's \`schemas\` registry`,
+      `collection_source "${collection}" has no schema in @cfs/core's \`TEMPLATE_COLLECTION_SCHEMAS\``,
     );
     continue;
   }
-  const schema = schemaFor(collection);
 
   const files: string[] = [];
   for await (const file of walk(`fixtures/${gitPath}`)) {

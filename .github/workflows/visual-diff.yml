@@ -27,10 +27,18 @@ on:
 # That is safe and must not be "fixed" later: branch protection evaluates the
 # check on the HEAD sha, and the golden tree is read at the PR head too.
 #
-# `templates-lint` and `money-lint` deliberately get NO group. They are fast,
-# they write nothing back, and a stale lint verdict on a superseded sha costs
-# nothing — the ambiguity this solves is specific to a workflow that persists a
-# result the UI then reads.
+# ⚠️ **`templates-lint` and `money-lint` now carry groups of their own** — they
+# deliberately had none until 2026-08-29, on the reasoning that they are fast,
+# write nothing back, and a stale lint verdict on a superseded sha costs
+# nothing. That reasoning was about CORRECTNESS and it still holds; what changed
+# is that it was never about COST. A long-lived draft PR that agents push to
+# repeatedly ran all three workflows to completion on every superseded push —
+# `draft/quote/cbf24103` alone billed 75 minutes in a week — and GitHub charges
+# a whole minute per job, so a 40-second lint is a billed minute either way.
+#
+# So the ambiguity argument is still what justifies THIS group; the other two
+# are grouped on cost, and the two rationales are not interchangeable. What all
+# three share is the rule below: distinct group names, or they cross-cancel.
 concurrency:
   group: visual-diff-${{ github.ref }}
   cancel-in-progress: true

@@ -22,6 +22,7 @@ import { tz } from "@date-fns/tz";
 import * as orderUtils from "@cfs/core/utils/orders";
 import * as invoiceUtils from "@cfs/core/utils/invoices";
 import * as fulfillmentUtils from "@cfs/core/utils/fulfillments";
+import * as sessionUtils from "@cfs/core/utils/sessions";
 import * as dateUtils from "@cfs/core/utils/dates";
 import * as iconUtils from "@cfs/core/utils/icons";
 import { CFS_LOGO_SVG } from "@cfs/core/utils/icons";
@@ -65,6 +66,13 @@ const UTIL_MODULES: Record<string, unknown> = {
   // resolves to `{dates, money, icons, fulfillments}` and gets NO `it.orders`,
   // so this entry is the only thing that gives it document helpers at all.
   fulfillments: fulfillmentUtils,
+  // `movement-sessions` is a template SOURCE with **no Firestore collection
+  // behind it** (api-cloudrun#700): a receipt renders the fold of every movement
+  // sharing one `uuid_session`, which is rebuilt per call and stored nowhere. A
+  // `movement-sessions`-sourced family resolves to `{dates, money, icons,
+  // sessions}` and gets NO `it.orders`, so this entry is the only thing that
+  // gives a receipt any document helpers at all.
+  sessions: sessionUtils,
   dates: dateUtils,
   money: moneyUtils,
   icons: iconUtils,
