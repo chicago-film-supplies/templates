@@ -88,6 +88,14 @@
       "slug": "evening-boundary",
       "label": "Evening boundary (UTC day shift)",
       "description": "The only fixture whose stored Chicago-offset instant lands on a DIFFERENT calendar day in UTC, and therefore the only one that can catch a date formatted without `{ in: CHICAGO }`. Its `delivery_start` is 2026-04-30T19:00:00.000-05:00 — exactly 00:00:00 UTC — so an unpinned `format` prints Fri 5/1/26 where the order says Thu 4/30/26, crossing a month boundary as well as a day. That is not hypothetical: measured 2026-08-24 across ALL 996 prod orders, 56 carry a `delivery_start` or `collection_start` that renders one day late (58 including the charge window, 121 field renders), because the render container runs UTC — neither the api-cloudrun Dockerfile nor `infra/cloud-run-api.tf` sets `TZ`. Nothing caught it for two reasons this fixture exists to close: no fixture crossed the boundary (the latest time in the set was 18:00 and FROZEN_NOW is midday), so every golden compared the defect to itself and passed; and local preview runs on a Chicago laptop, where the unpinned form is accidentally right. Deliberately the TIGHTEST case available — 19:00 CDT is the exact threshold, so a one-hour regression is enough to fail it. Measured the same day, NO prod order shifts both `delivery_start` and `collection_start`, so one fixture cannot cover both arms; this covers `delivery_start`, the cell that renders on every quote whatever its item types. Three rentals in one group, customer collecting and returning, $402.50, 8-column Duration+Tax grid — content kept minimal on purpose so the golden diff shows the dates and little else. Captured from prod order 872."
+    },
+    {
+      "slug": "taxed-zero-priced-component-hidden",
+      "label": "Zero-priced components HIDDEN",
+      "description": "The `hide_zero_priced_components: true` state, and the only fixture in this family that renders it — every other one renders the param's `false` default, so without this the half of the template the param selects is frozen by no golden at all (api-cloudrun#608). Deliberately the SAME source document as `taxed-zero-priced-component` (prod order 1004), so the two goldens differ only by the param and the diff between them IS the param's effect: the zero-priced `Bottled Water ( /bottle )` child hides and its $12.00 flat-tax charge rolls onto the parent, while the totals block still reconciles to $442.95. Order 1004 is the only one of ~997 prod orders carrying a flat tax, so this state cannot be covered by any other document — if the partner fixture is ever re-captured or dropped, this one has to move with it or the pair stops being a controlled comparison.",
+      "params": {
+        "hide_zero_priced_components": true
+      }
     }
   ],
   "render": {
