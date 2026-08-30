@@ -53,6 +53,14 @@
       "slug": "rental-discount-untaxed",
       "label": "Discount with no Tax column beside it",
       "description": "8 columns via Duration + Discount with Tax OFF — the only fixture that lays a Discount column out with no Tax column next to it, because `totals.taxes` is empty. That combination matters because the two conditional columns are adjacent in the header and a mistake in one arm reads as a mistake in the other: with Tax present, a Discount bug is easy to mis-attribute. Three rentals in one group with a $12.00 discount against a $48.00 total, so the discount is a quarter of the invoice and any rounding error in the Discount cell is visible at a glance rather than lost in a large figure. It is also the only fixture that renders the `Subtotal after Discount` row in the totals block, which only appears when `totals.discount_amount_cents > 0`. The family's OTHER 8-column shape is Duration + Tax with Discount off, and that is `billing-foreign-country` — measured, not assumed: rendered 2026-08-26, this fixture emits 8 columns and so does that one, while `part-paid` emits 7 (it has tax but no rental, so no Duration). A reader who sees only the column count will take one of the two 8-column fixtures for a duplicate of the other; they are not, and neither substitutes. Captured from prod invoice 1996."
+    },
+    {
+      "slug": "zero-priced-flat-tax-hidden",
+      "label": "Zero-priced components HIDDEN",
+      "description": "The `hide_zero_priced_components: true` state, and the only fixture in this family that renders it — every other one renders the param's `false` default, so without this the half of the template the param selects is frozen by no golden at all (api-cloudrun#608). Deliberately the SAME source document as `zero-priced-flat-tax` (prod invoice 2390), so the two goldens differ only by the param and the diff between them IS the param's effect. It renders the arithmetic that fixture's own description predicts: the zero-priced child hides and its $12.00 rolls onto the parent, Tax $40.95 -> $52.95 and Total $430.95 -> $442.95, while `#totals` still reads $442.95. This is also the only fixture that exercises the invoice-side predicate at all — an invoice line has no `zero_priced` field, so the param keys on `price.base_cents === 0 && componentDepth > 0`, and until this existed that predicate was never rendered in its ON state by anything.",
+      "params": {
+        "hide_zero_priced_components": true
+      }
     }
   ],
   "render": {
