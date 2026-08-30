@@ -40,7 +40,7 @@ Raw git stays correct for everything that is *not* owned template content: `fixt
 |---|---|
 | `display_name`, `surfaces`, `depends_on` | `PATCH /templates/{uid}/metadata` (manager: the Details form) — commits on its own `meta/*` branch |
 | `render` (margins, `filename`, `footer`, `header`) | the same route — **new**; the manager's Details form is that block's first editing surface anywhere |
-| `fixtures[]` | the fixture verbs (`templates_capture_fixture` / `set` / `describe` / `remove_fixture`) — commit to the draft branch directly |
+| `fixtures[]` (incl. each entry's `params` — the state its golden is taken at) | the fixture verbs (`templates_capture_fixture` / `set` / `describe` / `remove_fixture`) — commit to the draft branch directly |
 | `params[]` | the draft's typed `params` (the `params` argument, or the manager's Params tab) — the sidecar copy is **derived from it at commit** |
 
 `templates_propose_edit` **422s on the sidecar** in both `content` and `edits`, and the guard hook denies a file edit of it. What a draft's content map holds is a **render input** — `extractRenderConfig` reads the `render` block out of it at render time, which is the whole reason `ownedContent.ts` keeps it in the map — and a render input is not an authoring surface.
@@ -144,7 +144,9 @@ document. A body may now `includeAsync` one, which is how the document families
 share chrome — see § Includes under *Template context*. Both uses live in the
 same directories and the same content map; what differs is who pulls the file in.
 
-Fixtures are **files-authoritative for discovery**: the renderer globs `fixtures/<template>/*.json` and the sidecar's `fixtures[]` supplies each entry's label and reason. An orphaned sidecar entry never breaks a render; zero fixtures yields a `no-fixtures` golden verdict (informational pass).
+Fixtures are **files-authoritative for discovery**: the renderer globs `fixtures/<template>/*.json` and the sidecar's `fixtures[]` supplies each entry's label, reason and — since api-cloudrun#608 — its `params`, the render-param state that fixture is rendered and golden-gated at. An orphaned sidecar entry never breaks a render; zero fixtures yields a `no-fixtures` golden verdict (informational pass).
+
+⚠️ **`params` makes a MISSING entry mean something, which a missing label or reason never did.** No entry is not an absence but a rendering — *"this fixture renders at the family's declared defaults"* — and that is the state its golden was frozen at. ⚠️ **It is also the ONLY way a non-default param state ever gets a golden**: a golden freezes one rendering per fixture, so a state nothing declares is rendered by nothing, and more fixtures do not help because they all render the default. Check 5 below is what refuses that. And a fixture pair covering both states of one param should be the **same source document** — the two goldens then differ only by the param, so the diff between them *is* the param's effect; a different document makes it unreadable.
 
 ⚠️ **Every sidecar entry must say WHY its fixture exists** — what it covers that no other fixture in the family does. `description` is required (`@cfs/core`'s `FixtureMeta`), the API refuses a write without one, and `deno task lint:fixtures` fails a missing or placeholder reason (minimum 40 characters). This is not bookkeeping: a fixture set *is* a coverage argument, and the fixture file is a `z.strictObject` source document with nowhere to put a comment, so the sidecar is the only place that argument can be written down. A fixture that is synthetic because no real order exercises its shape must say so, or the next person "cleans it up".
 
@@ -162,7 +164,7 @@ The sidecar's `render` block (`margin_*`, `filename` as an Eta string, `footer`/
 
 ## Template context (summary)
 
-**Always on:** `it.doc` (the **source** document — a template never reads its target, it produces it), `it.version`, `it.params` (the sidecar's declared `params[]`, resolved through core's `resolveRenderParams`; preview a non-default state with `deno task preview <name> <fixture> --param <key>=true`), `it.now` (frozen render timestamp — never `new Date()`), `it.holidays` (CFS holiday ISO dates `YYYY-MM-DD[]`, live snapshot — feeds the `it.dates.*` holiday helpers, which throw if omitted; absent in layouts), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.money` (`@cfs/core/utils/money`), `it.dates` (`@cfs/core/utils/dates`), `it.icons` (`@cfs/core/utils/icons`).
+**Always on:** `it.doc` (the **source** document — a template never reads its target, it produces it), `it.version`, `it.params` (the sidecar's declared `params[]`, resolved through core's `resolveRenderParams` against the fixture's own declared `params` — so previewing a fixture shows the state its GOLDEN was taken at, with no flag; `--param <key>=true` overrides on top of that to see any other state), `it.now` (frozen render timestamp — never `new Date()`), `it.holidays` (CFS holiday ISO dates `YYYY-MM-DD[]`, live snapshot — feeds the `it.dates.*` holiday helpers, which throw if omitted; absent in layouts), `it.logo`, `it.dateFns` (date-fns v4), `it.tz` (`@date-fns/tz`), `it.money` (`@cfs/core/utils/money`), `it.dates` (`@cfs/core/utils/dates`), `it.icons` (`@cfs/core/utils/icons`).
 
 ⚠️ **`it.currency` is gone.** Phase 11 Phase E withdrew currency.js from the render context entirely, `money-lint.yml`'s budget is **zero**, and `quote.eta` has no remaining call sites — so any `it.currency` reference now fails CI *and* would throw at render. Use `it.money.formatCents(doc.total_cents)`.
 
@@ -384,6 +386,39 @@ already clears a `no-golden` verdict.
 than red — the run was cancelled before it reached a verdict, which is not the
 same fact as a passing capture. The authoritative verdict is the newest run on
 the head sha, which is also what branch protection evaluates.
+
+⚠️ **Check 5 is the same instrument one axis over — PARAM coverage — and it is
+what check 4 cannot see.** Check 4 asks whether each fixture has a baseline; a
+family can pass it completely while half of what the template renders has never
+been frozen at all, because **a golden freezes ONE rendering per fixture, at the
+state that fixture declares** (api-cloudrun#608). So a declared param that no
+fixture overrides is frozen at its default and its other state is ungated for the
+life of the family — reachable by no threshold, no re-bless, and no number of
+extra fixtures, since every one of them renders the default too. Check 5 fails
+when a declared boolean param has no fixture at one of its states.
+
+- **5a — an undeclared param key** on a `fixtures[]` entry. **Not
+  graduation-scoped**, because it is a typo rather than a coverage judgement and
+  it is not survivable downstream: the golden gate hands a fixture's state
+  straight to core's `resolveRenderParams`, which THROWS on an unknown key and
+  takes the family's whole `visual-diff` run with it.
+- **5b — both states rendered by something.** Graduation-scoped exactly like
+  check 4, so a family mid-build is not reddened before it has chosen its
+  fixture set. The cost of that scoping is worth naming: a family that never
+  blesses anything is never asked this question — which is check 4's job, not
+  this one's.
+
+⚠️ **What check 5 does NOT claim is that the coverage is GOOD.** It says some
+fixture renders each state, never that the fixture chosen exercises the part of
+the document the param actually moves. That argument is the `description`, and
+check 3 is what makes it exist.
+
+It landed red on both live families and that was the guard working, not a
+regression: `hide_zero_priced_components: true` hides component rows **and rolls
+their money onto the parent**, and no golden had ever been taken of it on either
+family — the state was reachable from the editor preview and `POST
+/templates/render` the whole time. `taxed-zero-priced-component-hidden` and
+`zero-priced-flat-tax-hidden` are what discharged it.
 
 ⚠️ **`goldens/sandbox/` is still empty**, so a dev PR (base `sandbox`) still
 yields `no-golden` → PASS on every fixture. **Dev is not gated.** Do not read a
