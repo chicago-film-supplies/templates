@@ -1,0 +1,288 @@
+{
+  "uid": "wDBAH05fWHmNi5m94an8",
+  "number": 2390,
+  "status": "issued",
+  "query_by_orders": [
+    "S20xjunK2qYSdH1PVY2X"
+  ],
+  "number_orders": [
+    1004
+  ],
+  "date": "2026-08-20T00:00:00.000-05:00",
+  "date_fs": {
+    "_seconds": 1787202000,
+    "_nanoseconds": 0
+  },
+  "due_date": "2026-09-04T00:00:00.000-05:00",
+  "due_date_fs": {
+    "_seconds": 1788498000,
+    "_nanoseconds": 0
+  },
+  "subject": "10 Cases Water",
+  "reference": null,
+  "external_notes": null,
+  "internal_notes": null,
+  "organization": {
+    "uid": "nTpq3YIY4cth5todd4PV",
+    "name": "Riley M Adler",
+    "path": [
+      {
+        "uid": "nTpq3YIY4cth5todd4PV",
+        "name": "Reese M Bishop",
+        "derived": false
+      }
+    ],
+    "crms_id": 524,
+    "jurisdiction_claim": null,
+    "tax_exempt": false,
+    "xero_id": "6891f42e-193e-4db1-bfa3-834555b6ce32",
+    "billing_address": {
+      "city": "Evanston",
+      "country_name": "United States",
+      "full": "5922 Cypress Ter",
+      "name": "Morgan M Pierce",
+      "postcode": "63616",
+      "region": "IL",
+      "street": "3530 Oak St",
+      "street2": "",
+      "mapbox_id": "Sample text for mapbox_id......................................",
+      "address_coordinates": null,
+      "user_coordinates": null
+    }
+  },
+  "destinations": [
+    {
+      "uid_order": "S20xjunK2qYSdH1PVY2X",
+      "uid": "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+      "dates": {
+        "delivery_start": "2026-08-20T09:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1787234400,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-08-20T09:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1787234400,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-08-20T17:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1787263200,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-08-20T17:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1787263200,
+          "_nanoseconds": 0
+        },
+        "charge_start": "2026-08-20T09:00:00.000-05:00",
+        "charge_start_fs": {
+          "_seconds": 1787234400,
+          "_nanoseconds": 0
+        },
+        "charge_end": "2026-08-20T17:00:00.000-05:00",
+        "charge_end_fs": {
+          "_seconds": 1787263200,
+          "_nanoseconds": 0
+        },
+        "days_active": 1,
+        "days_charged": 1
+      },
+      "delivery": {
+        "uid": "1uCW4OqIMBUxP1nNkt9y",
+        "address": null,
+        "instructions": null,
+        "contact": null
+      },
+      "collection": {
+        "uid": "jebrCTkAxabWK4NKonTX",
+        "address": null,
+        "instructions": null,
+        "contact": null
+      },
+      "customer_collecting": true,
+      "customer_returning": true
+    }
+  ],
+  "items": [
+    {
+      "uid": "S20xjunK2qYSdH1PVY2X",
+      "type": "order",
+      "name": "Order #1004",
+      "path": [
+        "S20xjunK2qYSdH1PVY2X"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+      "type": "destination",
+      "name": "Destination 1",
+      "path": [
+        "S20xjunK2qYSdH1PVY2X",
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "ade4ac39-2a53-4ba4-93cb-cffad41a63a0",
+      "type": "group",
+      "name": "Crafty",
+      "path": [
+        "S20xjunK2qYSdH1PVY2X",
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+        "ade4ac39-2a53-4ba4-93cb-cffad41a63a0"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "VQim9zNSP2k4gdhBEdnX",
+      "type": "sale",
+      "name": "Open Water - 16oz Aluminum Bottle (24 Case)",
+      "description": "",
+      "quantity": 10,
+      "price": {
+        "base_cents": 3900,
+        "base_percent": null,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 39000,
+        "subtotal_discounted_cents": 39000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "dtTboGtD0f2iwRlDGOBH",
+            "name": "Chicago Sales Tax",
+            "rate": 10.5,
+            "type": "percent",
+            "amount_cents": 4095
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "dtTboGtD0f2iwRlDGOBH",
+            "name": "Chicago Sales Tax",
+            "rate": 10.5,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 43095
+      },
+      "path": [
+        "S20xjunK2qYSdH1PVY2X",
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+        "ade4ac39-2a53-4ba4-93cb-cffad41a63a0",
+        "VQim9zNSP2k4gdhBEdnX"
+      ],
+      "coa_revenue": 4200,
+      "taxed_as": null
+    },
+    {
+      "uid": "N8brmUmmSzHs523aJAMd",
+      "type": "sale",
+      "name": "Bottled Water ( /bottle )",
+      "description": "",
+      "quantity": 240,
+      "price": {
+        "base_cents": 0,
+        "base_percent": null,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "dtTboGtD0f2iwRlDGOBH",
+            "name": "Chicago Sales Tax",
+            "rate": 10.5,
+            "type": "percent",
+            "amount_cents": 0
+          },
+          {
+            "uid": "jvsOUs8nR4DXElcVNqJc",
+            "name": "Chicago Bottled Water Tax",
+            "rate": 0.05,
+            "type": "flat",
+            "amount_cents": 1200
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "dtTboGtD0f2iwRlDGOBH",
+            "name": "Chicago Sales Tax",
+            "rate": 10.5,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 1200
+      },
+      "path": [
+        "S20xjunK2qYSdH1PVY2X",
+        "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
+        "ade4ac39-2a53-4ba4-93cb-cffad41a63a0",
+        "VQim9zNSP2k4gdhBEdnX",
+        "N8brmUmmSzHs523aJAMd"
+      ],
+      "coa_revenue": 4200,
+      "taxed_as": null
+    }
+  ],
+  "totals": {
+    "subtotal_cents": 39000,
+    "subtotal_discounted_cents": 39000,
+    "discount_amount_cents": 0,
+    "taxes": [
+      {
+        "uid": "dtTboGtD0f2iwRlDGOBH",
+        "name": "Chicago Sales Tax",
+        "rate": 10.5,
+        "type": "percent",
+        "amount_cents": 4095
+      },
+      {
+        "uid": "jvsOUs8nR4DXElcVNqJc",
+        "name": "Chicago Bottled Water Tax",
+        "rate": 0.05,
+        "type": "flat",
+        "amount_cents": 1200
+      }
+    ],
+    "transaction_fees": [],
+    "total_cents": 44295,
+    "amount_paid_cents": 0,
+    "amount_credited_cents": 0,
+    "amount_void_cents": 0,
+    "amount_due_cents": 44295
+  },
+  "xero_id": "e941b08e-9e9f-41f3-844f-e35d5b19842a",
+  "uploadcare_uuid": "a9c1108d-2b12-416f-bc8d-823f907b1d9f",
+  "pdf_generated_at": {
+    "_seconds": 1788111846,
+    "_nanoseconds": 334000000
+  },
+  "pdf_params": {},
+  "pdf_versions": [],
+  "crms_id": 1142,
+  "crms_opportunity_ids": [
+    1031
+  ],
+  "uid_thread": "sSaVZyfjQoaWFMkw5hrb",
+  "version": 12,
+  "created_by": {
+    "uid": "crms-bot",
+    "name": "Quinn Owen"
+  },
+  "updated_by": {
+    "uid": "script",
+    "name": "Sample text for name...."
+  },
+  "created_at": {
+    "_seconds": 1787266334,
+    "_nanoseconds": 223000000
+  },
+  "updated_at": {
+    "_seconds": 1787672749,
+    "_nanoseconds": 4000000
+  }
+}
