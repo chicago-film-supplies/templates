@@ -1,10 +1,17 @@
 {
   "uid": "S20xjunK2qYSdH1PVY2X",
   "number": 1004,
-  "status": "reserved",
+  "status": "complete",
   "organization": {
     "uid": "nTpq3YIY4cth5todd4PV",
     "name": "Riley M Adler",
+    "path": [
+      {
+        "uid": "nTpq3YIY4cth5todd4PV",
+        "name": "Reese M Bishop",
+        "derived": false
+      }
+    ],
     "crms_id": 524,
     "jurisdiction_claim": null,
     "tax_exempt": false,
@@ -72,15 +79,15 @@
         "instructions": null,
         "contact": null
       },
-      "customer_collecting": false,
-      "customer_returning": false
+      "customer_collecting": true,
+      "customer_returning": true
     }
   ],
   "items": [
     {
       "uid": "bb74d095-3904-4890-b7c0-f1f68c27f6d0",
       "type": "destination",
-      "name": "Destination 2",
+      "name": "Destination 1",
       "path": [
         "bb74d095-3904-4890-b7c0-f1f68c27f6d0"
       ],
@@ -146,7 +153,7 @@
       "uid": "N8brmUmmSzHs523aJAMd",
       "type": "sale",
       "name": "Bottled Water ( /bottle )",
-      "description": "The taxable unit of a case of bottled water. Carries the Chicago Bottled Water Tax; never sold on its own.",
+      "description": "",
       "quantity": 240,
       "price": {
         "base_cents": 0,
@@ -166,7 +173,7 @@
           },
           {
             "uid": "jvsOUs8nR4DXElcVNqJc",
-            "name": "Water Bottle Tax",
+            "name": "Chicago Bottled Water Tax",
             "rate": 0.05,
             "type": "flat",
             "amount_cents": 1200
@@ -211,7 +218,7 @@
       },
       {
         "uid": "jvsOUs8nR4DXElcVNqJc",
-        "name": "Water Bottle Tax",
+        "name": "Chicago Bottled Water Tax",
         "rate": 0.05,
         "type": "flat",
         "amount_cents": 1200
@@ -241,9 +248,9 @@
   ],
   "bookings_breakdown": {
     "quoted": 0,
-    "reserved": 10,
+    "reserved": 0,
     "prepped": 0,
-    "out": 0,
+    "out": 10,
     "returned": 0,
     "lost": 0,
     "damaged": 0
@@ -254,13 +261,13 @@
   "reference": null,
   "xero_id": "1244c253-8fd7-4ff6-961f-62eed7380d6d",
   "uid_thread": "twbFMagvsyOKqK8uHjHQ",
-  "version": 9,
+  "version": 18,
   "created_at": {
     "_seconds": 1787266116,
     "_nanoseconds": 148000000
   },
   "updated_at": {
-    "_seconds": 1787415520,
-    "_nanoseconds": 665000000
+    "_seconds": 1787672499,
+    "_nanoseconds": 559000000
   }
 }
