@@ -27,6 +27,7 @@ import * as dateUtils from "@cfs/core/utils/dates";
 import * as iconUtils from "@cfs/core/utils/icons";
 import { CFS_LOGO_SVG } from "@cfs/core/utils/icons";
 import * as moneyUtils from "@cfs/core/utils/money";
+import * as organizationUtils from "@cfs/core/utils/organizations";
 import { availableUtilNamespaces } from "@cfs/core/schemas";
 import { resolveRenderParams } from "@cfs/core/utils/templates";
 import type { TemplateCollectionType } from "@cfs/core/schemas";
@@ -76,6 +77,20 @@ const UTIL_MODULES: Record<string, unknown> = {
   dates: dateUtils,
   money: moneyUtils,
   icons: iconUtils,
+  // Always-on as of @cfs/core@10.0.0-beta.304, and it reaches a template for ONE
+  // helper: `composeOrgName(path)`, the only way to render a customer name from a
+  // frozen `DocumentOrganizationSnapshot.path`. Every document a template renders
+  // names a customer and the one place that name appears is
+  // `partials/shared/letterhead.eta`, a partial shared across every collection —
+  // so it is keyed to no source collection, exactly like `money` and `icons`.
+  //
+  // ⭐ **The throw below is what made this a required part of the pin bump rather
+  // than a discovery in review.** `organizations` joined
+  // `ALWAYS_ON_UTIL_NAMESPACES` in core, so `availableUtilNamespaces` requests it
+  // for EVERY template; without this entry every `deno task preview` fails at
+  // once. That is the harness reporting a harness gap as a harness gap, which is
+  // precisely what the silent skip could not do for `money`.
+  organizations: organizationUtils,
 };
 
 /**
