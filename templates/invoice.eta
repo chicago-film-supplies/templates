@@ -194,8 +194,17 @@ const showDestinationBanners = destinations.length > 1;
 const showOrderBanner = (invoice.number_orders || []).length > 1;
 %>
 <div id="grid-wrapper" style="--block-3-fraction: calc(<%= addressBoundary %> / <%= addressColumnCount %>)">
+<%/* The customer name is COMPOSED from the frozen chain, not read off the
+     snapshot's `name` scalar — `organization.path` is what an issued document
+     must resolve when it is re-rendered later, and the scalar is being removed
+     (`api-cloudrun/.claude/plans/org-name-is-derived.md`). The two agree by
+     construction on every document written since `@cfs/core@10.0.0-beta.303`,
+     because `buildOrganizationSnapshot` is the sole author of both and already
+     sets `name: composeOrgName(path)`. */%>
 <%~ await includeAsync("@partials/shared/letterhead.eta", {
-     title: `Invoice #${invoice.number}`, organization: invoice.organization,
+     title: `Invoice #${invoice.number}`,
+     customer_name: it.organizations.composeOrgName(invoice.organization.path),
+     billing_address: invoice.organization.billing_address,
    }) %>
 
 <table id="details">

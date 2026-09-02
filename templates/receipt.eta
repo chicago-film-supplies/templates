@@ -107,17 +107,24 @@ const showOrderBanner = groups.length > 1;
 %>
 <div id="grid-wrapper" style="--block-3-fraction: calc(<%= edgeColumn %> / <%= edgeColumns %>)">
 <%/* ⚠️ `session.organization` is `{uid, name}` and NOTHING ELSE — a movement
-     session carries no billing address, so the letterhead’s street/city/country
-     lines never render on a receipt. That is the partial’s existing guarded
-     branch (`billing_address` is `.optional()` and `Address` is `.nullable()`),
-     not a new one, and #bill-to is left as title + customer name.
+     session carries no billing address, so `billing_address` is passed as an
+     explicit `null` rather than being read off a block that never has one.
+
+     ⭐ It is also the reason the letterhead takes a NAME rather than an
+     organization. A session has no `path`, so there is nothing here to compose
+     from — but the name is not stale either: `agreedOrganization`
+     (`api-cloudrun/src/lib/movementSessionFold.ts`) builds it by composing each
+     spanned ORDER's frozen chain, so it arrives already-derived and this
+     document is downstream of `path` like the other two.
 
      ⚠️ It may also be NULL, which is an ANSWER rather than missing data: a
      session spanning two customers is `POST /returns` working as designed, and
      a receipt must not print one customer’s name on another’s goods. The
      partial guards the name for it. */%>
 <%~ await includeAsync("@partials/shared/letterhead.eta", {
-     title: "Receipt", organization: session.organization,
+     title: "Receipt",
+     customer_name: session.organization?.name ?? null,
+     billing_address: null,
    }) %>
 
 <table id="details">
