@@ -4,12 +4,19 @@
   "status": "quoted",
   "crms_id": null,
   "uid_thread": "ThRd0DiscountsFee010",
-  "subject": "Riverwalk Summer Series \u2014 lighting + tables",
+  "subject": "Riverwalk Summer Series — lighting + tables",
   "reference": "PO-51200",
   "version": 3,
   "organization": {
     "uid": "LakeshoreStageCo0001",
     "name": "Lakeshore Stage Company",
+    "path": [
+      {
+        "uid": "LakeshoreStageCo0001",
+        "name": "Lakeshore Stage Company",
+        "derived": false
+      }
+    ],
     "crms_id": null,
     "xero_id": "6f2b1c04-9a3d-4e7f-8b21-5c9d0e3a7f41",
     "billing_address": {

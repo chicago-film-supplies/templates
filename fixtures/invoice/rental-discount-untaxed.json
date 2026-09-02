@@ -26,6 +26,13 @@
   "organization": {
     "uid": "cVuEztNV5MWduSJA6pP9",
     "name": "Forest Glen",
+    "path": [
+      {
+        "uid": "cVuEztNV5MWduSJA6pP9",
+        "name": "Forest Glen",
+        "derived": false
+      }
+    ],
     "crms_id": 345,
     "jurisdiction_claim": null,
     "tax_exempt": true,

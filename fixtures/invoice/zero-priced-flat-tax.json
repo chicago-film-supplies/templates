@@ -25,6 +25,13 @@
   "organization": {
     "uid": "nTpq3YIY4cth5todd4PV",
     "name": "Riley M Adler",
+    "path": [
+      {
+        "uid": "nTpq3YIY4cth5todd4PV",
+        "name": "Riley M Adler",
+        "derived": false
+      }
+    ],
     "crms_id": 524,
     "jurisdiction_claim": null,
     "tax_exempt": false,

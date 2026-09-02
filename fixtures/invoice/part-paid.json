@@ -25,6 +25,13 @@
   "organization": {
     "uid": "YWRsfgi3ARPpivx4eLh7",
     "name": "Sample text for name..........",
+    "path": [
+      {
+        "uid": "YWRsfgi3ARPpivx4eLh7",
+        "name": "Sample text for name..........",
+        "derived": false
+      }
+    ],
     "crms_id": 271,
     "jurisdiction_claim": null,
     "tax_exempt": false,
