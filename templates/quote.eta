@@ -402,8 +402,11 @@ const replacementLine = (item) => {
      grid turned on — and CSS cannot see that. Everything that reads
      `--dest-block-3` is inside this element. See styles/quote.css. */%>
 <div id="grid-wrapper" style="--block-3-fraction: calc(<%= addressBoundary %> / <%= addressColumnCount %>)">
+<%/* Composed from the frozen chain — see the same note on `invoice.eta`. */%>
 <%~ await includeAsync("@partials/shared/letterhead.eta", {
-     title: `Quote #${order.number}`, organization: order.organization,
+     title: `Quote #${order.number}`,
+     customer_name: it.organizations.composeOrgName(order.organization.path),
+     billing_address: order.organization.billing_address,
    }) %>
 
 <table id="details">

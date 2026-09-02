@@ -55,6 +55,20 @@
  *      the document the param moves is the `description`'s argument, i.e.
  *      check 3's.
  *
+ *   6. ORG DERIVATION — a fixture's `organization.name` equals
+ *      `composeOrgName(organization.path)`. On every real document the two agree
+ *      BY CONSTRUCTION (`buildOrganizationSnapshot` is the sole author and sets
+ *      the scalar from the chain), and the templates now COMPOSE rather than
+ *      read — so a fixture where they disagree renders a customer name the
+ *      fixture does not claim, and blessing its golden freezes that.
+ *      ⚠️ **The producer of the disagreement is the PII sanitizer, not the
+ *      operator.** `fixturePiiStrategy`'s seed is `HMAC(salt, fieldPath, value)`,
+ *      so one real org name reached `organization.name` and
+ *      `organization.path[0].name` as two DIFFERENT fake people — measured on
+ *      both `-hidden` fixtures, the only two captured after `path` existed
+ *      (api-cloudrun#778). That is why this check names the repair in its
+ *      message: whoever trips it did not cause it.
+ *
  * Fails CLOSED: a fixtures dir with no sidecar, a sidecar with no
  * `collection_source`, an unmapped collection, or sidecar/file drift are all
  * errors. Checks 4 and 5b are the deliberate exceptions, and both fail OPEN by
@@ -77,6 +91,7 @@
  * Run: deno task lint:fixtures
  */
 import { templateSchemaFor } from "@cfs/core/schemas";
+import { composeOrgName } from "@cfs/core/utils/organizations";
 
 /**
  * REFUSE arguments rather than ignore them.
@@ -175,6 +190,17 @@ goldenBranches = goldenBranches.sort();
 /** `<branch>/<git_path>` for every tree check 4 actually compared. */
 const graduated: string[] = [];
 
+/**
+ * How many fixtures check 6 actually COMPARED — reported on the green line.
+ *
+ * A fixture with no chain is skipped by design (population A carries `{uid,
+ * name}` and nothing to compose), so "0 problems" is also what a run where the
+ * check reached nothing looks like. Printing the count is what tells those two
+ * apart, and it is why the two `-hidden` fixtures sat wrong under five green
+ * checks from the day they landed (2026-08-30).
+ */
+let derivationsChecked = 0;
+
 // ── 1. Schema ───────────────────────────────────────────────────────
 
 let checked = 0;
@@ -254,6 +280,35 @@ for (const gitPath of fixtureDirs) {
         .map((i) => `      ${i.path.join(".") || "<root>"}: ${i.message}`)
         .join("\n");
       note(file, `does not satisfy the \`${collection}\` schema:\n${issues}`);
+    }
+
+    // ── 6. Org derivation ────────────────────────────────────────────
+    //
+    // Runs whether or not check 1 passed, and on the raw JSON rather than
+    // `parsed.data`: a schema failure and a derivation failure are independent,
+    // and `continue`-ing on the first would hide the second behind it.
+    //
+    // Guarded on shape rather than on collection. `movement-sessions` carries
+    // `{uid, name}` and no chain (population A of
+    // `api-cloudrun/.claude/plans/org-name-is-derived.md`), so the receipt's
+    // fixtures skip this by having nothing to compare — the same rule the
+    // Typesense arm uses, and for the same reason.
+    const org = (doc as { organization?: { name?: unknown; path?: unknown } })?.organization;
+    if (org && typeof org.name === "string" && Array.isArray(org.path) && org.path.length > 0) {
+      derivationsChecked++;
+      const composed = composeOrgName(org.path as Parameters<typeof composeOrgName>[0]);
+      if (composed !== org.name) {
+        note(
+          file,
+          `\`organization.name\` is ${JSON.stringify(org.name)} but its own chain ` +
+            `composes to ${JSON.stringify(composed)}. On a real document these agree by ` +
+            `construction — \`buildOrganizationSnapshot\` sets the scalar FROM the chain — ` +
+            `and the letterhead now composes, so this fixture renders a name it does not ` +
+            `claim.\n      Repair: edit \`organization.path[].name\` to match, do NOT ` +
+            `re-capture — the PII sanitizer seeds on field path and will mint the two ` +
+            `names differently again (api-cloudrun#778).`,
+        );
+      }
     }
   }
 
@@ -518,7 +573,12 @@ if (problems.length) {
       "reason one rung down: a golden freezes one rendering per fixture, so a\n" +
       "state nothing declares is never rendered by anything and a green run\n" +
       "says nothing about it. More fixtures do not help — they all render the\n" +
-      "default. One of them has to say it renders the other state.\n",
+      "default. One of them has to say it renders the other state.\n" +
+      "\n" +
+      "And an `organization.name` must equal what its own `path` composes to.\n" +
+      "The two agree by construction on every real document, and the letterhead\n" +
+      "composes now — so a fixture where they differ renders a customer name it\n" +
+      "does not claim, and blessing its golden freezes that.\n",
   );
   Deno.exit(1);
 }
@@ -528,5 +588,6 @@ const goldenSummary = graduated.length
   : "no graduated golden tree";
 console.log(
   `lint-fixtures: ${checked} fixture(s) across ${fixtureDirs.length} family(ies) — ` +
-    `schema OK, no PII, ${goldenSummary}, every declared param state rendered.`,
+    `schema OK, no PII, ${goldenSummary}, every declared param state rendered, ` +
+    `${derivationsChecked} org chain(s) compose to their own name.`,
 );

@@ -5,36 +5,49 @@
      would mean three includes to reproduce one contiguous run of markup.
 
      Props:
-       title         the document's own heading — "Quote #123", "Invoice #2390"
-       organization  the customer org (name + billing_address), or null
+       title            the document's own heading — "Quote #123", "Invoice #2390"
+       customer_name    the customer's name, ALREADY COMPOSED, or null
+       billing_address  the customer's billing address, or null
 
-     ⚠️ `organization` may be NULL, and null is an ANSWER rather than missing
-     data. A receipt renders a movement SESSION, and `POST /returns` deliberately
-     accepts bookings from different orders — so a session spanning two customers
-     is legitimate, and `MovementSession.organization` is `null` to say so. A
-     receipt must not print a customer name in that case; collapsing to the first
-     would put one customer's name on another's goods. An order and an invoice
-     always carry one, so this guard changes nothing they render.
+     🔴 **It takes a NAME, not an `organization`, and the reason is that this is
+     the one surface both org populations reach.** An order and an invoice carry
+     a frozen `DocumentOrganizationSnapshot` whose `path` is the chain the name
+     composes from; a movement session carries `{uid, name}` and NO chain, because
+     it is folded per render from the orders it spans. So there is no single
+     expression this partial could evaluate that is right for both — composing
+     here would throw on a receipt, and reading `.name` here would keep the
+     templates repo on the field this campaign is removing. Each caller states
+     how it got a name instead, which is also what makes the two cases legible at
+     the call site. See `api-cloudrun/.claude/plans/org-name-is-derived.md`.
+
+     ⚠️ `customer_name` may be NULL, and null is an ANSWER rather than missing
+     data. `POST /returns` deliberately accepts bookings from different orders —
+     so a session spanning two customers is legitimate, and `agreedOrganization`
+     returns null to say so. A receipt must not print a customer name in that
+     case; collapsing to the first would put one customer's name on another's
+     goods. An order and an invoice always carry one, so this guard changes
+     nothing they render.
+
+     ⚠️ `billing_address` may be null too, and independently: a session never has
+     one, and `billing_address` is `.optional()` on the organization snapshot
+     while `Address` is itself `.nullable()`, so an order can legitimately carry
+     neither (#25).
 
      `it.logo` is inherited, not passed: it is injected into every render
      context by `renderTemplate` and is not a fact about the document. */%>
 <%
-const { title, organization } = it;
+const { title, customer_name, billing_address } = it;
 %>
   <div id="logo">
     <%~ it.logo %>
   </div>
   <section id="bill-to">
     <%
-    // `billing_address` is `.optional()` on the organization snapshot AND
-    // `Address` is itself `.nullable()`, so an order can legitimately carry
-    // neither — the old unguarded chain threw on the first `.street` (#25).
-    //
-    // The lines are assembled rather than emitted as bare spans for the same
-    // reason: a separator only belongs there when both sides of it are present.
+    // The lines are assembled rather than emitted as bare spans because a
+    // separator only belongs there when both sides of it are present.
     // `street2` defaults to `""`, so the old markup printed a leading comma on
     // every order without a suite number.
-    const billing = organization?.billing_address ?? {};
+    const billing = billing_address ?? {};
     const streetLine = [billing.street, billing.street2].filter(Boolean).join(", ");
     const cityLine = [
       [billing.city, billing.region].filter(Boolean).join(", "),
@@ -45,8 +58,8 @@ const { title, organization } = it;
     const foreign = billing.country_name && billing.country_name !== "United States";
     %>
     <h1><%= title %></h1>
-    <% if (organization?.name) { %>
-    <div><%= organization.name %></div>
+    <% if (customer_name) { %>
+    <div><%= customer_name %></div>
     <% } %>
     <% if (streetLine) { %>
     <div><%= streetLine %></div>
