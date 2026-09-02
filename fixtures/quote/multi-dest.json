@@ -1,674 +1,673 @@
 {
-  "uid": "MultiDestQuoteFix001",
-  "number": 1042,
-  "status": "quoted",
-  "crms_id": null,
-  "uid_thread": "ThRd0MultiDest000010",
-  "organization": {
-    "uid": "LakeshorePicturesOrg",
-    "name": "Lakeshore Pictures",
-    "path": [
-      {
-        "uid": "LakeshorePicturesOrg",
-        "name": "Lakeshore Pictures",
-        "derived": false
-      }
-    ],
-    "crms_id": null,
-    "xero_id": "3f1c8a90-9f2b-4c2e-8b71-2a5d6e4f0c11",
-    "billing_address": {
-      "name": "Lakeshore Pictures",
-      "street": "205 W Wacker Dr",
-      "street2": "Suite 1900",
-      "postcode": "60606",
-      "city": "Chicago",
-      "region": "IL",
-      "country_name": "United States",
-      "full": "205 W Wacker Dr, Chicago, IL, United States",
-      "mapbox_id": "",
-      "address_coordinates": null,
-      "user_coordinates": null
-    }
-  },
-  "destinations": [
-    {
-      "uid": "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
-      "dates": {
-        "delivery_start": "2026-04-06T09:00:00.000-05:00",
-        "delivery_end": "2026-04-06T09:00:00.000-05:00",
-        "collection_start": "2026-04-10T15:00:00.000-05:00",
-        "collection_end": "2026-04-10T15:00:00.000-05:00",
-        "charge_start": "2026-04-06T09:00:00.000-05:00",
-        "charge_end": "2026-04-10T15:00:00.000-05:00",
-        "days_active": 5,
-        "days_charged": 5,
-        "delivery_start_fs": {
-          "_seconds": 1775484000,
-          "_nanoseconds": 0
-        },
-        "delivery_end_fs": {
-          "_seconds": 1775484000,
-          "_nanoseconds": 0
-        },
-        "collection_start_fs": {
-          "_seconds": 1775851200,
-          "_nanoseconds": 0
-        },
-        "collection_end_fs": {
-          "_seconds": 1775851200,
-          "_nanoseconds": 0
-        },
-        "charge_start_fs": {
-          "_seconds": 1775484000,
-          "_nanoseconds": 0
-        },
-        "charge_end_fs": {
-          "_seconds": 1775851200,
-          "_nanoseconds": 0
-        }
-      },
-      "delivery": {
-        "uid": "Dst1CounterPickup001",
-        "address": {
-          "name": "Chicago Film Supplies",
-          "street": "3100 W Fillmore St",
-          "street2": "",
-          "postcode": "60612",
-          "city": "Chicago",
-          "region": "IL",
-          "country_name": "United States",
-          "full": "3100 W Fillmore St, Chicago, IL, United States",
-          "mapbox_id": "dXJuOm1ieGFkcjphNTVmMzNiOC0zNTYyLTRkMDctYWFkZi0wNjE0NGY4MDdmMGU",
-          "address_coordinates": {
-            "latitude": 41.868,
-            "longitude": -87.703
-          },
-          "user_coordinates": {
-            "latitude": 41.868,
-            "longitude": -87.703
-          }
-        },
-        "instructions": "Customer pickup at our counter. Bring the order number.",
-        "contact": {
-          "uid": "ContactDanaRuiz00001",
-          "first_name": "Dana",
-          "last_name": "Ruiz",
-          "name": "Dana Ruiz",
-          "phones": [
-            "(312) 555-0142"
-          ]
-        }
-      },
-      "collection": {
-        "uid": "Dst1CounterPickup001",
-        "address": {
-          "name": "Chicago Film Supplies",
-          "street": "3100 W Fillmore St",
-          "street2": "",
-          "postcode": "60612",
-          "city": "Chicago",
-          "region": "IL",
-          "country_name": "United States",
-          "full": "3100 W Fillmore St, Chicago, IL, United States",
-          "mapbox_id": "dXJuOm1ieGFkcjphNTVmMzNiOC0zNTYyLTRkMDctYWFkZi0wNjE0NGY4MDdmMGU",
-          "address_coordinates": {
-            "latitude": 41.868,
-            "longitude": -87.703
-          },
-          "user_coordinates": {
-            "latitude": 41.868,
-            "longitude": -87.703
-          }
-        },
-        "instructions": "Customer returns to our counter by 3pm.",
-        "contact": {
-          "uid": "ContactDanaRuiz00001",
-          "first_name": "Dana",
-          "last_name": "Ruiz",
-          "name": "Dana Ruiz",
-          "phones": [
-            "(312) 555-0142"
-          ]
-        }
-      },
-      "customer_collecting": true,
-      "customer_returning": true
-    },
-    {
-      "uid": "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
-      "dates": {
-        "delivery_start": "2026-04-07T07:00:00.000-05:00",
-        "delivery_end": "2026-04-07T07:00:00.000-05:00",
-        "collection_start": "2026-04-13T15:00:00.000-05:00",
-        "collection_end": "2026-04-13T15:00:00.000-05:00",
-        "charge_start": "2026-04-07T07:00:00.000-05:00",
-        "charge_end": "2026-04-11T15:00:00.000-05:00",
-        "days_active": 7,
-        "days_charged": 5,
-        "delivery_start_fs": {
-          "_seconds": 1775563200,
-          "_nanoseconds": 0
-        },
-        "delivery_end_fs": {
-          "_seconds": 1775563200,
-          "_nanoseconds": 0
-        },
-        "collection_start_fs": {
-          "_seconds": 1776110400,
-          "_nanoseconds": 0
-        },
-        "collection_end_fs": {
-          "_seconds": 1776110400,
-          "_nanoseconds": 0
-        },
-        "charge_start_fs": {
-          "_seconds": 1775563200,
-          "_nanoseconds": 0
-        },
-        "charge_end_fs": {
-          "_seconds": 1775937600,
-          "_nanoseconds": 0
-        }
-      },
-      "delivery": {
-        "uid": "Dst2StageDelivery001",
-        "address": {
-          "name": "Cinespace Chicago — Stage 14",
-          "street": "2621 W 15th Pl",
-          "street2": "",
-          "postcode": "60608",
-          "city": "Chicago",
-          "region": "IL",
-          "country_name": "United States",
-          "full": "2621 W 15th Pl, Chicago, IL, United States",
-          "mapbox_id": "dXJuOm1ieGFkcjo0MmI2NGE1MC0wZDMwLTQ5ZGYtYjRlYy1kZmYwYWQ3ZjRhMDU",
-          "address_coordinates": {
-            "latitude": 41.861,
-            "longitude": -87.691
-          },
-          "user_coordinates": {
-            "latitude": 41.861,
-            "longitude": -87.691
-          }
-        },
-        "instructions": "Deliver to the Stage 14 roll-up door; gate code at the guard house.",
-        "contact": {
-          "uid": "ContactMarcusWebb001",
-          "first_name": "Marcus",
-          "last_name": "Webb",
-          "name": "Marcus Webb",
-          "phones": [
-            "(312) 555-0188"
-          ]
-        }
-      },
-      "collection": {
-        "uid": "Dst2StageDelivery001",
-        "address": {
-          "name": "Cinespace Chicago — Stage 14",
-          "street": "2621 W 15th Pl",
-          "street2": "",
-          "postcode": "60608",
-          "city": "Chicago",
-          "region": "IL",
-          "country_name": "United States",
-          "full": "2621 W 15th Pl, Chicago, IL, United States",
-          "mapbox_id": "dXJuOm1ieGFkcjo0MmI2NGE1MC0wZDMwLTQ5ZGYtYjRlYy1kZmYwYWQ3ZjRhMDU",
-          "address_coordinates": {
-            "latitude": 41.861,
-            "longitude": -87.691
-          },
-          "user_coordinates": {
-            "latitude": 41.861,
-            "longitude": -87.691
-          }
-        },
-        "instructions": "Strike by 3pm; gear staged at the Stage 14 roll-up door.",
-        "contact": {
-          "uid": "ContactMarcusWebb001",
-          "first_name": "Marcus",
-          "last_name": "Webb",
-          "name": "Marcus Webb",
-          "phones": [
-            "(312) 555-0188"
-          ]
-        }
-      },
-      "customer_collecting": false,
-      "customer_returning": false
-    }
-  ],
-  "items": [
-    {
-      "uid": "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
-      "type": "destination",
-      "name": "Fillmore Counter",
-      "description": "",
-      "path": [
-        "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c"
-      ]
-    },
-    {
-      "uid": "c47d92b8-1e6f-4a35-b8d1-7fc02e95a641",
-      "type": "group",
-      "name": "Grip & Electric",
-      "description": "",
-      "path": [
-        "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
-        "c47d92b8-1e6f-4a35-b8d1-7fc02e95a641"
-      ]
-    },
-    {
-      "uid": "U8WC4Js2oPaTdYpkvbcx",
-      "type": "rental",
-      "name": "18\" Traffic Cone",
-      "description": "",
-      "quantity": 1,
-      "stock_method": "bulk",
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 60,
-      "path": [
-        "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
-        "c47d92b8-1e6f-4a35-b8d1-7fc02e95a641",
-        "U8WC4Js2oPaTdYpkvbcx"
-      ],
-      "price": {
-        "base_cents": 200,
-        "replacement_cents": 1600,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 30
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "subtotal_cents": 200,
-        "subtotal_discounted_cents": 200,
-        "total_cents": 230
-      }
-    },
-    {
-      "uid": "0BIQ73UMiHTtd8mo0yNk",
-      "type": "rental",
-      "name": "Safety Vest (Duffel Bag of 50)",
-      "description": "",
-      "quantity": 2,
-      "stock_method": "none",
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 151,
-      "path": [
-        "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
-        "c47d92b8-1e6f-4a35-b8d1-7fc02e95a641",
-        "0BIQ73UMiHTtd8mo0yNk"
-      ],
-      "price": {
-        "base_cents": 2500,
-        "replacement_cents": 46500,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 750
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "subtotal_cents": 5000,
-        "subtotal_discounted_cents": 5000,
-        "total_cents": 5750
-      }
-    },
-    {
-      "uid": "jN6MZEMqwr9VWsNix8p4",
-      "type": "rental",
-      "name": "Pipe & Drape (2 Rooms)",
-      "description": "",
-      "quantity": 3,
-      "stock_method": "none",
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 39,
-      "path": [
-        "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
-        "c47d92b8-1e6f-4a35-b8d1-7fc02e95a641",
-        "jN6MZEMqwr9VWsNix8p4"
-      ],
-      "price": {
-        "base_cents": 20000,
-        "replacement_cents": 0,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 9000
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "subtotal_cents": 60000,
-        "subtotal_discounted_cents": 60000,
-        "total_cents": 69000
-      }
-    },
-    {
-      "uid": "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
-      "type": "destination",
-      "name": "Cinespace Stage 14",
-      "description": "",
-      "path": [
-        "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7"
-      ]
-    },
-    {
-      "uid": "F4ZiJl7ZzMChlRufw8RL",
-      "type": "service",
-      "name": "Delivery/Setup/Removal",
-      "description": "",
-      "quantity": 1,
-      "stock_method": "none",
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 30,
-      "path": [
-        "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
-        "F4ZiJl7ZzMChlRufw8RL"
-      ],
-      "price": {
-        "base_cents": 25000,
-        "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "NJc430kShJ0GRj7uvaQZ",
-            "name": "Chicago Sales Tax",
-            "rate": 10.25,
-            "type": "percent",
-            "amount_cents": 2563
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "NJc430kShJ0GRj7uvaQZ",
-            "name": "Chicago Sales Tax",
-            "rate": 10.25,
-            "type": "percent"
-          }
-        ],
-        "subtotal_cents": 25000,
-        "subtotal_discounted_cents": 25000,
-        "total_cents": 27563
-      }
-    },
-    {
-      "uid": "6d10f5c3-84a9-4e27-91b6-0c4de728af35",
-      "type": "group",
-      "name": "Stage Package",
-      "description": "",
-      "path": [
-        "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
-        "6d10f5c3-84a9-4e27-91b6-0c4de728af35"
-      ]
-    },
-    {
-      "uid": "CaWTUrRVadAs6IJUjqzF",
-      "type": "rental",
-      "name": "4' Folding Table (Adjustable Height)",
-      "description": "",
-      "quantity": 2,
-      "stock_method": "bulk",
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 104,
-      "path": [
-        "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
-        "6d10f5c3-84a9-4e27-91b6-0c4de728af35",
-        "CaWTUrRVadAs6IJUjqzF"
-      ],
-      "price": {
-        "base_cents": 500,
-        "replacement_cents": 6000,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 150
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "subtotal_cents": 1000,
-        "subtotal_discounted_cents": 1000,
-        "total_cents": 1150
-      }
-    },
-    {
-      "uid": "YyBaHYXVZofngOqtw2Lk",
-      "type": "rental",
-      "name": "Tall Director Chair",
-      "description": "",
-      "quantity": 3,
-      "stock_method": "bulk",
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 89,
-      "path": [
-        "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
-        "6d10f5c3-84a9-4e27-91b6-0c4de728af35",
-        "YyBaHYXVZofngOqtw2Lk"
-      ],
-      "price": {
-        "base_cents": 1500,
-        "replacement_cents": 15000,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 675
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "subtotal_cents": 4500,
-        "subtotal_discounted_cents": 4500,
-        "total_cents": 5175
-      }
-    },
-    {
-      "uid": "aosey66Ih8tTaoWKQXmO",
-      "type": "rental",
-      "name": "6' Folding Table",
-      "description": "",
-      "quantity": 4,
-      "stock_method": "bulk",
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 53,
-      "path": [
-        "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
-        "6d10f5c3-84a9-4e27-91b6-0c4de728af35",
-        "aosey66Ih8tTaoWKQXmO"
-      ],
-      "price": {
-        "base_cents": 600,
-        "replacement_cents": 8000,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 360
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "subtotal_cents": 2400,
-        "subtotal_discounted_cents": 2400,
-        "total_cents": 2760
-      }
-    },
-    {
-      "uid": "OYvggZa70ccCCbcQ8o1H",
-      "type": "sale",
-      "name": "55 Gallon Heavy Duty Garbage Bags",
-      "description": "",
-      "quantity": 4,
-      "stock_method": "bulk",
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 105,
-      "path": [
-        "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
-        "6d10f5c3-84a9-4e27-91b6-0c4de728af35",
-        "OYvggZa70ccCCbcQ8o1H"
-      ],
-      "price": {
-        "base_cents": 2000,
-        "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "NJc430kShJ0GRj7uvaQZ",
-            "name": "Chicago Sales Tax",
-            "rate": 10.25,
-            "type": "percent",
-            "amount_cents": 820
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "NJc430kShJ0GRj7uvaQZ",
-            "name": "Chicago Sales Tax",
-            "rate": 10.25,
-            "type": "percent"
-          }
-        ],
-        "subtotal_cents": 8000,
-        "subtotal_discounted_cents": 8000,
-        "total_cents": 8820
-      }
-    }
-  ],
-  "totals": {
-    "discount_amount_cents": 0,
-    "subtotal_cents": 106100,
-    "subtotal_discounted_cents": 106100,
-    "taxes": [
-      {
-        "uid": "VEW4Ivy7VNqgxFA5eJw6",
-        "name": "Chicago Rental Tax",
-        "rate": 15,
-        "type": "percent",
-        "amount_cents": 10965
-      },
-      {
-        "uid": "NJc430kShJ0GRj7uvaQZ",
-        "name": "Chicago Sales Tax",
-        "rate": 10.25,
-        "type": "percent",
-        "amount_cents": 3383
-      }
-    ],
-    "transaction_fees": [],
-    "total_cents": 120448,
-    "replacement_total_cents": 211140
-  },
-  "invoices": [],
-  "query_by_invoices": [],
-  "query_by_items": [],
-  "query_by_contacts": [],
-  "query_by_dates": [],
-  "bookings_breakdown": {
-    "quoted": 0,
-    "reserved": 0,
-    "prepped": 0,
-    "out": 0,
-    "returned": 0,
-    "lost": 0,
-    "damaged": 0
-  },
-  "subject": "Untitled Series — Ep 3 Reshoots",
-  "reference": "PO-4471",
-  "xero_id": null,
-  "version": 0,
-  "created_at": {
-    "_seconds": 1774883520,
-    "_nanoseconds": 0
-  },
-  "updated_at": {
-    "_seconds": 1775079600,
-    "_nanoseconds": 0
-  }
+	"uid": "MultiDestQuoteFix001",
+	"number": 1042,
+	"status": "quoted",
+	"crms_id": null,
+	"uid_thread": "ThRd0MultiDest000010",
+	"organization": {
+		"uid": "LakeshorePicturesOrg",
+		"path": [
+			{
+				"uid": "LakeshorePicturesOrg",
+				"name": "Lakeshore Pictures",
+				"derived": false
+			}
+		],
+		"crms_id": null,
+		"xero_id": "3f1c8a90-9f2b-4c2e-8b71-2a5d6e4f0c11",
+		"billing_address": {
+			"name": "Lakeshore Pictures",
+			"street": "205 W Wacker Dr",
+			"street2": "Suite 1900",
+			"postcode": "60606",
+			"city": "Chicago",
+			"region": "IL",
+			"country_name": "United States",
+			"full": "205 W Wacker Dr, Chicago, IL, United States",
+			"mapbox_id": "",
+			"address_coordinates": null,
+			"user_coordinates": null
+		}
+	},
+	"destinations": [
+		{
+			"uid": "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
+			"dates": {
+				"delivery_start": "2026-04-06T09:00:00.000-05:00",
+				"delivery_end": "2026-04-06T09:00:00.000-05:00",
+				"collection_start": "2026-04-10T15:00:00.000-05:00",
+				"collection_end": "2026-04-10T15:00:00.000-05:00",
+				"charge_start": "2026-04-06T09:00:00.000-05:00",
+				"charge_end": "2026-04-10T15:00:00.000-05:00",
+				"days_active": 5,
+				"days_charged": 5,
+				"delivery_start_fs": {
+					"_seconds": 1775484000,
+					"_nanoseconds": 0
+				},
+				"delivery_end_fs": {
+					"_seconds": 1775484000,
+					"_nanoseconds": 0
+				},
+				"collection_start_fs": {
+					"_seconds": 1775851200,
+					"_nanoseconds": 0
+				},
+				"collection_end_fs": {
+					"_seconds": 1775851200,
+					"_nanoseconds": 0
+				},
+				"charge_start_fs": {
+					"_seconds": 1775484000,
+					"_nanoseconds": 0
+				},
+				"charge_end_fs": {
+					"_seconds": 1775851200,
+					"_nanoseconds": 0
+				}
+			},
+			"delivery": {
+				"uid": "Dst1CounterPickup001",
+				"address": {
+					"name": "Chicago Film Supplies",
+					"street": "3100 W Fillmore St",
+					"street2": "",
+					"postcode": "60612",
+					"city": "Chicago",
+					"region": "IL",
+					"country_name": "United States",
+					"full": "3100 W Fillmore St, Chicago, IL, United States",
+					"mapbox_id": "dXJuOm1ieGFkcjphNTVmMzNiOC0zNTYyLTRkMDctYWFkZi0wNjE0NGY4MDdmMGU",
+					"address_coordinates": {
+						"latitude": 41.868,
+						"longitude": -87.703
+					},
+					"user_coordinates": {
+						"latitude": 41.868,
+						"longitude": -87.703
+					}
+				},
+				"instructions": "Customer pickup at our counter. Bring the order number.",
+				"contact": {
+					"uid": "ContactDanaRuiz00001",
+					"first_name": "Dana",
+					"last_name": "Ruiz",
+					"name": "Dana Ruiz",
+					"phones": [
+						"(312) 555-0142"
+					]
+				}
+			},
+			"collection": {
+				"uid": "Dst1CounterPickup001",
+				"address": {
+					"name": "Chicago Film Supplies",
+					"street": "3100 W Fillmore St",
+					"street2": "",
+					"postcode": "60612",
+					"city": "Chicago",
+					"region": "IL",
+					"country_name": "United States",
+					"full": "3100 W Fillmore St, Chicago, IL, United States",
+					"mapbox_id": "dXJuOm1ieGFkcjphNTVmMzNiOC0zNTYyLTRkMDctYWFkZi0wNjE0NGY4MDdmMGU",
+					"address_coordinates": {
+						"latitude": 41.868,
+						"longitude": -87.703
+					},
+					"user_coordinates": {
+						"latitude": 41.868,
+						"longitude": -87.703
+					}
+				},
+				"instructions": "Customer returns to our counter by 3pm.",
+				"contact": {
+					"uid": "ContactDanaRuiz00001",
+					"first_name": "Dana",
+					"last_name": "Ruiz",
+					"name": "Dana Ruiz",
+					"phones": [
+						"(312) 555-0142"
+					]
+				}
+			},
+			"customer_collecting": true,
+			"customer_returning": true
+		},
+		{
+			"uid": "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
+			"dates": {
+				"delivery_start": "2026-04-07T07:00:00.000-05:00",
+				"delivery_end": "2026-04-07T07:00:00.000-05:00",
+				"collection_start": "2026-04-13T15:00:00.000-05:00",
+				"collection_end": "2026-04-13T15:00:00.000-05:00",
+				"charge_start": "2026-04-07T07:00:00.000-05:00",
+				"charge_end": "2026-04-11T15:00:00.000-05:00",
+				"days_active": 7,
+				"days_charged": 5,
+				"delivery_start_fs": {
+					"_seconds": 1775563200,
+					"_nanoseconds": 0
+				},
+				"delivery_end_fs": {
+					"_seconds": 1775563200,
+					"_nanoseconds": 0
+				},
+				"collection_start_fs": {
+					"_seconds": 1776110400,
+					"_nanoseconds": 0
+				},
+				"collection_end_fs": {
+					"_seconds": 1776110400,
+					"_nanoseconds": 0
+				},
+				"charge_start_fs": {
+					"_seconds": 1775563200,
+					"_nanoseconds": 0
+				},
+				"charge_end_fs": {
+					"_seconds": 1775937600,
+					"_nanoseconds": 0
+				}
+			},
+			"delivery": {
+				"uid": "Dst2StageDelivery001",
+				"address": {
+					"name": "Cinespace Chicago — Stage 14",
+					"street": "2621 W 15th Pl",
+					"street2": "",
+					"postcode": "60608",
+					"city": "Chicago",
+					"region": "IL",
+					"country_name": "United States",
+					"full": "2621 W 15th Pl, Chicago, IL, United States",
+					"mapbox_id": "dXJuOm1ieGFkcjo0MmI2NGE1MC0wZDMwLTQ5ZGYtYjRlYy1kZmYwYWQ3ZjRhMDU",
+					"address_coordinates": {
+						"latitude": 41.861,
+						"longitude": -87.691
+					},
+					"user_coordinates": {
+						"latitude": 41.861,
+						"longitude": -87.691
+					}
+				},
+				"instructions": "Deliver to the Stage 14 roll-up door; gate code at the guard house.",
+				"contact": {
+					"uid": "ContactMarcusWebb001",
+					"first_name": "Marcus",
+					"last_name": "Webb",
+					"name": "Marcus Webb",
+					"phones": [
+						"(312) 555-0188"
+					]
+				}
+			},
+			"collection": {
+				"uid": "Dst2StageDelivery001",
+				"address": {
+					"name": "Cinespace Chicago — Stage 14",
+					"street": "2621 W 15th Pl",
+					"street2": "",
+					"postcode": "60608",
+					"city": "Chicago",
+					"region": "IL",
+					"country_name": "United States",
+					"full": "2621 W 15th Pl, Chicago, IL, United States",
+					"mapbox_id": "dXJuOm1ieGFkcjo0MmI2NGE1MC0wZDMwLTQ5ZGYtYjRlYy1kZmYwYWQ3ZjRhMDU",
+					"address_coordinates": {
+						"latitude": 41.861,
+						"longitude": -87.691
+					},
+					"user_coordinates": {
+						"latitude": 41.861,
+						"longitude": -87.691
+					}
+				},
+				"instructions": "Strike by 3pm; gear staged at the Stage 14 roll-up door.",
+				"contact": {
+					"uid": "ContactMarcusWebb001",
+					"first_name": "Marcus",
+					"last_name": "Webb",
+					"name": "Marcus Webb",
+					"phones": [
+						"(312) 555-0188"
+					]
+				}
+			},
+			"customer_collecting": false,
+			"customer_returning": false
+		}
+	],
+	"items": [
+		{
+			"uid": "9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
+			"type": "destination",
+			"name": "Fillmore Counter",
+			"description": "",
+			"path": [
+				"9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c"
+			]
+		},
+		{
+			"uid": "c47d92b8-1e6f-4a35-b8d1-7fc02e95a641",
+			"type": "group",
+			"name": "Grip & Electric",
+			"description": "",
+			"path": [
+				"9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
+				"c47d92b8-1e6f-4a35-b8d1-7fc02e95a641"
+			]
+		},
+		{
+			"uid": "U8WC4Js2oPaTdYpkvbcx",
+			"type": "rental",
+			"name": "18\" Traffic Cone",
+			"description": "",
+			"quantity": 1,
+			"stock_method": "bulk",
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 60,
+			"path": [
+				"9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
+				"c47d92b8-1e6f-4a35-b8d1-7fc02e95a641",
+				"U8WC4Js2oPaTdYpkvbcx"
+			],
+			"price": {
+				"base_cents": 200,
+				"replacement_cents": 1600,
+				"chargeable_days": 5,
+				"formula": "five_day_week",
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 30
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"subtotal_cents": 200,
+				"subtotal_discounted_cents": 200,
+				"total_cents": 230
+			}
+		},
+		{
+			"uid": "0BIQ73UMiHTtd8mo0yNk",
+			"type": "rental",
+			"name": "Safety Vest (Duffel Bag of 50)",
+			"description": "",
+			"quantity": 2,
+			"stock_method": "none",
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 151,
+			"path": [
+				"9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
+				"c47d92b8-1e6f-4a35-b8d1-7fc02e95a641",
+				"0BIQ73UMiHTtd8mo0yNk"
+			],
+			"price": {
+				"base_cents": 2500,
+				"replacement_cents": 46500,
+				"chargeable_days": 5,
+				"formula": "five_day_week",
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 750
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"subtotal_cents": 5000,
+				"subtotal_discounted_cents": 5000,
+				"total_cents": 5750
+			}
+		},
+		{
+			"uid": "jN6MZEMqwr9VWsNix8p4",
+			"type": "rental",
+			"name": "Pipe & Drape (2 Rooms)",
+			"description": "",
+			"quantity": 3,
+			"stock_method": "none",
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 39,
+			"path": [
+				"9f3c1e7a-5b42-4d18-9c06-3ae81b6d4f2c",
+				"c47d92b8-1e6f-4a35-b8d1-7fc02e95a641",
+				"jN6MZEMqwr9VWsNix8p4"
+			],
+			"price": {
+				"base_cents": 20000,
+				"replacement_cents": 0,
+				"chargeable_days": 5,
+				"formula": "five_day_week",
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 9000
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"subtotal_cents": 60000,
+				"subtotal_discounted_cents": 60000,
+				"total_cents": 69000
+			}
+		},
+		{
+			"uid": "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
+			"type": "destination",
+			"name": "Cinespace Stage 14",
+			"description": "",
+			"path": [
+				"2b8e6a04-9d71-4c53-a2f9-58170be3c9d7"
+			]
+		},
+		{
+			"uid": "F4ZiJl7ZzMChlRufw8RL",
+			"type": "service",
+			"name": "Delivery/Setup/Removal",
+			"description": "",
+			"quantity": 1,
+			"stock_method": "none",
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 30,
+			"path": [
+				"2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
+				"F4ZiJl7ZzMChlRufw8RL"
+			],
+			"price": {
+				"base_cents": 25000,
+				"replacement_cents": 0,
+				"chargeable_days": null,
+				"formula": "fixed",
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "NJc430kShJ0GRj7uvaQZ",
+						"name": "Chicago Sales Tax",
+						"rate": 10.25,
+						"type": "percent",
+						"amount_cents": 2563
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "NJc430kShJ0GRj7uvaQZ",
+						"name": "Chicago Sales Tax",
+						"rate": 10.25,
+						"type": "percent"
+					}
+				],
+				"subtotal_cents": 25000,
+				"subtotal_discounted_cents": 25000,
+				"total_cents": 27563
+			}
+		},
+		{
+			"uid": "6d10f5c3-84a9-4e27-91b6-0c4de728af35",
+			"type": "group",
+			"name": "Stage Package",
+			"description": "",
+			"path": [
+				"2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
+				"6d10f5c3-84a9-4e27-91b6-0c4de728af35"
+			]
+		},
+		{
+			"uid": "CaWTUrRVadAs6IJUjqzF",
+			"type": "rental",
+			"name": "4' Folding Table (Adjustable Height)",
+			"description": "",
+			"quantity": 2,
+			"stock_method": "bulk",
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 104,
+			"path": [
+				"2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
+				"6d10f5c3-84a9-4e27-91b6-0c4de728af35",
+				"CaWTUrRVadAs6IJUjqzF"
+			],
+			"price": {
+				"base_cents": 500,
+				"replacement_cents": 6000,
+				"chargeable_days": 5,
+				"formula": "five_day_week",
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 150
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"subtotal_cents": 1000,
+				"subtotal_discounted_cents": 1000,
+				"total_cents": 1150
+			}
+		},
+		{
+			"uid": "YyBaHYXVZofngOqtw2Lk",
+			"type": "rental",
+			"name": "Tall Director Chair",
+			"description": "",
+			"quantity": 3,
+			"stock_method": "bulk",
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 89,
+			"path": [
+				"2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
+				"6d10f5c3-84a9-4e27-91b6-0c4de728af35",
+				"YyBaHYXVZofngOqtw2Lk"
+			],
+			"price": {
+				"base_cents": 1500,
+				"replacement_cents": 15000,
+				"chargeable_days": 5,
+				"formula": "five_day_week",
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 675
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"subtotal_cents": 4500,
+				"subtotal_discounted_cents": 4500,
+				"total_cents": 5175
+			}
+		},
+		{
+			"uid": "aosey66Ih8tTaoWKQXmO",
+			"type": "rental",
+			"name": "6' Folding Table",
+			"description": "",
+			"quantity": 4,
+			"stock_method": "bulk",
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 53,
+			"path": [
+				"2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
+				"6d10f5c3-84a9-4e27-91b6-0c4de728af35",
+				"aosey66Ih8tTaoWKQXmO"
+			],
+			"price": {
+				"base_cents": 600,
+				"replacement_cents": 8000,
+				"chargeable_days": 5,
+				"formula": "five_day_week",
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 360
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"subtotal_cents": 2400,
+				"subtotal_discounted_cents": 2400,
+				"total_cents": 2760
+			}
+		},
+		{
+			"uid": "OYvggZa70ccCCbcQ8o1H",
+			"type": "sale",
+			"name": "55 Gallon Heavy Duty Garbage Bags",
+			"description": "",
+			"quantity": 4,
+			"stock_method": "bulk",
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 105,
+			"path": [
+				"2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
+				"6d10f5c3-84a9-4e27-91b6-0c4de728af35",
+				"OYvggZa70ccCCbcQ8o1H"
+			],
+			"price": {
+				"base_cents": 2000,
+				"replacement_cents": 0,
+				"chargeable_days": null,
+				"formula": "fixed",
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "NJc430kShJ0GRj7uvaQZ",
+						"name": "Chicago Sales Tax",
+						"rate": 10.25,
+						"type": "percent",
+						"amount_cents": 820
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "NJc430kShJ0GRj7uvaQZ",
+						"name": "Chicago Sales Tax",
+						"rate": 10.25,
+						"type": "percent"
+					}
+				],
+				"subtotal_cents": 8000,
+				"subtotal_discounted_cents": 8000,
+				"total_cents": 8820
+			}
+		}
+	],
+	"totals": {
+		"discount_amount_cents": 0,
+		"subtotal_cents": 106100,
+		"subtotal_discounted_cents": 106100,
+		"taxes": [
+			{
+				"uid": "VEW4Ivy7VNqgxFA5eJw6",
+				"name": "Chicago Rental Tax",
+				"rate": 15,
+				"type": "percent",
+				"amount_cents": 10965
+			},
+			{
+				"uid": "NJc430kShJ0GRj7uvaQZ",
+				"name": "Chicago Sales Tax",
+				"rate": 10.25,
+				"type": "percent",
+				"amount_cents": 3383
+			}
+		],
+		"transaction_fees": [],
+		"total_cents": 120448,
+		"replacement_total_cents": 211140
+	},
+	"invoices": [],
+	"query_by_invoices": [],
+	"query_by_items": [],
+	"query_by_contacts": [],
+	"query_by_dates": [],
+	"bookings_breakdown": {
+		"quoted": 0,
+		"reserved": 0,
+		"prepped": 0,
+		"out": 0,
+		"returned": 0,
+		"lost": 0,
+		"damaged": 0
+	},
+	"subject": "Untitled Series — Ep 3 Reshoots",
+	"reference": "PO-4471",
+	"xero_id": null,
+	"version": 0,
+	"created_at": {
+		"_seconds": 1774883520,
+		"_nanoseconds": 0
+	},
+	"updated_at": {
+		"_seconds": 1775079600,
+		"_nanoseconds": 0
+	}
 }

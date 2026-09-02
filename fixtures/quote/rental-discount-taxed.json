@@ -1,374 +1,373 @@
 {
-  "uid": "zOr5VEC5KVFVqB9XBWGb",
-  "number": 943,
-  "status": "quoted",
-  "organization": {
-    "uid": "XbPouPV72q0pUY4t1c3h",
-    "name": "Sample text for name.............",
-    "path": [
-      {
-        "uid": "XbPouPV72q0pUY4t1c3h",
-        "name": "Sample text for name.............",
-        "derived": false
-      }
-    ],
-    "crms_id": 223,
-    "xero_id": "cde0a1cb-700f-4b74-8661-fd33d98229cd",
-    "billing_address": {
-      "city": "Los Angeles",
-      "country_name": "United States",
-      "full": "7905 Walnut Blvd",
-      "name": "Sample text for name.............",
-      "postcode": "66776",
-      "region": "CA",
-      "street": "3386 Magnolia Rd",
-      "street2": "",
-      "mapbox_id": "",
-      "address_coordinates": null,
-      "user_coordinates": null
-    }
-  },
-  "destinations": [
-    {
-      "uid": "df3e4ab1-38aa-4759-b1c1-a0e14782a007",
-      "dates": {
-        "delivery_start": "2026-08-31T09:00:00.000-05:00",
-        "delivery_start_fs": {
-          "_seconds": 1788184800,
-          "_nanoseconds": 0
-        },
-        "delivery_end": "2026-08-31T09:00:00.000-05:00",
-        "delivery_end_fs": {
-          "_seconds": 1788184800,
-          "_nanoseconds": 0
-        },
-        "collection_start": "2026-10-23T15:00:00.000-05:00",
-        "collection_start_fs": {
-          "_seconds": 1792785600,
-          "_nanoseconds": 0
-        },
-        "collection_end": "2026-10-23T15:00:00.000-05:00",
-        "collection_end_fs": {
-          "_seconds": 1792785600,
-          "_nanoseconds": 0
-        },
-        "charge_start": "2026-08-31T09:00:00.000-05:00",
-        "charge_start_fs": {
-          "_seconds": 1788184800,
-          "_nanoseconds": 0
-        },
-        "charge_end": "2026-10-23T15:00:00.000-05:00",
-        "charge_end_fs": {
-          "_seconds": 1792785600,
-          "_nanoseconds": 0
-        },
-        "days_active": 38,
-        "days_charged": 38
-      },
-      "delivery": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "172 Magnolia Rd",
-          "name": "Eastvale",
-          "postcode": "65048",
-          "region": "IL",
-          "street": "3408 Cypress Ter",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "collection": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "5609 Elm Ln",
-          "name": "Westmont",
-          "postcode": "65538",
-          "region": "IL",
-          "street": "7695 Spruce Ln",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "customer_collecting": true,
-      "customer_returning": true
-    }
-  ],
-  "items": [
-    {
-      "uid": "df3e4ab1-38aa-4759-b1c1-a0e14782a007",
-      "type": "destination",
-      "name": "Fillmore",
-      "path": [
-        "df3e4ab1-38aa-4759-b1c1-a0e14782a007"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "606c225b-b2f4-492c-9691-ccc838a1e330",
-      "type": "group",
-      "name": "Walkies & Hotspots",
-      "path": [
-        "df3e4ab1-38aa-4759-b1c1-a0e14782a007",
-        "606c225b-b2f4-492c-9691-ccc838a1e330"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "0q6NhsjASVnRH5PqKLKP",
-      "type": "rental",
-      "name": "Walkie Talkie",
-      "description": "",
-      "quantity": 125,
-      "price": {
-        "base_cents": 1000,
-        "replacement_cents": 55000,
-        "chargeable_days": 38,
-        "formula": "five_day_week",
-        "subtotal_cents": 950000,
-        "subtotal_discounted_cents": 760000,
-        "discount": {
-          "rate": 20,
-          "type": "percent",
-          "amount_cents": 190000
-        },
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 114000
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 874000
-      },
-      "stock_method": "serialized",
-      "order_number": 943,
-      "uid_order": "zOr5VEC5KVFVqB9XBWGb",
-      "path": [
-        "df3e4ab1-38aa-4759-b1c1-a0e14782a007",
-        "606c225b-b2f4-492c-9691-ccc838a1e330",
-        "0q6NhsjASVnRH5PqKLKP"
-      ],
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 29,
-      "coa_revenue": 4000
-    },
-    {
-      "uid": "9Mh47G21XUYW71ehVx7p",
-      "type": "rental",
-      "name": "Spare Battery w/ Belt Clip",
-      "description": "",
-      "quantity": 63,
-      "price": {
-        "base_cents": 0,
-        "replacement_cents": 11500,
-        "chargeable_days": 38,
-        "formula": "five_day_week",
-        "subtotal_cents": 0,
-        "subtotal_discounted_cents": 0,
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 0
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 0
-      },
-      "stock_method": "bulk",
-      "order_number": 943,
-      "uid_order": "zOr5VEC5KVFVqB9XBWGb",
-      "path": [
-        "df3e4ab1-38aa-4759-b1c1-a0e14782a007",
-        "606c225b-b2f4-492c-9691-ccc838a1e330",
-        "0q6NhsjASVnRH5PqKLKP",
-        "9Mh47G21XUYW71ehVx7p"
-      ],
-      "inclusion_type": "default",
-      "zero_priced": true,
-      "crms_id": 61,
-      "coa_revenue": 4000
-    },
-    {
-      "uid": "lMxUI8nQ7ZqMd4cWqmq0",
-      "type": "rental",
-      "name": "Six Bank Charger",
-      "description": "",
-      "quantity": 5,
-      "price": {
-        "base_cents": 0,
-        "replacement_cents": 50000,
-        "chargeable_days": 38,
-        "formula": "five_day_week",
-        "subtotal_cents": 0,
-        "subtotal_discounted_cents": 0,
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 0
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 0
-      },
-      "stock_method": "bulk",
-      "order_number": 943,
-      "uid_order": "zOr5VEC5KVFVqB9XBWGb",
-      "path": [
-        "df3e4ab1-38aa-4759-b1c1-a0e14782a007",
-        "606c225b-b2f4-492c-9691-ccc838a1e330",
-        "0q6NhsjASVnRH5PqKLKP",
-        "lMxUI8nQ7ZqMd4cWqmq0"
-      ],
-      "inclusion_type": "default",
-      "zero_priced": true,
-      "crms_id": 62,
-      "coa_revenue": 4000
-    },
-    {
-      "uid": "tjdX11xfcxOeTirjL7df",
-      "type": "rental",
-      "name": "Walkie Case (Large)",
-      "description": "",
-      "quantity": 5,
-      "price": {
-        "base_cents": 0,
-        "replacement_cents": 50000,
-        "chargeable_days": 38,
-        "formula": "five_day_week",
-        "subtotal_cents": 0,
-        "subtotal_discounted_cents": 0,
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 0
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 0
-      },
-      "stock_method": "bulk",
-      "order_number": 943,
-      "uid_order": "zOr5VEC5KVFVqB9XBWGb",
-      "path": [
-        "df3e4ab1-38aa-4759-b1c1-a0e14782a007",
-        "606c225b-b2f4-492c-9691-ccc838a1e330",
-        "0q6NhsjASVnRH5PqKLKP",
-        "tjdX11xfcxOeTirjL7df"
-      ],
-      "inclusion_type": "default",
-      "zero_priced": true,
-      "crms_id": 48,
-      "coa_revenue": 4000
-    }
-  ],
-  "totals": {
-    "discount_amount_cents": 190000,
-    "subtotal_cents": 950000,
-    "subtotal_discounted_cents": 760000,
-    "taxes": [
-      {
-        "uid": "VEW4Ivy7VNqgxFA5eJw6",
-        "name": "Chicago Rental Tax",
-        "rate": 15,
-        "type": "percent",
-        "amount_cents": 114000
-      }
-    ],
-    "transaction_fees": [],
-    "total_cents": 874000,
-    "replacement_total_cents": 9314425
-  },
-  "invoices": [],
-  "query_by_invoices": [],
-  "query_by_items": [
-    "0q6NhsjASVnRH5PqKLKP",
-    "9Mh47G21XUYW71ehVx7p",
-    "lMxUI8nQ7ZqMd4cWqmq0",
-    "tjdX11xfcxOeTirjL7df"
-  ],
-  "query_by_contacts": [],
-  "query_by_dates": [
-    "2026-08-31",
-    "2026-10-23"
-  ],
-  "bookings_breakdown": {
-    "quoted": 198,
-    "reserved": 0,
-    "prepped": 0,
-    "out": 0,
-    "returned": 0,
-    "lost": 0,
-    "damaged": 0
-  },
-  "crms_id": 970,
-  "crms_status": "Provisional",
-  "subject": "Walkies",
-  "reference": null,
-  "xero_id": "807a5d98-4e4b-44bd-ad30-ba17947c71b5",
-  "uid_thread": "fs2hWTMA9Z9qG0MDllWp",
-  "version": 2,
-  "created_at": {
-    "_seconds": 1784645917,
-    "_nanoseconds": 196000000
-  },
-  "updated_at": {
-    "_seconds": 1786500711,
-    "_nanoseconds": 843000000
-  }
+	"uid": "zOr5VEC5KVFVqB9XBWGb",
+	"number": 943,
+	"status": "quoted",
+	"organization": {
+		"uid": "XbPouPV72q0pUY4t1c3h",
+		"path": [
+			{
+				"uid": "XbPouPV72q0pUY4t1c3h",
+				"name": "Sample text for name.............",
+				"derived": false
+			}
+		],
+		"crms_id": 223,
+		"xero_id": "cde0a1cb-700f-4b74-8661-fd33d98229cd",
+		"billing_address": {
+			"city": "Los Angeles",
+			"country_name": "United States",
+			"full": "7905 Walnut Blvd",
+			"name": "Sample text for name.............",
+			"postcode": "66776",
+			"region": "CA",
+			"street": "3386 Magnolia Rd",
+			"street2": "",
+			"mapbox_id": "",
+			"address_coordinates": null,
+			"user_coordinates": null
+		}
+	},
+	"destinations": [
+		{
+			"uid": "df3e4ab1-38aa-4759-b1c1-a0e14782a007",
+			"dates": {
+				"delivery_start": "2026-08-31T09:00:00.000-05:00",
+				"delivery_start_fs": {
+					"_seconds": 1788184800,
+					"_nanoseconds": 0
+				},
+				"delivery_end": "2026-08-31T09:00:00.000-05:00",
+				"delivery_end_fs": {
+					"_seconds": 1788184800,
+					"_nanoseconds": 0
+				},
+				"collection_start": "2026-10-23T15:00:00.000-05:00",
+				"collection_start_fs": {
+					"_seconds": 1792785600,
+					"_nanoseconds": 0
+				},
+				"collection_end": "2026-10-23T15:00:00.000-05:00",
+				"collection_end_fs": {
+					"_seconds": 1792785600,
+					"_nanoseconds": 0
+				},
+				"charge_start": "2026-08-31T09:00:00.000-05:00",
+				"charge_start_fs": {
+					"_seconds": 1788184800,
+					"_nanoseconds": 0
+				},
+				"charge_end": "2026-10-23T15:00:00.000-05:00",
+				"charge_end_fs": {
+					"_seconds": 1792785600,
+					"_nanoseconds": 0
+				},
+				"days_active": 38,
+				"days_charged": 38
+			},
+			"delivery": {
+				"uid": "vTn8CTAwwJHEJZLBzsOw",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "172 Magnolia Rd",
+					"name": "Eastvale",
+					"postcode": "65048",
+					"region": "IL",
+					"street": "3408 Cypress Ter",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"collection": {
+				"uid": "vTn8CTAwwJHEJZLBzsOw",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "5609 Elm Ln",
+					"name": "Westmont",
+					"postcode": "65538",
+					"region": "IL",
+					"street": "7695 Spruce Ln",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"customer_collecting": true,
+			"customer_returning": true
+		}
+	],
+	"items": [
+		{
+			"uid": "df3e4ab1-38aa-4759-b1c1-a0e14782a007",
+			"type": "destination",
+			"name": "Fillmore",
+			"path": [
+				"df3e4ab1-38aa-4759-b1c1-a0e14782a007"
+			],
+			"description": ""
+		},
+		{
+			"uid": "606c225b-b2f4-492c-9691-ccc838a1e330",
+			"type": "group",
+			"name": "Walkies & Hotspots",
+			"path": [
+				"df3e4ab1-38aa-4759-b1c1-a0e14782a007",
+				"606c225b-b2f4-492c-9691-ccc838a1e330"
+			],
+			"description": ""
+		},
+		{
+			"uid": "0q6NhsjASVnRH5PqKLKP",
+			"type": "rental",
+			"name": "Walkie Talkie",
+			"description": "",
+			"quantity": 125,
+			"price": {
+				"base_cents": 1000,
+				"replacement_cents": 55000,
+				"chargeable_days": 38,
+				"formula": "five_day_week",
+				"subtotal_cents": 950000,
+				"subtotal_discounted_cents": 760000,
+				"discount": {
+					"rate": 20,
+					"type": "percent",
+					"amount_cents": 190000
+				},
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 114000
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"total_cents": 874000
+			},
+			"stock_method": "serialized",
+			"order_number": 943,
+			"uid_order": "zOr5VEC5KVFVqB9XBWGb",
+			"path": [
+				"df3e4ab1-38aa-4759-b1c1-a0e14782a007",
+				"606c225b-b2f4-492c-9691-ccc838a1e330",
+				"0q6NhsjASVnRH5PqKLKP"
+			],
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 29,
+			"coa_revenue": 4000
+		},
+		{
+			"uid": "9Mh47G21XUYW71ehVx7p",
+			"type": "rental",
+			"name": "Spare Battery w/ Belt Clip",
+			"description": "",
+			"quantity": 63,
+			"price": {
+				"base_cents": 0,
+				"replacement_cents": 11500,
+				"chargeable_days": 38,
+				"formula": "five_day_week",
+				"subtotal_cents": 0,
+				"subtotal_discounted_cents": 0,
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 0
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"total_cents": 0
+			},
+			"stock_method": "bulk",
+			"order_number": 943,
+			"uid_order": "zOr5VEC5KVFVqB9XBWGb",
+			"path": [
+				"df3e4ab1-38aa-4759-b1c1-a0e14782a007",
+				"606c225b-b2f4-492c-9691-ccc838a1e330",
+				"0q6NhsjASVnRH5PqKLKP",
+				"9Mh47G21XUYW71ehVx7p"
+			],
+			"inclusion_type": "default",
+			"zero_priced": true,
+			"crms_id": 61,
+			"coa_revenue": 4000
+		},
+		{
+			"uid": "lMxUI8nQ7ZqMd4cWqmq0",
+			"type": "rental",
+			"name": "Six Bank Charger",
+			"description": "",
+			"quantity": 5,
+			"price": {
+				"base_cents": 0,
+				"replacement_cents": 50000,
+				"chargeable_days": 38,
+				"formula": "five_day_week",
+				"subtotal_cents": 0,
+				"subtotal_discounted_cents": 0,
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 0
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"total_cents": 0
+			},
+			"stock_method": "bulk",
+			"order_number": 943,
+			"uid_order": "zOr5VEC5KVFVqB9XBWGb",
+			"path": [
+				"df3e4ab1-38aa-4759-b1c1-a0e14782a007",
+				"606c225b-b2f4-492c-9691-ccc838a1e330",
+				"0q6NhsjASVnRH5PqKLKP",
+				"lMxUI8nQ7ZqMd4cWqmq0"
+			],
+			"inclusion_type": "default",
+			"zero_priced": true,
+			"crms_id": 62,
+			"coa_revenue": 4000
+		},
+		{
+			"uid": "tjdX11xfcxOeTirjL7df",
+			"type": "rental",
+			"name": "Walkie Case (Large)",
+			"description": "",
+			"quantity": 5,
+			"price": {
+				"base_cents": 0,
+				"replacement_cents": 50000,
+				"chargeable_days": 38,
+				"formula": "five_day_week",
+				"subtotal_cents": 0,
+				"subtotal_discounted_cents": 0,
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 0
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"total_cents": 0
+			},
+			"stock_method": "bulk",
+			"order_number": 943,
+			"uid_order": "zOr5VEC5KVFVqB9XBWGb",
+			"path": [
+				"df3e4ab1-38aa-4759-b1c1-a0e14782a007",
+				"606c225b-b2f4-492c-9691-ccc838a1e330",
+				"0q6NhsjASVnRH5PqKLKP",
+				"tjdX11xfcxOeTirjL7df"
+			],
+			"inclusion_type": "default",
+			"zero_priced": true,
+			"crms_id": 48,
+			"coa_revenue": 4000
+		}
+	],
+	"totals": {
+		"discount_amount_cents": 190000,
+		"subtotal_cents": 950000,
+		"subtotal_discounted_cents": 760000,
+		"taxes": [
+			{
+				"uid": "VEW4Ivy7VNqgxFA5eJw6",
+				"name": "Chicago Rental Tax",
+				"rate": 15,
+				"type": "percent",
+				"amount_cents": 114000
+			}
+		],
+		"transaction_fees": [],
+		"total_cents": 874000,
+		"replacement_total_cents": 9314425
+	},
+	"invoices": [],
+	"query_by_invoices": [],
+	"query_by_items": [
+		"0q6NhsjASVnRH5PqKLKP",
+		"9Mh47G21XUYW71ehVx7p",
+		"lMxUI8nQ7ZqMd4cWqmq0",
+		"tjdX11xfcxOeTirjL7df"
+	],
+	"query_by_contacts": [],
+	"query_by_dates": [
+		"2026-08-31",
+		"2026-10-23"
+	],
+	"bookings_breakdown": {
+		"quoted": 198,
+		"reserved": 0,
+		"prepped": 0,
+		"out": 0,
+		"returned": 0,
+		"lost": 0,
+		"damaged": 0
+	},
+	"crms_id": 970,
+	"crms_status": "Provisional",
+	"subject": "Walkies",
+	"reference": null,
+	"xero_id": "807a5d98-4e4b-44bd-ad30-ba17947c71b5",
+	"uid_thread": "fs2hWTMA9Z9qG0MDllWp",
+	"version": 2,
+	"created_at": {
+		"_seconds": 1784645917,
+		"_nanoseconds": 196000000
+	},
+	"updated_at": {
+		"_seconds": 1786500711,
+		"_nanoseconds": 843000000
+	}
 }

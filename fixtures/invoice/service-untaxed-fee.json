@@ -1,271 +1,270 @@
 {
-  "uid": "MrsjfIGCrxmwG36vVWu4",
-  "number": 2353,
-  "status": "paid",
-  "query_by_orders": [
-    "32FiXcTNb7ubPW7Zd3Jv"
-  ],
-  "number_orders": [
-    977
-  ],
-  "date": "2026-08-05T00:00:00.000-05:00",
-  "date_fs": {
-    "_seconds": 1785906000,
-    "_nanoseconds": 0
-  },
-  "due_date": "2026-08-20T00:00:00.000-05:00",
-  "due_date_fs": {
-    "_seconds": 1787202000,
-    "_nanoseconds": 0
-  },
-  "subject": "Trash",
-  "reference": null,
-  "external_notes": null,
-  "internal_notes": null,
-  "organization": {
-    "uid": "2wtsuMafEGI3WY6KsD3X",
-    "name": "Jordan Glenn",
-    "path": [
-      {
-        "uid": "2wtsuMafEGI3WY6KsD3X",
-        "name": "Jordan Glenn",
-        "derived": false
-      }
-    ],
-    "crms_id": 515,
-    "jurisdiction_claim": null,
-    "tax_exempt": false,
-    "xero_id": "e6853c3f-f5f9-4628-aa3d-52bae2892985",
-    "billing_address": {
-      "city": "Bolingbrook",
-      "country_name": "United States",
-      "full": "7737 Cypress Ter",
-      "name": "Avery Fairfax",
-      "postcode": "67145",
-      "region": "IL",
-      "street": "5200 Magnolia Rd",
-      "street2": "",
-      "mapbox_id": "Sample text for mapbox_id......................................",
-      "address_coordinates": null,
-      "user_coordinates": null
-    }
-  },
-  "destinations": [
-    {
-      "uid_order": "32FiXcTNb7ubPW7Zd3Jv",
-      "uid": "bf3609df-3e27-4402-8989-0ace81f12a3e",
-      "dates": {
-        "delivery_start": "2026-08-04T09:00:00.000-05:00",
-        "delivery_start_fs": {
-          "_seconds": 1785852000,
-          "_nanoseconds": 0
-        },
-        "delivery_end": "2026-08-04T09:00:00.000-05:00",
-        "delivery_end_fs": {
-          "_seconds": 1785852000,
-          "_nanoseconds": 0
-        },
-        "collection_start": "2026-08-04T17:00:00.000-05:00",
-        "collection_start_fs": {
-          "_seconds": 1785880800,
-          "_nanoseconds": 0
-        },
-        "collection_end": "2026-08-04T17:00:00.000-05:00",
-        "collection_end_fs": {
-          "_seconds": 1785880800,
-          "_nanoseconds": 0
-        },
-        "charge_start": "2026-08-04T09:00:00.000-05:00",
-        "charge_start_fs": {
-          "_seconds": 1785852000,
-          "_nanoseconds": 0
-        },
-        "charge_end": "2026-08-04T17:00:00.000-05:00",
-        "charge_end_fs": {
-          "_seconds": 1785880800,
-          "_nanoseconds": 0
-        },
-        "days_active": 1,
-        "days_charged": 1
-      },
-      "delivery": {
-        "uid": "ICnEEB3e6GDOcFTTSyPP",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "7124 Elm Ln",
-          "name": "",
-          "postcode": "67960",
-          "region": "IL",
-          "street": "2818 Sycamore Pl",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "Sample text for instructi",
-        "contact": null
-      },
-      "collection": {
-        "uid": "ICnEEB3e6GDOcFTTSyPP",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "5929 Pine Ct",
-          "name": "",
-          "postcode": "64672",
-          "region": "IL",
-          "street": "8176 Pine Ct",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "customer_collecting": true,
-      "customer_returning": true
-    }
-  ],
-  "items": [
-    {
-      "uid": "32FiXcTNb7ubPW7Zd3Jv",
-      "type": "order",
-      "name": "Order #977",
-      "path": [
-        "32FiXcTNb7ubPW7Zd3Jv"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "bf3609df-3e27-4402-8989-0ace81f12a3e",
-      "type": "destination",
-      "name": "3434 N Central Ave",
-      "path": [
-        "32FiXcTNb7ubPW7Zd3Jv",
-        "bf3609df-3e27-4402-8989-0ace81f12a3e"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "77LKBYcC09u1PZFhxmDJ",
-      "type": "transaction_fee",
-      "name": "Card Fee",
-      "description": "",
-      "quantity": 1,
-      "price": {
-        "base_cents": 1400,
-        "chargeable_days": null,
-        "formula": "five_day_week",
-        "subtotal_cents": 1400,
-        "subtotal_discounted_cents": 1400,
-        "discount": null,
-        "taxes": [],
-        "total_cents": 1400
-      },
-      "path": [
-        "32FiXcTNb7ubPW7Zd3Jv",
-        "bf3609df-3e27-4402-8989-0ace81f12a3e",
-        "77LKBYcC09u1PZFhxmDJ"
-      ],
-      "coa_revenue": 4700,
-      "tracking_category": "Transaction Fees",
-      "xero_id": "b02a74e2-b87e-463e-a4f3-4584779dbddf",
-      "xero_tracking_option_id": "3873e833-17b6-4988-9f25-9c7f2308a3a5",
-      "crms_opportunity_id": null,
-      "crms_id": 372
-    },
-    {
-      "uid": "cd245e33-e37f-4ae1-bc49-5d2c7599fdeb",
-      "type": "group",
-      "name": "Trash & Cleanup",
-      "path": [
-        "32FiXcTNb7ubPW7Zd3Jv",
-        "bf3609df-3e27-4402-8989-0ace81f12a3e",
-        "cd245e33-e37f-4ae1-bc49-5d2c7599fdeb"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "KEjzPt7pI1hNgKtiZC8n",
-      "type": "service",
-      "name": "Trash Removal",
-      "description": "",
-      "quantity": 1,
-      "price": {
-        "base_cents": 35000,
-        "chargeable_days": null,
-        "formula": "fixed",
-        "subtotal_cents": 35000,
-        "subtotal_discounted_cents": 35000,
-        "discount": null,
-        "taxes": [],
-        "taxes_base": [],
-        "total_cents": 35000
-      },
-      "path": [
-        "32FiXcTNb7ubPW7Zd3Jv",
-        "bf3609df-3e27-4402-8989-0ace81f12a3e",
-        "cd245e33-e37f-4ae1-bc49-5d2c7599fdeb",
-        "KEjzPt7pI1hNgKtiZC8n"
-      ],
-      "coa_revenue": 4100,
-      "tracking_category": "Trash & Cleanup",
-      "xero_id": "9ff310f2-78f3-438e-a0eb-1ea7a63e95f7",
-      "xero_tracking_option_id": "fadbf116-65b8-49f8-9006-8637f8afc60f",
-      "crms_opportunity_id": 1004,
-      "crms_id": 264
-    }
-  ],
-  "totals": {
-    "subtotal_cents": 35000,
-    "subtotal_discounted_cents": 35000,
-    "discount_amount_cents": 0,
-    "taxes": [],
-    "transaction_fees": [
-      {
-        "uid": "77LKBYcC09u1PZFhxmDJ",
-        "name": "Card Fee",
-        "rate": 14,
-        "type": "flat",
-        "amount_cents": 1400
-      }
-    ],
-    "total_cents": 36400,
-    "amount_paid_cents": 36400,
-    "amount_credited_cents": 0,
-    "amount_void_cents": 0,
-    "amount_due_cents": 0
-  },
-  "xero_id": "5b6b2641-e1d4-4a51-bf70-afbb003d4e9b",
-  "uploadcare_uuid": "17b15ccb-335f-40eb-a530-51b42c4c8ddc",
-  "pdf_generated_at": {
-    "_seconds": 1787672746,
-    "_nanoseconds": 291000000
-  },
-  "pdf_params": {},
-  "pdf_versions": [],
-  "crms_id": 1103,
-  "crms_opportunity_ids": [
-    1004
-  ],
-  "uid_thread": "5INeMBzzxZFYeC95Sz1s",
-  "version": 11,
-  "created_by": {
-    "uid": "crms-bot",
-    "name": "Quinn Owen"
-  },
-  "updated_by": {
-    "uid": "script",
-    "name": "Sample text for name...."
-  },
-  "created_at": {
-    "_seconds": 1785948698,
-    "_nanoseconds": 906000000
-  },
-  "updated_at": {
-    "_seconds": 1787672654,
-    "_nanoseconds": 205000000
-  }
+	"uid": "MrsjfIGCrxmwG36vVWu4",
+	"number": 2353,
+	"status": "paid",
+	"query_by_orders": [
+		"32FiXcTNb7ubPW7Zd3Jv"
+	],
+	"number_orders": [
+		977
+	],
+	"date": "2026-08-05T00:00:00.000-05:00",
+	"date_fs": {
+		"_seconds": 1785906000,
+		"_nanoseconds": 0
+	},
+	"due_date": "2026-08-20T00:00:00.000-05:00",
+	"due_date_fs": {
+		"_seconds": 1787202000,
+		"_nanoseconds": 0
+	},
+	"subject": "Trash",
+	"reference": null,
+	"external_notes": null,
+	"internal_notes": null,
+	"organization": {
+		"uid": "2wtsuMafEGI3WY6KsD3X",
+		"path": [
+			{
+				"uid": "2wtsuMafEGI3WY6KsD3X",
+				"name": "Jordan Glenn",
+				"derived": false
+			}
+		],
+		"crms_id": 515,
+		"jurisdiction_claim": null,
+		"tax_exempt": false,
+		"xero_id": "e6853c3f-f5f9-4628-aa3d-52bae2892985",
+		"billing_address": {
+			"city": "Bolingbrook",
+			"country_name": "United States",
+			"full": "7737 Cypress Ter",
+			"name": "Avery Fairfax",
+			"postcode": "67145",
+			"region": "IL",
+			"street": "5200 Magnolia Rd",
+			"street2": "",
+			"mapbox_id": "Sample text for mapbox_id......................................",
+			"address_coordinates": null,
+			"user_coordinates": null
+		}
+	},
+	"destinations": [
+		{
+			"uid_order": "32FiXcTNb7ubPW7Zd3Jv",
+			"uid": "bf3609df-3e27-4402-8989-0ace81f12a3e",
+			"dates": {
+				"delivery_start": "2026-08-04T09:00:00.000-05:00",
+				"delivery_start_fs": {
+					"_seconds": 1785852000,
+					"_nanoseconds": 0
+				},
+				"delivery_end": "2026-08-04T09:00:00.000-05:00",
+				"delivery_end_fs": {
+					"_seconds": 1785852000,
+					"_nanoseconds": 0
+				},
+				"collection_start": "2026-08-04T17:00:00.000-05:00",
+				"collection_start_fs": {
+					"_seconds": 1785880800,
+					"_nanoseconds": 0
+				},
+				"collection_end": "2026-08-04T17:00:00.000-05:00",
+				"collection_end_fs": {
+					"_seconds": 1785880800,
+					"_nanoseconds": 0
+				},
+				"charge_start": "2026-08-04T09:00:00.000-05:00",
+				"charge_start_fs": {
+					"_seconds": 1785852000,
+					"_nanoseconds": 0
+				},
+				"charge_end": "2026-08-04T17:00:00.000-05:00",
+				"charge_end_fs": {
+					"_seconds": 1785880800,
+					"_nanoseconds": 0
+				},
+				"days_active": 1,
+				"days_charged": 1
+			},
+			"delivery": {
+				"uid": "ICnEEB3e6GDOcFTTSyPP",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "7124 Elm Ln",
+					"name": "",
+					"postcode": "67960",
+					"region": "IL",
+					"street": "2818 Sycamore Pl",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "Sample text for instructi",
+				"contact": null
+			},
+			"collection": {
+				"uid": "ICnEEB3e6GDOcFTTSyPP",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "5929 Pine Ct",
+					"name": "",
+					"postcode": "64672",
+					"region": "IL",
+					"street": "8176 Pine Ct",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"customer_collecting": true,
+			"customer_returning": true
+		}
+	],
+	"items": [
+		{
+			"uid": "32FiXcTNb7ubPW7Zd3Jv",
+			"type": "order",
+			"name": "Order #977",
+			"path": [
+				"32FiXcTNb7ubPW7Zd3Jv"
+			],
+			"description": ""
+		},
+		{
+			"uid": "bf3609df-3e27-4402-8989-0ace81f12a3e",
+			"type": "destination",
+			"name": "3434 N Central Ave",
+			"path": [
+				"32FiXcTNb7ubPW7Zd3Jv",
+				"bf3609df-3e27-4402-8989-0ace81f12a3e"
+			],
+			"description": ""
+		},
+		{
+			"uid": "77LKBYcC09u1PZFhxmDJ",
+			"type": "transaction_fee",
+			"name": "Card Fee",
+			"description": "",
+			"quantity": 1,
+			"price": {
+				"base_cents": 1400,
+				"chargeable_days": null,
+				"formula": "five_day_week",
+				"subtotal_cents": 1400,
+				"subtotal_discounted_cents": 1400,
+				"discount": null,
+				"taxes": [],
+				"total_cents": 1400
+			},
+			"path": [
+				"32FiXcTNb7ubPW7Zd3Jv",
+				"bf3609df-3e27-4402-8989-0ace81f12a3e",
+				"77LKBYcC09u1PZFhxmDJ"
+			],
+			"coa_revenue": 4700,
+			"tracking_category": "Transaction Fees",
+			"xero_id": "b02a74e2-b87e-463e-a4f3-4584779dbddf",
+			"xero_tracking_option_id": "3873e833-17b6-4988-9f25-9c7f2308a3a5",
+			"crms_opportunity_id": null,
+			"crms_id": 372
+		},
+		{
+			"uid": "cd245e33-e37f-4ae1-bc49-5d2c7599fdeb",
+			"type": "group",
+			"name": "Trash & Cleanup",
+			"path": [
+				"32FiXcTNb7ubPW7Zd3Jv",
+				"bf3609df-3e27-4402-8989-0ace81f12a3e",
+				"cd245e33-e37f-4ae1-bc49-5d2c7599fdeb"
+			],
+			"description": ""
+		},
+		{
+			"uid": "KEjzPt7pI1hNgKtiZC8n",
+			"type": "service",
+			"name": "Trash Removal",
+			"description": "",
+			"quantity": 1,
+			"price": {
+				"base_cents": 35000,
+				"chargeable_days": null,
+				"formula": "fixed",
+				"subtotal_cents": 35000,
+				"subtotal_discounted_cents": 35000,
+				"discount": null,
+				"taxes": [],
+				"taxes_base": [],
+				"total_cents": 35000
+			},
+			"path": [
+				"32FiXcTNb7ubPW7Zd3Jv",
+				"bf3609df-3e27-4402-8989-0ace81f12a3e",
+				"cd245e33-e37f-4ae1-bc49-5d2c7599fdeb",
+				"KEjzPt7pI1hNgKtiZC8n"
+			],
+			"coa_revenue": 4100,
+			"tracking_category": "Trash & Cleanup",
+			"xero_id": "9ff310f2-78f3-438e-a0eb-1ea7a63e95f7",
+			"xero_tracking_option_id": "fadbf116-65b8-49f8-9006-8637f8afc60f",
+			"crms_opportunity_id": 1004,
+			"crms_id": 264
+		}
+	],
+	"totals": {
+		"subtotal_cents": 35000,
+		"subtotal_discounted_cents": 35000,
+		"discount_amount_cents": 0,
+		"taxes": [],
+		"transaction_fees": [
+			{
+				"uid": "77LKBYcC09u1PZFhxmDJ",
+				"name": "Card Fee",
+				"rate": 14,
+				"type": "flat",
+				"amount_cents": 1400
+			}
+		],
+		"total_cents": 36400,
+		"amount_paid_cents": 36400,
+		"amount_credited_cents": 0,
+		"amount_void_cents": 0,
+		"amount_due_cents": 0
+	},
+	"xero_id": "5b6b2641-e1d4-4a51-bf70-afbb003d4e9b",
+	"uploadcare_uuid": "17b15ccb-335f-40eb-a530-51b42c4c8ddc",
+	"pdf_generated_at": {
+		"_seconds": 1787672746,
+		"_nanoseconds": 291000000
+	},
+	"pdf_params": {},
+	"pdf_versions": [],
+	"crms_id": 1103,
+	"crms_opportunity_ids": [
+		1004
+	],
+	"uid_thread": "5INeMBzzxZFYeC95Sz1s",
+	"version": 11,
+	"created_by": {
+		"uid": "crms-bot",
+		"name": "Quinn Owen"
+	},
+	"updated_by": {
+		"uid": "script",
+		"name": "Sample text for name...."
+	},
+	"created_at": {
+		"_seconds": 1785948698,
+		"_nanoseconds": 906000000
+	},
+	"updated_at": {
+		"_seconds": 1787672654,
+		"_nanoseconds": 205000000
+	}
 }

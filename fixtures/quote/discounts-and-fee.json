@@ -1,289 +1,288 @@
 {
-  "uid": "PhQrStUvWxYz0123AbCd",
-  "number": 912,
-  "status": "quoted",
-  "crms_id": null,
-  "uid_thread": "ThRd0DiscountsFee010",
-  "subject": "Riverwalk Summer Series — lighting + tables",
-  "reference": "PO-51200",
-  "version": 3,
-  "organization": {
-    "uid": "LakeshoreStageCo0001",
-    "name": "Lakeshore Stage Company",
-    "path": [
-      {
-        "uid": "LakeshoreStageCo0001",
-        "name": "Lakeshore Stage Company",
-        "derived": false
-      }
-    ],
-    "crms_id": null,
-    "xero_id": "6f2b1c04-9a3d-4e7f-8b21-5c9d0e3a7f41",
-    "billing_address": {
-      "name": "Lakeshore Stage Company",
-      "street": "600 E Grand Ave",
-      "street2": "",
-      "city": "Chicago",
-      "region": "IL",
-      "postcode": "60611",
-      "country_name": "United States",
-      "full": "600 E Grand Ave, Chicago, IL, United States",
-      "mapbox_id": "",
-      "address_coordinates": null,
-      "user_coordinates": null
-    }
-  },
-  "destinations": [
-    {
-      "uid": "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
-      "customer_collecting": false,
-      "customer_returning": false,
-      "dates": {
-        "delivery_start": "2026-07-09T08:00:00.000-05:00",
-        "delivery_end": "2026-07-09T10:00:00.000-05:00",
-        "collection_start": "2026-07-12T16:00:00.000-05:00",
-        "collection_end": "2026-07-12T18:00:00.000-05:00",
-        "charge_start": "2026-07-09T08:00:00.000-05:00",
-        "charge_end": "2026-07-12T18:00:00.000-05:00",
-        "days_charged": 3,
-        "days_active": 3
-      },
-      "delivery": {
-        "uid": "NavyPierDock00000001",
-        "address": {
-          "name": "Navy Pier",
-          "street": "600 E Grand Ave",
-          "street2": "",
-          "postcode": "60611",
-          "city": "Chicago",
-          "region": "Illinois",
-          "country_name": "United States",
-          "full": "600 E Grand Ave, Chicago, IL, United States"
-        },
-        "instructions": "Dock 3, east service road.",
-        "contact": null
-      },
-      "collection": {
-        "uid": "NavyPierDock00000001",
-        "address": {
-          "name": "Navy Pier",
-          "street": "600 E Grand Ave",
-          "street2": "",
-          "postcode": "60611",
-          "city": "Chicago",
-          "region": "Illinois",
-          "country_name": "United States",
-          "full": "600 E Grand Ave, Chicago, IL, United States"
-        },
-        "instructions": "Same dock.",
-        "contact": null
-      }
-    }
-  ],
-  "items": [
-    {
-      "uid": "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
-      "type": "destination",
-      "name": "Navy Pier",
-      "description": "",
-      "path": [
-        "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c"
-      ]
-    },
-    {
-      "uid": "MaglinerGeminiJr0001",
-      "type": "rental",
-      "name": "Magliner Gemini Jr",
-      "description": "",
-      "quantity": 4,
-      "stock_method": "bulk",
-      "path": [
-        "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
-        "MaglinerGeminiJr0001"
-      ],
-      "inclusion_type": null,
-      "zero_priced": null,
-      "price": {
-        "base_cents": 3000,
-        "chargeable_days": 3,
-        "formula": "five_day_week",
-        "discount": {
-          "rate": 15,
-          "type": "percent",
-          "amount_cents": 1800
-        },
-        "replacement_cents": 70000,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 1530
-          }
-        ],
-        "subtotal_cents": 12000,
-        "subtotal_discounted_cents": 10200,
-        "total_cents": 11730
-      }
-    },
-    {
-      "uid": "c8d2e3f4-5a67-4b89-8c1d-2e3f4a5b6c7d",
-      "type": "group",
-      "name": "Stage Lighting",
-      "description": "",
-      "path": [
-        "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
-        "c8d2e3f4-5a67-4b89-8c1d-2e3f4a5b6c7d"
-      ]
-    },
-    {
-      "uid": "FoldingTable6ft00001",
-      "type": "rental",
-      "name": "6' Folding Table",
-      "description": "",
-      "quantity": 10,
-      "stock_method": "bulk",
-      "path": [
-        "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
-        "c8d2e3f4-5a67-4b89-8c1d-2e3f4a5b6c7d",
-        "FoldingTable6ft00001"
-      ],
-      "inclusion_type": null,
-      "zero_priced": null,
-      "price": {
-        "base_cents": 1200,
-        "chargeable_days": 7,
-        "formula": "five_day_week",
-        "discount": {
-          "rate": 2.5,
-          "type": "flat",
-          "amount_cents": 3500
-        },
-        "replacement_cents": 8000,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 1995
-          }
-        ],
-        "subtotal_cents": 16800,
-        "subtotal_discounted_cents": 13300,
-        "total_cents": 15295
-      }
-    },
-    {
-      "uid": "CompedSandbagSet0001",
-      "type": "rental",
-      "name": "Sandbag Set (comped)",
-      "description": "",
-      "quantity": 2,
-      "stock_method": "bulk",
-      "path": [
-        "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
-        "CompedSandbagSet0001"
-      ],
-      "inclusion_type": null,
-      "zero_priced": null,
-      "price": {
-        "base_cents": 2500,
-        "chargeable_days": 3,
-        "formula": "five_day_week",
-        "discount": {
-          "rate": 100,
-          "type": "percent",
-          "amount_cents": 5000
-        },
-        "replacement_cents": 4000,
-        "taxes": [],
-        "subtotal_cents": 5000,
-        "subtotal_discounted_cents": 0,
-        "total_cents": 0
-      }
-    },
-    {
-      "uid": "DeliverySetupRemove1",
-      "type": "service",
-      "name": "Delivery/Setup/Removal",
-      "description": "",
-      "quantity": 1,
-      "stock_method": "none",
-      "path": [
-        "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
-        "DeliverySetupRemove1"
-      ],
-      "inclusion_type": null,
-      "zero_priced": null,
-      "price": {
-        "base_cents": 27500,
-        "chargeable_days": 1,
-        "formula": "fixed",
-        "discount": null,
-        "taxes": [],
-        "subtotal_cents": 27500,
-        "subtotal_discounted_cents": 27500,
-        "total_cents": 27500
-      }
-    },
-    {
-      "uid": "CardProcessingFee001",
-      "type": "transaction_fee",
-      "name": "Card Processing Fee",
-      "description": "",
-      "quantity": 1,
-      "stock_method": "none",
-      "path": [
-        "CardProcessingFee001"
-      ],
-      "inclusion_type": null,
-      "zero_priced": null,
-      "price": {
-        "base_cents": 0,
-        "base_percent": 2.9,
-        "formula": "percent_of_total",
-        "chargeable_days": null,
-        "discount": null,
-        "taxes": [],
-        "subtotal_cents": 1479,
-        "subtotal_discounted_cents": 1479,
-        "total_cents": 1479
-      }
-    }
-  ],
-  "totals": {
-    "discount_amount_cents": 10300,
-    "subtotal_cents": 61300,
-    "subtotal_discounted_cents": 51000,
-    "taxes": [
-      {
-        "uid": "VEW4Ivy7VNqgxFA5eJw6",
-        "name": "Chicago Rental Tax",
-        "rate": 15,
-        "type": "percent",
-        "amount_cents": 3525
-      }
-    ],
-    "transaction_fees": [
-      {
-        "uid": "CardProcessingFee001",
-        "name": "Card Processing Fee",
-        "rate": 2.9,
-        "type": "percent",
-        "amount_cents": 1479
-      }
-    ],
-    "total_cents": 56004,
-    "replacement_total_cents": 422000
-  },
-  "created_at": {
-    "_seconds": 1781784840,
-    "_nanoseconds": 0
-  },
-  "updated_at": {
-    "_seconds": 1782309720,
-    "_nanoseconds": 0
-  }
+	"uid": "PhQrStUvWxYz0123AbCd",
+	"number": 912,
+	"status": "quoted",
+	"crms_id": null,
+	"uid_thread": "ThRd0DiscountsFee010",
+	"subject": "Riverwalk Summer Series — lighting + tables",
+	"reference": "PO-51200",
+	"version": 3,
+	"organization": {
+		"uid": "LakeshoreStageCo0001",
+		"path": [
+			{
+				"uid": "LakeshoreStageCo0001",
+				"name": "Lakeshore Stage Company",
+				"derived": false
+			}
+		],
+		"crms_id": null,
+		"xero_id": "6f2b1c04-9a3d-4e7f-8b21-5c9d0e3a7f41",
+		"billing_address": {
+			"name": "Lakeshore Stage Company",
+			"street": "600 E Grand Ave",
+			"street2": "",
+			"city": "Chicago",
+			"region": "IL",
+			"postcode": "60611",
+			"country_name": "United States",
+			"full": "600 E Grand Ave, Chicago, IL, United States",
+			"mapbox_id": "",
+			"address_coordinates": null,
+			"user_coordinates": null
+		}
+	},
+	"destinations": [
+		{
+			"uid": "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
+			"customer_collecting": false,
+			"customer_returning": false,
+			"dates": {
+				"delivery_start": "2026-07-09T08:00:00.000-05:00",
+				"delivery_end": "2026-07-09T10:00:00.000-05:00",
+				"collection_start": "2026-07-12T16:00:00.000-05:00",
+				"collection_end": "2026-07-12T18:00:00.000-05:00",
+				"charge_start": "2026-07-09T08:00:00.000-05:00",
+				"charge_end": "2026-07-12T18:00:00.000-05:00",
+				"days_charged": 3,
+				"days_active": 3
+			},
+			"delivery": {
+				"uid": "NavyPierDock00000001",
+				"address": {
+					"name": "Navy Pier",
+					"street": "600 E Grand Ave",
+					"street2": "",
+					"postcode": "60611",
+					"city": "Chicago",
+					"region": "Illinois",
+					"country_name": "United States",
+					"full": "600 E Grand Ave, Chicago, IL, United States"
+				},
+				"instructions": "Dock 3, east service road.",
+				"contact": null
+			},
+			"collection": {
+				"uid": "NavyPierDock00000001",
+				"address": {
+					"name": "Navy Pier",
+					"street": "600 E Grand Ave",
+					"street2": "",
+					"postcode": "60611",
+					"city": "Chicago",
+					"region": "Illinois",
+					"country_name": "United States",
+					"full": "600 E Grand Ave, Chicago, IL, United States"
+				},
+				"instructions": "Same dock.",
+				"contact": null
+			}
+		}
+	],
+	"items": [
+		{
+			"uid": "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
+			"type": "destination",
+			"name": "Navy Pier",
+			"description": "",
+			"path": [
+				"b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c"
+			]
+		},
+		{
+			"uid": "MaglinerGeminiJr0001",
+			"type": "rental",
+			"name": "Magliner Gemini Jr",
+			"description": "",
+			"quantity": 4,
+			"stock_method": "bulk",
+			"path": [
+				"b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
+				"MaglinerGeminiJr0001"
+			],
+			"inclusion_type": null,
+			"zero_priced": null,
+			"price": {
+				"base_cents": 3000,
+				"chargeable_days": 3,
+				"formula": "five_day_week",
+				"discount": {
+					"rate": 15,
+					"type": "percent",
+					"amount_cents": 1800
+				},
+				"replacement_cents": 70000,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 1530
+					}
+				],
+				"subtotal_cents": 12000,
+				"subtotal_discounted_cents": 10200,
+				"total_cents": 11730
+			}
+		},
+		{
+			"uid": "c8d2e3f4-5a67-4b89-8c1d-2e3f4a5b6c7d",
+			"type": "group",
+			"name": "Stage Lighting",
+			"description": "",
+			"path": [
+				"b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
+				"c8d2e3f4-5a67-4b89-8c1d-2e3f4a5b6c7d"
+			]
+		},
+		{
+			"uid": "FoldingTable6ft00001",
+			"type": "rental",
+			"name": "6' Folding Table",
+			"description": "",
+			"quantity": 10,
+			"stock_method": "bulk",
+			"path": [
+				"b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
+				"c8d2e3f4-5a67-4b89-8c1d-2e3f4a5b6c7d",
+				"FoldingTable6ft00001"
+			],
+			"inclusion_type": null,
+			"zero_priced": null,
+			"price": {
+				"base_cents": 1200,
+				"chargeable_days": 7,
+				"formula": "five_day_week",
+				"discount": {
+					"rate": 2.5,
+					"type": "flat",
+					"amount_cents": 3500
+				},
+				"replacement_cents": 8000,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 1995
+					}
+				],
+				"subtotal_cents": 16800,
+				"subtotal_discounted_cents": 13300,
+				"total_cents": 15295
+			}
+		},
+		{
+			"uid": "CompedSandbagSet0001",
+			"type": "rental",
+			"name": "Sandbag Set (comped)",
+			"description": "",
+			"quantity": 2,
+			"stock_method": "bulk",
+			"path": [
+				"b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
+				"CompedSandbagSet0001"
+			],
+			"inclusion_type": null,
+			"zero_priced": null,
+			"price": {
+				"base_cents": 2500,
+				"chargeable_days": 3,
+				"formula": "five_day_week",
+				"discount": {
+					"rate": 100,
+					"type": "percent",
+					"amount_cents": 5000
+				},
+				"replacement_cents": 4000,
+				"taxes": [],
+				"subtotal_cents": 5000,
+				"subtotal_discounted_cents": 0,
+				"total_cents": 0
+			}
+		},
+		{
+			"uid": "DeliverySetupRemove1",
+			"type": "service",
+			"name": "Delivery/Setup/Removal",
+			"description": "",
+			"quantity": 1,
+			"stock_method": "none",
+			"path": [
+				"b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
+				"DeliverySetupRemove1"
+			],
+			"inclusion_type": null,
+			"zero_priced": null,
+			"price": {
+				"base_cents": 27500,
+				"chargeable_days": 1,
+				"formula": "fixed",
+				"discount": null,
+				"taxes": [],
+				"subtotal_cents": 27500,
+				"subtotal_discounted_cents": 27500,
+				"total_cents": 27500
+			}
+		},
+		{
+			"uid": "CardProcessingFee001",
+			"type": "transaction_fee",
+			"name": "Card Processing Fee",
+			"description": "",
+			"quantity": 1,
+			"stock_method": "none",
+			"path": [
+				"CardProcessingFee001"
+			],
+			"inclusion_type": null,
+			"zero_priced": null,
+			"price": {
+				"base_cents": 0,
+				"base_percent": 2.9,
+				"formula": "percent_of_total",
+				"chargeable_days": null,
+				"discount": null,
+				"taxes": [],
+				"subtotal_cents": 1479,
+				"subtotal_discounted_cents": 1479,
+				"total_cents": 1479
+			}
+		}
+	],
+	"totals": {
+		"discount_amount_cents": 10300,
+		"subtotal_cents": 61300,
+		"subtotal_discounted_cents": 51000,
+		"taxes": [
+			{
+				"uid": "VEW4Ivy7VNqgxFA5eJw6",
+				"name": "Chicago Rental Tax",
+				"rate": 15,
+				"type": "percent",
+				"amount_cents": 3525
+			}
+		],
+		"transaction_fees": [
+			{
+				"uid": "CardProcessingFee001",
+				"name": "Card Processing Fee",
+				"rate": 2.9,
+				"type": "percent",
+				"amount_cents": 1479
+			}
+		],
+		"total_cents": 56004,
+		"replacement_total_cents": 422000
+	},
+	"created_at": {
+		"_seconds": 1781784840,
+		"_nanoseconds": 0
+	},
+	"updated_at": {
+		"_seconds": 1782309720,
+		"_nanoseconds": 0
+	}
 }
