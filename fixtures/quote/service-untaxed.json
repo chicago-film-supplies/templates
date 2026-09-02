@@ -1,210 +1,209 @@
 {
-  "uid": "32FiXcTNb7ubPW7Zd3Jv",
-  "number": 977,
-  "status": "reserved",
-  "organization": {
-    "uid": "2wtsuMafEGI3WY6KsD3X",
-    "name": "Jordan Glenn",
-    "path": [
-      {
-        "uid": "2wtsuMafEGI3WY6KsD3X",
-        "name": "Jordan Glenn",
-        "derived": false
-      }
-    ],
-    "crms_id": 515,
-    "xero_id": "e6853c3f-f5f9-4628-aa3d-52bae2892985",
-    "billing_address": {
-      "city": "Bolingbrook",
-      "country_name": "United States",
-      "full": "7737 Cypress Ter",
-      "name": "Avery Fairfax",
-      "postcode": "67145",
-      "region": "IL",
-      "street": "5200 Magnolia Rd",
-      "street2": "",
-      "mapbox_id": "Sample text for mapbox_id......................................",
-      "address_coordinates": null,
-      "user_coordinates": null
-    }
-  },
-  "destinations": [
-    {
-      "uid": "bf3609df-3e27-4402-8989-0ace81f12a3e",
-      "dates": {
-        "delivery_start": "2026-08-04T09:00:00.000-05:00",
-        "delivery_start_fs": {
-          "_seconds": 1785852000,
-          "_nanoseconds": 0
-        },
-        "delivery_end": "2026-08-04T09:00:00.000-05:00",
-        "delivery_end_fs": {
-          "_seconds": 1785852000,
-          "_nanoseconds": 0
-        },
-        "collection_start": "2026-08-04T17:00:00.000-05:00",
-        "collection_start_fs": {
-          "_seconds": 1785880800,
-          "_nanoseconds": 0
-        },
-        "collection_end": "2026-08-04T17:00:00.000-05:00",
-        "collection_end_fs": {
-          "_seconds": 1785880800,
-          "_nanoseconds": 0
-        },
-        "charge_start": "2026-08-04T09:00:00.000-05:00",
-        "charge_start_fs": {
-          "_seconds": 1785852000,
-          "_nanoseconds": 0
-        },
-        "charge_end": "2026-08-04T17:00:00.000-05:00",
-        "charge_end_fs": {
-          "_seconds": 1785880800,
-          "_nanoseconds": 0
-        },
-        "days_active": 1,
-        "days_charged": 1
-      },
-      "delivery": {
-        "uid": "ICnEEB3e6GDOcFTTSyPP",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "7124 Elm Ln",
-          "name": "",
-          "postcode": "67960",
-          "region": "IL",
-          "street": "2818 Sycamore Pl",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "Sample text for instructi",
-        "contact": null
-      },
-      "collection": {
-        "uid": "ICnEEB3e6GDOcFTTSyPP",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "5929 Pine Ct",
-          "name": "",
-          "postcode": "64672",
-          "region": "IL",
-          "street": "8176 Pine Ct",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "customer_collecting": true,
-      "customer_returning": true
-    }
-  ],
-  "items": [
-    {
-      "uid": "bf3609df-3e27-4402-8989-0ace81f12a3e",
-      "type": "destination",
-      "name": "3434 N Central Ave",
-      "path": [
-        "bf3609df-3e27-4402-8989-0ace81f12a3e"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "cd245e33-e37f-4ae1-bc49-5d2c7599fdeb",
-      "type": "group",
-      "name": "Trash & Cleanup",
-      "path": [
-        "bf3609df-3e27-4402-8989-0ace81f12a3e",
-        "cd245e33-e37f-4ae1-bc49-5d2c7599fdeb"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "KEjzPt7pI1hNgKtiZC8n",
-      "type": "service",
-      "name": "Trash Removal",
-      "description": "3434 N Central Ave",
-      "quantity": 1,
-      "price": {
-        "base_cents": 35000,
-        "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
-        "subtotal_cents": 35000,
-        "subtotal_discounted_cents": 35000,
-        "discount": null,
-        "taxes": [],
-        "taxes_base": [],
-        "total_cents": 35000
-      },
-      "stock_method": "none",
-      "order_number": 977,
-      "uid_order": "32FiXcTNb7ubPW7Zd3Jv",
-      "path": [
-        "bf3609df-3e27-4402-8989-0ace81f12a3e",
-        "cd245e33-e37f-4ae1-bc49-5d2c7599fdeb",
-        "KEjzPt7pI1hNgKtiZC8n"
-      ],
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 264,
-      "coa_revenue": 4100
-    }
-  ],
-  "totals": {
-    "discount_amount_cents": 0,
-    "subtotal_cents": 35000,
-    "subtotal_discounted_cents": 35000,
-    "taxes": [],
-    "transaction_fees": [],
-    "total_cents": 35000,
-    "replacement_total_cents": 0
-  },
-  "invoices": [
-    {
-      "uid": "MrsjfIGCrxmwG36vVWu4",
-      "number": 2353,
-      "status": "paid"
-    }
-  ],
-  "query_by_invoices": [
-    "MrsjfIGCrxmwG36vVWu4"
-  ],
-  "query_by_items": [
-    "KEjzPt7pI1hNgKtiZC8n"
-  ],
-  "query_by_contacts": [],
-  "query_by_dates": [
-    "2026-08-04"
-  ],
-  "bookings_breakdown": {
-    "quoted": 0,
-    "reserved": 0,
-    "prepped": 0,
-    "out": 0,
-    "returned": 0,
-    "lost": 0,
-    "damaged": 0
-  },
-  "crms_id": 1004,
-  "crms_status": "Open",
-  "subject": "Trash",
-  "reference": null,
-  "xero_id": "e8de958b-dd6e-47cc-a632-40622d979f53",
-  "uid_thread": "IlQj4Npdt6yi9rNQdIss",
-  "version": 4,
-  "created_at": {
-    "_seconds": 1785863010,
-    "_nanoseconds": 390000000
-  },
-  "updated_at": {
-    "_seconds": 1786500615,
-    "_nanoseconds": 520000000
-  }
+	"uid": "32FiXcTNb7ubPW7Zd3Jv",
+	"number": 977,
+	"status": "reserved",
+	"organization": {
+		"uid": "2wtsuMafEGI3WY6KsD3X",
+		"path": [
+			{
+				"uid": "2wtsuMafEGI3WY6KsD3X",
+				"name": "Jordan Glenn",
+				"derived": false
+			}
+		],
+		"crms_id": 515,
+		"xero_id": "e6853c3f-f5f9-4628-aa3d-52bae2892985",
+		"billing_address": {
+			"city": "Bolingbrook",
+			"country_name": "United States",
+			"full": "7737 Cypress Ter",
+			"name": "Avery Fairfax",
+			"postcode": "67145",
+			"region": "IL",
+			"street": "5200 Magnolia Rd",
+			"street2": "",
+			"mapbox_id": "Sample text for mapbox_id......................................",
+			"address_coordinates": null,
+			"user_coordinates": null
+		}
+	},
+	"destinations": [
+		{
+			"uid": "bf3609df-3e27-4402-8989-0ace81f12a3e",
+			"dates": {
+				"delivery_start": "2026-08-04T09:00:00.000-05:00",
+				"delivery_start_fs": {
+					"_seconds": 1785852000,
+					"_nanoseconds": 0
+				},
+				"delivery_end": "2026-08-04T09:00:00.000-05:00",
+				"delivery_end_fs": {
+					"_seconds": 1785852000,
+					"_nanoseconds": 0
+				},
+				"collection_start": "2026-08-04T17:00:00.000-05:00",
+				"collection_start_fs": {
+					"_seconds": 1785880800,
+					"_nanoseconds": 0
+				},
+				"collection_end": "2026-08-04T17:00:00.000-05:00",
+				"collection_end_fs": {
+					"_seconds": 1785880800,
+					"_nanoseconds": 0
+				},
+				"charge_start": "2026-08-04T09:00:00.000-05:00",
+				"charge_start_fs": {
+					"_seconds": 1785852000,
+					"_nanoseconds": 0
+				},
+				"charge_end": "2026-08-04T17:00:00.000-05:00",
+				"charge_end_fs": {
+					"_seconds": 1785880800,
+					"_nanoseconds": 0
+				},
+				"days_active": 1,
+				"days_charged": 1
+			},
+			"delivery": {
+				"uid": "ICnEEB3e6GDOcFTTSyPP",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "7124 Elm Ln",
+					"name": "",
+					"postcode": "67960",
+					"region": "IL",
+					"street": "2818 Sycamore Pl",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "Sample text for instructi",
+				"contact": null
+			},
+			"collection": {
+				"uid": "ICnEEB3e6GDOcFTTSyPP",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "5929 Pine Ct",
+					"name": "",
+					"postcode": "64672",
+					"region": "IL",
+					"street": "8176 Pine Ct",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"customer_collecting": true,
+			"customer_returning": true
+		}
+	],
+	"items": [
+		{
+			"uid": "bf3609df-3e27-4402-8989-0ace81f12a3e",
+			"type": "destination",
+			"name": "3434 N Central Ave",
+			"path": [
+				"bf3609df-3e27-4402-8989-0ace81f12a3e"
+			],
+			"description": ""
+		},
+		{
+			"uid": "cd245e33-e37f-4ae1-bc49-5d2c7599fdeb",
+			"type": "group",
+			"name": "Trash & Cleanup",
+			"path": [
+				"bf3609df-3e27-4402-8989-0ace81f12a3e",
+				"cd245e33-e37f-4ae1-bc49-5d2c7599fdeb"
+			],
+			"description": ""
+		},
+		{
+			"uid": "KEjzPt7pI1hNgKtiZC8n",
+			"type": "service",
+			"name": "Trash Removal",
+			"description": "3434 N Central Ave",
+			"quantity": 1,
+			"price": {
+				"base_cents": 35000,
+				"replacement_cents": 0,
+				"chargeable_days": null,
+				"formula": "fixed",
+				"subtotal_cents": 35000,
+				"subtotal_discounted_cents": 35000,
+				"discount": null,
+				"taxes": [],
+				"taxes_base": [],
+				"total_cents": 35000
+			},
+			"stock_method": "none",
+			"order_number": 977,
+			"uid_order": "32FiXcTNb7ubPW7Zd3Jv",
+			"path": [
+				"bf3609df-3e27-4402-8989-0ace81f12a3e",
+				"cd245e33-e37f-4ae1-bc49-5d2c7599fdeb",
+				"KEjzPt7pI1hNgKtiZC8n"
+			],
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 264,
+			"coa_revenue": 4100
+		}
+	],
+	"totals": {
+		"discount_amount_cents": 0,
+		"subtotal_cents": 35000,
+		"subtotal_discounted_cents": 35000,
+		"taxes": [],
+		"transaction_fees": [],
+		"total_cents": 35000,
+		"replacement_total_cents": 0
+	},
+	"invoices": [
+		{
+			"uid": "MrsjfIGCrxmwG36vVWu4",
+			"number": 2353,
+			"status": "paid"
+		}
+	],
+	"query_by_invoices": [
+		"MrsjfIGCrxmwG36vVWu4"
+	],
+	"query_by_items": [
+		"KEjzPt7pI1hNgKtiZC8n"
+	],
+	"query_by_contacts": [],
+	"query_by_dates": [
+		"2026-08-04"
+	],
+	"bookings_breakdown": {
+		"quoted": 0,
+		"reserved": 0,
+		"prepped": 0,
+		"out": 0,
+		"returned": 0,
+		"lost": 0,
+		"damaged": 0
+	},
+	"crms_id": 1004,
+	"crms_status": "Open",
+	"subject": "Trash",
+	"reference": null,
+	"xero_id": "e8de958b-dd6e-47cc-a632-40622d979f53",
+	"uid_thread": "IlQj4Npdt6yi9rNQdIss",
+	"version": 4,
+	"created_at": {
+		"_seconds": 1785863010,
+		"_nanoseconds": 390000000
+	},
+	"updated_at": {
+		"_seconds": 1786500615,
+		"_nanoseconds": 520000000
+	}
 }

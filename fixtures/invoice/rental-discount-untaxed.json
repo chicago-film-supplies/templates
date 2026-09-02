@@ -1,320 +1,319 @@
 {
-  "uid": "cpLmrBVsPtQt5GYuJBNi",
-  "number": 1996,
-  "status": "paid",
-  "query_by_orders": [
-    "3tiOW5c2wAl3W94FmfjV"
-  ],
-  "number_orders": [
-    584
-  ],
-  "tax_exempt": true,
-  "date": "2025-07-07T00:00:00.000-05:00",
-  "date_fs": {
-    "_seconds": 1751864400,
-    "_nanoseconds": 0
-  },
-  "due_date": "2025-07-22T00:00:00.000-05:00",
-  "due_date_fs": {
-    "_seconds": 1753160400,
-    "_nanoseconds": 0
-  },
-  "subject": "Tent",
-  "reference": null,
-  "external_notes": null,
-  "internal_notes": null,
-  "organization": {
-    "uid": "cVuEztNV5MWduSJA6pP9",
-    "name": "Forest Glen",
-    "path": [
-      {
-        "uid": "cVuEztNV5MWduSJA6pP9",
-        "name": "Forest Glen",
-        "derived": false
-      }
-    ],
-    "crms_id": 345,
-    "jurisdiction_claim": null,
-    "tax_exempt": true,
-    "xero_id": "90305e01-63eb-40f5-9906-6ffd74245148",
-    "billing_address": {
-      "city": "Chicago",
-      "country_name": "United States",
-      "full": "2679 Chestnut St",
-      "name": "Westmont",
-      "postcode": "65697",
-      "region": "IL",
-      "street": "1685 Cypress Ter",
-      "street2": "",
-      "address_coordinates": null,
-      "user_coordinates": null
-    }
-  },
-  "destinations": [
-    {
-      "uid_order": "3tiOW5c2wAl3W94FmfjV",
-      "uid": "1c4aacb0-4ce6-4e50-83aa-27195e254325",
-      "dates": {
-        "delivery_start": "2025-07-09T12:30:00.000-05:00",
-        "delivery_start_fs": {
-          "_seconds": 1752082200,
-          "_nanoseconds": 0
-        },
-        "delivery_end": "2025-07-09T12:30:00.000-05:00",
-        "delivery_end_fs": {
-          "_seconds": 1752082200,
-          "_nanoseconds": 0
-        },
-        "collection_start": "2025-07-14T15:00:00.000-05:00",
-        "collection_start_fs": {
-          "_seconds": 1752523200,
-          "_nanoseconds": 0
-        },
-        "collection_end": "2025-07-14T15:00:00.000-05:00",
-        "collection_end_fs": {
-          "_seconds": 1752523200,
-          "_nanoseconds": 0
-        },
-        "charge_start": "2025-07-09T12:30:00.000-05:00",
-        "charge_start_fs": {
-          "_seconds": 1752082200,
-          "_nanoseconds": 0
-        },
-        "charge_end": "2025-07-14T15:00:00.000-05:00",
-        "charge_end_fs": {
-          "_seconds": 1752523200,
-          "_nanoseconds": 0
-        },
-        "days_active": 4,
-        "days_charged": 4
-      },
-      "delivery": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "7905 Maple Ave",
-          "name": "Eastvale",
-          "postcode": "65048",
-          "region": "IL",
-          "street": "3408 Cypress Ter",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "collection": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "6115 Oak St",
-          "name": "Westmont",
-          "postcode": "65538",
-          "region": "IL",
-          "street": "3259 Willow Way",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "customer_collecting": true,
-      "customer_returning": true
-    }
-  ],
-  "items": [
-    {
-      "uid": "3tiOW5c2wAl3W94FmfjV",
-      "type": "order",
-      "name": "Order #584",
-      "path": [
-        "3tiOW5c2wAl3W94FmfjV"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "1c4aacb0-4ce6-4e50-83aa-27195e254325",
-      "type": "destination",
-      "name": "Fillmore",
-      "path": [
-        "3tiOW5c2wAl3W94FmfjV",
-        "1c4aacb0-4ce6-4e50-83aa-27195e254325"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "74e91021-4b4c-4539-b082-4f5430098b4b",
-      "type": "group",
-      "name": "Tents",
-      "path": [
-        "3tiOW5c2wAl3W94FmfjV",
-        "1c4aacb0-4ce6-4e50-83aa-27195e254325",
-        "74e91021-4b4c-4539-b082-4f5430098b4b"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "J7svp77V0tLx6xBaKRBx",
-      "type": "rental",
-      "name": "10' x 10' Pop Up Tent (White)",
-      "description": "",
-      "quantity": 1,
-      "price": {
-        "base_cents": 6000,
-        "chargeable_days": 4,
-        "formula": "five_day_week",
-        "subtotal_cents": 6000,
-        "subtotal_discounted_cents": 4800,
-        "discount": {
-          "rate": 20,
-          "type": "percent",
-          "amount_cents": 1200
-        },
-        "taxes": [],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 4800
-      },
-      "path": [
-        "3tiOW5c2wAl3W94FmfjV",
-        "1c4aacb0-4ce6-4e50-83aa-27195e254325",
-        "74e91021-4b4c-4539-b082-4f5430098b4b",
-        "J7svp77V0tLx6xBaKRBx"
-      ],
-      "coa_revenue": 4000,
-      "tracking_category": "Tents",
-      "xero_id": "3f670cfc-09da-421c-82d7-305ca4512b2c",
-      "xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
-      "crms_opportunity_id": 609,
-      "crms_id": 139
-    },
-    {
-      "uid": "3kzv0sanOljc25psMVkU",
-      "type": "rental",
-      "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
-      "description": "",
-      "quantity": 4,
-      "price": {
-        "base_cents": 0,
-        "chargeable_days": 4,
-        "formula": "five_day_week",
-        "subtotal_cents": 0,
-        "subtotal_discounted_cents": 0,
-        "discount": null,
-        "taxes": [],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 0
-      },
-      "path": [
-        "3tiOW5c2wAl3W94FmfjV",
-        "1c4aacb0-4ce6-4e50-83aa-27195e254325",
-        "74e91021-4b4c-4539-b082-4f5430098b4b",
-        "J7svp77V0tLx6xBaKRBx",
-        "3kzv0sanOljc25psMVkU"
-      ],
-      "coa_revenue": 4000,
-      "tracking_category": "Tents",
-      "xero_id": "9e140072-d913-4478-a0a9-616c16f90b05",
-      "xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
-      "crms_opportunity_id": 609,
-      "crms_id": 473
-    },
-    {
-      "uid": "Wnj0LODXW6zCYRmnJoxQ",
-      "type": "rental",
-      "name": "20lb Shot Bag",
-      "description": "",
-      "quantity": 4,
-      "price": {
-        "base_cents": 0,
-        "chargeable_days": 4,
-        "formula": "five_day_week",
-        "subtotal_cents": 0,
-        "subtotal_discounted_cents": 0,
-        "discount": null,
-        "taxes": [],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 0
-      },
-      "path": [
-        "3tiOW5c2wAl3W94FmfjV",
-        "1c4aacb0-4ce6-4e50-83aa-27195e254325",
-        "74e91021-4b4c-4539-b082-4f5430098b4b",
-        "J7svp77V0tLx6xBaKRBx",
-        "Wnj0LODXW6zCYRmnJoxQ"
-      ],
-      "coa_revenue": 4000,
-      "tracking_category": "Tents",
-      "xero_id": "64a79c7c-db51-49ba-a988-a44dfe5b216d",
-      "xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
-      "crms_opportunity_id": 609,
-      "crms_id": 138
-    }
-  ],
-  "totals": {
-    "subtotal_cents": 6000,
-    "subtotal_discounted_cents": 4800,
-    "discount_amount_cents": 1200,
-    "taxes": [],
-    "transaction_fees": [],
-    "total_cents": 4800,
-    "amount_paid_cents": 4800,
-    "amount_due_cents": 0
-  },
-  "xero_id": "3dee09b0-2410-4cc2-aa95-ff6cc7cf09dc",
-  "uploadcare_uuid": "e50b112e-f80d-44fc-bda2-8682ba509668",
-  "pdf_generated_at": {
-    "_seconds": 1787672833,
-    "_nanoseconds": 651000000
-  },
-  "pdf_params": {},
-  "pdf_versions": [],
-  "crms_id": 734,
-  "crms_opportunity_ids": [
-    609
-  ],
-  "uid_thread": "A8t4AB6LOKxbr2IsW8mM",
-  "version": 5,
-  "created_by": {
-    "uid": "manager-bot",
-    "name": "Riley Bishop"
-  },
-  "updated_by": {
-    "uid": "script",
-    "name": "Sample text for name...."
-  },
-  "created_at": {
-    "_seconds": 1764646754,
-    "_nanoseconds": 49000000
-  },
-  "updated_at": {
-    "_seconds": 1787672698,
-    "_nanoseconds": 459000000
-  }
+	"uid": "cpLmrBVsPtQt5GYuJBNi",
+	"number": 1996,
+	"status": "paid",
+	"query_by_orders": [
+		"3tiOW5c2wAl3W94FmfjV"
+	],
+	"number_orders": [
+		584
+	],
+	"tax_exempt": true,
+	"date": "2025-07-07T00:00:00.000-05:00",
+	"date_fs": {
+		"_seconds": 1751864400,
+		"_nanoseconds": 0
+	},
+	"due_date": "2025-07-22T00:00:00.000-05:00",
+	"due_date_fs": {
+		"_seconds": 1753160400,
+		"_nanoseconds": 0
+	},
+	"subject": "Tent",
+	"reference": null,
+	"external_notes": null,
+	"internal_notes": null,
+	"organization": {
+		"uid": "cVuEztNV5MWduSJA6pP9",
+		"path": [
+			{
+				"uid": "cVuEztNV5MWduSJA6pP9",
+				"name": "Forest Glen",
+				"derived": false
+			}
+		],
+		"crms_id": 345,
+		"jurisdiction_claim": null,
+		"tax_exempt": true,
+		"xero_id": "90305e01-63eb-40f5-9906-6ffd74245148",
+		"billing_address": {
+			"city": "Chicago",
+			"country_name": "United States",
+			"full": "2679 Chestnut St",
+			"name": "Westmont",
+			"postcode": "65697",
+			"region": "IL",
+			"street": "1685 Cypress Ter",
+			"street2": "",
+			"address_coordinates": null,
+			"user_coordinates": null
+		}
+	},
+	"destinations": [
+		{
+			"uid_order": "3tiOW5c2wAl3W94FmfjV",
+			"uid": "1c4aacb0-4ce6-4e50-83aa-27195e254325",
+			"dates": {
+				"delivery_start": "2025-07-09T12:30:00.000-05:00",
+				"delivery_start_fs": {
+					"_seconds": 1752082200,
+					"_nanoseconds": 0
+				},
+				"delivery_end": "2025-07-09T12:30:00.000-05:00",
+				"delivery_end_fs": {
+					"_seconds": 1752082200,
+					"_nanoseconds": 0
+				},
+				"collection_start": "2025-07-14T15:00:00.000-05:00",
+				"collection_start_fs": {
+					"_seconds": 1752523200,
+					"_nanoseconds": 0
+				},
+				"collection_end": "2025-07-14T15:00:00.000-05:00",
+				"collection_end_fs": {
+					"_seconds": 1752523200,
+					"_nanoseconds": 0
+				},
+				"charge_start": "2025-07-09T12:30:00.000-05:00",
+				"charge_start_fs": {
+					"_seconds": 1752082200,
+					"_nanoseconds": 0
+				},
+				"charge_end": "2025-07-14T15:00:00.000-05:00",
+				"charge_end_fs": {
+					"_seconds": 1752523200,
+					"_nanoseconds": 0
+				},
+				"days_active": 4,
+				"days_charged": 4
+			},
+			"delivery": {
+				"uid": "vTn8CTAwwJHEJZLBzsOw",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "7905 Maple Ave",
+					"name": "Eastvale",
+					"postcode": "65048",
+					"region": "IL",
+					"street": "3408 Cypress Ter",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"collection": {
+				"uid": "vTn8CTAwwJHEJZLBzsOw",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "6115 Oak St",
+					"name": "Westmont",
+					"postcode": "65538",
+					"region": "IL",
+					"street": "3259 Willow Way",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"customer_collecting": true,
+			"customer_returning": true
+		}
+	],
+	"items": [
+		{
+			"uid": "3tiOW5c2wAl3W94FmfjV",
+			"type": "order",
+			"name": "Order #584",
+			"path": [
+				"3tiOW5c2wAl3W94FmfjV"
+			],
+			"description": ""
+		},
+		{
+			"uid": "1c4aacb0-4ce6-4e50-83aa-27195e254325",
+			"type": "destination",
+			"name": "Fillmore",
+			"path": [
+				"3tiOW5c2wAl3W94FmfjV",
+				"1c4aacb0-4ce6-4e50-83aa-27195e254325"
+			],
+			"description": ""
+		},
+		{
+			"uid": "74e91021-4b4c-4539-b082-4f5430098b4b",
+			"type": "group",
+			"name": "Tents",
+			"path": [
+				"3tiOW5c2wAl3W94FmfjV",
+				"1c4aacb0-4ce6-4e50-83aa-27195e254325",
+				"74e91021-4b4c-4539-b082-4f5430098b4b"
+			],
+			"description": ""
+		},
+		{
+			"uid": "J7svp77V0tLx6xBaKRBx",
+			"type": "rental",
+			"name": "10' x 10' Pop Up Tent (White)",
+			"description": "",
+			"quantity": 1,
+			"price": {
+				"base_cents": 6000,
+				"chargeable_days": 4,
+				"formula": "five_day_week",
+				"subtotal_cents": 6000,
+				"subtotal_discounted_cents": 4800,
+				"discount": {
+					"rate": 20,
+					"type": "percent",
+					"amount_cents": 1200
+				},
+				"taxes": [],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"total_cents": 4800
+			},
+			"path": [
+				"3tiOW5c2wAl3W94FmfjV",
+				"1c4aacb0-4ce6-4e50-83aa-27195e254325",
+				"74e91021-4b4c-4539-b082-4f5430098b4b",
+				"J7svp77V0tLx6xBaKRBx"
+			],
+			"coa_revenue": 4000,
+			"tracking_category": "Tents",
+			"xero_id": "3f670cfc-09da-421c-82d7-305ca4512b2c",
+			"xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
+			"crms_opportunity_id": 609,
+			"crms_id": 139
+		},
+		{
+			"uid": "3kzv0sanOljc25psMVkU",
+			"type": "rental",
+			"name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+			"description": "",
+			"quantity": 4,
+			"price": {
+				"base_cents": 0,
+				"chargeable_days": 4,
+				"formula": "five_day_week",
+				"subtotal_cents": 0,
+				"subtotal_discounted_cents": 0,
+				"discount": null,
+				"taxes": [],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"total_cents": 0
+			},
+			"path": [
+				"3tiOW5c2wAl3W94FmfjV",
+				"1c4aacb0-4ce6-4e50-83aa-27195e254325",
+				"74e91021-4b4c-4539-b082-4f5430098b4b",
+				"J7svp77V0tLx6xBaKRBx",
+				"3kzv0sanOljc25psMVkU"
+			],
+			"coa_revenue": 4000,
+			"tracking_category": "Tents",
+			"xero_id": "9e140072-d913-4478-a0a9-616c16f90b05",
+			"xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
+			"crms_opportunity_id": 609,
+			"crms_id": 473
+		},
+		{
+			"uid": "Wnj0LODXW6zCYRmnJoxQ",
+			"type": "rental",
+			"name": "20lb Shot Bag",
+			"description": "",
+			"quantity": 4,
+			"price": {
+				"base_cents": 0,
+				"chargeable_days": 4,
+				"formula": "five_day_week",
+				"subtotal_cents": 0,
+				"subtotal_discounted_cents": 0,
+				"discount": null,
+				"taxes": [],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"total_cents": 0
+			},
+			"path": [
+				"3tiOW5c2wAl3W94FmfjV",
+				"1c4aacb0-4ce6-4e50-83aa-27195e254325",
+				"74e91021-4b4c-4539-b082-4f5430098b4b",
+				"J7svp77V0tLx6xBaKRBx",
+				"Wnj0LODXW6zCYRmnJoxQ"
+			],
+			"coa_revenue": 4000,
+			"tracking_category": "Tents",
+			"xero_id": "64a79c7c-db51-49ba-a988-a44dfe5b216d",
+			"xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
+			"crms_opportunity_id": 609,
+			"crms_id": 138
+		}
+	],
+	"totals": {
+		"subtotal_cents": 6000,
+		"subtotal_discounted_cents": 4800,
+		"discount_amount_cents": 1200,
+		"taxes": [],
+		"transaction_fees": [],
+		"total_cents": 4800,
+		"amount_paid_cents": 4800,
+		"amount_due_cents": 0
+	},
+	"xero_id": "3dee09b0-2410-4cc2-aa95-ff6cc7cf09dc",
+	"uploadcare_uuid": "e50b112e-f80d-44fc-bda2-8682ba509668",
+	"pdf_generated_at": {
+		"_seconds": 1787672833,
+		"_nanoseconds": 651000000
+	},
+	"pdf_params": {},
+	"pdf_versions": [],
+	"crms_id": 734,
+	"crms_opportunity_ids": [
+		609
+	],
+	"uid_thread": "A8t4AB6LOKxbr2IsW8mM",
+	"version": 5,
+	"created_by": {
+		"uid": "manager-bot",
+		"name": "Riley Bishop"
+	},
+	"updated_by": {
+		"uid": "script",
+		"name": "Sample text for name...."
+	},
+	"created_at": {
+		"_seconds": 1764646754,
+		"_nanoseconds": 49000000
+	},
+	"updated_at": {
+		"_seconds": 1787672698,
+		"_nanoseconds": 459000000
+	}
 }

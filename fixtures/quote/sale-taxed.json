@@ -1,233 +1,232 @@
 {
-  "uid": "g65fgPfvAIOXbYs07gGD",
-  "number": 992,
-  "status": "reserved",
-  "organization": {
-    "uid": "nTpq3YIY4cth5todd4PV",
-    "name": "Riley M Adler",
-    "path": [
-      {
-        "uid": "nTpq3YIY4cth5todd4PV",
-        "name": "Riley M Adler",
-        "derived": false
-      }
-    ],
-    "crms_id": 524,
-    "xero_id": "6891f42e-193e-4db1-bfa3-834555b6ce32",
-    "billing_address": {
-      "city": "Evanston",
-      "country_name": "United States",
-      "full": "5922 Cypress Ter",
-      "name": "Morgan M Pierce",
-      "postcode": "63616",
-      "region": "IL",
-      "street": "3530 Oak St",
-      "street2": "",
-      "mapbox_id": "Sample text for mapbox_id......................................",
-      "address_coordinates": null,
-      "user_coordinates": null
-    }
-  },
-  "destinations": [
-    {
-      "uid": "f221ce25-6fe9-44da-8b18-271225d95906",
-      "dates": {
-        "delivery_start": "2026-08-11T09:00:00.000-05:00",
-        "delivery_start_fs": {
-          "_seconds": 1786456800,
-          "_nanoseconds": 0
-        },
-        "delivery_end": "2026-08-11T09:00:00.000-05:00",
-        "delivery_end_fs": {
-          "_seconds": 1786456800,
-          "_nanoseconds": 0
-        },
-        "collection_start": "2026-08-11T17:00:00.000-05:00",
-        "collection_start_fs": {
-          "_seconds": 1786485600,
-          "_nanoseconds": 0
-        },
-        "collection_end": "2026-08-11T17:00:00.000-05:00",
-        "collection_end_fs": {
-          "_seconds": 1786485600,
-          "_nanoseconds": 0
-        },
-        "charge_start": "2026-08-11T09:00:00.000-05:00",
-        "charge_start_fs": {
-          "_seconds": 1786456800,
-          "_nanoseconds": 0
-        },
-        "charge_end": "2026-08-11T17:00:00.000-05:00",
-        "charge_end_fs": {
-          "_seconds": 1786485600,
-          "_nanoseconds": 0
-        },
-        "days_active": 1,
-        "days_charged": 1
-      },
-      "delivery": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "172 Magnolia Rd",
-          "name": "Eastvale",
-          "postcode": "65048",
-          "region": "IL",
-          "street": "3408 Cypress Ter",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "collection": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "5609 Elm Ln",
-          "name": "Westmont",
-          "postcode": "65538",
-          "region": "IL",
-          "street": "7695 Spruce Ln",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "customer_collecting": true,
-      "customer_returning": true
-    }
-  ],
-  "items": [
-    {
-      "uid": "f221ce25-6fe9-44da-8b18-271225d95906",
-      "type": "destination",
-      "name": "Fillmore",
-      "path": [
-        "f221ce25-6fe9-44da-8b18-271225d95906"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "9c387134-faa5-42b5-b69e-0b67d04e501b",
-      "type": "group",
-      "name": "Crafty",
-      "path": [
-        "f221ce25-6fe9-44da-8b18-271225d95906",
-        "9c387134-faa5-42b5-b69e-0b67d04e501b"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "VQim9zNSP2k4gdhBEdnX",
-      "type": "sale",
-      "name": "Open Water - 16oz Aluminum Bottle (24 Case)",
-      "description": "",
-      "quantity": 10,
-      "price": {
-        "base_cents": 3900,
-        "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
-        "subtotal_cents": 39000,
-        "subtotal_discounted_cents": 39000,
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "NJc430kShJ0GRj7uvaQZ",
-            "name": "Chicago Sales Tax",
-            "rate": 10.25,
-            "type": "percent",
-            "amount_cents": 3998
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "NJc430kShJ0GRj7uvaQZ",
-            "name": "Chicago Sales Tax",
-            "rate": 10.25,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 42998
-      },
-      "stock_method": "bulk",
-      "order_number": 992,
-      "uid_order": "g65fgPfvAIOXbYs07gGD",
-      "path": [
-        "f221ce25-6fe9-44da-8b18-271225d95906",
-        "9c387134-faa5-42b5-b69e-0b67d04e501b",
-        "VQim9zNSP2k4gdhBEdnX"
-      ],
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 610,
-      "coa_revenue": 4200
-    }
-  ],
-  "totals": {
-    "discount_amount_cents": 0,
-    "subtotal_cents": 39000,
-    "subtotal_discounted_cents": 39000,
-    "taxes": [
-      {
-        "uid": "NJc430kShJ0GRj7uvaQZ",
-        "name": "Chicago Sales Tax",
-        "rate": 10.25,
-        "type": "percent",
-        "amount_cents": 3998
-      }
-    ],
-    "transaction_fees": [],
-    "total_cents": 42998,
-    "replacement_total_cents": 0
-  },
-  "invoices": [
-    {
-      "uid": "IO5vOVx8QyfTh2a2Tt0V",
-      "number": 2381,
-      "status": "issued"
-    }
-  ],
-  "query_by_invoices": [
-    "IO5vOVx8QyfTh2a2Tt0V"
-  ],
-  "query_by_items": [
-    "VQim9zNSP2k4gdhBEdnX"
-  ],
-  "query_by_contacts": [],
-  "query_by_dates": [
-    "2026-08-11"
-  ],
-  "bookings_breakdown": {
-    "quoted": 0,
-    "reserved": 0,
-    "prepped": 0,
-    "out": 0,
-    "returned": 0,
-    "lost": 0,
-    "damaged": 0
-  },
-  "crms_id": 1019,
-  "crms_status": "Open",
-  "subject": "10 Open Water",
-  "reference": null,
-  "xero_id": "86fae24e-74b6-4f28-9fb6-3d8c4e43a1f1",
-  "uid_thread": "hA9qDrEZuLRyzhNtPmxi",
-  "version": 4,
-  "created_at": {
-    "_seconds": 1786474161,
-    "_nanoseconds": 973000000
-  },
-  "updated_at": {
-    "_seconds": 1786474192,
-    "_nanoseconds": 943000000
-  }
+	"uid": "g65fgPfvAIOXbYs07gGD",
+	"number": 992,
+	"status": "reserved",
+	"organization": {
+		"uid": "nTpq3YIY4cth5todd4PV",
+		"path": [
+			{
+				"uid": "nTpq3YIY4cth5todd4PV",
+				"name": "Riley M Adler",
+				"derived": false
+			}
+		],
+		"crms_id": 524,
+		"xero_id": "6891f42e-193e-4db1-bfa3-834555b6ce32",
+		"billing_address": {
+			"city": "Evanston",
+			"country_name": "United States",
+			"full": "5922 Cypress Ter",
+			"name": "Morgan M Pierce",
+			"postcode": "63616",
+			"region": "IL",
+			"street": "3530 Oak St",
+			"street2": "",
+			"mapbox_id": "Sample text for mapbox_id......................................",
+			"address_coordinates": null,
+			"user_coordinates": null
+		}
+	},
+	"destinations": [
+		{
+			"uid": "f221ce25-6fe9-44da-8b18-271225d95906",
+			"dates": {
+				"delivery_start": "2026-08-11T09:00:00.000-05:00",
+				"delivery_start_fs": {
+					"_seconds": 1786456800,
+					"_nanoseconds": 0
+				},
+				"delivery_end": "2026-08-11T09:00:00.000-05:00",
+				"delivery_end_fs": {
+					"_seconds": 1786456800,
+					"_nanoseconds": 0
+				},
+				"collection_start": "2026-08-11T17:00:00.000-05:00",
+				"collection_start_fs": {
+					"_seconds": 1786485600,
+					"_nanoseconds": 0
+				},
+				"collection_end": "2026-08-11T17:00:00.000-05:00",
+				"collection_end_fs": {
+					"_seconds": 1786485600,
+					"_nanoseconds": 0
+				},
+				"charge_start": "2026-08-11T09:00:00.000-05:00",
+				"charge_start_fs": {
+					"_seconds": 1786456800,
+					"_nanoseconds": 0
+				},
+				"charge_end": "2026-08-11T17:00:00.000-05:00",
+				"charge_end_fs": {
+					"_seconds": 1786485600,
+					"_nanoseconds": 0
+				},
+				"days_active": 1,
+				"days_charged": 1
+			},
+			"delivery": {
+				"uid": "vTn8CTAwwJHEJZLBzsOw",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "172 Magnolia Rd",
+					"name": "Eastvale",
+					"postcode": "65048",
+					"region": "IL",
+					"street": "3408 Cypress Ter",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"collection": {
+				"uid": "vTn8CTAwwJHEJZLBzsOw",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "5609 Elm Ln",
+					"name": "Westmont",
+					"postcode": "65538",
+					"region": "IL",
+					"street": "7695 Spruce Ln",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"customer_collecting": true,
+			"customer_returning": true
+		}
+	],
+	"items": [
+		{
+			"uid": "f221ce25-6fe9-44da-8b18-271225d95906",
+			"type": "destination",
+			"name": "Fillmore",
+			"path": [
+				"f221ce25-6fe9-44da-8b18-271225d95906"
+			],
+			"description": ""
+		},
+		{
+			"uid": "9c387134-faa5-42b5-b69e-0b67d04e501b",
+			"type": "group",
+			"name": "Crafty",
+			"path": [
+				"f221ce25-6fe9-44da-8b18-271225d95906",
+				"9c387134-faa5-42b5-b69e-0b67d04e501b"
+			],
+			"description": ""
+		},
+		{
+			"uid": "VQim9zNSP2k4gdhBEdnX",
+			"type": "sale",
+			"name": "Open Water - 16oz Aluminum Bottle (24 Case)",
+			"description": "",
+			"quantity": 10,
+			"price": {
+				"base_cents": 3900,
+				"replacement_cents": 0,
+				"chargeable_days": null,
+				"formula": "fixed",
+				"subtotal_cents": 39000,
+				"subtotal_discounted_cents": 39000,
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "NJc430kShJ0GRj7uvaQZ",
+						"name": "Chicago Sales Tax",
+						"rate": 10.25,
+						"type": "percent",
+						"amount_cents": 3998
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "NJc430kShJ0GRj7uvaQZ",
+						"name": "Chicago Sales Tax",
+						"rate": 10.25,
+						"type": "percent"
+					}
+				],
+				"total_cents": 42998
+			},
+			"stock_method": "bulk",
+			"order_number": 992,
+			"uid_order": "g65fgPfvAIOXbYs07gGD",
+			"path": [
+				"f221ce25-6fe9-44da-8b18-271225d95906",
+				"9c387134-faa5-42b5-b69e-0b67d04e501b",
+				"VQim9zNSP2k4gdhBEdnX"
+			],
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 610,
+			"coa_revenue": 4200
+		}
+	],
+	"totals": {
+		"discount_amount_cents": 0,
+		"subtotal_cents": 39000,
+		"subtotal_discounted_cents": 39000,
+		"taxes": [
+			{
+				"uid": "NJc430kShJ0GRj7uvaQZ",
+				"name": "Chicago Sales Tax",
+				"rate": 10.25,
+				"type": "percent",
+				"amount_cents": 3998
+			}
+		],
+		"transaction_fees": [],
+		"total_cents": 42998,
+		"replacement_total_cents": 0
+	},
+	"invoices": [
+		{
+			"uid": "IO5vOVx8QyfTh2a2Tt0V",
+			"number": 2381,
+			"status": "issued"
+		}
+	],
+	"query_by_invoices": [
+		"IO5vOVx8QyfTh2a2Tt0V"
+	],
+	"query_by_items": [
+		"VQim9zNSP2k4gdhBEdnX"
+	],
+	"query_by_contacts": [],
+	"query_by_dates": [
+		"2026-08-11"
+	],
+	"bookings_breakdown": {
+		"quoted": 0,
+		"reserved": 0,
+		"prepped": 0,
+		"out": 0,
+		"returned": 0,
+		"lost": 0,
+		"damaged": 0
+	},
+	"crms_id": 1019,
+	"crms_status": "Open",
+	"subject": "10 Open Water",
+	"reference": null,
+	"xero_id": "86fae24e-74b6-4f28-9fb6-3d8c4e43a1f1",
+	"uid_thread": "hA9qDrEZuLRyzhNtPmxi",
+	"version": 4,
+	"created_at": {
+		"_seconds": 1786474161,
+		"_nanoseconds": 973000000
+	},
+	"updated_at": {
+		"_seconds": 1786474192,
+		"_nanoseconds": 943000000
+	}
 }

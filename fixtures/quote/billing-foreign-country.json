@@ -1,236 +1,235 @@
 {
-  "uid": "5JMEDhSe2EKaGONN5fz7",
-  "number": 458,
-  "status": "complete",
-  "organization": {
-    "uid": "WzIFDsAPL5jPC0jDoWoM",
-    "name": "Sample text for name..............",
-    "path": [
-      {
-        "uid": "WzIFDsAPL5jPC0jDoWoM",
-        "name": "Sample text for name..............",
-        "derived": false
-      }
-    ],
-    "crms_id": 277,
-    "jurisdiction_claim": null,
-    "tax_exempt": false,
-    "xero_id": "3d19a2c0-8f25-4613-96a9-2353142cccfe",
-    "billing_address": {
-      "city": "Toronto",
-      "country_name": "Canada",
-      "full": "5451 Oak St",
-      "name": "Sample text for name..............",
-      "postcode": "Sample t",
-      "region": "ON",
-      "street": "3116 Willow Way",
-      "street2": "",
-      "mapbox_id": "Sample text for mapbox_id......................................",
-      "address_coordinates": null,
-      "user_coordinates": null
-    }
-  },
-  "destinations": [
-    {
-      "uid": "c65d7668-2e85-4c55-8969-35c14de9d3c3",
-      "dates": {
-        "delivery_start": "2025-05-05T09:00:00.000-05:00",
-        "delivery_start_fs": {
-          "_seconds": 1746453600,
-          "_nanoseconds": 0
-        },
-        "delivery_end": "2025-05-05T09:00:00.000-05:00",
-        "delivery_end_fs": {
-          "_seconds": 1746453600,
-          "_nanoseconds": 0
-        },
-        "collection_start": "2025-05-07T15:00:00.000-05:00",
-        "collection_start_fs": {
-          "_seconds": 1746648000,
-          "_nanoseconds": 0
-        },
-        "collection_end": "2025-05-07T15:00:00.000-05:00",
-        "collection_end_fs": {
-          "_seconds": 1746648000,
-          "_nanoseconds": 0
-        },
-        "charge_start": "2025-05-05T09:00:00.000-05:00",
-        "charge_start_fs": {
-          "_seconds": 1746453600,
-          "_nanoseconds": 0
-        },
-        "charge_end": "2025-05-07T15:00:00.000-05:00",
-        "charge_end_fs": {
-          "_seconds": 1746648000,
-          "_nanoseconds": 0
-        },
-        "days_active": 3,
-        "days_charged": 3
-      },
-      "delivery": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "172 Magnolia Rd",
-          "name": "Eastvale",
-          "postcode": "65048",
-          "region": "IL",
-          "street": "3408 Cypress Ter",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "collection": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "5609 Elm Ln",
-          "name": "Westmont",
-          "postcode": "65538",
-          "region": "IL",
-          "street": "7695 Spruce Ln",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "customer_collecting": true,
-      "customer_returning": true
-    }
-  ],
-  "items": [
-    {
-      "uid": "c65d7668-2e85-4c55-8969-35c14de9d3c3",
-      "type": "destination",
-      "name": "Fillmore",
-      "path": [
-        "c65d7668-2e85-4c55-8969-35c14de9d3c3"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "2f80805b-d964-4a6a-9f2d-b249dcd2c4dd",
-      "type": "group",
-      "name": "Walkies & Hotspots",
-      "path": [
-        "c65d7668-2e85-4c55-8969-35c14de9d3c3",
-        "2f80805b-d964-4a6a-9f2d-b249dcd2c4dd"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "NNWxwXXtrIgNNwHOM3Pn",
-      "type": "rental",
-      "name": "5G Hotspot (Unlimited)",
-      "description": "",
-      "quantity": 2,
-      "price": {
-        "base_cents": 7500,
-        "replacement_cents": 40000,
-        "chargeable_days": 3,
-        "formula": "five_day_week",
-        "subtotal_cents": 15000,
-        "subtotal_discounted_cents": 15000,
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 2250
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 17250
-      },
-      "stock_method": "none",
-      "order_number": 458,
-      "uid_order": "5JMEDhSe2EKaGONN5fz7",
-      "path": [
-        "c65d7668-2e85-4c55-8969-35c14de9d3c3",
-        "2f80805b-d964-4a6a-9f2d-b249dcd2c4dd",
-        "NNWxwXXtrIgNNwHOM3Pn"
-      ],
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 47,
-      "coa_revenue": 4000
-    }
-  ],
-  "totals": {
-    "discount_amount_cents": 0,
-    "subtotal_cents": 15000,
-    "subtotal_discounted_cents": 15000,
-    "taxes": [
-      {
-        "uid": "VEW4Ivy7VNqgxFA5eJw6",
-        "name": "Chicago Rental Tax",
-        "rate": 15,
-        "type": "percent",
-        "amount_cents": 2250
-      }
-    ],
-    "transaction_fees": [],
-    "total_cents": 17250,
-    "replacement_total_cents": 92000
-  },
-  "invoices": [
-    {
-      "uid": "5yjXQtdjr1W3fd7LXBDZ",
-      "number": 1896,
-      "status": "paid"
-    }
-  ],
-  "query_by_invoices": [
-    "5yjXQtdjr1W3fd7LXBDZ"
-  ],
-  "query_by_items": [
-    "NNWxwXXtrIgNNwHOM3Pn"
-  ],
-  "query_by_contacts": [],
-  "query_by_dates": [
-    "2025-05-05",
-    "2025-05-07"
-  ],
-  "bookings_breakdown": {
-    "quoted": 0,
-    "reserved": 0,
-    "prepped": 0,
-    "out": 0,
-    "returned": 0,
-    "lost": 0,
-    "damaged": 0
-  },
-  "crms_id": 483,
-  "crms_status": "Completed",
-  "subject": "2x Hotspots",
-  "reference": "PO #12239",
-  "xero_id": "f6da89b2-f008-4780-b5cf-6c1b966bcec8",
-  "uid_thread": "eGSY29aw133nvDEqtfen",
-  "version": 4,
-  "created_at": {
-    "_seconds": 1769290676,
-    "_nanoseconds": 376000000
-  },
-  "updated_at": {
-    "_seconds": 1787354542,
-    "_nanoseconds": 332000000
-  }
+	"uid": "5JMEDhSe2EKaGONN5fz7",
+	"number": 458,
+	"status": "complete",
+	"organization": {
+		"uid": "WzIFDsAPL5jPC0jDoWoM",
+		"path": [
+			{
+				"uid": "WzIFDsAPL5jPC0jDoWoM",
+				"name": "Sample text for name..............",
+				"derived": false
+			}
+		],
+		"crms_id": 277,
+		"jurisdiction_claim": null,
+		"tax_exempt": false,
+		"xero_id": "3d19a2c0-8f25-4613-96a9-2353142cccfe",
+		"billing_address": {
+			"city": "Toronto",
+			"country_name": "Canada",
+			"full": "5451 Oak St",
+			"name": "Sample text for name..............",
+			"postcode": "Sample t",
+			"region": "ON",
+			"street": "3116 Willow Way",
+			"street2": "",
+			"mapbox_id": "Sample text for mapbox_id......................................",
+			"address_coordinates": null,
+			"user_coordinates": null
+		}
+	},
+	"destinations": [
+		{
+			"uid": "c65d7668-2e85-4c55-8969-35c14de9d3c3",
+			"dates": {
+				"delivery_start": "2025-05-05T09:00:00.000-05:00",
+				"delivery_start_fs": {
+					"_seconds": 1746453600,
+					"_nanoseconds": 0
+				},
+				"delivery_end": "2025-05-05T09:00:00.000-05:00",
+				"delivery_end_fs": {
+					"_seconds": 1746453600,
+					"_nanoseconds": 0
+				},
+				"collection_start": "2025-05-07T15:00:00.000-05:00",
+				"collection_start_fs": {
+					"_seconds": 1746648000,
+					"_nanoseconds": 0
+				},
+				"collection_end": "2025-05-07T15:00:00.000-05:00",
+				"collection_end_fs": {
+					"_seconds": 1746648000,
+					"_nanoseconds": 0
+				},
+				"charge_start": "2025-05-05T09:00:00.000-05:00",
+				"charge_start_fs": {
+					"_seconds": 1746453600,
+					"_nanoseconds": 0
+				},
+				"charge_end": "2025-05-07T15:00:00.000-05:00",
+				"charge_end_fs": {
+					"_seconds": 1746648000,
+					"_nanoseconds": 0
+				},
+				"days_active": 3,
+				"days_charged": 3
+			},
+			"delivery": {
+				"uid": "vTn8CTAwwJHEJZLBzsOw",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "172 Magnolia Rd",
+					"name": "Eastvale",
+					"postcode": "65048",
+					"region": "IL",
+					"street": "3408 Cypress Ter",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"collection": {
+				"uid": "vTn8CTAwwJHEJZLBzsOw",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "5609 Elm Ln",
+					"name": "Westmont",
+					"postcode": "65538",
+					"region": "IL",
+					"street": "7695 Spruce Ln",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"customer_collecting": true,
+			"customer_returning": true
+		}
+	],
+	"items": [
+		{
+			"uid": "c65d7668-2e85-4c55-8969-35c14de9d3c3",
+			"type": "destination",
+			"name": "Fillmore",
+			"path": [
+				"c65d7668-2e85-4c55-8969-35c14de9d3c3"
+			],
+			"description": ""
+		},
+		{
+			"uid": "2f80805b-d964-4a6a-9f2d-b249dcd2c4dd",
+			"type": "group",
+			"name": "Walkies & Hotspots",
+			"path": [
+				"c65d7668-2e85-4c55-8969-35c14de9d3c3",
+				"2f80805b-d964-4a6a-9f2d-b249dcd2c4dd"
+			],
+			"description": ""
+		},
+		{
+			"uid": "NNWxwXXtrIgNNwHOM3Pn",
+			"type": "rental",
+			"name": "5G Hotspot (Unlimited)",
+			"description": "",
+			"quantity": 2,
+			"price": {
+				"base_cents": 7500,
+				"replacement_cents": 40000,
+				"chargeable_days": 3,
+				"formula": "five_day_week",
+				"subtotal_cents": 15000,
+				"subtotal_discounted_cents": 15000,
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 2250
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"total_cents": 17250
+			},
+			"stock_method": "none",
+			"order_number": 458,
+			"uid_order": "5JMEDhSe2EKaGONN5fz7",
+			"path": [
+				"c65d7668-2e85-4c55-8969-35c14de9d3c3",
+				"2f80805b-d964-4a6a-9f2d-b249dcd2c4dd",
+				"NNWxwXXtrIgNNwHOM3Pn"
+			],
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 47,
+			"coa_revenue": 4000
+		}
+	],
+	"totals": {
+		"discount_amount_cents": 0,
+		"subtotal_cents": 15000,
+		"subtotal_discounted_cents": 15000,
+		"taxes": [
+			{
+				"uid": "VEW4Ivy7VNqgxFA5eJw6",
+				"name": "Chicago Rental Tax",
+				"rate": 15,
+				"type": "percent",
+				"amount_cents": 2250
+			}
+		],
+		"transaction_fees": [],
+		"total_cents": 17250,
+		"replacement_total_cents": 92000
+	},
+	"invoices": [
+		{
+			"uid": "5yjXQtdjr1W3fd7LXBDZ",
+			"number": 1896,
+			"status": "paid"
+		}
+	],
+	"query_by_invoices": [
+		"5yjXQtdjr1W3fd7LXBDZ"
+	],
+	"query_by_items": [
+		"NNWxwXXtrIgNNwHOM3Pn"
+	],
+	"query_by_contacts": [],
+	"query_by_dates": [
+		"2025-05-05",
+		"2025-05-07"
+	],
+	"bookings_breakdown": {
+		"quoted": 0,
+		"reserved": 0,
+		"prepped": 0,
+		"out": 0,
+		"returned": 0,
+		"lost": 0,
+		"damaged": 0
+	},
+	"crms_id": 483,
+	"crms_status": "Completed",
+	"subject": "2x Hotspots",
+	"reference": "PO #12239",
+	"xero_id": "f6da89b2-f008-4780-b5cf-6c1b966bcec8",
+	"uid_thread": "eGSY29aw133nvDEqtfen",
+	"version": 4,
+	"created_at": {
+		"_seconds": 1769290676,
+		"_nanoseconds": 376000000
+	},
+	"updated_at": {
+		"_seconds": 1787354542,
+		"_nanoseconds": 332000000
+	}
 }

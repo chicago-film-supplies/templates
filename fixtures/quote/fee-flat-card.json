@@ -1,337 +1,336 @@
 {
-  "uid": "FNAZmscC094s1XDlL44Q",
-  "number": 502,
-  "status": "complete",
-  "organization": {
-    "uid": "s1H25XDoY7AgYTbKtczH",
-    "name": "Casey Glenn",
-    "path": [
-      {
-        "uid": "s1H25XDoY7AgYTbKtczH",
-        "name": "Casey Glenn",
-        "derived": false
-      }
-    ],
-    "crms_id": 299,
-    "jurisdiction_claim": null,
-    "tax_exempt": false,
-    "xero_id": "e95ce740-aaa4-49d6-95ad-cfcaae5ca563",
-    "billing_address": {
-      "city": "Chicago",
-      "country_name": "United States",
-      "full": "9023 Aspen Dr",
-      "name": "Jordan Carmichael",
-      "postcode": "67381",
-      "region": "IL",
-      "street": "717 Cypress Ter",
-      "street2": "",
-      "mapbox_id": "Sample text for mapbox_id......................................",
-      "address_coordinates": null,
-      "user_coordinates": null
-    }
-  },
-  "destinations": [
-    {
-      "uid": "5fe702a0-5b39-4456-bd3c-790957a69065",
-      "dates": {
-        "delivery_start": "2025-05-23T09:00:00.000-05:00",
-        "delivery_start_fs": {
-          "_seconds": 1748008800,
-          "_nanoseconds": 0
-        },
-        "delivery_end": "2025-05-23T09:00:00.000-05:00",
-        "delivery_end_fs": {
-          "_seconds": 1748008800,
-          "_nanoseconds": 0
-        },
-        "collection_start": "2025-05-28T17:00:00.000-05:00",
-        "collection_start_fs": {
-          "_seconds": 1748469600,
-          "_nanoseconds": 0
-        },
-        "collection_end": "2025-05-28T17:00:00.000-05:00",
-        "collection_end_fs": {
-          "_seconds": 1748469600,
-          "_nanoseconds": 0
-        },
-        "charge_start": "2025-05-23T09:00:00.000-05:00",
-        "charge_start_fs": {
-          "_seconds": 1748008800,
-          "_nanoseconds": 0
-        },
-        "charge_end": "2025-05-28T17:00:00.000-05:00",
-        "charge_end_fs": {
-          "_seconds": 1748469600,
-          "_nanoseconds": 0
-        },
-        "days_active": 3,
-        "days_charged": 3
-      },
-      "delivery": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "172 Magnolia Rd",
-          "name": "Eastvale",
-          "postcode": "65048",
-          "region": "IL",
-          "street": "3408 Cypress Ter",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "collection": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "5609 Elm Ln",
-          "name": "Westmont",
-          "postcode": "65538",
-          "region": "IL",
-          "street": "7695 Spruce Ln",
-          "street2": "",
-          "mapbox_id": "Sample text for mapbox_id......................................",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
-      "customer_collecting": true,
-      "customer_returning": true
-    }
-  ],
-  "items": [
-    {
-      "uid": "5fe702a0-5b39-4456-bd3c-790957a69065",
-      "type": "destination",
-      "name": "Fillmore",
-      "path": [
-        "5fe702a0-5b39-4456-bd3c-790957a69065"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "dda60ae1-a201-4549-a87f-5e2104d31cfb",
-      "type": "group",
-      "name": "Traffic, Safety & Signage",
-      "path": [
-        "5fe702a0-5b39-4456-bd3c-790957a69065",
-        "dda60ae1-a201-4549-a87f-5e2104d31cfb"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "RZWp0RITeUIGSE9mIfTb",
-      "type": "rental",
-      "name": "Driving Sign Kit",
-      "description": "4x Crew Parking Signs",
-      "quantity": 1,
-      "price": {
-        "base_cents": 2500,
-        "replacement_cents": 100000,
-        "chargeable_days": 3,
-        "formula": "five_day_week",
-        "subtotal_cents": 2500,
-        "subtotal_discounted_cents": 1000,
-        "discount": {
-          "rate": 60,
-          "type": "percent",
-          "amount_cents": 1500
-        },
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 150
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 1150
-      },
-      "stock_method": "bulk",
-      "order_number": 502,
-      "uid_order": "FNAZmscC094s1XDlL44Q",
-      "path": [
-        "5fe702a0-5b39-4456-bd3c-790957a69065",
-        "dda60ae1-a201-4549-a87f-5e2104d31cfb",
-        "RZWp0RITeUIGSE9mIfTb"
-      ],
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 293,
-      "coa_revenue": 4000
-    },
-    {
-      "uid": "FLbBeO0R62vRs4AWiw2l",
-      "type": "rental",
-      "name": "Walking Sign Kit",
-      "description": "",
-      "quantity": 1,
-      "price": {
-        "base_cents": 2500,
-        "replacement_cents": 10000,
-        "chargeable_days": 3,
-        "formula": "five_day_week",
-        "subtotal_cents": 2500,
-        "subtotal_discounted_cents": 2500,
-        "discount": null,
-        "taxes": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent",
-            "amount_cents": 375
-          }
-        ],
-        "taxes_base": [
-          {
-            "uid": "VEW4Ivy7VNqgxFA5eJw6",
-            "name": "Chicago Rental Tax",
-            "rate": 15,
-            "type": "percent"
-          }
-        ],
-        "total_cents": 2875
-      },
-      "stock_method": "bulk",
-      "order_number": 502,
-      "uid_order": "FNAZmscC094s1XDlL44Q",
-      "path": [
-        "5fe702a0-5b39-4456-bd3c-790957a69065",
-        "dda60ae1-a201-4549-a87f-5e2104d31cfb",
-        "FLbBeO0R62vRs4AWiw2l"
-      ],
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 291,
-      "coa_revenue": 4000
-    },
-    {
-      "uid": "7944c1b9-3ec2-41d7-a5a2-9da8833b0bc1",
-      "type": "group",
-      "name": "Transaction Fees",
-      "path": [
-        "5fe702a0-5b39-4456-bd3c-790957a69065",
-        "7944c1b9-3ec2-41d7-a5a2-9da8833b0bc1"
-      ],
-      "description": ""
-    },
-    {
-      "uid": "77LKBYcC09u1PZFhxmDJ",
-      "type": "transaction_fee",
-      "name": "Card Fee",
-      "description": "",
-      "quantity": 1,
-      "price": {
-        "base_cents": 115,
-        "replacement_cents": null,
-        "chargeable_days": null,
-        "formula": "fixed",
-        "subtotal_cents": 115,
-        "subtotal_discounted_cents": 115,
-        "discount": null,
-        "taxes": [],
-        "taxes_base": [],
-        "total_cents": 115
-      },
-      "stock_method": "none",
-      "order_number": 502,
-      "uid_order": "FNAZmscC094s1XDlL44Q",
-      "path": [
-        "5fe702a0-5b39-4456-bd3c-790957a69065",
-        "7944c1b9-3ec2-41d7-a5a2-9da8833b0bc1",
-        "77LKBYcC09u1PZFhxmDJ"
-      ],
-      "inclusion_type": null,
-      "zero_priced": false,
-      "crms_id": 372,
-      "coa_revenue": 4700
-    }
-  ],
-  "totals": {
-    "discount_amount_cents": 1500,
-    "subtotal_cents": 5000,
-    "subtotal_discounted_cents": 3500,
-    "taxes": [
-      {
-        "uid": "VEW4Ivy7VNqgxFA5eJw6",
-        "name": "Chicago Rental Tax",
-        "rate": 15,
-        "type": "percent",
-        "amount_cents": 525
-      }
-    ],
-    "transaction_fees": [
-      {
-        "uid": "77LKBYcC09u1PZFhxmDJ",
-        "name": "Card Fee",
-        "rate": 1.15,
-        "type": "flat",
-        "amount_cents": 115
-      }
-    ],
-    "total_cents": 4140,
-    "replacement_total_cents": 126500
-  },
-  "invoices": [
-    {
-      "uid": "tvdXuHG4bpe3y4MKhnTW",
-      "number": 1924,
-      "status": "paid"
-    }
-  ],
-  "query_by_invoices": [
-    "tvdXuHG4bpe3y4MKhnTW"
-  ],
-  "query_by_items": [
-    "RZWp0RITeUIGSE9mIfTb",
-    "FLbBeO0R62vRs4AWiw2l",
-    "77LKBYcC09u1PZFhxmDJ"
-  ],
-  "query_by_contacts": [],
-  "query_by_dates": [
-    "2025-05-23",
-    "2025-05-28"
-  ],
-  "bookings_breakdown": {
-    "quoted": 0,
-    "reserved": 0,
-    "prepped": 0,
-    "out": 0,
-    "returned": 2,
-    "lost": 0,
-    "damaged": 0
-  },
-  "crms_id": 527,
-  "crms_status": "Completed",
-  "subject": "Signs",
-  "reference": null,
-  "xero_id": "10d02865-38cb-406a-9843-d7126f3b4c54",
-  "uid_thread": "Fb7wCmqeQdNj6ohlkkdu",
-  "version": 5,
-  "created_at": {
-    "_seconds": 1769290676,
-    "_nanoseconds": 379000000
-  },
-  "updated_at": {
-    "_seconds": 1787354542,
-    "_nanoseconds": 332000000
-  }
+	"uid": "FNAZmscC094s1XDlL44Q",
+	"number": 502,
+	"status": "complete",
+	"organization": {
+		"uid": "s1H25XDoY7AgYTbKtczH",
+		"path": [
+			{
+				"uid": "s1H25XDoY7AgYTbKtczH",
+				"name": "Casey Glenn",
+				"derived": false
+			}
+		],
+		"crms_id": 299,
+		"jurisdiction_claim": null,
+		"tax_exempt": false,
+		"xero_id": "e95ce740-aaa4-49d6-95ad-cfcaae5ca563",
+		"billing_address": {
+			"city": "Chicago",
+			"country_name": "United States",
+			"full": "9023 Aspen Dr",
+			"name": "Jordan Carmichael",
+			"postcode": "67381",
+			"region": "IL",
+			"street": "717 Cypress Ter",
+			"street2": "",
+			"mapbox_id": "Sample text for mapbox_id......................................",
+			"address_coordinates": null,
+			"user_coordinates": null
+		}
+	},
+	"destinations": [
+		{
+			"uid": "5fe702a0-5b39-4456-bd3c-790957a69065",
+			"dates": {
+				"delivery_start": "2025-05-23T09:00:00.000-05:00",
+				"delivery_start_fs": {
+					"_seconds": 1748008800,
+					"_nanoseconds": 0
+				},
+				"delivery_end": "2025-05-23T09:00:00.000-05:00",
+				"delivery_end_fs": {
+					"_seconds": 1748008800,
+					"_nanoseconds": 0
+				},
+				"collection_start": "2025-05-28T17:00:00.000-05:00",
+				"collection_start_fs": {
+					"_seconds": 1748469600,
+					"_nanoseconds": 0
+				},
+				"collection_end": "2025-05-28T17:00:00.000-05:00",
+				"collection_end_fs": {
+					"_seconds": 1748469600,
+					"_nanoseconds": 0
+				},
+				"charge_start": "2025-05-23T09:00:00.000-05:00",
+				"charge_start_fs": {
+					"_seconds": 1748008800,
+					"_nanoseconds": 0
+				},
+				"charge_end": "2025-05-28T17:00:00.000-05:00",
+				"charge_end_fs": {
+					"_seconds": 1748469600,
+					"_nanoseconds": 0
+				},
+				"days_active": 3,
+				"days_charged": 3
+			},
+			"delivery": {
+				"uid": "vTn8CTAwwJHEJZLBzsOw",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "172 Magnolia Rd",
+					"name": "Eastvale",
+					"postcode": "65048",
+					"region": "IL",
+					"street": "3408 Cypress Ter",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"collection": {
+				"uid": "vTn8CTAwwJHEJZLBzsOw",
+				"address": {
+					"city": "Chicago",
+					"country_name": "United States",
+					"full": "5609 Elm Ln",
+					"name": "Westmont",
+					"postcode": "65538",
+					"region": "IL",
+					"street": "7695 Spruce Ln",
+					"street2": "",
+					"mapbox_id": "Sample text for mapbox_id......................................",
+					"address_coordinates": null,
+					"user_coordinates": null
+				},
+				"instructions": "",
+				"contact": null
+			},
+			"customer_collecting": true,
+			"customer_returning": true
+		}
+	],
+	"items": [
+		{
+			"uid": "5fe702a0-5b39-4456-bd3c-790957a69065",
+			"type": "destination",
+			"name": "Fillmore",
+			"path": [
+				"5fe702a0-5b39-4456-bd3c-790957a69065"
+			],
+			"description": ""
+		},
+		{
+			"uid": "dda60ae1-a201-4549-a87f-5e2104d31cfb",
+			"type": "group",
+			"name": "Traffic, Safety & Signage",
+			"path": [
+				"5fe702a0-5b39-4456-bd3c-790957a69065",
+				"dda60ae1-a201-4549-a87f-5e2104d31cfb"
+			],
+			"description": ""
+		},
+		{
+			"uid": "RZWp0RITeUIGSE9mIfTb",
+			"type": "rental",
+			"name": "Driving Sign Kit",
+			"description": "4x Crew Parking Signs",
+			"quantity": 1,
+			"price": {
+				"base_cents": 2500,
+				"replacement_cents": 100000,
+				"chargeable_days": 3,
+				"formula": "five_day_week",
+				"subtotal_cents": 2500,
+				"subtotal_discounted_cents": 1000,
+				"discount": {
+					"rate": 60,
+					"type": "percent",
+					"amount_cents": 1500
+				},
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 150
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"total_cents": 1150
+			},
+			"stock_method": "bulk",
+			"order_number": 502,
+			"uid_order": "FNAZmscC094s1XDlL44Q",
+			"path": [
+				"5fe702a0-5b39-4456-bd3c-790957a69065",
+				"dda60ae1-a201-4549-a87f-5e2104d31cfb",
+				"RZWp0RITeUIGSE9mIfTb"
+			],
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 293,
+			"coa_revenue": 4000
+		},
+		{
+			"uid": "FLbBeO0R62vRs4AWiw2l",
+			"type": "rental",
+			"name": "Walking Sign Kit",
+			"description": "",
+			"quantity": 1,
+			"price": {
+				"base_cents": 2500,
+				"replacement_cents": 10000,
+				"chargeable_days": 3,
+				"formula": "five_day_week",
+				"subtotal_cents": 2500,
+				"subtotal_discounted_cents": 2500,
+				"discount": null,
+				"taxes": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent",
+						"amount_cents": 375
+					}
+				],
+				"taxes_base": [
+					{
+						"uid": "VEW4Ivy7VNqgxFA5eJw6",
+						"name": "Chicago Rental Tax",
+						"rate": 15,
+						"type": "percent"
+					}
+				],
+				"total_cents": 2875
+			},
+			"stock_method": "bulk",
+			"order_number": 502,
+			"uid_order": "FNAZmscC094s1XDlL44Q",
+			"path": [
+				"5fe702a0-5b39-4456-bd3c-790957a69065",
+				"dda60ae1-a201-4549-a87f-5e2104d31cfb",
+				"FLbBeO0R62vRs4AWiw2l"
+			],
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 291,
+			"coa_revenue": 4000
+		},
+		{
+			"uid": "7944c1b9-3ec2-41d7-a5a2-9da8833b0bc1",
+			"type": "group",
+			"name": "Transaction Fees",
+			"path": [
+				"5fe702a0-5b39-4456-bd3c-790957a69065",
+				"7944c1b9-3ec2-41d7-a5a2-9da8833b0bc1"
+			],
+			"description": ""
+		},
+		{
+			"uid": "77LKBYcC09u1PZFhxmDJ",
+			"type": "transaction_fee",
+			"name": "Card Fee",
+			"description": "",
+			"quantity": 1,
+			"price": {
+				"base_cents": 115,
+				"replacement_cents": null,
+				"chargeable_days": null,
+				"formula": "fixed",
+				"subtotal_cents": 115,
+				"subtotal_discounted_cents": 115,
+				"discount": null,
+				"taxes": [],
+				"taxes_base": [],
+				"total_cents": 115
+			},
+			"stock_method": "none",
+			"order_number": 502,
+			"uid_order": "FNAZmscC094s1XDlL44Q",
+			"path": [
+				"5fe702a0-5b39-4456-bd3c-790957a69065",
+				"7944c1b9-3ec2-41d7-a5a2-9da8833b0bc1",
+				"77LKBYcC09u1PZFhxmDJ"
+			],
+			"inclusion_type": null,
+			"zero_priced": false,
+			"crms_id": 372,
+			"coa_revenue": 4700
+		}
+	],
+	"totals": {
+		"discount_amount_cents": 1500,
+		"subtotal_cents": 5000,
+		"subtotal_discounted_cents": 3500,
+		"taxes": [
+			{
+				"uid": "VEW4Ivy7VNqgxFA5eJw6",
+				"name": "Chicago Rental Tax",
+				"rate": 15,
+				"type": "percent",
+				"amount_cents": 525
+			}
+		],
+		"transaction_fees": [
+			{
+				"uid": "77LKBYcC09u1PZFhxmDJ",
+				"name": "Card Fee",
+				"rate": 1.15,
+				"type": "flat",
+				"amount_cents": 115
+			}
+		],
+		"total_cents": 4140,
+		"replacement_total_cents": 126500
+	},
+	"invoices": [
+		{
+			"uid": "tvdXuHG4bpe3y4MKhnTW",
+			"number": 1924,
+			"status": "paid"
+		}
+	],
+	"query_by_invoices": [
+		"tvdXuHG4bpe3y4MKhnTW"
+	],
+	"query_by_items": [
+		"RZWp0RITeUIGSE9mIfTb",
+		"FLbBeO0R62vRs4AWiw2l",
+		"77LKBYcC09u1PZFhxmDJ"
+	],
+	"query_by_contacts": [],
+	"query_by_dates": [
+		"2025-05-23",
+		"2025-05-28"
+	],
+	"bookings_breakdown": {
+		"quoted": 0,
+		"reserved": 0,
+		"prepped": 0,
+		"out": 0,
+		"returned": 2,
+		"lost": 0,
+		"damaged": 0
+	},
+	"crms_id": 527,
+	"crms_status": "Completed",
+	"subject": "Signs",
+	"reference": null,
+	"xero_id": "10d02865-38cb-406a-9843-d7126f3b4c54",
+	"uid_thread": "Fb7wCmqeQdNj6ohlkkdu",
+	"version": 5,
+	"created_at": {
+		"_seconds": 1769290676,
+		"_nanoseconds": 379000000
+	},
+	"updated_at": {
+		"_seconds": 1787354542,
+		"_nanoseconds": 332000000
+	}
 }
