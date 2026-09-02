@@ -5,6 +5,13 @@
   "organization": {
     "uid": "6DdthD3C2SyP8OndbqHM",
     "name": "Sage P Ingram",
+    "path": [
+      {
+        "uid": "6DdthD3C2SyP8OndbqHM",
+        "name": "Sage P Ingram",
+        "derived": false
+      }
+    ],
     "crms_id": 112,
     "jurisdiction_claim": null,
     "tax_exempt": false,

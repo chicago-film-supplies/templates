@@ -5,6 +5,13 @@
   "organization": {
     "uid": "SiJSnxBysKnvnUqu35fj",
     "name": "Logan Ingram",
+    "path": [
+      {
+        "uid": "SiJSnxBysKnvnUqu35fj",
+        "name": "Logan Ingram",
+        "derived": false
+      }
+    ],
     "crms_id": 539,
     "xero_id": "74b21e6d-17c3-4980-829d-4845e9db76ff",
     "billing_address": {

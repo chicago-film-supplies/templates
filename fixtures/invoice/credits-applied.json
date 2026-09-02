@@ -25,6 +25,13 @@
   "organization": {
     "uid": "ZAgM37O3iBFP08cuxEqL",
     "name": "Drew Jensen",
+    "path": [
+      {
+        "uid": "ZAgM37O3iBFP08cuxEqL",
+        "name": "Drew Jensen",
+        "derived": false
+      }
+    ],
     "crms_id": 66,
     "jurisdiction_claim": null,
     "tax_exempt": false,

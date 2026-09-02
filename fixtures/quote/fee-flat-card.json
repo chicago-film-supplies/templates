@@ -5,6 +5,13 @@
   "organization": {
     "uid": "s1H25XDoY7AgYTbKtczH",
     "name": "Casey Glenn",
+    "path": [
+      {
+        "uid": "s1H25XDoY7AgYTbKtczH",
+        "name": "Casey Glenn",
+        "derived": false
+      }
+    ],
     "crms_id": 299,
     "jurisdiction_claim": null,
     "tax_exempt": false,

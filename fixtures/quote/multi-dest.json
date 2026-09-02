@@ -7,6 +7,13 @@
   "organization": {
     "uid": "LakeshorePicturesOrg",
     "name": "Lakeshore Pictures",
+    "path": [
+      {
+        "uid": "LakeshorePicturesOrg",
+        "name": "Lakeshore Pictures",
+        "derived": false
+      }
+    ],
     "crms_id": null,
     "xero_id": "3f1c8a90-9f2b-4c2e-8b71-2a5d6e4f0c11",
     "billing_address": {
@@ -166,7 +173,7 @@
       "delivery": {
         "uid": "Dst2StageDelivery001",
         "address": {
-          "name": "Cinespace Chicago \u2014 Stage 14",
+          "name": "Cinespace Chicago — Stage 14",
           "street": "2621 W 15th Pl",
           "street2": "",
           "postcode": "60608",
@@ -198,7 +205,7 @@
       "collection": {
         "uid": "Dst2StageDelivery001",
         "address": {
-          "name": "Cinespace Chicago \u2014 Stage 14",
+          "name": "Cinespace Chicago — Stage 14",
           "street": "2621 W 15th Pl",
           "street2": "",
           "postcode": "60608",
@@ -652,7 +659,7 @@
     "lost": 0,
     "damaged": 0
   },
-  "subject": "Untitled Series \u2014 Ep 3 Reshoots",
+  "subject": "Untitled Series — Ep 3 Reshoots",
   "reference": "PO-4471",
   "xero_id": null,
   "version": 0,

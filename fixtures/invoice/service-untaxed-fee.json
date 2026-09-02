@@ -25,6 +25,13 @@
   "organization": {
     "uid": "2wtsuMafEGI3WY6KsD3X",
     "name": "Jordan Glenn",
+    "path": [
+      {
+        "uid": "2wtsuMafEGI3WY6KsD3X",
+        "name": "Jordan Glenn",
+        "derived": false
+      }
+    ],
     "crms_id": 515,
     "jurisdiction_claim": null,
     "tax_exempt": false,

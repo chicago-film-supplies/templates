@@ -5,6 +5,13 @@
   "organization": {
     "uid": "Omyms3GkmyIreWjSuh2K",
     "name": "Sample text for name.........",
+    "path": [
+      {
+        "uid": "Omyms3GkmyIreWjSuh2K",
+        "name": "Sample text for name.........",
+        "derived": false
+      }
+    ],
     "crms_id": 536,
     "xero_id": "64f5c266-62e1-40cc-9ff6-45b37efc6ce2",
     "billing_address": {

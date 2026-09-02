@@ -5,6 +5,13 @@
   "organization": {
     "uid": "hCdYsTi9NDWxq4ufvHhV",
     "name": "Morgan Owen",
+    "path": [
+      {
+        "uid": "hCdYsTi9NDWxq4ufvHhV",
+        "name": "Morgan Owen",
+        "derived": false
+      }
+    ],
     "crms_id": 550,
     "xero_id": "d3d08972-9bf6-45f8-93bf-d67e8722993d",
     "billing_address": {

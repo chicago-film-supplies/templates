@@ -5,6 +5,13 @@
   "organization": {
     "uid": "2wtsuMafEGI3WY6KsD3X",
     "name": "Jordan Glenn",
+    "path": [
+      {
+        "uid": "2wtsuMafEGI3WY6KsD3X",
+        "name": "Jordan Glenn",
+        "derived": false
+      }
+    ],
     "crms_id": 515,
     "xero_id": "e6853c3f-f5f9-4628-aa3d-52bae2892985",
     "billing_address": {
