@@ -53,8 +53,34 @@ const dividerUids = new Set(items.filter(isDivider).map(i => i.uid));
 // `totals.total_cents` — it sums to `subtotal_discounted + tax`, and the totals
 // block adds the fee on top. That is the ordinary shape of a quote.
 const isDocumentFee = (i) => i.type === "transaction_fee";
-const shownItems = items.filter(i => !isDocumentFee(i));
 const shownLineItems = lineItems.filter(i => !isDocumentFee(i));
+
+// Suppressing the fee LINE can strand its DIVIDER, and on a real order it does.
+// The Card Fee is written into its own `Transaction Fees` group, so filtering
+// the line left a group banner with no rows beneath it: the fee NAME in the
+// items grid, the fee money in the totals block. That is the same "rendered
+// twice" this section exists to prevent, wearing a different hat — the first
+// fix removed the row and left the heading. Measured on `fee-flat-card` (prod
+// order 502): one Transaction Fees banner before, none after.
+//
+// `partials/shared/items-grid.eta` draws a `group` banner unconditionally, and
+// deliberately: its docstring says a divider naming the only member of its
+// level is noise, "but each gate is the CALLER gate to compute, because only
+// the caller knows what its level contains". This is that gate.
+//
+// `path` is self-inclusive and records every ancestor, so a divider is live
+// exactly when some surviving line names it — needing no assumption about how
+// many divider levels there are, which is why the invoice twin is identical.
+//
+// 🔴 EVERY LINE IN THIS BLOCK NEEDS AN EVEN NUMBER OF APOSTROPHES. Eta parses
+// an exec block line by line, so an odd count opens a string literal that
+// swallows the closing tag, and it surfaces as "Bad template syntax:
+// Unexpected token" pointing at generated JS rather than at the prose that
+// caused it. Measured: one on a line fails, two on one line pass, three fail,
+// and one on each of two lines fails. Avoid possessives. All ~118 comment
+// lines above already obey this, which is why it had never been written down.
+const liveAncestors = new Set(shownLineItems.flatMap(i => i.path));
+const shownItems = items.filter(i => !isDocumentFee(i) && (!isDivider(i) || liveAncestors.has(i.uid)));
 const hasDiscount = it.orders.orderHasDiscount(lineItems);
 const hasRentals = it.orders.orderHasRentals(lineItems);
 const hasTax = it.orders.orderHasTax(lineItems);

@@ -33,8 +33,24 @@ const dividerUids = new Set(items.filter(isDivider).map(i => i.uid));
 // both puts the same money on the page twice. The totals row is the better
 // survivor because it carries the rate.
 const isDocumentFee = (i) => i.type === "transaction_fee";
-const shownItems = items.filter(i => !isDocumentFee(i));
 const shownLineItems = lineItems.filter(i => !isDocumentFee(i));
+
+// Suppressing the fee LINE can strand its DIVIDER — the twin of the gate the
+// quote family carries, and identical because `path` makes it indifferent to
+// how many divider levels exist. An invoice nests one deeper (order above
+// destination above group) and needs no extra handling for that.
+//
+// A Card Fee written into its own `Transaction Fees` group leaves a banner with
+// no rows beneath it once the line is filtered: the fee NAME in the items grid,
+// the fee money in the totals block. `partials/shared/items-grid.eta` draws a
+// group banner unconditionally and says why the emptiness test belongs to the
+// caller — only the caller knows what its level contains.
+//
+// 🔴 EVERY LINE IN THIS BLOCK NEEDS AN EVEN NUMBER OF APOSTROPHES. Eta parses
+// an exec block line by line, so an odd count opens a string literal that
+// swallows the closing tag. See the longer note in `templates/quote.eta`.
+const liveAncestors = new Set(shownLineItems.flatMap(i => i.path));
+const shownItems = items.filter(i => !isDocumentFee(i) && (!isDivider(i) || liveAncestors.has(i.uid)));
 
 // `it.invoices`, NOT `it.orders`. An invoices→invoices family resolves to
 // {dates, money, icons, invoices} and gets no `it.orders` at all, so naming it
