@@ -1,0 +1,5 @@
+{
+  "min_core": "10.0.0-beta.328",
+  "why": "the four pick-sheet PII masks — PickSheetScope.name (beta.324), subject on order/invoice/booking/fulfillment (.325/.326), DestinationDividerArm.name (.327), PickSheetDestination.name (.328)",
+  "see": "api-cloudrun#838 — a capture is sanitized by the DEPLOYED api's @cfs/core, and no repository holds that fact. captureFixture reads THIS file from the base branch and refuses to sanitize with an older build. Raise min_core whenever a new PII mask lands in core."
+}
