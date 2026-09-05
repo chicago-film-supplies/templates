@@ -38,12 +38,57 @@ import {
   classifyCitation,
   describesDeletion,
   isHistoryDoc,
+  mainRepoFromGitFile,
   preferOwnRepo,
   resolveSpecifier,
 } from "@cfs/core/utils/citations";
 
 const REPO = new URL("../", import.meta.url).pathname.replace(/\/$/, "");
-const WORKSPACE = new URL("../../", import.meta.url).pathname.replace(/\/$/, "");
+
+/**
+ * 🔴 **`WORKSPACE` cannot be derived from this script's own LOCATION, because a
+ * linked checkout moves the script without moving the repo.**
+ *
+ * It was `new URL("../../", import.meta.url)` — the directory above the
+ * checkout. Right in an ordinary clone, wrong in a linked one, which the harness
+ * puts at `<repo>/.claude/worktrees/<name>`: two levels up is then
+ * `<repo>/.claude/worktrees`, so every sibling-repo lookup misses, {@link rel}
+ * strips the wrong prefix, and citations to files that plainly exist report
+ * BROKEN. **CI's `.github/workflows/templates-lint.yml` runs this**, and this
+ * runner gates on `broken || ambiguous` unconditionally — there is no `--strict`
+ * to be spared by.
+ *
+ * ⭐ **This is the SECOND half of one bug, and the first half is the `worktrees`
+ * entry in {@link SKIP} below.** That one stops the MAIN checkout treating a
+ * linked one as a second copy of every path — being scanned FROM OUTSIDE. This
+ * is running FROM INSIDE. Neither half is visible from the other side, which is
+ * why closing the first in all three runners on 2026-09-04 did not reveal this
+ * one in any of them.
+ *
+ * ⚠️ **And that skip is exactly why the own repo must index from {@link REPO}.**
+ * Walking `${WORKSPACE}/templates` now deliberately skips the linked checkout,
+ * so indexing the own repo by NAME would resolve citations against the MAIN
+ * checkout — reporting a file that exists only here as broken.
+ *
+ * An ordinary clone has a `.git` DIRECTORY, so `isFile` is false and this is the
+ * identity: unchanged behaviour, which is what the canonical run must stay.
+ */
+const MAIN_REPO = (() => {
+  try {
+    const marker = `${REPO}/.git`;
+    if (Deno.statSync(marker).isFile) {
+      const main = mainRepoFromGitFile(Deno.readTextFileSync(marker));
+      if (main) return main;
+    }
+  } catch {
+    // No marker at all (a tarball, a vendored copy). `REPO` is the honest
+    // answer, and is what this always did.
+  }
+  return REPO;
+})();
+const WORKSPACE = MAIN_REPO.replace(/\/[^/]+$/, "");
+/** This repo's workspace NAME — `templates`, never a linked checkout's directory. */
+const OWN_REPO = MAIN_REPO.slice(WORKSPACE.length + 1);
 const REPOS = ["core", "api-cloudrun", "manager", "templates", "erp-spec", "claude-plugins"];
 const SKIP = new Set([
   "node_modules",
@@ -77,6 +122,17 @@ const SKIP = new Set([
 const verbose = Deno.args.includes("--verbose");
 const argFiles = Deno.args.filter((a) => !a.startsWith("--"));
 
+/**
+ * Canonical indexed path → where the bytes actually are.
+ *
+ * Only ever populated for the own repo when this runs from a linked checkout.
+ * The index MUST hold canonical `${WORKSPACE}/<repo>/…` paths, because a
+ * repo-qualified citation resolves by `endsWith("/templates/CLAUDE.md")` — a
+ * linked checkout's real path ends in its own directory name, matches nothing,
+ * and turns every self-qualified citation into a false BROKEN.
+ */
+const REAL_PATH = new Map<string, string>();
+
 const byBasename = new Map<string, string[]>();
 const allPaths: string[] = [];
 const presentRepos = new Set<string>();
@@ -89,15 +145,17 @@ const presentRepos = new Set<string>();
  * 2026-08-23 and would have crashed on its first CI run, where five of the six
  * repos are absent by construction.
  */
-async function index(dir: string): Promise<boolean> {
+async function index(dir: string, presentAs = dir): Promise<boolean> {
   try {
     for await (const e of Deno.readDir(dir)) {
       if (SKIP.has(e.name)) continue;
       const p = `${dir}/${e.name}`;
-      if (e.isDirectory) await index(p);
+      const shown = `${presentAs}/${e.name}`;
+      if (e.isDirectory) await index(p, shown);
       else if (e.isFile) {
-        byBasename.set(e.name, [...(byBasename.get(e.name) ?? []), p]);
-        allPaths.push(p);
+        if (shown !== p) REAL_PATH.set(shown, p);
+        byBasename.set(e.name, [...(byBasename.get(e.name) ?? []), shown]);
+        allPaths.push(shown);
       }
     }
   } catch {
@@ -106,7 +164,13 @@ async function index(dir: string): Promise<boolean> {
   return true;
 }
 for (const r of REPOS) {
-  if (await index(`${WORKSPACE}/${r}`)) presentRepos.add(r);
+  // The own repo indexes from THIS checkout — see {@link MAIN_REPO} for why the
+  // workspace copy is the wrong source when that checkout is a linked one — but
+  // is PRESENTED at its canonical path, so a repo-qualified citation still
+  // resolves. See {@link REAL_PATH}.
+  if (await index(r === OWN_REPO ? REPO : `${WORKSPACE}/${r}`, `${WORKSPACE}/${r}`)) {
+    presentRepos.add(r);
+  }
 }
 const absentRepos = REPOS.filter((r) => !presentRepos.has(r));
 
@@ -174,7 +238,28 @@ async function docsToCheck(): Promise<string[]> {
   return out.filter((f) => !isHistoryDoc(f));
 }
 
-const rel = (p: string) => p.replace(`${WORKSPACE}/`, "");
+/**
+ * A real path as the workspace NAMES it.
+ *
+ * ⚠️ **This has to apply to the SCANNED DOCUMENT too, not just the index.**
+ * `relDoc` is the {@link EXEMPT} key, the report heading and every broken-list
+ * entry — so in a linked checkout the report prints
+ * `templates/.claude/worktrees/<name>/…` for a file whose citation is about
+ * `templates/…`, and the first exemption anyone adds is permanently
+ * undischargeable: its both-directions check reports *"matched NOTHING: the
+ * citation is gone"* about a citation sitting untouched in the file.
+ *
+ * `EXEMPT` is empty here today, so that half is LATENT — the report-prefix half
+ * is not. api-cloudrun found this second, after fixing the index alone left
+ * exactly that class standing, and core has it live because its one exemption
+ * sits inside a scan root.
+ *
+ * In an ordinary clone `REPO === ${WORKSPACE}/${OWN_REPO}`, so this is the
+ * identity and nothing changes.
+ */
+const canonical = (p: string) =>
+  p.startsWith(`${REPO}/`) ? `${WORKSPACE}/${OWN_REPO}/${p.slice(REPO.length + 1)}` : p;
+const rel = (p: string) => canonical(p).replace(`${WORKSPACE}/`, "");
 
 /**
  * Dead citations allowed to stand for a stated reason, checked in BOTH
@@ -189,7 +274,10 @@ const lineCounts = new Map<string, number>();
 async function lineCount(f: string): Promise<number> {
   const hit = lineCounts.get(f);
   if (hit !== undefined) return hit;
-  const n = (await Deno.readTextFile(f)).split("\n").length;
+  // Through {@link REAL_PATH}: an indexed path is CANONICAL, and in a linked
+  // checkout the own repo's canonical path is not where the bytes are — the read
+  // would throw on a citation carrying a `:N`.
+  const n = (await Deno.readTextFile(REAL_PATH.get(f) ?? f)).split("\n").length;
   lineCounts.set(f, n);
   return n;
 }
@@ -242,7 +330,12 @@ for (const doc of await docsToCheck()) {
       resolved.includes("/")
         ? allPaths.filter((f) => f.endsWith(`/${resolved}`))
         : byBasename.get(resolved) ?? [],
-      `${REPO}/`,
+      // ⚠️ The CANONICAL own-repo prefix, not `${REPO}/`. Candidates are indexed
+      // canonically (see {@link REAL_PATH}), so in a linked checkout none of
+      // them starts with the physical `REPO` path — the narrowing silently
+      // stops narrowing, and every bare basename templates shares with a
+      // sibling goes AMBIGUOUS, which this runner fails on unconditionally.
+      `${WORKSPACE}/${OWN_REPO}/`,
     );
 
     let lineOutOfRange = false;
