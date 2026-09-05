@@ -405,6 +405,23 @@ than red — the run was cancelled before it reached a verdict, which is not the
 same fact as a passing capture. The authoritative verdict is the newest run on
 the head sha, which is also what branch protection evaluates.
 
+### ⭐ The fixture RULES live in core now, not in this repo
+
+`scripts/lint-fixtures.ts` is a **thin disk adapter** as of templates#195 Phase 3.
+The rules are `lintFixtureSet` / `lintFixture` in `@cfs/core/utils/template-lint`,
+so the API and the manager can warn *before* CI does rather than an author first
+hearing about a finding on a pull request. ⚠️ **A rule added to the script rather
+than to core is a second implementation of one rule** — and the drift would be
+invisible, because CI runs the script and the API runs the fold.
+
+⭐ **Families now come from `templates/*.meta.json`, not from `fixtures/` dirs**,
+and that is the one behavioural change. The old shape could not express "this
+registered family has no fixtures at all": `packing-list` registered with zero of
+each while the success line read *"23 fixture(s) across 2 family(ies)"* — four
+families existing, one of them rendering in production ungated. A family
+mid-build is still **not a finding**; it is now printed. Measured 2026-09-05:
+`packing-list` and `receipt` are both in that state.
+
 ### ⭐ The lints scope the BLAME, never the DETECTION
 
 Both lints scan the **whole tree** on every run, in every mode. That is not a

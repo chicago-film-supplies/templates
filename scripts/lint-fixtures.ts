@@ -1,144 +1,74 @@
 /**
- * Fixture lint — the gate that was missing.
+ * Fixture lint — the DISK ADAPTER.
  *
- * Fixtures were only ever validated on the WRITE path (`saveFixture` /
- * `captureFixture` in the API). Nothing checked them at rest, so both committed
- * fixtures had been invalid in git for months — they rendered fine and only
- * exploded when an operator tried to save an edit, reporting a wall of failures
- * they had not caused. A fixture hand-committed through git bypassed the only
- * gate that existed.
+ * ⭐ **The rules are not here any more.** They live in
+ * `@cfs/core/utils/template-lint` as a pure fold, so the API and the manager can
+ * warn before CI does instead of an author first hearing about a schema break, a
+ * PII leak, a missing coverage argument, an orphaned golden or an undeclared
+ * param key on a pull request — after the work is committed, released and
+ * pushed. templates#195.
  *
- * The checks below all scan the WHOLE tree rather than the PR's changed files:
- * a `@cfs/core` bump or a `collection_source` flip changes no fixture file, and
- * that is exactly the drift this exists to catch. (Deliberately not counted
- * here — the set has changed once already, when #187 retired check 6, and a
- * number in a docblock is the thing that rots.)
+ * What is left in this file is I/O and presentation: read the tree, hand the
+ * fold a completely-described family list, print what comes back. **Keep it that
+ * way.** A rule added here rather than in core is a second implementation of one
+ * rule, which is the thing the extraction removed — and the drift would be
+ * invisible, because CI runs this copy and the API runs the other.
  *
- * ⭐ **`--blame-changed-files` scopes the BLAME, never the scan.** It partitions
- * the findings into ones this diff is accountable for and ones it is not; every
- * check still runs over every family in every mode. #187 is why that asymmetry
- * is load-bearing: `beta.307` deleted `DocumentOrganizationSnapshot.name` and
- * all 23 fixtures stopped satisfying their schemas **while the bump touched
- * zero fixture files**, so a changed-files-scoped SCAN would have passed it.
- * See `scripts/affectedFamilies.ts`, whose path table deliberately disagrees
- * with `visual-diff.yml`'s on four rows.
+ * Still `--allow-read` only.
  *
- *   1. SCHEMA — every `fixtures/<git_path>/*.json` parses against
- *      `schemaFor(<collection_source>)`, read from the family's sidecar. This is
- *      the same schema `saveFixture` enforces with, so what passes here can be
- *      saved from the manager.
+ * ⭐ **Families come from `templates/*.meta.json`, NOT from `fixtures/` dirs.**
+ * That is the one behavioural change and it is the point of the extraction. The
+ * old shape derived the family list from whatever had a fixture directory, so a
+ * registered family with no fixtures was not merely unchecked but inexpressible:
+ * `packing-list` registered with zero fixtures and zero goldens while this
+ * script's success line read "23 fixture(s) across 2 family(ies)" — four
+ * families existing and one of them rendering in production ungated. A family
+ * mid-build is still deliberately NOT a finding; it is now reported.
  *
- *   2. PII — no customer emails or phone numbers in fixture JSON. `saveFixture`
- *      validates but never calls `applyPii`, so the manager's fixture editor is
- *      an unsanitized write path into git; the capture flow sanitizes, a paste
- *      into the textarea does not.
- *
- *   3. REASON — every sidecar `fixtures[]` entry says what its fixture covers
- *      that no other one does. A fixture set is a coverage argument, and the
- *      fixture file is a strict source document with nowhere to write it down,
- *      so the sidecar is the only place it can live.
- *
- *   4. GOLDEN PARITY — on any branch where a family has graduated (its
- *      `goldens/<branch>/<git_path>/` holds at least one PNG), every fixture has
- *      a baseline and every baseline has a fixture. A fixture with no golden
- *      renders and then yields `no-golden`, which is an informational PASS — so
- *      the gate says nothing about exactly the branch the fixture was added to
- *      cover. `billing-foreign-country` landed on `main` in #113 with no
- *      baseline and stayed ungated for two days until #126 blessed it, and
- *      `evening-boundary` sat in the same state inside the draft that became
- *      #126 — nothing but a hand-count stood between it and shipping the same
- *      way. That is the state this makes unrepresentable, because counting PNGs
- *      against `ls fixtures/<git_path>/` is what kept failing.
- *
- *   5. PARAM COVERAGE — (a) every param state a fixture claims is one the family
- *      declares in `params[]`, and (b) on a graduated family, every declared
- *      boolean param has at least one fixture rendering each of its states.
- *      A golden freezes ONE rendering per fixture, at the state that fixture
- *      declares (api-cloudrun#608) — so a param nothing overrides is frozen at
- *      its default and its other state is ungated for the LIFE of the family,
- *      reachable by no threshold, no re-bless and no number of extra fixtures,
- *      because every one of them renders at the default too. That is measured,
- *      not hypothetical: `hide_zero_priced_components: true` hides component
- *      rows and rolls their money onto the parent, and no golden had ever been
- *      taken of it on either family declaring it.
- *      ⚠️ It does NOT claim the coverage is GOOD — only that each state is
- *      rendered by something. Whether the fixture chosen exercises the part of
- *      the document the param moves is the `description`'s argument, i.e.
- *      check 3's.
- *
- *   6. **RETIRED** — ORG DERIVATION compared a fixture's `organization.name`
- *      against `composeOrgName(organization.path)`. `@cfs/core@10.0.0-beta.307`
- *      DELETED that scalar from the three frozen document schemas
- *      (api-cloudrun#780), so there is nothing left to compare: the templates
- *      compose from the chain and the chain is the only copy.
- *      ⭐ **It was retired because it said so itself.** The check counted what
- *      it had compared and printed the number on the green line, so the run
- *      after the fixtures were stripped read `0 org chain(s) compose to their
- *      own name` — a check passing over an empty set, which is exactly the
- *      vacuity that counter existed to make visible. A check that cannot fail
- *      is not coverage.
- *      ⚠️ **The defect it caught is NOT fixed** — `fixturePiiStrategy` still
- *      seeds on `HMAC(salt, fieldPath, value)`, so one real value at two paths
- *      still masks to two different fakes (api-cloudrun#778). It simply no
- *      longer has two org-name paths to desynchronize. Any future field
- *      duplicated across paths in a fixture needs its own guard.
- *
- * Fails CLOSED: a fixtures dir with no sidecar, a sidecar with no
- * `collection_source`, an unmapped collection, or sidecar/file drift are all
- * errors. Checks 4 and 5b are the deliberate exceptions, and both fail OPEN by
- * design: a family with NO baseline on a branch has not graduated, and saying
- * so on every PR would be noise rather than a finding (`goldens/sandbox/` holds
- * nothing at all — templates#118). ⚠️ **Check 5a is NOT graduation-scoped** —
- * an undeclared param key is a typo rather than a coverage judgement, and it is
- * not survivable downstream: the golden gate hands a fixture's state straight
- * to core's `resolveRenderParams`, which throws on an unknown key and takes the
- * family's whole visual-diff run with it.
- *
- * An unmapped collection is caught BEFORE the lookup is used — the original
- * shape read `schemas[key]`, got `undefined`, and would otherwise have thrown a
- * bare TypeError on `.safeParse`. ⚠️ **The lookup is `templateSchemaFor`, not
- * the Firestore collection registry**: a template source is a document SHAPE and
- * need not be a collection at all (api-cloudrun#700), and resolving it through
- * `isCollectionName` failed closed on `movement-sessions` — the receipt's
- * source, which the API's own fixture write path validates fine.
+ * ⚠️ **The scan is whole-tree in every mode; `--blame-changed-files` scopes only
+ * which findings BLOCK.** #187 is why: `beta.307` deleted
+ * `DocumentOrganizationSnapshot.name` and all 23 fixtures stopped satisfying
+ * their schemas **while the bump touched zero fixture files**, so a
+ * changed-files-scoped SCAN would have passed that PR. See
+ * `scripts/affectedFamilies.ts`, whose path table deliberately disagrees with
+ * `visual-diff.yml`'s on four rows.
  *
  * Run: deno task lint:fixtures
  */
-import { templateSchemaFor } from "@cfs/core/schemas";
-import { composeOrgName } from "@cfs/core/utils/organizations";
+import {
+  type LintFamily,
+  type LintFixture,
+  lintFixtureSet,
+  type LintGoldenTree,
+  type LintSidecar,
+} from "@cfs/core/utils/template-lint";
 import { BLAME_FLAG, readBlameSet } from "./affectedFamilies.ts";
 
 /**
  * REFUSE arguments rather than ignore them.
  *
- * ⚠️ This script scans `fixtures/` relative to the CWD and has never read argv.
- * That is fine until someone believes otherwise — and someone did. The
- * GitHub-Actions-spend plan gated publishing this repo (an IRREVERSIBLE
- * disclosure) on "point the lint at every historical blob":
+ * ⚠️ This script has never read a positional argv, and that is fine until
+ * someone believes otherwise — and someone did. The GitHub-Actions-spend plan
+ * gated publishing this repo (an IRREVERSIBLE disclosure) on "point the lint at
+ * every historical blob":
  *
  *     git cat-file -p "$o" > /tmp/fx.json
  *     deno run -A scripts/lint-fixtures.ts /tmp/fx.json    # ← argument IGNORED
  *
  * Run as written that loop re-lints the WORKING TREE once per blob and prints
- * `21 fixture(s) … no PII` seventy-two times, never opening a single historical
+ * the same clean line seventy-two times, never opening a single historical
  * object. A vacuous pass reads exactly like a real one, and it was about to
  * discharge a decision that cannot be undone.
  *
  * Ignoring an argument is the silent failure; refusing it is the loud one. Use
  * `scripts/scan-fixture-history.ts` for the history question.
- *
- * ⚠️ **`--blame-changed-files=<path>` is the ONE argument this now takes, and
- * adding it does not soften the rule above** — anything else is still refused
- * with exit 2, and the flag is a *named* one precisely so a stray positional
- * path cannot be mistaken for it. It scopes only which findings BLOCK; the scan
- * stays whole-tree in every mode. See `scripts/affectedFamilies.ts`.
  */
 const unknownArgs = Deno.args.filter((a) => !a.startsWith(BLAME_FLAG));
 if (unknownArgs.length > 0) {
   console.error(
     `lint-fixtures: takes no arguments except ${BLAME_FLAG}<path>, but got ` +
       `${unknownArgs.length} other (${unknownArgs.map((a) => JSON.stringify(a)).join(", ")}).\n\n` +
-      `  It scans fixtures/ relative to the CWD. An argument was previously\n` +
+      `  It scans the tree relative to the CWD. An argument was previously\n` +
       `  IGNORED, so a loop passing one blob at a time silently re-linted the\n` +
       `  working tree and reported clean for history it never read.\n\n` +
       `  For history:  deno task scan:fixture-history\n`,
@@ -149,65 +79,33 @@ if (unknownArgs.length > 0) {
 /**
  * The families this run may BLOCK on, or `null` for "every family" (unscoped).
  *
- * Unscoped is the default and the safe mode: a local run and the `main` push
- * arm both want every finding to count. Scoping is opt-in, per-PR, and only
- * ever turns a failure into a notice.
+ * Unscoped is the default and the safe mode: a local run and the `main` push arm
+ * both want every finding to count. Scoping is opt-in, per-PR, and only ever
+ * turns a failure into a notice.
  */
 const blameSet = await readBlameSet(Deno.args);
 
-interface Problem {
-  /** The family the finding lands on — what makes blame-scoping possible at all. */
-  gitPath: string;
-  text: string;
+// ── Read the tree ───────────────────────────────────────────────────
+
+/** Directory entries of one kind, sorted. A missing directory is not a finding. */
+async function entries(path: string, kind: "dir" | "file"): Promise<string[]> {
+  const out: string[] = [];
+  try {
+    for await (const entry of Deno.readDir(path)) {
+      if (kind === "dir" ? entry.isDirectory : entry.isFile) out.push(entry.name);
+    }
+  } catch { /* absent */ }
+  return out.sort();
 }
 
-const problems: Problem[] = [];
-const note = (gitPath: string, file: string, message: string) =>
-  problems.push({ gitPath, text: `${file}\n    ${message}` });
+const gitPaths = (await entries("templates", "file"))
+  .filter((n) => n.endsWith(".meta.json"))
+  .map((n) => n.slice(0, -".meta.json".length));
 
-// ── Discover ────────────────────────────────────────────────────────
-
-async function* walk(dir: string): AsyncGenerator<string> {
-  for await (const entry of Deno.readDir(dir)) {
-    const path = `${dir}/${entry.name}`;
-    if (entry.isDirectory) yield* walk(path);
-    else if (entry.isFile) yield path;
-  }
-}
-
-interface Sidecar {
-  collection_source?: string;
-  params?: { key: string; type?: string; default?: boolean; required?: boolean }[];
-  fixtures?: {
-    slug: string;
-    label?: string;
-    description?: string;
-    /** The param state this fixture is rendered and golden-gated at (api-cloudrun#608). */
-    params?: Record<string, boolean>;
-  }[];
-}
-
-/**
- * Minimum length for a fixture's reason.
- *
- * The schema (`@cfs/core`'s `FixtureMeta`) requires a non-empty string, which
- * stops the field being absent but not `"x"`. This is the repo-side policy on
- * top of that: a coverage argument is a sentence. Deliberately a small round
- * number rather than a tuned one — it exists to catch a placeholder, not to
- * grade prose.
- */
-const MIN_DESCRIPTION = 40;
-
-let fixtureDirs: string[] = [];
-try {
-  for await (const entry of Deno.readDir("fixtures")) {
-    if (entry.isDirectory) fixtureDirs.push(entry.name);
-  }
-} catch {
-  console.log("lint-fixtures: no fixtures/ directory — nothing to check.");
+if (gitPaths.length === 0) {
+  console.log("lint-fixtures: no templates/*.meta.json — no families to check.");
   Deno.exit(0);
 }
-fixtureDirs = fixtureDirs.sort();
 
 /**
  * The branch trees under `goldens/`, e.g. `["main", "sandbox"]`.
@@ -217,433 +115,112 @@ fixtureDirs = fixtureDirs.sort();
  * beside the branch dirs — this repo keeps a README there — is not a branch.
  * Neither is a finding.
  */
-let goldenBranches: string[] = [];
-try {
-  for await (const entry of Deno.readDir("goldens")) {
-    if (entry.isDirectory) goldenBranches.push(entry.name);
-  }
-} catch { /* no goldens/ tree — nothing has graduated anywhere */ }
-goldenBranches = goldenBranches.sort();
+const goldenBranches = await entries("goldens", "dir");
 
-/** `<branch>/<git_path>` for every tree check 4 actually compared. */
-const graduated: string[] = [];
-
-
-// ── 1. Schema ───────────────────────────────────────────────────────
-
-let checked = 0;
-
-for (const gitPath of fixtureDirs) {
-  const sidecarPath = `templates/${gitPath}.meta.json`;
-
-  let sidecar: Sidecar;
+const families: LintFamily[] = [];
+for (const gitPath of gitPaths) {
+  let sidecar: LintSidecar | null = null;
   try {
-    sidecar = JSON.parse(await Deno.readTextFile(sidecarPath)) as Sidecar;
-  } catch {
-    note(
-      gitPath,
-      `fixtures/${gitPath}/`,
-      `no sidecar at ${sidecarPath} — a fixtures dir must belong to a template family`,
-    );
-    continue;
-  }
+    sidecar = JSON.parse(await Deno.readTextFile(`templates/${gitPath}.meta.json`)) as LintSidecar;
+  } catch { /* `null` is itself the finding the fold reports */ }
 
-  const collection = sidecar.collection_source;
-  if (!collection) {
-    note(gitPath, sidecarPath, "sidecar has no `collection_source` — cannot resolve a schema for its fixtures");
-    continue;
-  }
-
-  // 🔴 `templateSchemaFor`, NOT the Firestore collection registry
-  // (api-cloudrun#700). A template SOURCE names a document SHAPE, and it is not
-  // always a collection: `movement-sessions` is the fold of
-  // `transactions where uuid_session == …` that a receipt renders, and nothing
-  // is stored at that path. Under the old `isCollectionName` guard the receipt
-  // family's very first fixture would have been reported here as an unmapped
-  // collection — failing CLOSED on a source the API happily validates, since
-  // `schemaForCollection` (`api-cloudrun/src/services/templates/fixtureFormat.ts`)
-  // already resolves through this same map. This check exists to agree with the
-  // write path, so it must resolve a source the same way the write path does.
-  //
-  // The truthiness test is back deliberately, and it does NOT undo
-  // api-cloudrun#444's narrowing: `TEMPLATE_COLLECTION_SCHEMAS` is `Partial`, so
-  // `templateSchemaFor` returns `z.ZodType | undefined` and `undefined` IS the
-  // "no schema for this source" answer rather than a lookup that lost its type.
-  // The schema stays the WIDE view — `collection_source` is read out of a
-  // sidecar at runtime, so it can only ever be the whole document union, and
-  // `safeParse` below wants none of it.
-  const schema = templateSchemaFor(collection);
-  if (!schema) {
-    note(
-      gitPath,
-      sidecarPath,
-      `collection_source "${collection}" has no schema in @cfs/core's \`TEMPLATE_COLLECTION_SCHEMAS\``,
-    );
-    continue;
-  }
-
-  const files: string[] = [];
-  for await (const file of walk(`fixtures/${gitPath}`)) {
-    if (file.endsWith(".json")) files.push(file);
-  }
-  files.sort();
-
-  const slugsOnDisk = new Set<string>();
-
-  for (const file of files) {
-    const slug = file.slice(`fixtures/${gitPath}/`.length, -".json".length);
-    if (slug.includes("/")) continue; // nested dirs are not fixtures
-    slugsOnDisk.add(slug);
-    checked++;
-
-    let doc: unknown;
+  // A parse failure is a FINDING, not an exception — so it is handed to the
+  // fold rather than thrown here.
+  const fixtures: LintFixture[] = [];
+  for (const name of await entries(`fixtures/${gitPath}`, "file")) {
+    if (!name.endsWith(".json")) continue;
+    const slug = name.slice(0, -".json".length);
+    const file = `fixtures/${gitPath}/${name}`;
     try {
-      doc = JSON.parse(await Deno.readTextFile(file));
+      fixtures.push({ slug, ok: true, doc: JSON.parse(await Deno.readTextFile(file)) });
     } catch (err) {
-      note(gitPath, file, `not valid JSON: ${err instanceof Error ? err.message : String(err)}`);
-      continue;
-    }
-
-    const parsed = schema.safeParse(doc);
-    if (!parsed.success) {
-      const issues = parsed.error.issues
-        .map((i) => `      ${i.path.join(".") || "<root>"}: ${i.message}`)
-        .join("\n");
-      note(gitPath, file, `does not satisfy the \`${collection}\` schema:\n${issues}`);
-    }
-
-    // ── 6. Org derivation ────────────────────────────────────────────
-    //
-    // Runs whether or not check 1 passed, and on the raw JSON rather than
-    // `parsed.data`: a schema failure and a derivation failure are independent,
-    // and `continue`-ing on the first would hide the second behind it.
-    //
-  }
-
-  // Sidecar <-> file drift, in both directions. `listFixtures` is
-  // files-authoritative, but the sidecar's `fixtures[]` is what gets projected
-  // onto the family doc at publish — so an entry with no file publishes a
-  // fixture that never lists, and a file with no entry loses its label.
-  const slugsInSidecar = new Set((sidecar.fixtures ?? []).map((f) => f.slug));
-  for (const slug of slugsInSidecar) {
-    if (!slugsOnDisk.has(slug)) {
-      note(gitPath, sidecarPath, `\`fixtures[]\` lists "${slug}" but fixtures/${gitPath}/${slug}.json does not exist`);
-    }
-  }
-  for (const slug of slugsOnDisk) {
-    if (!slugsInSidecar.has(slug)) {
-      note(gitPath, sidecarPath, `fixtures/${gitPath}/${slug}.json exists but is not listed in \`fixtures[]\``);
+      fixtures.push({
+        slug,
+        ok: false,
+        parseError: err instanceof Error ? err.message : String(err),
+      });
     }
   }
 
-  // Every entry states WHY the fixture exists. The API enforces this on writes,
-  // but a fixture hand-committed through git bypasses the API entirely — which
-  // is the same hole that let both fixtures sit schema-invalid in `main` for
-  // months, and the reason this script exists at all.
-  for (const entry of sidecar.fixtures ?? []) {
-    const description = entry.description?.trim() ?? "";
-    if (!description) {
-      note(
-        gitPath,
-        sidecarPath,
-        `"${entry.slug}" has no \`description\` — a fixture must record what it ` +
-          `covers that no other fixture does. The fixture file is a strict source ` +
-          `document with nowhere to put a comment, so this is the only place it can be said.`,
-      );
-    } else if (description.length < MIN_DESCRIPTION) {
-      note(
-        gitPath,
-        sidecarPath,
-        `"${entry.slug}" has a ${description.length}-character description — too short ` +
-          `to be a coverage argument (minimum ${MIN_DESCRIPTION}). Say what this fixture ` +
-          `exercises that its siblings do not: ${JSON.stringify(description)}`,
-      );
-    }
-  }
-
-  // Golden parity, in both directions, per branch that has graduated.
-  //
-  // A fixture with no baseline is not a failure anywhere — `goldenDiff` renders
-  // it and returns `no-golden`, an informational PASS — so the one thing the
-  // fixture was added to gate is the one thing the gate stays silent about.
-  // Both misses this catches were exactly that shape, and neither was visible
-  // in a green CI run.
-  //
-  // The `>= 1 PNG` condition is what scopes it: a family with no baseline on a
-  // branch has not graduated there, and reporting every fixture on an empty
-  // tree would bury the real finding. That is also what keeps the empty
-  // `goldens/sandbox/` silent (templates#118) without this check having to know
-  // anything about which branch is which.
-  /**
-   * Whether this family has graduated on ANY branch — check 5b's scope.
-   *
-   * Deliberately "any", not per-branch: a param's coverage is a property of the
-   * FIXTURE SET, which is branch-independent, while a baseline is per-branch.
-   * Asking it once per branch would report the same finding twice.
-   */
-  let graduatedHere = false;
-
+  const goldens: LintGoldenTree[] = [];
   for (const branch of goldenBranches) {
-    const goldenDir = `goldens/${branch}/${gitPath}`;
-
-    const pngs = new Set<string>();
-    try {
-      for await (const entry of Deno.readDir(goldenDir)) {
-        if (entry.isFile && entry.name.endsWith(".png")) {
-          pngs.add(entry.name.slice(0, -".png".length));
-        }
-      }
-    } catch {
-      continue; // no tree for this family on this branch — not graduated
-    }
-    if (pngs.size === 0) continue; // ditto: an empty tree is not a graduation
-
-    graduated.push(`${branch}/${gitPath}`);
-    graduatedHere = true;
-
-    for (const slug of [...slugsOnDisk].sort()) {
-      if (pngs.has(slug)) continue;
-      note(
-        gitPath,
-        `${goldenDir}/${slug}.png`,
-        `missing — \`${gitPath}\` has graduated on \`${branch}\` (${pngs.size} baseline(s)) ` +
-          `but fixtures/${gitPath}/${slug}.json has none, so the visual diff renders it ` +
-          `and then returns \`no-golden\`: an informational PASS. Whatever this fixture ` +
-          `was added to cover is still ungated. Clear it by APPROVING THE RENDERS — the ` +
-          `visual-diff job runs regardless and has already uploaded the candidate, so the ` +
-          `baseline is one press away and it is the same press that clears a \`no-golden\` ` +
-          `verdict.`,
-      );
-    }
-    for (const slug of [...pngs].sort()) {
-      if (slugsOnDisk.has(slug)) continue;
-      note(
-        gitPath,
-        `${goldenDir}/${slug}.png`,
-        `orphaned — no fixtures/${gitPath}/${slug}.json renders it, so nothing will ever ` +
-          `compare against it. Usually a renamed or removed fixture: delete the baseline, ` +
-          `or restore the fixture if the rename was the mistake.`,
-      );
-    }
+    const slugs = (await entries(`goldens/${branch}/${gitPath}`, "file"))
+      .filter((n) => n.endsWith(".png"))
+      .map((n) => n.slice(0, -".png".length));
+    if (slugs.length > 0) goldens.push({ branch, slugs });
   }
 
-  // ── 5. Param coverage ──────────────────────────────────────────────
-
-  const declaredParams = sidecar.params ?? [];
-  const declaredKeys = new Set(declaredParams.map((p) => p.key));
-
-  // 5a. Every key a fixture claims is one the family declares. Unscoped by
-  // graduation on purpose — this is a typo, not a coverage judgement, and the
-  // golden gate does not degrade on it: `resolveGoldenParams` hands the map
-  // straight to core's `resolveRenderParams`, which THROWS on an undeclared
-  // key and takes the whole family's visual-diff run with it. Better here.
-  for (const entry of sidecar.fixtures ?? []) {
-    for (const key of Object.keys(entry.params ?? {})) {
-      if (declaredKeys.has(key)) continue;
-      note(
-        gitPath,
-        sidecarPath,
-        `"${entry.slug}" declares the param state \`${key}\`, which this family does not ` +
-          `declare in \`params[]\`. The golden gate resolves a fixture's state through ` +
-          `core's \`resolveRenderParams\`, which throws on an unknown key — so this fails ` +
-          `the family's whole visual-diff run, not just this fixture. Declared here: ` +
-          `${declaredKeys.size === 0 ? "(none)" : [...declaredKeys].sort().join(", ")}.`,
-      );
-    }
-  }
-
-  // 5b. Every declared boolean param is golden-gated at BOTH of its states.
-  //
-  // A golden freezes ONE rendering per fixture, at the state that fixture
-  // declares (api-cloudrun#608). So a param nothing overrides is frozen at its
-  // default and its other state is ungated for the life of the family —
-  // reachable by no threshold, no re-bless and no number of extra fixtures,
-  // because every one of them renders at the default too. That is not
-  // hypothetical: `hide_zero_priced_components: true` hides component rows and
-  // rolls their money onto the parent, and no golden had ever been taken of it.
-  //
-  // ⚠️ Graduation-scoped, matching check 4 — a family mid-build has not chosen
-  // its fixture set yet, and reddening it on the first capture would be noise
-  // rather than a finding. The cost of that scoping is real and worth naming:
-  // a family that never blesses anything is never asked this question, which is
-  // check 4's job to catch, not this one's.
-  //
-  // ⚠️ What this does NOT claim: that the coverage is GOOD. It says some
-  // fixture renders each state, never that the fixture chosen exercises the
-  // part of the document the param actually moves. That argument is the
-  // `description`, and check 3 is what makes it exist.
-  if (graduatedHere && declaredParams.length > 0) {
-    for (const param of declaredParams) {
-      if (param.type !== undefined && param.type !== "boolean") continue;
-      // A fixture with no override renders at the param's own default — so the
-      // default state is covered by the mere existence of an ordinary fixture.
-      const fallback = param.default ?? false;
-      const covered = new Set<boolean>();
-      for (const slug of slugsOnDisk) {
-        const entry = (sidecar.fixtures ?? []).find((f) => f.slug === slug);
-        covered.add(entry?.params?.[param.key] ?? fallback);
-      }
-      for (const state of [false, true]) {
-        if (covered.has(state)) continue;
-        note(
-          gitPath,
-          sidecarPath,
-          `no fixture renders \`${param.key}\` at \`${state}\`, so that half of this ` +
-            `template is ungated: every golden freezes the other state and a green ` +
-            `visual-diff says nothing about it. No threshold, re-bless or extra fixture ` +
-            `reaches it — a fixture must SAY which state it renders at. Fix by capturing ` +
-            `one (or copying an existing fixture file) and giving its \`fixtures[]\` entry ` +
-            `\`"params": { "${param.key}": ${state} }\`, then approving its render.`,
-        );
-      }
-    }
-  }
+  families.push({ gitPath, sidecar, fixtures, goldens });
 }
 
-// ── 2. PII ──────────────────────────────────────────────────────────
-//
-// Same heuristics as the .eta scan below in the workflow: an email whose domain
-// is not ours, or a US phone number. Fixture contacts must be invented.
+// ── Fold ────────────────────────────────────────────────────────────
 
-const EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
-const PHONE = /(?:\+?1[\s.-]?)?(?:\(\d{3}\)[\s.-]?|\d{3}[\s.-])\d{3}[\s.-]?\d{4}|\b\d{10}\b/g;
-const ALLOWED_EMAIL_DOMAIN = "chicagofilmsupplies.com";
-const CFS_PHONE_DIGITS = new Set(["3128183008"]);
-
-/**
- * 555-0100 through 555-0199 is the block NANP reserves for fiction — the only
- * phone number that belongs in a fixture. Anything else is a real person's line
- * until proven otherwise.
- */
-function isFictionalPhone(digits: string): boolean {
-  return /^\d{3}55501\d{2}$/.test(digits);
-}
-
-/** Item and doc ids are uuids, and a uuid contains digit runs a phone regex bites on. */
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-/**
- * Walk the parsed JSON's STRING leaves, not the raw file text. A fixture is full
- * of numbers that look like phone numbers to a `\b\d{10}\b` regex — every
- * Firestore `_seconds` epoch is exactly ten digits. Scanning values sidesteps
- * the whole class instead of allowlisting each false positive.
- */
-function* stringLeaves(value: unknown, path = ""): Generator<[string, string]> {
-  if (typeof value === "string") {
-    yield [path, value];
-  } else if (Array.isArray(value)) {
-    for (const [i, v] of value.entries()) yield* stringLeaves(v, `${path}[${i}]`);
-  } else if (value !== null && typeof value === "object") {
-    for (const [k, v] of Object.entries(value)) yield* stringLeaves(v, path ? `${path}.${k}` : k);
-  }
-}
-
-for (const gitPath of fixtureDirs) {
-  for await (const file of walk(`fixtures/${gitPath}`)) {
-    if (!file.endsWith(".json")) continue;
-    let doc: unknown;
-    try {
-      doc = JSON.parse(await Deno.readTextFile(file));
-    } catch {
-      continue; // already reported by the schema pass
-    }
-
-    for (const [path, value] of stringLeaves(doc)) {
-      if (UUID.test(value)) continue;
-      for (const match of value.matchAll(EMAIL)) {
-        const domain = match[0].split("@")[1]?.toLowerCase() ?? "";
-        if (domain !== ALLOWED_EMAIL_DOMAIN) {
-          note(gitPath, file, `${path}: email address in a fixture — ${match[0]}`);
-        }
-      }
-      for (const match of value.matchAll(PHONE)) {
-        const digits = match[0].replace(/\D/g, "").replace(/^1(?=\d{10}$)/, "");
-        if (CFS_PHONE_DIGITS.has(digits) || isFictionalPhone(digits)) continue;
-        note(
-          gitPath,
-          file,
-          `${path}: phone number in a fixture — ${match[0]}. Use the 555-01xx fiction block.`,
-        );
-      }
-    }
-  }
-}
+const { findings, tally, ungatedFamilies } = lintFixtureSet({ families });
 
 // ── Report ──────────────────────────────────────────────────────────
 //
-// The scan was whole-tree in every mode. What `--blame-changed-files` changes
-// is only the PARTITION below: a finding in a family this diff touches BLOCKS,
-// and every other finding is printed as a notice that does not affect the exit
-// code. Unscoped (no flag) puts everything in the blocking half — which is what
-// a local run and the `main` push arm both want.
+// The scan was whole-tree in every mode. What `--blame-changed-files` changes is
+// only the PARTITION below: a finding in a family this diff touches BLOCKS, one
+// outside it is a notice.
 
-const blocking = blameSet === null
-  ? problems
-  : problems.filter((p) => blameSet.has(p.gitPath));
-const notices = blameSet === null
-  ? []
-  : problems.filter((p) => !blameSet.has(p.gitPath));
+const blocking = blameSet === null ? findings : findings.filter((f) => blameSet.has(f.gitPath));
+const notices = blameSet === null ? [] : findings.filter((f) => !blameSet.has(f.gitPath));
 
 const scopeLine = blameSet === null
-  ? "unscoped — every finding blocks"
+  ? "unscoped"
   : `blame-scoped to ${blameSet.size === 0 ? "(no family)" : [...blameSet].sort().join(", ")}`;
 
-if (notices.length) {
+/**
+ * ⭐ The EXAMINED counts, which are what make a vacuous run visible.
+ *
+ * Check 6 was retired *cleanly* only because it printed the number it had
+ * compared, so the run after the fixtures were stripped read `0 org chain(s)`. A
+ * check that cannot fail is not coverage, and a counter is what makes one
+ * announce itself.
+ */
+const goldenSummary = tally.goldenTrees.length > 0
+  ? `goldens at parity (${tally.goldenTrees.join(", ")})`
+  : "no graduated golden tree";
+const examined = `${tally.fixtures} fixture(s) across ${tally.families} family(ies), ` +
+  `${tally.descriptions} coverage argument(s), ${goldenSummary}, ` +
+  `${tally.paramStates} param state(s) asked`;
+
+// Reported, never a finding: a family mid-build is legitimate, and reddening it
+// on registration would block the very PR that creates it. Printing it is what
+// the old shape could not do at all.
+if (ungatedFamilies.length > 0) {
   console.log(
-    `lint-fixtures: ${notices.length} pre-existing finding(s) in families this ` +
-      `change does not touch. Reported, not blocking — but they are red on \`main\`:\n`,
+    `\nⓘ ${ungatedFamilies.length} registered family(ies) have NO fixture, so nothing ` +
+      `golden-gates them: ${ungatedFamilies.join(", ")}.\n` +
+      `  Not a finding — a family mid-build is expected — but they render in ` +
+      `production ungated.\n`,
   );
-  for (const problem of notices) console.log(`  [${problem.gitPath}] ${problem.text}\n`);
 }
 
-if (blocking.length) {
-  console.error(`lint-fixtures: ${blocking.length} problem(s) — ${scopeLine}\n`);
-  for (const problem of blocking) console.error(`  [${problem.gitPath}] ${problem.text}\n`);
-  console.error(
-    "A fixture must satisfy the same schema the API enforces on save, or an\n" +
-      "operator cannot edit it from the manager — they get a 422 listing failures\n" +
-      "they did not cause. It must also say why it exists: a fixture set is a\n" +
-      "coverage argument, and the sidecar is the only place that can be written.\n" +
-      "\n" +
-      "And once a family has a baseline on a branch, every fixture needs one:\n" +
-      "a fixture with no golden is rendered and then passed informationally, so\n" +
-      "it buys no coverage at all. Approving the renders is what clears that.\n" +
-      "\n" +
-      "A declared param needs a fixture at EACH of its states, for the same\n" +
-      "reason one rung down: a golden freezes one rendering per fixture, so a\n" +
-      "state nothing declares is never rendered by anything and a green run\n" +
-      "says nothing about it. More fixtures do not help — they all render the\n" +
-      "default. One of them has to say it renders the other state.\n" +
-      "\n" +
-      "⚠️ If a @cfs/core pin bump is what reddened this: core has DELETED or\n" +
-      "TIGHTENED a field the stored fixtures still carry, and these schemas are\n" +
-      "strictObjects, so a removed key fails exactly as hard as a missing one.\n" +
-      "beta.307 did that to all 23 fixtures at once while touching zero fixture\n" +
-      "files (#187). Fix the fixtures in the SAME PR — never force the bump past\n" +
-      "this check.\n",
-  );
+for (const finding of notices) {
+  console.log(`  ⓘ [${finding.gitPath}] ${finding.check}  ${finding.file}\n     ${finding.message}\n`);
+}
+
+if (blocking.length > 0) {
+  console.error(`\nlint-fixtures: ${blocking.length} finding(s).\n`);
+  for (const finding of blocking) {
+    console.error(`  [${finding.gitPath}] ${finding.check}  ${finding.file}\n     ${finding.message}\n`);
+  }
+  console.error(`Examined ${examined} (${scopeLine}).`);
   Deno.exit(1);
 }
 
-const goldenSummary = graduated.length
-  ? `goldens at parity (${graduated.join(", ")})`
-  : "no graduated golden tree";
-
 // ⚠️ The green line must not assert what the notices above contradict. With an
 // out-of-scope finding outstanding the tree is NOT clean — this run simply did
-// not hold the author of it accountable — and printing "schema OK, no PII,
-// goldens at parity" over a real failure is exactly the vacuous pass this
-// script's own argv refusal exists to prevent one flavour of.
-if (notices.length) {
+// not hold the author of it accountable — and printing a clean summary over a
+// real failure is the vacuous pass this script's own argv refusal exists to
+// prevent one flavour of.
+if (notices.length > 0) {
   console.log(
-    `lint-fixtures: ${checked} fixture(s) across ${fixtureDirs.length} family(ies) — ` +
-      `NOT clean: ${notices.length} finding(s) above, all outside this change's blame ` +
-      `scope, so this run passes. The \`main\` push arm runs unscoped and will be red ` +
-      `until they are fixed.`,
+    `lint-fixtures: ${examined} — NOT clean: ${notices.length} finding(s) above, all ` +
+      `outside this change's blame scope (${scopeLine}), so this run passes. The ` +
+      `\`main\` push arm runs unscoped and will be red until they are fixed.`,
   );
 } else {
-  console.log(
-    `lint-fixtures: ${checked} fixture(s) across ${fixtureDirs.length} family(ies) — ` +
-      `schema OK, no PII, ${goldenSummary}, every declared param state rendered.`,
-  );
+  console.log(`lint-fixtures: ${examined} — clean. (${scopeLine})`);
 }
