@@ -1,0 +1,121 @@
+/* packing-list.css — what is TRUE OF A PACKING LIST and of nothing else.
+
+   Almost nothing, which is the point, and it is the same point `receipt.css`
+   and `invoice.css` make: the document chrome — the page grid, the alignment
+   edges, the letterhead, the table rules, #details, #destinations and #items —
+   lives in `styles/base.css` and reaches this family through the `base`
+   component. A family is overlaid from `base.css` plus its own sheet and
+   nothing else (`ownsTemplatePath`), so anything copied here would be a second
+   copy that drifts.
+
+   A packing list has no #totals block and no money column at all, so it needs
+   none of the rules those carry. It DOES have #destinations, which is what
+   separates it from the receipt. */
+
+/* THE PACKING LIST'S OWN ROOT SIZE, matched to the quote, the invoice and the
+   receipt deliberately rather than inherited by accident.
+
+   `base.css` defaults the root to 10px; every customer-facing document opts
+   down to 9px so they read as the same company's paperwork at the same
+   density, and this document travels in the same box as the goods an invoice
+   later bills. Everything under the root is em/rem — including `--label-col` —
+   so this one declaration sets the whole document's scale coherently.
+
+   ⚠️ The second reason is the FOOTER, and it is why this is not a free choice.
+   `partials/shared/footer.eta` carries no font-size of its own: it inherits the
+   document's root through the overlay `api-cloudrun` injects into that isolated
+   frame (`injectPartDefaults`), while its `padding-top: 12px` stays absolute
+   because the gap above the band is a fact about the PAGE. The band's fit
+   inside `margin_bottom: 0.62in` was measured at a 9px root, and a 10px root
+   grows the two footer rows by ~2.5pt, eating into that clearance. Neither the
+   golden gate nor `deno task preview` renders that frame (templates#137), so a
+   larger root here would be legible in a warehouse and unverified at the paper
+   edge — the same trade `receipt.css` records and declines. */
+html {
+  font-size: 9px;
+}
+
+/* The Qty column: a count, not prose. `font-variant-numeric` rather than a
+   monospace stack — the digits line up in a column without changing the
+   typeface mid-document. `.center` (base.css) does the alignment; this is only
+   about the glyphs. Same rule the receipt carries for the same reason. */
+#items th.center,
+#items td.center {
+  font-variant-numeric: tabular-nums;
+}
+
+/* The ORDER banner, and the reason it needs a rule the other families' banners
+   do not.
+
+   Every other document is one order deep, so its banners divide a level BELOW
+   the document (destinations on a quote, groups inside those). This one's top
+   banner divides the document itself: the rows under `Order #1042` belong to a
+   different customer job than the rows under `Order #1043`, and a picker
+   reading a mis-attributed row hands one production's gear to another. So it is
+   separated from what precedes it rather than merely labelled — the visual
+   weight is doing safety work, not decoration.
+
+   `border-top` on the cell rather than a margin: these are rows under
+   `table-layout: fixed`, where a margin does not apply. */
+#items tr.order-banner > td {
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule, #999);
+}
+
+/* Three banner levels nest inside one table — order, destination, group — and
+   each has to read as subordinate to the one above at arm's length on a loading
+   dock, which is the one place this document is read. The indent is what carries
+   the hierarchy; base.css already supplies the weight. */
+#items tr.destination-banner > td {
+  padding-left: 1rem;
+}
+
+#items tr.group-banner > td {
+  padding-left: 2rem;
+  font-style: italic;
+}
+
+/* The first order banner needs no rule above it — the table header is already
+   the boundary, and a second line there reads as a stray. */
+#items tbody > tr.order-banner:first-child > td {
+  padding-top: 0;
+  border-top: none;
+}
+
+/* The document total closes the table. It restates `PickSheet.quantity`, which
+   the #details block also prints — deliberately, because the two are read at
+   different moments: #details before picking starts, this after the last row
+   has been checked off. */
+#items tr.grand-total > td {
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--rule, #999);
+}
+
+/* The scope line — what this whole sheet is an answer to, printed once under
+   the letterhead. It carries the leg, so it is the sentence that stops a
+   delivery note being mistaken for a collection note. */
+#scope {
+  margin-bottom: 0.6rem;
+}
+
+/* ⚠️ A NOTICE and the missing-order list are EXCEPTIONS, and they are styled to
+   look like exceptions.
+
+   `PickSheet.missing_order_uids` names orders in the scope whose fulfillment
+   document could not be read — `bookings` and the projection disagree, which is
+   a finding rather than a display problem. Printing it quietly would defeat the
+   point: the document is short and the person holding it is the only one in a
+   position to notice. */
+#exceptions {
+  margin-top: 1.4rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--rule, #999);
+}
+
+#exceptions p {
+  margin: 0;
+}
+
+#exceptions p + p {
+  margin-top: 0.4rem;
+}

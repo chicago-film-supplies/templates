@@ -1,0 +1,23 @@
+{
+  "display_name": "Packing List",
+  "collection_source": "pick-sheets",
+  "collection_target": "packing_lists",
+  "surfaces": [
+    "fulfillment"
+  ],
+  "depends_on": {
+    "components": [
+      "base"
+    ]
+  },
+  "params": [],
+  "fixtures": [],
+  "render": {
+    "margin_top": 0.5,
+    "margin_bottom": 0.62,
+    "margin_left": 0.5,
+    "margin_right": 0.5,
+    "filename": "Packing List<% if (it.doc.leg === 'collection') { %> - Collection<% } else { %> - Delivery<% } %> - <%= it.doc.scope.name %>",
+    "footer": "partials/shared/footer.eta"
+  }
+}
