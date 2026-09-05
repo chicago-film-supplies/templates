@@ -10,7 +10,6 @@
       "base"
     ]
   },
-  "params": [],
   "fixtures": [
     {
       "slug": "multi-order-delivery",
