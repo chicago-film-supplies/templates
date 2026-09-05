@@ -275,7 +275,17 @@ const returnSpan = addressColumnCount - addressBoundary;
        later must not silently change direction because custody moved underneath
        it. */%>
   <strong><%= legLabel %></strong> —
-  <%= sheet.scope.kind === "organization" ? "all open work for" : "everything at" %>
+  <%/* Three arms, one per `PickSheetScope.kind`, and the third is NOT a
+       near-duplicate of the others. `order` is the DEGENERATE scope
+       (`@cfs/core@10.0.0-beta.333`, api-cloudrun#821): the sheet is ONE
+       shipment, so "everything at" reads as a place and "all open work for"
+       claims a roll-up this document is not. The label is the ORGANISATION's
+       either way — the order itself is named on its own banner below. */%>
+  <%= sheet.scope.kind === "order"
+    ? "for"
+    : sheet.scope.kind === "organization"
+    ? "all open work for"
+    : "everything at" %>
   <strong><%= sheet.scope.name %></strong>
 </p>
 
@@ -298,7 +308,16 @@ const returnSpan = addressColumnCount - addressBoundary;
            `order_count` rather than `orders.length` deliberately: they are equal
            here by assertion, and naming the scope-wide one keeps the document
            saying what it MEANS rather than what it happens to hold. */%>
-      <td><%= sheet.order_count %></td>
+      <%/* 🔴 The NUMBER when there is exactly one order, not the count.
+           `showOrderBanner` is `orders.length > 1`, so a single-order sheet
+           emits no order banner — and before this it named its order NOWHERE:
+           the letterhead carries the customer, this cell carried the literal
+           "1", and "Order: 1" reads as order #1 besides. An `order`-scoped
+           packing list is single-order by construction, so that gap was the
+           whole document failing to say which order it accompanies. */%>
+      <td><%= sheet.order_count === 1 && sheet.orders[0]
+        ? `#${sheet.orders[0].number}`
+        : sheet.order_count %></td>
       <td><%= sheet.quantity %></td>
     </tr>
   </tbody>
