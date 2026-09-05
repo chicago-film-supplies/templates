@@ -15,6 +15,27 @@ So an unblessed fixture can no longer reach `main`. What is still missing is
 everything *before* CI: the author finds out on a pull request, after the work is
 committed, released and pushed.
 
+⚠️ **There are FOUR families now, and the fourth is the one the port has to think
+about.** `packing-list` registered 2026-09-05 with **zero fixtures and zero
+goldens**. `lint-fixtures.ts` iterates directories under `fixtures/`, so it never
+examines that family at all — its success line reads *"23 fixture(s) across 2
+family(ies)"* while four families exist and one of them renders in production
+ungated. **That behaviour is deliberate and must be preserved in the port**: a
+family mid-build is not a finding. But it stopped being hypothetical the moment a
+real family shipped in that state, so `lintFixtureSet` must take the family list
+and the fixture list as *separate* inputs rather than deriving families from
+whatever has a fixture directory — otherwise the fold cannot even express "this
+family is ungated", which is the question a caller will eventually want to ask.
+
+⚠️ **Adding a core enum member is DEPLOY-ORDERED, and it bit twice** — see
+templates#156 and `CLAUDE.md`. It is not a hazard for Phase 3 (`lintFixtureSet` is
+a new *export*, not a new enum member), and Phase 4's `golden_last_attempt` is an
+*added optional* field, which is the benign direction: a `z.strictObject` refuses
+an undeclared key present in storage but accepts a declared key absent from it.
+Know this before you reason about it from scratch — and if either phase does grow
+a new enum member, check what **prod's deployed release** accepts, not `main` and
+not this repo's pin.
+
 ## What is missing
 
 `scripts/lint-fixtures.ts` is the only implementation of the fixture rules and it
