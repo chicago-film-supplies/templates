@@ -91,7 +91,9 @@
 				"contact": {
 					"uid": "ContactDanaRuiz00001",
 					"first_name": "Dana",
+					"middle_name": null,
 					"last_name": "Ruiz",
+					"pronunciation": null,
 					"name": "Dana Ruiz",
 					"phones": [
 						"(312) 555-0142"
@@ -123,7 +125,9 @@
 				"contact": {
 					"uid": "ContactDanaRuiz00001",
 					"first_name": "Dana",
+					"middle_name": null,
 					"last_name": "Ruiz",
+					"pronunciation": null,
 					"name": "Dana Ruiz",
 					"phones": [
 						"(312) 555-0142"
@@ -194,7 +198,9 @@
 				"contact": {
 					"uid": "ContactMarcusWebb001",
 					"first_name": "Marcus",
+					"middle_name": null,
 					"last_name": "Webb",
+					"pronunciation": null,
 					"name": "Marcus Webb",
 					"phones": [
 						"(312) 555-0188"
@@ -226,7 +232,9 @@
 				"contact": {
 					"uid": "ContactMarcusWebb001",
 					"first_name": "Marcus",
+					"middle_name": null,
 					"last_name": "Webb",
+					"pronunciation": null,
 					"name": "Marcus Webb",
 					"phones": [
 						"(312) 555-0188"
