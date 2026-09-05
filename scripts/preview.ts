@@ -23,6 +23,7 @@ import * as orderUtils from "@cfs/core/utils/orders";
 import * as invoiceUtils from "@cfs/core/utils/invoices";
 import * as fulfillmentUtils from "@cfs/core/utils/fulfillments";
 import * as sessionUtils from "@cfs/core/utils/sessions";
+import * as pickSheetUtils from "@cfs/core/utils/pickSheets";
 import * as dateUtils from "@cfs/core/utils/dates";
 import * as iconUtils from "@cfs/core/utils/icons";
 import { CFS_LOGO_SVG } from "@cfs/core/utils/icons";
@@ -74,6 +75,18 @@ const UTIL_MODULES: Record<string, unknown> = {
   // sessions}` and gets NO `it.orders`, so this entry is the only thing that
   // gives a receipt any document helpers at all.
   sessions: sessionUtils,
+  // `pick-sheets` is the SECOND source with no Firestore collection behind it,
+  // and the first whose document spans MANY stored documents rather than folding
+  // one: a multi-order packing list renders every open line at one destination
+  // or with one organization, ACROSS orders. A `pick-sheets`-sourced family
+  // resolves to `{dates, money, icons, pickSheets}` and gets NO `it.orders`, so
+  // this entry is the only thing that gives it document helpers at all.
+  //
+  // ⚠️ The key is camelCase where every sibling is kebab, and that is forced
+  // rather than a style choice: injection keys on the `TEMPLATE_COLLECTION_UTILS`
+  // value, which has to be a valid `it.<ns>` identifier, and `it.pick-sheets`
+  // does not parse. See the module docstring in `core/src/utils/pickSheets.ts`.
+  pickSheets: pickSheetUtils,
   dates: dateUtils,
   money: moneyUtils,
   icons: iconUtils,
