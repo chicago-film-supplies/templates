@@ -54,6 +54,24 @@ const SKIP = new Set([
   // Rendered PNGs and their diffs — captured output, not authored content.
   "goldens",
   "test-results",
+  // 🔴 **An agent worktree is a full SECOND COPY of a sibling repo, and this
+  // scanner walks all six.** Claude Code puts them at
+  // `<repo>/.claude/worktrees/<name>`, so without this every path in that repo
+  // gains a duplicate resolution target and citations that resolved fine for
+  // months report AMBIGUOUS — which fails `--strict`, which is what CI and the
+  // local gate run. **It breaks for citations nobody touched**, in files nobody
+  // edited: measured 2026-09-04, one worktree in `api-cloudrun` made five
+  // citations here ambiguous, in `CLAUDE.md`, `README.md` and `scripts/preview.ts`.
+  //
+  // api-cloudrun's own scanner was repaired for exactly this (`43162a93`, after
+  // 1,110 false AMBIGUOUS blocked every session sharing that checkout). This
+  // scanner has the same hole because it is a different implementation of the
+  // same walk — and it is worse here, because this repo's citations point almost
+  // entirely AT the sibling repos where the worktrees live.
+  //
+  // ⚠️ The fix belongs in the WALK, not in the tool that trips over it: a
+  // worktree there is legitimate and is where the harness puts them.
+  "worktrees",
 ]);
 
 const verbose = Deno.args.includes("--verbose");

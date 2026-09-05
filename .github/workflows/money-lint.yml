@@ -2,73 +2,50 @@ name: money-lint
 
 # The templates arm of the cross-repo money ratchet.
 #
-# `it.currency` is the raw currency.js library, injected into EVERY render
-# context by `api-cloudrun/src/lib/templates/eta.ts`. That makes a template an
-# **unguarded money surface**: `it.currency(x).divide(y)` is a real, working
-# call, it makes a silent rounding decision, and no ratchet in api-cloudrun or
-# core can see it — template content is canonical here, in git, not there.
+# The three rules, the measurements behind them and the budgets live in
+# `scripts/money-lint.ts`. They were a 200-line heredoc here until the ratchet
+# was split by direction — two jobs cannot share a heredoc, and duplicating the
+# scanner to get a second arm would have been two implementations of one rule.
 #
-# So this guard has two rules, and the second is the one that matters.
+# ## ⭐ Two jobs, because the ratchet's two directions are not the same failure
 #
-# ## Rule 1 — the `it.currency` budget is now ZERO
+# | job | required | fails on |
+# |---|---|---|
+# | `money-lint`         | ✅ | a REGRESSION — new unguarded arithmetic, or an empty scan |
+# | `money-lint-ratchet` | advisory | a CLEANUP the budget has not recorded yet |
 #
-# It used to be a budget rather than a ban because `it.currency` could not be
-# withdrawn: the replacement is `it.money.formatCents`, which takes **cents**,
-# while template documents held **dollars** — so every call site would have read
-# `it.money.formatCents(it.money.toCents(x))`, worse than what it replaced. The
-# note said it would retire "when documents are cents-denominated (the money
-# campaign's Phase 11), at which point `it.money.formatCents(doc.total_cents)`
-# is the natural form and the problem dissolves on its own."
+# A budget ratchet fails in both directions on purpose. But the manager's
+# template editor is a first-class authoring surface with **no GitHub escape** —
+# operators do not all have access to this org — and the two arms differ in
+# whether an operator can clear them:
 #
-# That happened. All 19 `quote.eta` call sites are `it.money.formatCents` and
-# the budget map is empty, so this is the ban the heading always promised — any
-# `it.currency` reference, anywhere, fails. The `it.currency` INJECTION itself
-# is withdrawn from the render context in Phase E; until then this rule is what
-# keeps the surface from growing back.
+#   - `count > budget` is new arithmetic in a `.eta`, repairable in CodeMirror.
+#   - `count < budget` is repairable ONLY by editing `scripts/money-lint.ts`,
+#     which the editor cannot open under any circumstance.
 #
-# ## Rule 2 — no non-closed operation, anywhere, ever
+# So an operator who removes a raw-arithmetic site — the RIGHT thing to do —
+# used to be told "budget 2 but only 1 site(s) remain — lower it to 1" by a
+# check that was about to become merge-blocking, with no control they could
+# reach. Splitting by direction moves that arm off the merge path and keeps the
+# ratchet's teeth: `money-lint-ratchet` still goes RED (it exits 1), it is just
+# not in `required_status_checks`.
 #
-# Money arithmetic is closed or it is not. `.add`/`.subtract` are closed — the
-# result is representable at the quantum, so no rounding decision exists.
-# `.divide` and a fractional `.multiply` are not: currency.js quantizes every
-# intermediate at its `precision` and supplies a rounding policy nothing states.
-# Measured against an exact BigInt reference over 200,000 lines, the
-# precomputed-factor form was wrong 199,998 times, worst error $32,031.20.
+# ## ⚠️ ONE concurrency group here is correct, and it is not the shared-group trap
 #
-# A template must never do that arithmetic at all. Money reaches a template
-# already computed, by `@cfs/core/utils/{orders,invoices}`, which are swept
-# against exact rational references. There are ZERO such calls today and there
-# is no legitimate reason for one.
+# The rule the other workflows state — distinct group names, or they
+# cross-cancel — is about distinct WORKFLOWS. These two jobs are in one
+# workflow, so one group cancels one RUN containing both, which is what should
+# happen: they are a verdict pair on a single sha, and cancelling half of a pair
+# is how you get a surviving verdict for a check that never ran. Do not "fix"
+# this into two groups.
 #
-# ## Rule 3 — no RAW arithmetic on a money value either
+# The key is the PR NUMBER on a PR and the SHA on a push, so a push-to-main run
+# lands in a group of one and can never be cancelled by a later push: a verdict
+# on a commit that is permanently on `main` is worth its whole minute.
 #
-# Rules 1 and 2 both key on currency.js: an `it.currency` reference, or a
-# `.divide(`/`.multiply(` method on one. **Neither can see a bare `*` or `/`,**
-# and `quote.eta` has been computing its entire replacement-cost table that way
-# since before this workflow existed — six sites, green the whole time:
-#
-#     if (t.type === "percent") return sum + (unitCost * t.rate / 100);
-#     rSubtotal += unitCost * qty;
-#     const lineTotal = unitCost * qty + lineTax;
-#
-# That is a percentage applied to money in float and accumulated with `+=`, in
-# the one place the workflow header already says must never happen. The guard
-# was not wrong about the rule; it was matching a *library* when the rule is
-# about an *operation*, so the plainest possible spelling walked straight past
-# it. Same shape as api-cloudrun's Ratchet C-vs-F: a guard that matches names
-# cannot see an anonymous expression.
-#
-# It is a **budget, like Rule 1, not a ban** — and deliberately so. The fix is
-# not local: `calculateReplacementTotals` in `@cfs/core` does multiply-then-round
-# while these six sites do round-then-multiply, so under integer cents they
-# systematically diverge and the PDF footer can disagree with the order it
-# renders. Closing it needs either stored per-line replacement fields or a new
-# core helper — the money campaign's Phase C3 (api-cloudrun#450). Landing this
-# as a hard zero today would red every unrelated PR in the repo while waiting on
-# a core change.
-#
-# The budget ratchets DOWN and cannot grow: a seventh site fails, and so does
-# leaving the budget at 6 once a site is removed.
+# ⚠️ A cancelled run leaves the arm NOT-REPORTED on the superseded sha, not red.
+# The authoritative verdict is the newest run on the HEAD sha — which is what
+# branch protection evaluates.
 on:
   pull_request:
     branches:
@@ -78,24 +55,6 @@ on:
   push:
     branches: [main]
 
-# Per-PR group so a superseded push stops paying for a verdict nobody will read.
-#
-# Drafts here are long-lived open PRs that agents push to repeatedly and never
-# merge; every push fired three workflows to completion. One branch
-# (`draft/quote/cbf24103`) burned 75 billed minutes in a single week that way.
-#
-# ⚠️ **Distinct group name per workflow.** A group shared with `visual-diff` or
-# `templates-lint` would make them cross-cancel — one workflow's newer run
-# killing another workflow's live one, so the surviving verdict is for a check
-# that never ran. Same rule visual-diff.yml states for its own group.
-#
-# The key is the PR NUMBER on a PR and the SHA on a push, so a push-to-main run
-# lands in a group of one and can never be cancelled by a later push: a verdict
-# on a commit that is permanently on `main` is worth its whole minute.
-#
-# ⚠️ A cancelled run leaves the arm NOT-REPORTED on the superseded sha, not red.
-# The authoritative verdict is the newest run on the HEAD sha — which is what
-# branch protection evaluates.
 concurrency:
   group: money-lint-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
@@ -104,223 +63,57 @@ permissions:
   contents: read
 
 jobs:
+  # ── The required arm — regressions only ────────────────────────────
   money-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Needed for `git merge-base origin/<base> HEAD` in the blame step
+          # below. `visual-diff.yml` already checks out this way for the same
+          # reason; `templates-lint.yml` does now too.
+          fetch-depth: 0
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      # ── Blame scoping — see scripts/affectedFamilies.ts ─────────────
+      #
+      # ⚠️ **This scopes the BLAME, never the SCAN.** The scanner walks every
+      # `.eta` in every mode. What this file decides is only which findings
+      # BLOCK: a pre-existing violation in a family this PR does not touch is
+      # reported as a notice instead of reddening someone else's change.
+      #
+      # ⚠️ **On `push: main` there is no blame file, so the run is UNSCOPED** —
+      # and that asymmetry is load-bearing. If an untouched family's finding
+      # never blocks anyone, `main` drifts red with nobody accountable. Scoped
+      # on PRs, unscoped on `main`, is the split that keeps both properties.
+      - name: Compute blame scope (PRs only)
+        if: github.event_name == 'pull_request'
+        run: |
+          set -euo pipefail
+          BASE_SHA=$(git merge-base "origin/${{ github.base_ref }}" HEAD)
+          git diff --name-only "$BASE_SHA" HEAD > /tmp/changed-files.txt
+          echo "Changed files:"; cat /tmp/changed-files.txt
+
+      - name: Scan templates for unguarded money arithmetic
+        run: |
+          if [ -f /tmp/changed-files.txt ]; then
+            deno task lint:money --blame-changed-files=/tmp/changed-files.txt
+          else
+            deno task lint:money
+          fi
+
+  # ── The advisory arm — cleanups the budget owes ────────────────────
+  #
+  # Never blame-scoped: it blocks nothing, so partitioning it would only hide
+  # half of a report whose entire purpose is to be read.
+  money-lint-ratchet:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
-      - name: Scan templates for unguarded money arithmetic
-        run: |
-          deno run --allow-read - <<'TS'
-          // Per-file budget of `it.currency` references. A file absent from this
-          // map may hold ZERO. Lower a number when call sites go away; raising
-          // one is the deliberate act this guard exists to make visible.
-          const BUDGET: Record<string, number> = {
-            // EMPTY, as of Phase 11. All 19 of `quote.eta`'s `it.currency` cells
-            // became `it.money.formatCents`, so Rule 1 is now the ban its header
-            // promises rather than a grandfathered allowance. A file absent from
-            // this map may hold ZERO — which is every file.
-            //
-            // Re-adding an entry is the deliberate act this guard exists to make
-            // visible; `it.currency` itself is retired from the render context in
-            // Phase E, at which point the rule becomes unfalsifiable and can go.
-          };
-
-          // Non-closed currency.js operations. Not a budget: zero, permanently.
-          const OPEN_OP = /\.(?:divide|multiply|distribute)\(/g;
-          const CURRENCY = /it\.currency\b/g;
-
-          // Rule 3: raw `*` or `/` with a money-named operand on either side.
-          // Keys on the IDENTIFIER carrying the unit, the same way api-cloudrun's
-          // Ratchet F does — so it fires where the units are declared in the name
-          // and stays silent on `i / 2` or a loop index. `rate` is deliberately
-          // NOT a money word: a rate is not an amount.
-          const RAW_MONEY_ARITH =
-            /\b\w*(?:cost|price|total|subtotal|amount|tax)\w*\b\s*[*\/]|[*\/]\s*\b\w*(?:cost|price|total|subtotal|amount|tax)\w*\b/i;
-
-          // Per-file budget of raw money arithmetic. Ratchets down, never up.
-          //
-          // Six -> three -> two. Three: the replacement-cost GRAND totals stopped
-          // being hand-rolled entirely — `it.orders.calculateReplacementTotals` is
-          // the real function and the footer now agrees with the stored order by
-          // construction instead of by coincidence.
-          //
-          // Two: the per-UNIT tax column stopped dividing money by hand.
-          // `Math.round(lineTaxCents / qty)` is half UP, so it was asymmetric on
-          // exactly the negative values that table deliberately admits —
-          // `Math.round(-2.5)` is -2 where the magnitude-preserving answer is -3.
-          // It is now `it.money.roundDivHalfAwayFromZero`, core's own primitive,
-          // whose docblock states the property the column needed: `f(-x) ===
-          // -f(x)`. Worth carrying forward: the site went away because an
-          // EXPORTED primitive replaced it, not because it was spelled more
-          // cleverly, and that is what the remaining two are waiting on too.
-          //
-          // What remains is the per-line subtotal and the percent tax arm, which
-          // have no exposed helper (`computeItemTaxAmountCents` is denylisted as a
-          // building block and there is no stored per-line replacement field), so
-          // they are spelled out in core's own order. api-cloudrun#450 Phase C3.
-          const RAW_BUDGET: Record<string, number> = {
-            "templates/quote.eta": 2,
-          };
-
-          async function* walk(dir: string): AsyncGenerator<string> {
-            for await (const e of Deno.readDir(dir)) {
-              const p = `${dir}/${e.name}`;
-              if (e.isDirectory) yield* walk(p);
-              else if (e.isFile && p.endsWith(".eta")) yield p;
-            }
-          }
-
-          const roots: string[] = [];
-          for (const d of ["templates", "layouts", "partials", "template-components"]) {
-            try { await Deno.stat(d); roots.push(d); } catch { /* absent */ }
-          }
-
-          // Which lines of a source are inside an Eta comment block.
-          //
-          // ⚠️ **Prose about the rule is not a violation of it, and the previous
-          // test could not tell the difference.** It skipped a line STARTING with
-          // `//`, `*` or `<%/*` — so the first line of a `<%/* … */%>` block was
-          // exempt and every continuation line was not. A partial whose docblock
-          // explains "money-lint fails CI on `.divide(`/`.multiply(`" therefore
-          // reported three non-closed operations in a comment, and a props list
-          // reading `numberCell/moneyCell/moneyCellOn/itemTaxCents/pathKey`
-          // reported raw arithmetic. Neither line executes.
-          //
-          // Comments cannot compute, so exempting them weakens nothing: there is
-          // no code to hide in one. Line numbers are preserved (the set is of
-          // indices, not a rewritten string) so every finding still points at the
-          // line the author will read.
-          function commentLines(src: string): Set<number> {
-            const out = new Set<number>();
-            const lines = src.split("\n");
-            let inBlock = false;
-            lines.forEach((line, i) => {
-              let rest = line;
-              if (inBlock) {
-                out.add(i);
-                const close = rest.indexOf("*/");
-                if (close === -1) return;
-                inBlock = false;
-                rest = rest.slice(close + 2);
-              }
-              // `<%/* … */%>` (Eta) and `/* … */` (inside an eval tag) alike.
-              const open = rest.search(/<%\/\*|\/\*/);
-              if (open !== -1 && rest.indexOf("*/", open) === -1) {
-                inBlock = true;
-                out.add(i);
-              }
-              if (/^\s*(?:\/\/|\*|<%\/\*|<%#)/.test(line)) out.add(i);
-            });
-            return out;
-          }
-
-          // Rule 3 keys on a `*` or `/` beside a money-named identifier, which is
-          // arithmetic — and a `/` inside a STRING is never arithmetic. Without
-          // this, `includeAsync("@partials/shared/totals.eta", …)` reads as
-          // `/totals` and counts as a raw money operation, which would mean no
-          // shared partial may ever be NAMED for the thing it renders. Same class
-          // as the `<svg …/>` false positive the authoring docs warn about.
-          const stripStrings = (line: string) =>
-            line.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`/g, '""');
-
-          const findings: string[] = [];
-          const counts = new Map<string, number>();
-          const rawCounts = new Map<string, number>();
-          const rawSites: string[] = [];
-          let files = 0;
-
-          for (const root of roots) {
-            for await (const file of walk(root)) {
-              files++;
-              const src = await Deno.readTextFile(file);
-              counts.set(file, [...src.matchAll(CURRENCY)].length);
-              const comments = commentLines(src);
-              let raw = 0;
-              src.split("\n").forEach((line, i) => {
-                // A comment line is prose about money, not arithmetic on it.
-                if (!comments.has(i) && RAW_MONEY_ARITH.test(stripStrings(line))) {
-                  raw++;
-                  rawSites.push(`${file}:${i + 1}  ${line.trim().slice(0, 100)}`);
-                }
-                if (comments.has(i)) return;
-                for (const m of line.matchAll(OPEN_OP)) {
-                  findings.push(
-                    `${file}:${i + 1}  non-closed money operation: ${m[0]}\n` +
-                    `      currency.js quantizes at its precision, so this makes a rounding\n` +
-                    `      decision nothing states. A template must not compute money at all —\n` +
-                    `      the value arrives already computed by @cfs/core/utils/*.`,
-                  );
-                }
-              });
-              rawCounts.set(file, raw);
-            }
-          }
-
-          for (const [file, n] of [...counts].sort()) {
-            const allowed = BUDGET[file] ?? 0;
-            if (n > allowed) {
-              findings.push(
-                `${file}  ${n} it.currency references, budget ${allowed}\n` +
-                `      it.currency is the RAW library — unguarded, and retiring with the cents\n` +
-                `      migration. Use it.money.* for new money display.`,
-              );
-            }
-          }
-
-          // Rule 3's budget, both directions — same ratchet shape as Rule 1.
-          for (const [file, n] of [...rawCounts].sort()) {
-            const allowed = RAW_BUDGET[file] ?? 0;
-            if (n > allowed) {
-              findings.push(
-                `${file}  ${n} raw money arithmetic site(s), budget ${allowed}\n` +
-                `      A bare \`*\` or \`/\` on a money value. Neither Rule 1 nor Rule 2 can see\n` +
-                `      this — they key on currency.js — which is how quote.eta's replacement\n` +
-                `      table computed money in float, green, for this workflow's whole life.\n` +
-                `      A template must not compute money: the value arrives already computed\n` +
-                `      by @cfs/core/utils/*, swept against exact rational references.\n` +
-                rawSites.filter((x) => x.startsWith(file + ":")).map((x) => `        ${x}`).join("\n"),
-              );
-            }
-          }
-          for (const [file, allowed] of Object.entries(RAW_BUDGET)) {
-            const n = rawCounts.get(file);
-            if (n === undefined) {
-              findings.push(`${file}  raw-arithmetic budget ${allowed} but the file does not exist — remove the entry.`);
-            } else if (n < allowed) {
-              findings.push(
-                `${file}  raw-arithmetic budget ${allowed} but only ${n} site(s) remain — lower it\n` +
-                `      to ${n}, so the ratchet keeps what the cleanup won.`,
-              );
-            }
-          }
-
-          // Non-vacuity, in both directions. Without the first check a renamed
-          // directory or a changed extension would leave this guard green over
-          // an EMPTY scan; without the second, a budget could outlive its
-          // subject and sit here as a standing exemption nobody is watching.
-          if (files === 0) {
-            console.error("money-lint: found no .eta files at all — the scan is broken, not clean.");
-            Deno.exit(1);
-          }
-          for (const [file, allowed] of Object.entries(BUDGET)) {
-            const n = counts.get(file);
-            if (n === undefined) {
-              findings.push(`${file}  budgeted at ${allowed} but the file does not exist — remove the entry.`);
-            } else if (n < allowed) {
-              findings.push(
-                `${file}  budget ${allowed} but only ${n} references remain — lower it to ${n},\n` +
-                `      so the ratchet keeps what the cleanup won.`,
-              );
-            }
-          }
-
-          if (findings.length) {
-            console.error("money-lint failed:\n");
-            for (const f of findings) console.error("  " + f + "\n");
-            Deno.exit(1);
-          }
-          console.log(`money-lint: ${files} .eta files, no unguarded money arithmetic.`);
-          TS
+      - name: Check the money budgets against the code
+        run: deno task lint:money:ratchet

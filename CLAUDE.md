@@ -80,6 +80,10 @@ does, and they are the vocabulary to use here as well:
 
 **Alex, 2026-08-18: "merge automatically"** — standing, for the pin-bump row only. It does not extend to a PR that touches template content, a fixture, a golden or a workflow, even when an agent opened it and even when CI is green. If a bump PR touches anything beyond `deno.json`/`deno.lock`, it is not this row.
 
+🔴 **PASSED, not *concluded*, and the difference is measured at eight PRs.** The workspace `CLAUDE.md` phrases the pin-bump exception as "merge once `money-lint`, `templates-lint` and `visual-diff` have all **CONCLUDED** on the head sha". A cancelled or failed run has *concluded*. Every pin bump from `beta.297` (2026-08-30) through `beta.305` (2026-09-02) merged with **`templates-lint` red** — eight consecutive PRs, each one following that rule exactly as written. Read it as **passed on the head sha**, on the newest run: `cancel-in-progress` means a conclusion on a superseded sha says nothing about the commit you are merging, and a not-reported arm is not a passing one.
+
+⚠️ **A red `templates-lint` on a pin bump is not noise to be forced past — it is the check doing the one job requiring it was for.** It means core has DELETED or TIGHTENED a field the stored fixtures still carry, and these document schemas are `z.strictObject`s, so a *removed* key fails exactly as hard as a missing one. `beta.307` did that to all 23 fixtures at once while touching zero fixture files. **Fix the fixtures in the same PR** — which is what #187 did, and which is also why #187 was correctly *not* a pin-only PR and so fell outside the auto-merge exception above. Expect that combination to be normal now rather than exceptional.
+
 ⚠️ **This repo is the durable home for that rule.** It also lives in the workspace `~/cfs/CLAUDE.md`, which is **untracked and machine-local** (api-cloudrun#530) and therefore invisible to every other machine and every cloud agent — so state it here, and do not cite that path.
 
 ⚠️ **`templates_render_preview` DEFAULTS to the published version — pass `uid_version` to see your own edit.** This used to say the tool could not render a draft at all (api-cloudrun#526); that was true until `4c866579` (2026-08-19) and is now wrong in the direction that matters, because it pushed agents to `deno task preview` on the working tree and from there to editing the working tree. The tool declares `uid_version`, forwards it, and the route threads it: hand it the draft uid you just `propose_edit`ed and you get that draft rendered. `deno task preview` is still the right tool for iterating against the files on disk on `main` — it is not the way to see a draft.
@@ -301,6 +305,12 @@ An unknown name **throws** (listing near matches) rather than rendering nothing 
 
 ⚠️ **"The budget is ZERO" is true of Rule 1 and FALSE of Rule 3 — there are two budgets.** Rule 1 counts `it.currency` references and its map is empty, so zero everywhere. Rule 3 counts **raw `*`/`/` beside a money-named identifier**, and `RAW_BUDGET` is `{"templates/quote.eta": 2}` — the per-line replacement subtotal and the percent-tax arm, which have no exposed core helper (`computeItemTaxAmountCents` is denylisted as a building block and there is no stored per-line replacement field). Every other file may hold **0**. It **ratchets both ways**: a third site fails, and so does dropping to one while the budget still says two. Both sites live in `replacementLine` — do not move that function into a shared partial.
 
+⭐ **The Rule 3 ratchet is now TWO JOBS, split by direction, and only one of them can block a merge.** `money-lint` (required) fails on `count > budget` — a regression, and a `.eta` edit is repairable from CodeMirror. `money-lint-ratchet` (advisory) fails on `count < budget` — a cleanup nobody banked, repairable only by editing `scripts/money-lint.ts`, which the manager's template editor cannot open under any circumstance. An operator who removes a raw-arithmetic site is doing the right thing and used to be told *"budget 2 but only 1 site(s) remain — lower it to 1"* by a check with no control they could reach; once the checks became required that would have been an unclearable merge blocker. Rules 1 and 2 stay on the required job in **both** directions (rule 2 has no budget, rule 1's is empty, so neither has a lowering arm an operator can trip), and so does the non-vacuity guard.
+
+⚠️ **The advisory arm still EXITS 1 and shows RED.** "Advisory" means *not in `required_status_checks`*, not *exits zero* — an arm that went green on a finding would be a ratchet nobody can see, which is the thing the split was careful not to trade away.
+
+⚠️ **The scanner lives in `scripts/money-lint.ts` now, not in the workflow heredoc**, so `deno task lint:money` and `deno task lint:money:ratchet` run it locally. Two jobs cannot share a heredoc, and a second copy of the scanner would have been two implementations of one rule.
+
 ⚠️ **Rule 3 keys on a NAME beside a slash, so a path is a plausible false positive — the linter handles it now, do not write around it.** `includeAsync("@partials/shared/totals.eta", …)` reads as `/totals`; without care that would mean no shared partial may ever be named for the thing it renders. `money-lint.yml` strips string literals before applying Rule 3 (a `/` inside a string is never arithmetic) and skips whole `<%/* … */%>` blocks for Rules 2 and 3 (prose about the rule is not a violation of it — a docblock explaining "fails CI on `.divide(`" reported three non-closed operations). Arithmetic on a line that merely *contains* a string is still caught; the comment exemption weakens nothing, because a comment cannot compute.
 
 Deep reference: the `cfs-money` skill → *"The ratchets"*.
@@ -387,6 +397,48 @@ than red — the run was cancelled before it reached a verdict, which is not the
 same fact as a passing capture. The authoritative verdict is the newest run on
 the head sha, which is also what branch protection evaluates.
 
+### ⭐ The lints scope the BLAME, never the DETECTION
+
+Both lints scan the **whole tree** on every run, in every mode. That is not a
+performance oversight to be optimised away, and `scripts/lint-fixtures.ts` says
+so in its own header: **a `@cfs/core` bump or a `collection_source` flip changes
+no fixture file, and that is exactly the drift the lint exists to catch.**
+`beta.307` deleted `DocumentOrganizationSnapshot.name` and — because these are
+`z.strictObject`s — **all 23 fixtures stopped satisfying their schemas at once,
+while the bump touched zero fixture files** (#187). A changed-files-scoped SCAN
+would have passed that PR and landed 23 unparseable fixtures.
+
+What *is* separable is what makes a check red from what this author introduced.
+So, on a PR: **scan everything, block only on findings in the families the diff
+affects, report the rest as notices.** ⚠️ **The `main` push arm runs UNSCOPED**,
+and that asymmetry is the half that keeps the ratchet alive — if an untouched
+family's finding never blocks anyone, `main` drifts red with nobody accountable.
+
+⚠️ **`scripts/affectedFamilies.ts`'s path table deliberately DISAGREES with
+`visual-diff.yml`'s, on four rows. Do not reconcile them.** They answer two
+different questions — *"which families RENDER differently?"* versus *"which
+families' LINT VERDICT could this diff have changed?"* — and every divergence is
+a case where copying `visual-diff`'s table would miss a real finding:
+
+| path | `visual-diff` | the lints |
+|---|---|---|
+| `templates/<gp>.meta.json` | no-op — "metadata-only, no render change" | **fan IN** — the sidecar holds `fixtures[]` descriptions (check 3) and `params[]` (check 5) |
+| `deno.json` / `deno.lock` | unmapped → the job skips | **fan OUT to every family** — check 1 resolves `templateSchemaFor` from the pinned core. **This is #187.** |
+| `goldens/<branch>/<gp>/*.png` | never mapped | **fan IN** — check 4 is golden↔fixture parity in *both* directions |
+| the lints' own sources | irrelevant | **fan OUT** — changing a check changes every family's verdict |
+
+A finding in a shared file (`layouts/base.eta`, `styles/base.css`,
+`partials/shared/**`) maps to every family and therefore blocks any scoped run.
+That is the conservative direction and the correct one: the shared overlay ships
+on every document, so there is no family it is somebody else's problem for.
+
+⚠️ **Residual, stated so nobody discovers it as a surprise: blame is by PATH,
+not by DELTA.** A PR touching `quote.eta` still blocks on a *pre-existing*
+`quote` finding it did not introduce. Keeping `main` green is what makes that
+rare; a delta-against-merge-base ratchet would close it, but needs the base
+tree's own `@cfs/core` resolved to evaluate check 1 — a second dependency
+resolve per run, for a case a green `main` already makes rare.
+
 ⚠️ **Check 5 is the same instrument one axis over — PARAM coverage — and it is
 what check 4 cannot see.** Check 4 asks whether each fixture has a baseline; a
 family can pass it completely while half of what the template renders has never
@@ -438,12 +490,18 @@ auto-merge release already armed lands it. There is no merge to press, and
 "approve the diff **or** re-bless" described two paths where there is one — they
 are the same act.
 
-⚠️ **All three workflows now run with `cancel-in-progress`** — `visual-diff`,
-`templates-lint` and `money-lint` alike — so an in-flight run is superseded by
-the next push and **the newest run on the head sha is the only verdict**. For
-`visual-diff` that matters beyond CI minutes: the manager derives the operator's
-next action from "the latest golden verdict", and racing runs writing back to
-the same document made that phrase ambiguous.
+⚠️ **All the workflows run with `cancel-in-progress`** — `visual-diff`,
+`templates-lint` and both `money-lint` jobs alike — so an in-flight run is
+superseded by the next push and **the newest run on the head sha is the only
+verdict**. For `visual-diff` that matters beyond CI minutes: the manager derives
+the operator's next action from "the latest golden verdict", and racing runs
+writing back to the same document made that phrase ambiguous.
+
+⚠️ **`money-lint` and `money-lint-ratchet` share ONE group, and that is correct
+rather than the shared-group trap below.** That trap is about distinct
+WORKFLOWS. These two jobs are one run: they are a verdict pair on a single sha,
+and cancelling half a pair is exactly how you get a surviving verdict for a
+check that never ran.
 
 ⚠️ **The two lints were grouped for a DIFFERENT reason and the distinction is
 load-bearing.** They persist nothing, so there was never a verdict-ambiguity
@@ -554,9 +612,12 @@ the golden together.
 
 `@cfs/core` is **exact-pinned** (`jsr:@cfs/core@10.0.0-beta.N/...`, one entry per subpath), and moves in lockstep with `api-cloudrun/deno.json` + `manager/package.json` on every publish — same day, same version, per `feedback_bump_all_core_consumers_lockstep`.
 
-⚠️ **TEN entries, and they are named here rather than counted**: `schemas`, plus `utils/` × `orders`, `invoices`, `fulfillments`, `sessions`, `dates`, `icons`, `money`, `templates`, `citations`. It was six until `templates` joined it, seven until `citations` did (the harness resolves render params through core's own `resolveRenderParams` rather than reimplementing them), eight until `fulfillments` did, and nine until `sessions` did (templates#154 — the receipt's namespace). A bump PR that moves nine of ten leaves one subpath stranded on the old version and still looks complete, which is why the list is written out — check the names, not the number.
+🔴 **Do not read a count from this file. Read it from `deno.json`, and bump with a `sed` over `jsr:@cfs/core@<old>/`.** The sentence that used to stand here named the subpaths and gave a total, on the theory that a written-out list cannot rot the way a number does. It rotted anyway — **five times** — and the two most recent recurrences are the ones worth keeping, because they show the list failing in both of the ways it was supposed to be immune to:
 
-⚠️ **This line was itself stale, which is the failure it warns about happening to the warning.** It read *EIGHT* and omitted `fulfillments` while `deno.json` had carried `@cfs/core/utils/fulfillments` since `10.0.0-beta.272` — so anyone bumping by this list rather than by pattern would have stranded exactly the subpath the list forgot. **Bump with a `sed` over `jsr:@cfs/core@<old>/`**, which cannot miss one; then read the names back to check nothing new appeared.
+- It said *EIGHT* and omitted `fulfillments` while `deno.json` had carried `@cfs/core/utils/fulfillments` since `beta.272`. Anyone bumping by the list would have stranded exactly the subpath the list forgot.
+- It said *TEN* and omitted `organizations`, which arrived at or before `beta.313`. Measured 2026-09-04: `deno.json` holds **eleven** `@cfs/core@` lines. Two other sessions quoted the stale ten at each other on the same day, one of them within a paragraph of citing the rule that says not to.
+
+A `sed` over the version string cannot miss a subpath; a remembered list can, and has. After the `sed`, read the names back out of `deno.json` to see whether something new appeared — that is the check, and it is a check against the file rather than against this paragraph.
 
 **It used to be a floating caret range, and the range is exactly what let this repo drift.** The point of floating was that preview would track whatever the API renders with; what it actually did was let `main` sit on `^beta.62` while api-cloudrun was 50+ betas ahead, because nothing re-resolved the lock and nothing failed when it didn't. A pin cannot drift silently — it either matches the other two repos or it is visibly wrong. Bump it by editing the specifiers and running `deno install`.
 

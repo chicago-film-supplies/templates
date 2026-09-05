@@ -8,9 +8,20 @@
  * they had not caused. A fixture hand-committed through git bypassed the only
  * gate that existed.
  *
- * Four checks, and they all scan the WHOLE tree rather than the PR's changed
- * files: a `@cfs/core` bump or a `collection_source` flip changes no fixture
- * file, and that is exactly the drift this exists to catch.
+ * The checks below all scan the WHOLE tree rather than the PR's changed files:
+ * a `@cfs/core` bump or a `collection_source` flip changes no fixture file, and
+ * that is exactly the drift this exists to catch. (Deliberately not counted
+ * here — the set has changed once already, when #187 retired check 6, and a
+ * number in a docblock is the thing that rots.)
+ *
+ * ⭐ **`--blame-changed-files` scopes the BLAME, never the scan.** It partitions
+ * the findings into ones this diff is accountable for and ones it is not; every
+ * check still runs over every family in every mode. #187 is why that asymmetry
+ * is load-bearing: `beta.307` deleted `DocumentOrganizationSnapshot.name` and
+ * all 23 fixtures stopped satisfying their schemas **while the bump touched
+ * zero fixture files**, so a changed-files-scoped SCAN would have passed it.
+ * See `scripts/affectedFamilies.ts`, whose path table deliberately disagrees
+ * with `visual-diff.yml`'s on four rows.
  *
  *   1. SCHEMA — every `fixtures/<git_path>/*.json` parses against
  *      `schemaFor(<collection_source>)`, read from the family's sidecar. This is
@@ -95,6 +106,7 @@
  */
 import { templateSchemaFor } from "@cfs/core/schemas";
 import { composeOrgName } from "@cfs/core/utils/organizations";
+import { BLAME_FLAG, readBlameSet } from "./affectedFamilies.ts";
 
 /**
  * REFUSE arguments rather than ignore them.
@@ -114,11 +126,18 @@ import { composeOrgName } from "@cfs/core/utils/organizations";
  *
  * Ignoring an argument is the silent failure; refusing it is the loud one. Use
  * `scripts/scan-fixture-history.ts` for the history question.
+ *
+ * ⚠️ **`--blame-changed-files=<path>` is the ONE argument this now takes, and
+ * adding it does not soften the rule above** — anything else is still refused
+ * with exit 2, and the flag is a *named* one precisely so a stray positional
+ * path cannot be mistaken for it. It scopes only which findings BLOCK; the scan
+ * stays whole-tree in every mode. See `scripts/affectedFamilies.ts`.
  */
-if (Deno.args.length > 0) {
+const unknownArgs = Deno.args.filter((a) => !a.startsWith(BLAME_FLAG));
+if (unknownArgs.length > 0) {
   console.error(
-    `lint-fixtures: takes no arguments, but got ${Deno.args.length} ` +
-      `(${Deno.args.map((a) => JSON.stringify(a)).join(", ")}).\n\n` +
+    `lint-fixtures: takes no arguments except ${BLAME_FLAG}<path>, but got ` +
+      `${unknownArgs.length} other (${unknownArgs.map((a) => JSON.stringify(a)).join(", ")}).\n\n` +
       `  It scans fixtures/ relative to the CWD. An argument was previously\n` +
       `  IGNORED, so a loop passing one blob at a time silently re-linted the\n` +
       `  working tree and reported clean for history it never read.\n\n` +
@@ -127,8 +146,24 @@ if (Deno.args.length > 0) {
   Deno.exit(2);
 }
 
-const problems: string[] = [];
-const note = (file: string, message: string) => problems.push(`${file}\n    ${message}`);
+/**
+ * The families this run may BLOCK on, or `null` for "every family" (unscoped).
+ *
+ * Unscoped is the default and the safe mode: a local run and the `main` push
+ * arm both want every finding to count. Scoping is opt-in, per-PR, and only
+ * ever turns a failure into a notice.
+ */
+const blameSet = await readBlameSet(Deno.args);
+
+interface Problem {
+  /** The family the finding lands on — what makes blame-scoping possible at all. */
+  gitPath: string;
+  text: string;
+}
+
+const problems: Problem[] = [];
+const note = (gitPath: string, file: string, message: string) =>
+  problems.push({ gitPath, text: `${file}\n    ${message}` });
 
 // ── Discover ────────────────────────────────────────────────────────
 
@@ -206,6 +241,7 @@ for (const gitPath of fixtureDirs) {
     sidecar = JSON.parse(await Deno.readTextFile(sidecarPath)) as Sidecar;
   } catch {
     note(
+      gitPath,
       `fixtures/${gitPath}/`,
       `no sidecar at ${sidecarPath} — a fixtures dir must belong to a template family`,
     );
@@ -214,7 +250,7 @@ for (const gitPath of fixtureDirs) {
 
   const collection = sidecar.collection_source;
   if (!collection) {
-    note(sidecarPath, "sidecar has no `collection_source` — cannot resolve a schema for its fixtures");
+    note(gitPath, sidecarPath, "sidecar has no `collection_source` — cannot resolve a schema for its fixtures");
     continue;
   }
 
@@ -239,6 +275,7 @@ for (const gitPath of fixtureDirs) {
   const schema = templateSchemaFor(collection);
   if (!schema) {
     note(
+      gitPath,
       sidecarPath,
       `collection_source "${collection}" has no schema in @cfs/core's \`TEMPLATE_COLLECTION_SCHEMAS\``,
     );
@@ -263,7 +300,7 @@ for (const gitPath of fixtureDirs) {
     try {
       doc = JSON.parse(await Deno.readTextFile(file));
     } catch (err) {
-      note(file, `not valid JSON: ${err instanceof Error ? err.message : String(err)}`);
+      note(gitPath, file, `not valid JSON: ${err instanceof Error ? err.message : String(err)}`);
       continue;
     }
 
@@ -272,7 +309,7 @@ for (const gitPath of fixtureDirs) {
       const issues = parsed.error.issues
         .map((i) => `      ${i.path.join(".") || "<root>"}: ${i.message}`)
         .join("\n");
-      note(file, `does not satisfy the \`${collection}\` schema:\n${issues}`);
+      note(gitPath, file, `does not satisfy the \`${collection}\` schema:\n${issues}`);
     }
 
     // ── 6. Org derivation ────────────────────────────────────────────
@@ -290,12 +327,12 @@ for (const gitPath of fixtureDirs) {
   const slugsInSidecar = new Set((sidecar.fixtures ?? []).map((f) => f.slug));
   for (const slug of slugsInSidecar) {
     if (!slugsOnDisk.has(slug)) {
-      note(sidecarPath, `\`fixtures[]\` lists "${slug}" but fixtures/${gitPath}/${slug}.json does not exist`);
+      note(gitPath, sidecarPath, `\`fixtures[]\` lists "${slug}" but fixtures/${gitPath}/${slug}.json does not exist`);
     }
   }
   for (const slug of slugsOnDisk) {
     if (!slugsInSidecar.has(slug)) {
-      note(sidecarPath, `fixtures/${gitPath}/${slug}.json exists but is not listed in \`fixtures[]\``);
+      note(gitPath, sidecarPath, `fixtures/${gitPath}/${slug}.json exists but is not listed in \`fixtures[]\``);
     }
   }
 
@@ -307,6 +344,7 @@ for (const gitPath of fixtureDirs) {
     const description = entry.description?.trim() ?? "";
     if (!description) {
       note(
+        gitPath,
         sidecarPath,
         `"${entry.slug}" has no \`description\` — a fixture must record what it ` +
           `covers that no other fixture does. The fixture file is a strict source ` +
@@ -314,6 +352,7 @@ for (const gitPath of fixtureDirs) {
       );
     } else if (description.length < MIN_DESCRIPTION) {
       note(
+        gitPath,
         sidecarPath,
         `"${entry.slug}" has a ${description.length}-character description — too short ` +
           `to be a coverage argument (minimum ${MIN_DESCRIPTION}). Say what this fixture ` +
@@ -365,6 +404,7 @@ for (const gitPath of fixtureDirs) {
     for (const slug of [...slugsOnDisk].sort()) {
       if (pngs.has(slug)) continue;
       note(
+        gitPath,
         `${goldenDir}/${slug}.png`,
         `missing — \`${gitPath}\` has graduated on \`${branch}\` (${pngs.size} baseline(s)) ` +
           `but fixtures/${gitPath}/${slug}.json has none, so the visual diff renders it ` +
@@ -378,6 +418,7 @@ for (const gitPath of fixtureDirs) {
     for (const slug of [...pngs].sort()) {
       if (slugsOnDisk.has(slug)) continue;
       note(
+        gitPath,
         `${goldenDir}/${slug}.png`,
         `orphaned — no fixtures/${gitPath}/${slug}.json renders it, so nothing will ever ` +
           `compare against it. Usually a renamed or removed fixture: delete the baseline, ` +
@@ -400,6 +441,7 @@ for (const gitPath of fixtureDirs) {
     for (const key of Object.keys(entry.params ?? {})) {
       if (declaredKeys.has(key)) continue;
       note(
+        gitPath,
         sidecarPath,
         `"${entry.slug}" declares the param state \`${key}\`, which this family does not ` +
           `declare in \`params[]\`. The golden gate resolves a fixture's state through ` +
@@ -444,6 +486,7 @@ for (const gitPath of fixtureDirs) {
       for (const state of [false, true]) {
         if (covered.has(state)) continue;
         note(
+          gitPath,
           sidecarPath,
           `no fixture renders \`${param.key}\` at \`${state}\`, so that half of this ` +
             `template is ungated: every golden freezes the other state and a green ` +
@@ -510,13 +553,14 @@ for (const gitPath of fixtureDirs) {
       for (const match of value.matchAll(EMAIL)) {
         const domain = match[0].split("@")[1]?.toLowerCase() ?? "";
         if (domain !== ALLOWED_EMAIL_DOMAIN) {
-          note(file, `${path}: email address in a fixture — ${match[0]}`);
+          note(gitPath, file, `${path}: email address in a fixture — ${match[0]}`);
         }
       }
       for (const match of value.matchAll(PHONE)) {
         const digits = match[0].replace(/\D/g, "").replace(/^1(?=\d{10}$)/, "");
         if (CFS_PHONE_DIGITS.has(digits) || isFictionalPhone(digits)) continue;
         note(
+          gitPath,
           file,
           `${path}: phone number in a fixture — ${match[0]}. Use the 555-01xx fiction block.`,
         );
@@ -526,10 +570,35 @@ for (const gitPath of fixtureDirs) {
 }
 
 // ── Report ──────────────────────────────────────────────────────────
+//
+// The scan was whole-tree in every mode. What `--blame-changed-files` changes
+// is only the PARTITION below: a finding in a family this diff touches BLOCKS,
+// and every other finding is printed as a notice that does not affect the exit
+// code. Unscoped (no flag) puts everything in the blocking half — which is what
+// a local run and the `main` push arm both want.
 
-if (problems.length) {
-  console.error(`lint-fixtures: ${problems.length} problem(s)\n`);
-  for (const problem of problems) console.error(`  ${problem}\n`);
+const blocking = blameSet === null
+  ? problems
+  : problems.filter((p) => blameSet.has(p.gitPath));
+const notices = blameSet === null
+  ? []
+  : problems.filter((p) => !blameSet.has(p.gitPath));
+
+const scopeLine = blameSet === null
+  ? "unscoped — every finding blocks"
+  : `blame-scoped to ${blameSet.size === 0 ? "(no family)" : [...blameSet].sort().join(", ")}`;
+
+if (notices.length) {
+  console.log(
+    `lint-fixtures: ${notices.length} pre-existing finding(s) in families this ` +
+      `change does not touch. Reported, not blocking — but they are red on \`main\`:\n`,
+  );
+  for (const problem of notices) console.log(`  [${problem.gitPath}] ${problem.text}\n`);
+}
+
+if (blocking.length) {
+  console.error(`lint-fixtures: ${blocking.length} problem(s) — ${scopeLine}\n`);
+  for (const problem of blocking) console.error(`  [${problem.gitPath}] ${problem.text}\n`);
   console.error(
     "A fixture must satisfy the same schema the API enforces on save, or an\n" +
       "operator cannot edit it from the manager — they get a 422 listing failures\n" +
@@ -546,10 +615,12 @@ if (problems.length) {
       "says nothing about it. More fixtures do not help — they all render the\n" +
       "default. One of them has to say it renders the other state.\n" +
       "\n" +
-      "And an `organization.name` must equal what its own `path` composes to.\n" +
-      "The two agree by construction on every real document, and the letterhead\n" +
-      "composes now — so a fixture where they differ renders a customer name it\n" +
-      "does not claim, and blessing its golden freezes that.\n",
+      "⚠️ If a @cfs/core pin bump is what reddened this: core has DELETED or\n" +
+      "TIGHTENED a field the stored fixtures still carry, and these schemas are\n" +
+      "strictObjects, so a removed key fails exactly as hard as a missing one.\n" +
+      "beta.307 did that to all 23 fixtures at once while touching zero fixture\n" +
+      "files (#187). Fix the fixtures in the SAME PR — never force the bump past\n" +
+      "this check.\n",
   );
   Deno.exit(1);
 }
@@ -557,7 +628,22 @@ if (problems.length) {
 const goldenSummary = graduated.length
   ? `goldens at parity (${graduated.join(", ")})`
   : "no graduated golden tree";
-console.log(
-  `lint-fixtures: ${checked} fixture(s) across ${fixtureDirs.length} family(ies) — ` +
-    `schema OK, no PII, ${goldenSummary}, every declared param state rendered.`,
-);
+
+// ⚠️ The green line must not assert what the notices above contradict. With an
+// out-of-scope finding outstanding the tree is NOT clean — this run simply did
+// not hold the author of it accountable — and printing "schema OK, no PII,
+// goldens at parity" over a real failure is exactly the vacuous pass this
+// script's own argv refusal exists to prevent one flavour of.
+if (notices.length) {
+  console.log(
+    `lint-fixtures: ${checked} fixture(s) across ${fixtureDirs.length} family(ies) — ` +
+      `NOT clean: ${notices.length} finding(s) above, all outside this change's blame ` +
+      `scope, so this run passes. The \`main\` push arm runs unscoped and will be red ` +
+      `until they are fixed.`,
+  );
+} else {
+  console.log(
+    `lint-fixtures: ${checked} fixture(s) across ${fixtureDirs.length} family(ies) — ` +
+      `schema OK, no PII, ${goldenSummary}, every declared param state rendered.`,
+  );
+}

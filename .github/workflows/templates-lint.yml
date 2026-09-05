@@ -20,6 +20,14 @@ on:
       - main
       - sandbox
       - "sandbox/e2e-*"
+  # ⚠️ **The `main` arm runs UNSCOPED, and that asymmetry is load-bearing.**
+  # PRs block only on findings in the families they touch (see the blame step
+  # below); if an untouched family's finding never blocked anyone, `main` would
+  # drift red with nobody accountable. Scoped on PRs, unscoped on `main`, is the
+  # split that keeps both properties — detection everywhere, blame where it
+  # belongs.
+  push:
+    branches: [main]
 
 # Per-PR group so a superseded push stops paying for a verdict nobody will read.
 #
@@ -32,10 +40,12 @@ on:
 # another workflow's live one, so the surviving verdict is for a check that
 # never ran. Same rule visual-diff.yml states for its own group.
 #
-# The key is the PR NUMBER, with `github.sha` only as the fallback this
-# PR-triggered workflow never reaches. Keep the fallback anyway: it is what
-# makes the group safe if a `push:` arm is ever added, since a push-to-main run
-# would then land in a group of one rather than be cancelled by the next push.
+# The key is the PR NUMBER on a PR and the SHA on a push. That fallback used to
+# be unreachable — this was PR-triggered only — and was kept on the reasoning
+# that it would make the group safe "if a `push:` arm is ever added". It has
+# been: a push-to-main run now lands in a group of one and can never be
+# cancelled by a later push, which is what a verdict on a commit that is
+# permanently on `main` is worth.
 #
 # ⚠️ A cancelled run leaves the arm NOT-REPORTED on the superseded sha, not red.
 # The authoritative verdict is the newest run on the HEAD sha — which is what
@@ -52,15 +62,46 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Needed for `git merge-base origin/<base> HEAD` in the blame step.
+          # `visual-diff.yml` already checks out this way for the same reason.
+          fetch-depth: 0
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+
+      # ── Blame scoping — see scripts/affectedFamilies.ts ─────────────
+      #
+      # ⚠️ **Scopes the BLAME, never the SCAN.** `lint-fixtures.ts` walks every
+      # family in every mode, and its own header says why: a `@cfs/core` bump or
+      # a `collection_source` flip changes NO fixture file, and that is exactly
+      # the drift it exists to catch. `beta.307` deleted
+      # `DocumentOrganizationSnapshot.name` and all 23 fixtures stopped
+      # satisfying their schemas at once while touching zero fixture files
+      # (#187) — a changed-files-scoped SCAN would have passed that PR.
+      #
+      # What this decides is only which findings BLOCK. Its path table
+      # deliberately DISAGREES with `visual-diff.yml`'s on four rows; the table
+      # and the reasons are in `scripts/affectedFamilies.ts`. Do not reconcile
+      # them — that is how #187 gets reintroduced.
+      - name: Compute blame scope (PRs only)
+        if: github.event_name == 'pull_request'
+        run: |
+          set -euo pipefail
+          BASE_SHA=$(git merge-base "origin/${{ github.base_ref }}" HEAD)
+          git diff --name-only "$BASE_SHA" HEAD > /tmp/changed-files.txt
+          echo "Changed files:"; cat /tmp/changed-files.txt
 
       # Resolves @cfs/core from the committed lock, so the gate validates with the
       # same schema build the API enforces with. A lagging lock here would make the
       # gate pass while the API 422s — which is the exact drift it exists to catch.
       - name: Lint fixtures (schema + PII)
-        run: deno task lint:fixtures
+        run: |
+          if [ -f /tmp/changed-files.txt ]; then
+            deno task lint:fixtures --blame-changed-files=/tmp/changed-files.txt
+          else
+            deno task lint:fixtures
+          fi
 
       # 3. CITATIONS — every backticked `path.ext` in this repo's prose still
       #    resolves. Rules are `@cfs/core/utils/citations`, shared with core,
