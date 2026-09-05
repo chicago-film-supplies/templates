@@ -108,7 +108,7 @@
 		{
 			"uid": "bf3609df-3e27-4402-8989-0ace81f12a3e",
 			"type": "destination",
-			"name": "3434 N Central Ave",
+			"name": "Westside Warehouse",
 			"path": [
 				"bf3609df-3e27-4402-8989-0ace81f12a3e"
 			],
@@ -128,7 +128,7 @@
 			"uid": "KEjzPt7pI1hNgKtiZC8n",
 			"type": "service",
 			"name": "Trash Removal",
-			"description": "3434 N Central Ave",
+			"description": "Westside Warehouse",
 			"quantity": 1,
 			"price": {
 				"base_cents": 35000,
