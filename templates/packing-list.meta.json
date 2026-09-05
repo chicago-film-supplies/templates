@@ -11,7 +11,13 @@
     ]
   },
   "params": [],
-  "fixtures": [],
+  "fixtures": [
+    {
+      "slug": "multi-order-delivery",
+      "label": "Two orders, one organization — the delivery leg",
+      "description": "The family's FIRST fixture, covering what the family exists for: a CROSS-ORDER sheet. Two orders (964, 1020) under one organization, two destinations, 13 units — no per-order document can express this. Scope `organization:...:all:delivery` also pins the `<kind>:<uid>:<gate>:<leg>` grammar (api-cloudrun#824) on its `organization` arm.\n\n1. THE GROUP HEADINGS. Three group dividers across the two orders (`Carts & Ramps`, `Traffic, Safety & Signage`, `Crafty`) — what `buildPackingListForLeg` (core#80, beta.326) exists to keep. The bug it fixed was SILENT: `groupByDestination` strips dividers while `buildPackingList` derives `group_name` by walking for the last `group` row it passed, so composing them returned null for every heading. The grid still rendered and the headings a picker navigates by were absent. Only a rendered sheet catches it, so this fixture is the gate.\n\n2. RENTAL AND SALE TOGETHER — the delivery leg's defining property. 964 is three rentals, 1020 a `sale` (8 cases of water). Delivery admits both; collection is rental only, because a sale does not come back. A collection-leg fixture is NOT a near-duplicate and must be added separately.\n\n3. A COMPLETE DOCUMENT. `order_count` is 2 and the fold returns 2 with `next_cursor: null`, so `orders.length === order_count` holds — the template REFUSES a short document, and only a fixture satisfying it exercises that.\n\nAlso carries real SHORTAGES (all three of 964's bookings short by 1 against a `reserved` breakdown) and `stores: []` on `Driving Sign Kit`, the no-stock-record arm.\n\nDeliberately SMALL so the golden reads in one view. The 17-order sheet at destination `3100 W Fillmore St` is the page-break case and belongs in its own fixture.\n\nKNOWN ARTIFACT, do not \"repair\": `scope.name`, `orders[].subject` and `destinations[].name` render as masked filler — all three are `pii: \"mask\"` as of beta.324/.326/.328. The give-back is legibility only (api-cloudrun#837)."
+    }
+  ],
   "render": {
     "margin_top": 0.5,
     "margin_bottom": 0.62,

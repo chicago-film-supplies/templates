@@ -1,0 +1,455 @@
+{
+  "scope": {
+    "kind": "organization",
+    "uid": "nTpq3YIY4cth5todd4PV",
+    "name": "Morgan M Owen",
+    "uids": [
+      "nTpq3YIY4cth5todd4PV"
+    ]
+  },
+  "gate": "all",
+  "leg": "delivery",
+  "orders": [
+    {
+      "uid": "OXrpYQkLQGO7aopOFsAW",
+      "number": 964,
+      "status": "active",
+      "subject": "Rowan R Maddox",
+      "organization": {
+        "uid": "nTpq3YIY4cth5todd4PV",
+        "name": "Casey M Carmichael"
+      },
+      "destinations": [
+        {
+          "uid": "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
+          "name": "Westmont",
+          "destination": {
+            "uid": "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
+            "dates": {
+              "delivery_start": "2026-08-10T09:00:00.000-05:00",
+              "delivery_start_fs": {
+                "_seconds": 1786370400,
+                "_nanoseconds": 0
+              },
+              "delivery_end": "2026-08-10T09:00:00.000-05:00",
+              "delivery_end_fs": {
+                "_seconds": 1786370400,
+                "_nanoseconds": 0
+              },
+              "collection_start": "2026-09-10T15:00:00.000-05:00",
+              "collection_start_fs": {
+                "_seconds": 1789070400,
+                "_nanoseconds": 0
+              },
+              "collection_end": "2026-09-10T15:00:00.000-05:00",
+              "collection_end_fs": {
+                "_seconds": 1789070400,
+                "_nanoseconds": 0
+              },
+              "charge_start": "2026-08-10T09:00:00.000-05:00",
+              "charge_start_fs": {
+                "_seconds": 1786370400,
+                "_nanoseconds": 0
+              },
+              "charge_end": "2026-09-10T15:00:00.000-05:00",
+              "charge_end_fs": {
+                "_seconds": 1789070400,
+                "_nanoseconds": 0
+              },
+              "days_active": 23,
+              "days_charged": 23
+            },
+            "delivery": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "7757 Cypress Ter",
+                "name": "Southfield",
+                "postcode": "65146",
+                "region": "IL",
+                "street": "8255 Sycamore Pl",
+                "street2": "",
+                "mapbox_id": "Sample text for mapbox_id......................................",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "collection": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "2057 Linden Ave",
+                "name": "Lincoln Park",
+                "postcode": "69314",
+                "region": "IL",
+                "street": "3453 Maple Ave",
+                "street2": "",
+                "mapbox_id": "Sample text for mapbox_id......................................",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "customer_collecting": true,
+            "customer_returning": true
+          },
+          "due_at": "2026-08-10T09:00:00.000-05:00",
+          "quantity": 5,
+          "breakdown": {
+            "damaged": 0,
+            "lost": 0,
+            "out": 0,
+            "prepped": 0,
+            "quoted": 0,
+            "reserved": 5,
+            "returned": 0
+          },
+          "bookings": [
+            {
+              "uid": "OXrpYQkLQGO7aopOFsAW:Vc6h3YvLOL9zmcpuDpXI:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "Vc6h3YvLOL9zmcpuDpXI",
+              "name": "Metro Rack (18\" x 36\")",
+              "type": "rental",
+              "status": "active",
+              "quantity": 2,
+              "shortage": 1,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 2,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 1,
+                  "locations": [
+                    {
+                      "uid_location": "hWIDMupo3ToJKjoBFQl9",
+                      "name": "Unknown Location - Metro Rack (18\" x 36\")",
+                      "quantity": 1,
+                      "default": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uid": "OXrpYQkLQGO7aopOFsAW:RZWp0RITeUIGSE9mIfTb:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "RZWp0RITeUIGSE9mIfTb",
+              "name": "Driving Sign Kit",
+              "type": "rental",
+              "status": "active",
+              "quantity": 1,
+              "shortage": 1,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 1,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "OXrpYQkLQGO7aopOFsAW:jC2BBRgZL5mXAfYAu9bf:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "jC2BBRgZL5mXAfYAu9bf",
+              "name": "Stop/Slow Paddle Sign",
+              "type": "rental",
+              "status": "active",
+              "quantity": 2,
+              "shortage": 1,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 2,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 1,
+                  "locations": [
+                    {
+                      "uid_location": "MOks5uHrDAHiV4OCPv2Q",
+                      "name": "Unknown Location - Stop/Slow Paddle Sign",
+                      "quantity": 1,
+                      "default": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "item": {
+                "uid": "a9cde9a3-cd2f-487d-9687-795b06390e25",
+                "type": "group",
+                "name": "Carts & Ramps",
+                "path": [
+                  "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
+                  "a9cde9a3-cd2f-487d-9687-795b06390e25"
+                ],
+                "description": ""
+              },
+              "uid_booking": null
+            },
+            {
+              "item": {
+                "uid": "Vc6h3YvLOL9zmcpuDpXI",
+                "type": "rental",
+                "name": "Metro Rack (18\" x 36\")",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
+                  "a9cde9a3-cd2f-487d-9687-795b06390e25",
+                  "Vc6h3YvLOL9zmcpuDpXI"
+                ],
+                "order_number": 964,
+                "uid_order": "OXrpYQkLQGO7aopOFsAW"
+              },
+              "uid_booking": "OXrpYQkLQGO7aopOFsAW:Vc6h3YvLOL9zmcpuDpXI:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "020f17d3-1cf8-474d-9063-c676cafc06c2",
+                "type": "group",
+                "name": "Traffic, Safety & Signage",
+                "path": [
+                  "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
+                  "020f17d3-1cf8-474d-9063-c676cafc06c2"
+                ],
+                "description": ""
+              },
+              "uid_booking": null
+            },
+            {
+              "item": {
+                "uid": "RZWp0RITeUIGSE9mIfTb",
+                "type": "rental",
+                "name": "Driving Sign Kit",
+                "description": "8x Crew Parking, 8x Arrows, 4x Set, 4x Next Set, 4x Lunch, 4x Holding, 4x BG Parking, 2x Wrong Way",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
+                  "020f17d3-1cf8-474d-9063-c676cafc06c2",
+                  "RZWp0RITeUIGSE9mIfTb"
+                ],
+                "order_number": 964,
+                "uid_order": "OXrpYQkLQGO7aopOFsAW"
+              },
+              "uid_booking": "OXrpYQkLQGO7aopOFsAW:RZWp0RITeUIGSE9mIfTb:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "jC2BBRgZL5mXAfYAu9bf",
+                "type": "rental",
+                "name": "Stop/Slow Paddle Sign",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
+                  "020f17d3-1cf8-474d-9063-c676cafc06c2",
+                  "jC2BBRgZL5mXAfYAu9bf"
+                ],
+                "order_number": 964,
+                "uid_order": "OXrpYQkLQGO7aopOFsAW"
+              },
+              "uid_booking": "OXrpYQkLQGO7aopOFsAW:jC2BBRgZL5mXAfYAu9bf:vTn8CTAwwJHEJZLBzsOw"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "uid": "eXQBQR7k3lYr2iAwv6nF",
+      "number": 1020,
+      "status": "complete",
+      "subject": "1019 Aspen Dr",
+      "organization": {
+        "uid": "nTpq3YIY4cth5todd4PV",
+        "name": "Casey M Carmichael"
+      },
+      "destinations": [
+        {
+          "uid": "18b31ebb-ec39-42eb-a912-2e565e13ecf5",
+          "name": "Reese Maddox",
+          "destination": {
+            "uid": "18b31ebb-ec39-42eb-a912-2e565e13ecf5",
+            "dates": {
+              "delivery_start": "2026-09-02T09:00:00.000-05:00",
+              "delivery_start_fs": {
+                "_seconds": 1788357600,
+                "_nanoseconds": 0
+              },
+              "delivery_end": "2026-09-02T09:00:00.000-05:00",
+              "delivery_end_fs": {
+                "_seconds": 1788357600,
+                "_nanoseconds": 0
+              },
+              "collection_start": "2026-09-02T09:00:00.000-05:00",
+              "collection_start_fs": {
+                "_seconds": 1788357600,
+                "_nanoseconds": 0
+              },
+              "collection_end": "2026-09-02T09:00:00.000-05:00",
+              "collection_end_fs": {
+                "_seconds": 1788357600,
+                "_nanoseconds": 0
+              },
+              "charge_start": "2026-09-02T09:00:00.000-05:00",
+              "charge_start_fs": {
+                "_seconds": 1788357600,
+                "_nanoseconds": 0
+              },
+              "charge_end": "2026-09-02T09:00:00.000-05:00",
+              "charge_end_fs": {
+                "_seconds": 1788357600,
+                "_nanoseconds": 0
+              },
+              "days_active": 1,
+              "days_charged": 1
+            },
+            "delivery": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "637 Sycamore Pl",
+                "name": "Reese Ingram",
+                "postcode": "65146",
+                "region": "IL",
+                "street": "8255 Sycamore Pl",
+                "street2": "",
+                "mapbox_id": "Sample text for mapbox_id......................................",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "collection": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "8084 Willow Way",
+                "name": "Reese Fairfax",
+                "postcode": "69314",
+                "region": "IL",
+                "street": "3453 Maple Ave",
+                "street2": "",
+                "mapbox_id": "Sample text for mapbox_id......................................",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "customer_collecting": true,
+            "customer_returning": true
+          },
+          "due_at": "2026-09-02T09:00:00.000-05:00",
+          "quantity": 8,
+          "breakdown": {
+            "damaged": 0,
+            "lost": 0,
+            "out": 8,
+            "prepped": 0,
+            "quoted": 0,
+            "reserved": 0,
+            "returned": 0
+          },
+          "bookings": [
+            {
+              "uid": "eXQBQR7k3lYr2iAwv6nF:VQim9zNSP2k4gdhBEdnX:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "VQim9zNSP2k4gdhBEdnX",
+              "name": "Open Water - 16oz Aluminum Bottle (24 Case)",
+              "type": "sale",
+              "status": "active",
+              "quantity": 8,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 8,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            }
+          ],
+          "items": [
+            {
+              "item": {
+                "uid": "5a9a1aea-a4e9-47bf-b145-4c07935cb90e",
+                "type": "group",
+                "name": "Crafty",
+                "path": [
+                  "18b31ebb-ec39-42eb-a912-2e565e13ecf5",
+                  "5a9a1aea-a4e9-47bf-b145-4c07935cb90e"
+                ],
+                "description": ""
+              },
+              "uid_booking": null
+            },
+            {
+              "item": {
+                "uid": "VQim9zNSP2k4gdhBEdnX",
+                "type": "sale",
+                "name": "Open Water - 16oz Aluminum Bottle (24 Case)",
+                "description": "",
+                "quantity": 8,
+                "stock_method": "bulk",
+                "path": [
+                  "18b31ebb-ec39-42eb-a912-2e565e13ecf5",
+                  "5a9a1aea-a4e9-47bf-b145-4c07935cb90e",
+                  "VQim9zNSP2k4gdhBEdnX"
+                ],
+                "order_number": 1020,
+                "uid_order": "eXQBQR7k3lYr2iAwv6nF"
+              },
+              "uid_booking": "eXQBQR7k3lYr2iAwv6nF:VQim9zNSP2k4gdhBEdnX:vTn8CTAwwJHEJZLBzsOw"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "order_count": 2,
+  "destination_count": 2,
+  "quantity": 13,
+  "organizations": [
+    {
+      "uid": "nTpq3YIY4cth5todd4PV",
+      "name": "Reese M Owen"
+    }
+  ],
+  "missing_order_uids": [],
+  "next_cursor": null,
+  "notice": null
+}
