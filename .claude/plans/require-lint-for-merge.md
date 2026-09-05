@@ -1,9 +1,59 @@
 # Extract the fixture lint so the manager and the API can warn before CI does
 
-> **Phases 0–2 are DONE (2026-09-04). This doc is now only Phases 3–5**, which are
-> tracked as **templates#195**. What landed is recorded at the bottom, short, so
-> the reasoning behind the current shape is not lost — but this reads as a plan
-> for the work that remains, not as a record of work that finished.
+> **Phases 0–3 are DONE and Phase 4 is one slice in (2026-09-05). What remains is
+> the rest of Phase 4 and all of Phase 5**, tracked as **templates#195**. What
+> landed is recorded at the bottom, short, so the reasoning behind the current
+> shape is not lost — but this reads as a plan for the work that remains, not as
+> a record of work that finished.
+
+## ⚠️ STATUS UPDATE 2026-09-05 — Phase 3 landed, and it corrected this plan in three places
+
+**Phase 3 is done.** `@cfs/core@10.0.0-beta.324` exports the fold; `templates`
+`caed291` (#204) turned `scripts/lint-fixtures.ts` into a thin disk adapter, net
+**−405 lines**, still `--allow-read` only. 26 tests in
+`core/tests/templateLint.test.ts`.
+
+🔴 **Correction 1 — it is NOT in `@cfs/core/utils/templates`, where this doc put
+it.** That module documents a hard invariant in its own docblock: **no runtime
+dependency on `@cfs/core/schemas`**, because its path helpers are pulled by
+consumers that must not drag the schema barrel and zod along. Check 1 resolves
+`templateSchemaFor`, which is exactly such a runtime value. The lint lives in
+**`@cfs/core/utils/template-lint`**, its own subpath — which costs a pin line in
+every consumer (12 → 13 in `templates`, 32 → 33 in `api-cloudrun`) and buys
+keeping a zod-free module zod-free. ⚠️ Do not tidy it back.
+
+⭐ **Correction 2 — TWO entry points, because one caller holds one fixture.**
+`lintFixture` answers from a single fixture plus its sidecar (schema, PII,
+undeclared param key); `lintFixtureSet` is the whole fold. The API's fixture
+verbs hold ONE fixture, and the set-wide checks would each report *"every other
+fixture is missing"* from that input. Rather than a `complete: boolean` a caller
+can get wrong, **a caller holding one fixture cannot reach those checks** — they
+are not on the function it calls. This doc did not anticipate that call site.
+
+⭐ **Correction 3 — the schema resolver is imported, never injected.** Injecting
+it would let a caller supply the Firestore collection registry, which is
+api-cloudrun#700 exactly: `isCollectionName` fails closed on `movement-sessions`.
+
+**The `ungatedFamilies` prediction held, and found a second family.** Measured:
+`packing-list` AND `receipt` are both fixture-less. ⚠️ **Different causes** —
+`packing-list`'s was structural (its source was not a registered derived
+collection until api-cloudrun#824); `receipt`'s source has been capturable all
+along and nobody has captured one. So *"no derived-source family is
+golden-gated"* is one fact with two causes, and only one was a blocker.
+
+**Phase 4, first slice** — `api-cloudrun` `f6921fe0`: `golden_last_attempt`'s
+WRITE side. ⚠️ **The read side is Phase 5**, so the field currently has no
+reader; that is named deliberately rather than discovered later. Two structural
+choices a guard forced: the transient-skip decision moved from the call site
+INTO the tested function (mutation-checked), and `goldenOutcomeFields` lives in
+its own **db-free leaf module** (the #279 pattern) rather than a
+`dbReachCoverage` allowlist entry.
+
+⚠️ **Pin state, which moves fast:** `templates` and `api-cloudrun` are on
+`.324`; `manager` is still on `.322` and has yet to cross the breaking `.323`.
+`.325`/`.326` exist for other sessions' work, and `.325`+ carry `activities.read`
+which reddens `permissionCoverage` in `api-cloudrun` until `readableCollections`
+registers it — so **`.324` is deliberately the right target for this tier**.
 
 ## The state this leaves behind
 
