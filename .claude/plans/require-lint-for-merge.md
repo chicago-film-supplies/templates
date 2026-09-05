@@ -49,11 +49,41 @@ INTO the tested function (mutation-checked), and `goldenOutcomeFields` lives in
 its own **db-free leaf module** (the #279 pattern) rather than a
 `dbReachCoverage` allowlist entry.
 
-⚠️ **Pin state, which moves fast:** `templates` and `api-cloudrun` are on
-`.324`; `manager` is still on `.322` and has yet to cross the breaking `.323`.
-`.325`/`.326` exist for other sessions' work, and `.325`+ carry `activities.read`
-which reddens `permissionCoverage` in `api-cloudrun` until `readableCollections`
-registers it — so **`.324` is deliberately the right target for this tier**.
+⚠️ **Pin state — READ IT FROM THE FILES, this line has already been stale
+once.** Measured 2026-09-05 03:15: `api-cloudrun` `.326`, `templates` `.324`,
+`manager` `.323`. The earlier claim that `.324` was "deliberately the right
+target for this tier" is **spent**: it rested on `.325`+ carrying
+`activities.read` while `readableCollections` did not register it, and that
+pairing has since landed. There is no reason to hold any consumer back now.
+
+```sh
+grep -o 'jsr:@cfs/core@[0-9.a-z-]*' api-cloudrun/deno.json | sort -u
+grep -o 'jsr:@cfs/core@[0-9.a-z-]*' templates/deno.json  | sort -u
+grep -o 'npm:@jsr/cfs__core@[0-9.a-z-]*' manager/package.json
+```
+
+## 🔴 The masks are in CORE and NOT IN EFFECT — read this before capturing a fixture
+
+Tonight's PII work is **schema-side only**, and none of it is live:
+
+| mask | version | live in prod? |
+|---|---|---|
+| `PickSheetScope.name` | `beta.324` | ❌ |
+| `subject` × order/invoice/booking/fulfillment | `beta.326` | ❌ |
+| `DestinationDividerArm.name` | `beta.327` | ❌ |
+
+**Prod api-cloudrun runs `v0.222.0`, pinned to `beta.323`.** `captureFixture`
+calls `applyPii` from **the API's own pin** (`src/services/templates/fixtures.ts`),
+so **fixture-capture safety is set by the DEPLOYED build** — not by `core`, not
+by this repo's pin, and not by anything any repo holds.
+
+⚠️ **So do not capture the first `packing-list` fixture until a release carrying
+those betas reaches prod.** api-cloudrun#827 (`0.223.0`) carries `.326` only.
+
+⭐ **This is templates#156's lesson one layer down**, and it was made by the
+session that had just built the guard for it: *the thing that validates is the
+running service, and no repository holds that fact.* The deployed-enum lint
+answers it for collection enums; nothing answers it for pii tags.
 
 ## The state this leaves behind
 
