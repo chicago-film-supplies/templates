@@ -43,6 +43,8 @@
     "lint:money:ratchet": "deno run --allow-read scripts/money-lint.ts --direction=under",
     "//scan:fixture-history": "PII scan over every fixture blob that ever existed — the discharge condition for making this repo public. NOT lint:fixtures pointed at history; see the script header.",
     "scan:fixture-history": "deno run --allow-read --allow-run=git scripts/scan-fixture-history.ts",
-    "lint:citations": "deno run --allow-read --allow-env scripts/lint-citations.ts"
+    "lint:citations": "deno run --allow-read --allow-env scripts/lint-citations.ts",
+    "//lint:deployed-enums": "Does prod's DEPLOYED core have the enum members our sidecars name? Reads the RUNNING service's /openapi.json — the deployed version is not a fact this repo holds, so no pin-resolving lint can answer it. --base=<branch> picks the env (main -> prod, sandbox* -> dev); a main PR checked against dev always passes and means nothing.",
+    "lint:deployed-enums": "deno run --allow-read --allow-net=api.chicagofilmsupplies.com,dev-api.chicagofilmsupplies.com scripts/lint-deployed-enums.ts"
   }
 }

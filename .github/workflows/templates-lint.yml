@@ -1,6 +1,6 @@
 name: templates-lint
 
-# Three always-on guards on every PR.
+# Four always-on guards on every PR.
 #
 # 1. FIXTURES (scripts/lint-fixtures.ts) — every fixtures/<gp>/*.json must satisfy
 #    the same schema the API enforces on save, and carry no customer PII. Fixtures
@@ -14,6 +14,19 @@ name: templates-lint
 #    customer PII. A STARTING HEURISTIC: it catches the obvious cases (a literal
 #    customer email or phone pasted into a template), not every conceivable PII
 #    shape; tune the patterns as real false-positives/negatives surface.
+#
+# 3. CITATIONS — documented at its own step below, where the CI-checkout caveat
+#    that matters most about it lives.
+#
+# 4. DEPLOYED ENUMS (scripts/lint-deployed-enums.ts) — every sidecar's
+#    collection_source / collection_target / surfaces must name a member the
+#    DEPLOYED api-cloudrun's core actually has. The other guards resolve
+#    against this repo's PIN, which is right for what they check but
+#    structurally blind to this: the publish webhook validates a merged sidecar
+#    against prod's deployed core, and the deployed version is not a fact this
+#    repository holds at all. Twice — #155 and #199, a week apart — a PR merged
+#    green on every required check and 500'd the webhook, rolling the whole
+#    publish back. This is the only guard here that reads outside the tree.
 on:
   pull_request:
     branches:
@@ -116,6 +129,33 @@ jobs:
       #    are present, before trusting a green run here.
       - name: Lint citations
         run: deno task lint:citations
+
+      # 4. DEPLOYED ENUMS — see the workflow header.
+      #
+      # ⚠️ **`--base` is what makes this check mean anything.** The env it
+      # queries must be the env whose core will validate THIS merge: `main` →
+      # prod, `sandbox*` → dev. Dev deploys continuously from api-cloudrun
+      # `main`, so a dev check is satisfied the moment the core bump lands
+      # there and can NEVER see this class — a `main` PR checked against dev
+      # would pass while the merge it gates fails. On the push arm
+      # `github.base_ref` is empty and the script defaults to prod, which is
+      # the right oracle for a commit that is already on `main`.
+      #
+      # ⚠️ It fails OPEN on any inability to reach the oracle, printing
+      # `COULD NOT VERIFY`. That is deliberate: this workflow is a REQUIRED
+      # check on a product whose operators do not all have GitHub access, so a
+      # network blip that went red would be an unclearable merge blocker whose
+      # only repair is a repo edit they cannot make. It fails CLOSED only on a
+      # positive finding, which is a fact about the PR's own content.
+      - name: Lint deployed enums
+        run: |
+          if [ -f /tmp/changed-files.txt ]; then
+            deno task lint:deployed-enums \
+              --base="${{ github.base_ref || 'main' }}" \
+              --blame-changed-files=/tmp/changed-files.txt
+          else
+            deno task lint:deployed-enums --base="${{ github.base_ref || 'main' }}"
+          fi
 
       - name: Scan templates for hardcoded PII
         run: |

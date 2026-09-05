@@ -48,6 +48,7 @@ const FANS_OUT_TO_EVERY_FAMILY = [
   "deno.lock",
   // Changing a check changes every family's verdict.
   "scripts/lint-fixtures.ts",
+  "scripts/lint-deployed-enums.ts",
   "scripts/money-lint.ts",
   "scripts/affectedFamilies.ts",
   ".github/workflows/templates-lint.yml",
