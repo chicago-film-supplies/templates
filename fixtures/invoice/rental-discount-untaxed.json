@@ -21,8 +21,7 @@
 	},
 	"subject": "Tent",
 	"reference": null,
-	"external_notes": null,
-	"internal_notes": null,
+	"notes": null,
 	"organization": {
 		"uid": "cVuEztNV5MWduSJA6pP9",
 		"path": [

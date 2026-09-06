@@ -20,8 +20,7 @@
 	},
 	"subject": "11 Walkies - Rigging",
 	"reference": "PO #12398",
-	"external_notes": "Sample text for ext",
-	"internal_notes": "3150 Linden Ave",
+	"notes": "Sample text for ext",
 	"organization": {
 		"uid": "WzIFDsAPL5jPC0jDoWoM",
 		"path": [

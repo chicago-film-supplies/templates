@@ -20,8 +20,7 @@
 	},
 	"subject": "L&D",
 	"reference": null,
-	"external_notes": "Sample text for external_notes......................",
-	"internal_notes": null,
+	"notes": "Sample text for notes...............................",
 	"organization": {
 		"uid": "YWRsfgi3ARPpivx4eLh7",
 		"path": [

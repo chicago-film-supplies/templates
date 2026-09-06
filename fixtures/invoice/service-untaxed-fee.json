@@ -20,8 +20,7 @@
 	},
 	"subject": "Trash",
 	"reference": null,
-	"external_notes": null,
-	"internal_notes": null,
+	"notes": null,
 	"organization": {
 		"uid": "2wtsuMafEGI3WY6KsD3X",
 		"path": [
