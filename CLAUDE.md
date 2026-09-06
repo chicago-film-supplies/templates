@@ -497,11 +497,28 @@ family — the state was reachable from the editor preview and `POST
 /templates/render` the whole time. `taxed-zero-priced-component-hidden` and
 `zero-priced-flat-tax-hidden` are what discharged it.
 
-⚠️ **`goldens/sandbox/` is still empty**, so a dev PR (base `sandbox`) still
-yields `no-golden` → PASS on every fixture. **Dev is not gated.** Do not read a
-green dev run as evidence a rendering change is safe — only the `main` PR's run
-is comparing anything. Re-bless both trees from
-`api-cloudrun/scripts/rebless-goldens.ts`.
+⚠️ **`goldens/sandbox/` was blessed on 2026-09-06 — 24 baselines, byte-identical
+to `main`'s — so a dev PR now genuinely COMPARES. It is still not GATED.**
+`sandbox` carries no `required_status_checks` and `allow_force_pushes: true`, so
+a red `visual-diff` there blocks nothing. **The half that changed is the
+evidence, not the enforcement**: a dev run's verdict now means something, and
+acting on it is still a choice rather than a requirement.
+
+⭐ **The two facts were independent all along and it is worth keeping them
+apart** — templates#118 filed them as such, and only one of them is closed.
+Whether `sandbox` should carry the required check is an open DECISION, entangled
+with `resyncSandbox()`: that break-glass force-pushes `sandbox` to `main`, so
+adding protection without settling it either breaks the resync or leaves the
+protection trivially bypassable. Branch protection is not Terraformed here — it
+is a manual `gh api PUT` with no code artifact.
+
+⚠️ **A sandbox baseline is byte-identical to its `main` twin BECAUSE the branch
+content is the same, not by construction.** `resyncSandbox` force-pushes
+`sandbox` to fresh `main`, which brings `main`'s goldens with it — so the two
+trees stay in step for free while sandbox is a mirror, and diverge the moment
+anything is authored on `sandbox` alone (which this repo forbids anyway; see
+*Environments*). Re-bless either tree from
+`api-cloudrun/scripts/rebless-goldens.ts --branch=<main|sandbox>`.
 
 This supersedes the old "goldens are DEFERRED, not missing" note, which said
 `goldens/` held zero PNGs and that `visual-diff` *cannot* fail. That was true
