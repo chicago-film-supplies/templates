@@ -63,6 +63,26 @@
  * silently skipped, so an absent tag would be indistinguishable from an
  * unreachable one — that is a COULD NOT VERIFY, not a pass.
  *
+ * ## 🔴 The floor may legitimately sit ABOVE what the tags require — this lint
+ * only fails it LOW, and that asymmetry is deliberate
+ *
+ * A tag set is a *declaration*; masking correctness also depends on the fake
+ * ROUTER, which no tag can express. Measured 2026-09-06, and it is why this
+ * paragraph exists: the floor stood at `beta.351` (correct for every tag),
+ * `captureFloorVerdict` passed against prod's `beta.353`, and a real capture
+ * still produced `Casey Maddox` for an `organization.name` and `6860 Elm Ln`
+ * for a destination divider — because `fakeForMask` chose a category from the
+ * VALUE's shape until api-cloudrun#837, and the corrected router only reached
+ * `@cfs/core` in `beta.355`. **The guard passed and the capture was still
+ * wrong.**
+ *
+ * So the floor is now `beta.355` — above what any tag needs — and this lint
+ * reports it CURRENT, correctly. **Do not "repair" a floor down to the tag
+ * minimum.** A floor above the newest published version is still refused (that
+ * one can never be satisfied); a floor between the tag minimum and the newest
+ * is a deliberate statement about the BUILD, and `capture-floor.json`'s `why`
+ * is where it says which.
+ *
  * ## Three states, and this one fails CLOSED where its neighbour fails OPEN
  *
  * `CURRENT` (exit 0) · `STALE` (exit 1) · `COULD NOT VERIFY` (**exit 1**).
