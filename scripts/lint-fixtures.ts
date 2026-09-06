@@ -155,7 +155,7 @@ for (const gitPath of gitPaths) {
 
 // ── Fold ────────────────────────────────────────────────────────────
 
-const { findings, tally, ungatedFamilies } = lintFixtureSet({ families });
+const { findings, advisories, tally, ungatedFamilies } = lintFixtureSet({ families });
 
 // ── Report ──────────────────────────────────────────────────────────
 //
@@ -181,9 +181,23 @@ const scopeLine = blameSet === null
 const goldenSummary = tally.goldenTrees.length > 0
   ? `goldens at parity (${tally.goldenTrees.join(", ")})`
   : "no graduated golden tree";
+/**
+ * 🔴 **The mask oracle's own three counts, and `unverifiable` is the one that
+ * matters.** `postcode` and `opaque` are masked shape-preservingly on purpose
+ * (api-cloudrun#627), so a real value and a fake one are indistinguishable and
+ * the oracle refuses to guess. A run whose masked leaves were all postcodes has
+ * checked nothing and would otherwise print exactly what a run that checked 500
+ * prints. Same rule as the examined counts either side of it.
+ */
+const m = tally.maskLeaves;
+const maskSummary = m.examined === 0
+  ? "0 pii-mask leaf/leaves examined"
+  : `${m.examined} pii-mask leaf/leaves examined (${m.masked} masked, ` +
+    `${m.notMasked} NOT masked, ${m.unverifiable} unverifiable — shape-preserving ` +
+    `categories no oracle can settle)`;
 const examined = `${tally.fixtures} fixture(s) across ${tally.families} family(ies), ` +
   `${tally.descriptions} coverage argument(s), ${goldenSummary}, ` +
-  `${tally.paramStates} param state(s) asked`;
+  `${tally.paramStates} param state(s) asked, ${maskSummary}`;
 
 // Reported, never a finding: a family mid-build is legitimate, and reddening it
 // on registration would block the very PR that creates it. Printing it is what
@@ -195,6 +209,33 @@ if (ungatedFamilies.length > 0) {
       `  Not a finding — a family mid-build is expected — but they render in ` +
       `production ungated.\n`,
   );
+}
+
+/**
+ * Advisories REPORT and never block — but they must be printed, or the check
+ * does not exist.
+ *
+ * ⚠️ **They are not blame-scoped either.** Blame scoping decides who a *failure*
+ * is fair to hold accountable; an advisory holds nobody accountable, so scoping
+ * it would only hide it. The mask oracle currently reports across the whole
+ * corpus by design — see its finding text.
+ */
+if (advisories.length > 0) {
+  console.log(
+    `\nⓘ ${advisories.length} advisory finding(s) — reported, NOT blocking.\n\n` +
+      `  The \`pii-mask\` ones say a \`pii: "mask"\` leaf holds a value the fixture\n` +
+      `  masker could not have produced. That means one of two things, and the\n` +
+      `  repair is the same for both: the value was never masked, or it was masked\n` +
+      `  by an older build whose router chose the category from the value's SHAPE\n` +
+      `  rather than from the field (api-cloudrun#837). Re-capture the fixture with\n` +
+      `  \`templates_capture_fixture\` — do not hand-edit it, and do not "fix" the\n` +
+      `  value to something that looks masked.\n\n` +
+      `  ⚠️ They are advisory because the whole committed corpus predates the fix,\n` +
+      `  not because they are unimportant. See templates#203.\n`,
+  );
+  for (const a of advisories) {
+    console.log(`  ⓘ [${a.gitPath}] ${a.check}  ${a.file}\n     ${a.message}\n`);
+  }
 }
 
 for (const finding of notices) {
