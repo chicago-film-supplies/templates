@@ -1,5 +1,5 @@
 {
-  "min_core": "10.0.0-beta.328",
-  "why": "the four pick-sheet PII masks — PickSheetScope.name (beta.324), subject on order/invoice/booking/fulfillment (.325/.326), DestinationDividerArm.name (.327), PickSheetDestination.name (.328)",
-  "see": "api-cloudrun#838 — a capture is sanitized by the DEPLOYED api's @cfs/core, and no repository holds that fact. captureFixture reads THIS file from the base branch and refuses to sanitize with an older build. Raise min_core whenever a new PII mask lands in core."
+  "min_core": "10.0.0-beta.351",
+  "why": "invoices.notes (beta.351) — the consolidated invoice notes field, pii: \"mask\". It supersedes external_notes/internal_notes, which carried the same tag and no longer exist. Subsumes the four pick-sheet masks this floor was first raised for: PickSheetScope.name (beta.324), subject on order/invoice/booking/fulfillment (.325/.326), DestinationDividerArm.name (.327), PickSheetDestination.name (.328).",
+  "see": "api-cloudrun#838 — a capture is sanitized by the DEPLOYED api's @cfs/core, and no repository holds that fact. captureFixture reads THIS file from the base branch and refuses to sanitize with an older build. templates#213 — nothing forced this number up when a new mask landed, so `deno task lint:capture-floor` now does: it walks the pii tag set at this version and at the newest published core and fails when the newest carries a tag this floor does not require. Raise min_core ONLY to a version api-cloudrun has DEPLOYED — a floor above the running build refuses every capture."
 }
