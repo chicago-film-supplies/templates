@@ -20,8 +20,7 @@
 	},
 	"subject": "Lost Hotspot",
 	"reference": null,
-	"external_notes": null,
-	"internal_notes": null,
+	"notes": null,
 	"organization": {
 		"uid": "ZAgM37O3iBFP08cuxEqL",
 		"path": [
