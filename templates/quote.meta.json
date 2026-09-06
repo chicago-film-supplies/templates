@@ -42,7 +42,7 @@
     {
       "slug": "rental-discount-exempt",
       "label": "Discounted rentals, tax exempt",
-      "description": "8 columns via Duration + Discount with Tax OFF — the only fixture that lays a Discount column out with no Tax column next to it, because the organization is tax_exempt and totals.taxes is empty. Two of its five rentals are 100% discounted, so subtotal_discounted_cents is 0: the falsy-zero case that made `||` print the pre-discount subtotal. Also carries two sibling groups under one destination. templates#69 listed this order as 9 columns; measured 2026-08-14 it is 8. Captured from prod order 989."
+      "description": "8 columns via Duration + Discount with Tax OFF — the only fixture that lays a Discount column out with no Tax column next to it, because the organization is tax_exempt and totals.taxes is empty. Two of its five rentals are 100% discounted, so subtotal_discounted_cents is 0: the falsy-zero case that made `||` print the pre-discount subtotal. Also carries two sibling groups under one destination. templates#69 listed this order as 9 columns; measured 2026-08-14 it is 8. ⚠️ Order 989 has moved since it was first captured (v8 -> v15) and now carries a `flat` $12.00 Card Fee as a sixth line. That is INCIDENTAL to this fixture's job and is not a reason to re-pick its source — the column shape, the exemption and the 100%-discounted pair all still hold — but it does mean `fee-flat-card` is no longer the family's ONLY flat-fee carrier, so do not read either description as claiming uniqueness there. Captured from prod order 989."
     },
     {
       "slug": "rental-taxed",
