@@ -43,26 +43,59 @@
  * Run: deno task scan:fixture-history
  */
 
-// Mirrored from api-cloudrun/src/services/templates/fixturePiiStrategy.ts.
-// A copy, deliberately: this repo does not import that service, and the lists
-// are a frozen fact about blobs already written rather than a live contract.
-const FAKE_FIRST = new Set([
-  "Jordan", "Riley", "Casey", "Morgan", "Avery", "Quinn", "Reese", "Sage",
-  "Rowan", "Drew", "Skyler", "Charlie", "Parker", "Hayden", "Logan", "Taylor",
-]);
-const FAKE_LAST = new Set([
-  "Adler", "Bishop", "Carmichael", "Doyle", "Ellsworth", "Fairfax", "Glenn",
-  "Holloway", "Ingram", "Jensen", "Knox", "Larkin", "Maddox", "Norris", "Owen", "Pierce",
-]);
-const FAKE_STREETS = [
-  "Maple Ave", "Elm Ln", "Cedar Rd", "Oak St", "Birch Way", "Pine Ct",
-  "Walnut Blvd", "Aspen Dr", "Sycamore Pl", "Cypress Ter", "Chestnut St",
-  "Spruce Ln", "Magnolia Rd", "Willow Way", "Juniper Ct", "Linden Ave",
-];
-const FAKE_CITIES = new Set([
+/**
+ * ⭐ **The vocabularies are IMPORTED, not copied — that copy is what A2 retired.**
+ * They lived here as a hand-transcribed mirror of the masker's output shapes,
+ * with no mechanism to keep the two together; `@cfs/core/utils/fixture-pii` now
+ * owns the fakes AND the oracle that judges them, so agreement is structural.
+ *
+ * 🔴 **But this script asks a DIFFERENT question from the live guard, and that
+ * difference is why the retired shapes below still exist.** `maskVerdict` asks
+ * "could the CURRENT masker have produced this?" — the right question for a
+ * value being committed today. This script reads HISTORY, so its question is
+ * "could ANY masker this repo has ever run have produced this?", and every blob
+ * already written was masked by an older one.
+ *
+ * ⚠️ **Do not push the retired shapes down into core to unify the two.** The
+ * live oracle accepting `Lincoln Park` forever would mean a REAL destination
+ * called Lincoln Park passes — the retired city list is drawn from actual
+ * Chicago-area place names, which is exactly what made it a bad vocabulary and
+ * why A1 replaced it. Historical tolerance belongs to the historical scan.
+ *
+ * ⚠️ This is also value-only: a blob carries no schema, so there is no field
+ * path to route on and the category-aware half of the oracle is unavailable
+ * here. That makes this scan strictly noisier than the lint, which is the safe
+ * direction for a candidate list a human reads.
+ */
+import {
+  FAKE_FIRST_NAMES,
+  FAKE_LAST_NAMES,
+  FAKE_ORGANIZATIONS,
+  FAKE_PLACES,
+  FAKE_STREETS,
+  FAKE_UNIT_PREFIXES,
+  MASKED_EMAIL_DOMAIN,
+} from "@cfs/core/utils/fixture-pii";
+
+const FAKE_FIRST = new Set(FAKE_FIRST_NAMES);
+const FAKE_LAST = new Set(FAKE_LAST_NAMES);
+const FAKE_VENUES = new Set([...FAKE_PLACES, ...FAKE_ORGANIZATIONS]);
+
+/**
+ * Shapes a RETIRED masker emitted, kept for history and for nothing else.
+ *
+ * - the city list `fakeForMask` drew `place` from before api-cloudrun#837;
+ * - the `6xxxx` US-ZIP-only postcode form, replaced by the shape-preserving
+ *   mask in api-cloudrun#627.
+ *
+ * A blob written before those changes carries these, and reporting every one of
+ * them as a candidate would bury the real ones.
+ */
+const RETIRED_FAKE_CITIES = new Set([
   "Lincoln Park", "Forest Glen", "River Bend", "Lakeview", "Hillcrest",
   "Westmont", "Northbrook", "Eastvale", "Southfield", "Glenwood",
 ]);
+const RETIRED_POSTCODE = /^6\d{4}$/;
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
@@ -70,17 +103,24 @@ const PHONE = /(?:\+?1[\s.-]?)?(?:\(\d{3}\)[\s.-]?|\d{3}[\s.-])\d{3}[\s.-]?\d{4}
 const ALLOWED_EMAIL_DOMAIN = "chicagofilmsupplies.com";
 const CFS_PHONE_DIGITS = "3128183008";
 
-/** Could `fakeForMask` have produced this? One of its seven output shapes. */
+/** Could ANY masker this repo has run have produced this? Value-only — see the
+ *  note above on why that is a different question from `maskVerdict`'s. */
 function isMaskShaped(v: string): boolean {
-  if (/^masked_[0-9a-f]{4}@chicagofilmsupplies\.com$/.test(v)) return true;
+  if (new RegExp(`^masked_[0-9a-f]{4}@${MASKED_EMAIL_DOMAIN.replace(/\./g, "\\.")}$`).test(v)) {
+    return true;
+  }
   if (/^\(\d{3}\) 555-01\d{2}$/.test(v)) return true;
-  if (/^6\d{4}$/.test(v)) return true;
   if (FAKE_STREETS.some((s) => new RegExp(`^\\d{3,4} ${s}$`).test(v))) return true;
-  if (/^Sample text for /.test(v)) return true;
-  if (FAKE_CITIES.has(v)) return true;
+  if (FAKE_UNIT_PREFIXES.some((p) => new RegExp(`^${p} \\d{3}$`).test(v))) return true;
+  if (/^Sample( text)?( for)?\b/.test(v)) return true;
+  if (FAKE_VENUES.has(v)) return true;
   const t = v.trim().split(/\s+/);
+  if (t.length === 1 && (FAKE_FIRST.has(t[0]) || FAKE_LAST.has(t[0]))) return true;
   if (t.length === 2 && FAKE_FIRST.has(t[0]) && FAKE_LAST.has(t[1])) return true;
   if (t.length === 3 && FAKE_FIRST.has(t[0]) && /^[A-Z]$/.test(t[1]) && FAKE_LAST.has(t[2])) return true;
+  // Retired shapes — history only.
+  if (RETIRED_FAKE_CITIES.has(v)) return true;
+  if (RETIRED_POSTCODE.test(v)) return true;
   return false;
 }
 

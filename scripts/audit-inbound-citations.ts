@@ -96,32 +96,37 @@ const SKIP = new Set(["node_modules", ".git", "dist", "worktrees", "coverage", "
 /**
  * Citations that LOOK repo-qualified and are not.
  *
- * 🔴 One repo is named `templates`, and every repo has a `templates/` content
- * prefix — so `templates/quote.meta.json` is ambiguous by construction. Both
- * entries below are **content-map keys** inside a `.describe()` string (the key
- * naming a file within a template version's stored content map), not paths in
- * the `templates` repo. The prose around each says so.
+ * 🔴 **One repo is named `templates` AND has its own `templates/` directory, so
+ * `templates/quote.meta.json` is ambiguous by construction** — it can mean a
+ * path relative to the workspace, or the repo plus its content prefix, or a
+ * content-map KEY inside a `.describe()` string that is not a path at all.
  *
- * ⚠️ Kept as data rather than solved structurally on purpose: no syntactic rule
- * separates "a path in the repo named templates" from "a key beginning
- * templates/" — only the surrounding prose does. An exemption a human wrote and
- * signed beats a heuristic that would silently drop one of the two classes.
+ * ⚠️ **This list used to hold two entries and now holds none, and the reason is
+ * a correction rather than a cleanup.** Its previous note said the ambiguity was
+ * *"kept as data rather than solved structurally on purpose"*, because no
+ * syntactic rule separates a real path from a content-map key — only the prose
+ * around it does. That is still true of the KEY question. But it was answering
+ * the wrong one: the resolver below never tried the repo's own `templates/`
+ * prefix at all, so `templates/packing-list.meta.json` — cited as a plain path,
+ * in `api-cloudrun`'s plan doc and in one of its tests, naming a file that
+ * plainly exists — was reported BROKEN. Measured 2026-09-06: this script
+ * reported 2 broken into `api-cloudrun` while `api-cloudrun`'s own outbound
+ * audit reported 0 broken over 4,107 citations, because that one resolves by
+ * path SUFFIX. **Two audits disagreeing about the same two citations is the
+ * defect**, and the hand-signed exemptions were suppressing a symptom of it one
+ * file at a time.
+ *
+ * So the resolver now tries the repo-prefixed form too, and both former entries
+ * resolve on their merits. **The exemption mechanism is untouched and still
+ * needed**: a content-map key naming a file that does NOT exist in this repo
+ * still reports BROKEN and still wants a human's signature. What changed is that
+ * a key which IS a real git path — which is every key here, since the content
+ * map is keyed by git path — no longer needs one.
  *
  * Fails in BOTH directions: an entry that stops matching is reported, so this
- * list cannot rot into a permanent excuse.
+ * list cannot rot into a permanent excuse. That rule is what surfaced these two.
  */
-const EXEMPT: Array<{ from: string; cited: string; why: string }> = [
-  {
-    from: "api-cloudrun/src/routes/templates.ts",
-    cited: "templates/quote.meta.json",
-    why: "a content-map KEY in the MCP tool's own description, not a repo path",
-  },
-  {
-    from: "api-cloudrun/scripts/seed-quote-template.ts",
-    cited: "templates/quote.meta.json",
-    why: "same content-map key, named in the seeding script's header",
-  },
-];
+const EXEMPT: Array<{ from: string; cited: string; why: string }> = [];
 const exemptUsed = new Set<string>();
 
 /**
@@ -193,6 +198,17 @@ for (const sibling of SIBLINGS) {
         if (!cited.startsWith(`${OWN_REPO}/`)) continue;
         inbound++;
         if (await exists(path.join(WORKSPACE, cited))) continue;
+        // 🔴 **A repo whose name matches one of its own top-level directories
+        // makes the leading segment ambiguous, and this repo is one.** A
+        // citation `templates/packing-list.meta.json` can mean
+        // `<workspace>/templates/packing-list.meta.json` — the check above — or
+        // the repo `templates` plus its own `templates/` directory, which is
+        // where the file actually is. The CITING repo's auditor resolves by path
+        // SUFFIX and finds it; this one joined and did not, so the two audits
+        // disagreed about the same two citations and this one cried wolf.
+        // Measured 2026-09-06: api-cloudrun reported 0 broken over 4,107
+        // citations while this reported 2 into it.
+        if (await exists(path.join(WORKSPACE, OWN_REPO, cited))) continue;
         // Prose that says the path is gone is a statement, not a stale citation.
         if (describesDeletion(text, m.index ?? 0)) continue;
         const citingRel = `${sibling}/${path.relative(repoDir, file)}`;
