@@ -1,6 +1,6 @@
 name: templates-lint
 
-# Four always-on guards on every PR.
+# Five always-on guards on every PR.
 #
 # 1. FIXTURES (scripts/lint-fixtures.ts) — every fixtures/<gp>/*.json must satisfy
 #    the same schema the API enforces on save, and carry no customer PII. Fixtures
@@ -26,7 +26,22 @@ name: templates-lint
 #    against prod's deployed core, and the deployed version is not a fact this
 #    repository holds at all. Twice — #155 and #199, a week apart — a PR merged
 #    green on every required check and 500'd the webhook, rolling the whole
-#    publish back. This is the only guard here that reads outside the tree.
+#    publish back.
+#
+# 5. CAPTURE FLOOR (scripts/lint-capture-floor.ts) — capture-floor.json's
+#    min_core must still cover every `pii: "mask"` tag that EXISTS in a
+#    published @cfs/core. api-cloudrun#838's guard refuses a capture when the
+#    DEPLOYED build is below the floor; it cannot see the floor itself falling
+#    behind the masks, and a missing mask does not fail loudly — it writes real
+#    customer data into git, where nothing can recall it (templates#213).
+#
+# ⚠️ **4 and 5 are the two guards that read OUTSIDE the tree, and they disagree
+# about failing open — deliberately.** Guard 4's oracle is the running service
+# and its finding is about the PR's own content, so an unreachable oracle fails
+# OPEN rather than becoming an unclearable merge blocker. Guard 5's failure is
+# irreversible, so it fails CLOSED on everything, including a registry it cannot
+# reach. Do not reconcile them; `scripts/lint-capture-floor.ts`'s header carries
+# the comparison.
 on:
   pull_request:
     branches:
@@ -156,6 +171,22 @@ jobs:
           else
             deno task lint:deployed-enums --base="${{ github.base_ref || 'main' }}"
           fi
+
+      # 5. CAPTURE FLOOR — see the workflow header.
+      #
+      # ⚠️ **Deliberately NOT blame-scoped.** Every other guard here answers a
+      # question about a FAMILY, so scoping which findings block is meaningful.
+      # This one answers a question about the REPOSITORY — is capture-floor.json
+      # still current — and that fact is the same whichever files a PR touches.
+      # A blame-scoped run of it would block on nothing, ever.
+      #
+      # ⚠️ It fails CLOSED on an unreachable registry, unlike guard 4 above.
+      # The trade is different because the failures are: a missed enum member
+      # 500s the publish webhook and is re-runnable, a missed PII mask succeeds
+      # quietly and writes customer data into git history. A blocked PR clears
+      # on a re-run; a disclosure clears on nothing.
+      - name: Lint capture floor
+        run: deno task lint:capture-floor
 
       - name: Scan templates for hardcoded PII
         run: |

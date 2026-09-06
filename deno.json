@@ -50,6 +50,8 @@
     "lint:citations": "deno run --allow-read --allow-env scripts/lint-citations.ts",
     "//lint:citations:inbound": "The OTHER direction: sibling repos citing paths INTO this repo. MANUAL \u2014 templates has no git hooks by design (its branches are user-generated drafts, exempt from hygiene), and CI cannot run it because each workflow checks out one repo. Run it before pushing a rename or deletion.",
     "lint:citations:inbound": "deno run --allow-read scripts/audit-inbound-citations.ts",
+    "//lint:capture-floor": "Does capture-floor.json's min_core still cover every pii mask that EXISTS? Reads @cfs/core's PUBLISHED version list from JSR and walks the tag set at two versions, because 'which core introduced this mask' is not a fact this repo holds. Fails CLOSED on an unreachable oracle — unlike lint:deployed-enums next door, and the script header says why. Takes no arguments.",
+    "lint:capture-floor": "deno run --allow-read --allow-net=jsr.io --allow-import=jsr.io --no-lock scripts/lint-capture-floor.ts",
     "//lint:deployed-enums": "Does prod's DEPLOYED core have the enum members our sidecars name? Reads the RUNNING service's /openapi.json \u2014 the deployed version is not a fact this repo holds, so no pin-resolving lint can answer it. --base=<branch> picks the env (main -> prod, sandbox* -> dev); a main PR checked against dev always passes and means nothing.",
     "lint:deployed-enums": "deno run --allow-read --allow-net=api.chicagofilmsupplies.com,dev-api.chicagofilmsupplies.com scripts/lint-deployed-enums.ts"
   }
