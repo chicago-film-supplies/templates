@@ -1,19 +1,21 @@
 {
   "//minimumDependencyAge": [
     "Deno 2.9 refuses any JSR/npm version younger than 24h. That default is",
-    "right for third-party code and stays in force — the exclude list names ONE",
+    "right for third-party code and stays in force \u2014 the exclude list names ONE",
     "package rather than disabling the setting.",
     "@cfs/core is first-party: we publish it from chicago-film-supplies/core and",
     "the workspace publish order (edit core/beta -> publish -> bump these pins)",
     "means every core change reaches this repo minutes old by construction.",
     "Without the exclusion a `deno install` here fails outright for a full day",
     "after each publish, which is what it did on the beta.117 bump.",
-    "Same setting, same reasoning, as api-cloudrun/deno.json — do NOT widen it",
+    "Same setting, same reasoning, as api-cloudrun/deno.json \u2014 do NOT widen it",
     "to a bare age override: the 24h window is the only supply-chain delay we",
     "get on a compromised third-party publish."
   ],
   "minimumDependencyAge": {
-    "exclude": ["jsr:@cfs/core"]
+    "exclude": [
+      "jsr:@cfs/core"
+    ]
   },
   "imports": {
     "@bgub/eta": "jsr:@bgub/eta@^4.6.0",
@@ -38,14 +40,16 @@
     "preview:watch": "deno run --watch=templates/,layouts/,styles/,partials/ --allow-read --allow-write --allow-run --allow-env=PREVIEW_BROWSER scripts/preview.ts --background",
     "fetch-llms-docs": "deno run --allow-net --allow-read --allow-write scripts/fetch-llms-docs.ts",
     "lint:fixtures": "deno run --allow-read scripts/lint-fixtures.ts",
-    "//lint:money": "The REQUIRED money arm — regressions only (count > budget, non-closed ops, an empty scan). Add --blame-changed-files=<path> to scope which findings block; unscoped is the safe default.",
+    "//lint:money": "The REQUIRED money arm \u2014 regressions only (count > budget, non-closed ops, an empty scan). Add --blame-changed-files=<path> to scope which findings block; unscoped is the safe default.",
     "lint:money": "deno run --allow-read scripts/money-lint.ts",
-    "//lint:money:ratchet": "The ADVISORY arm — a budget higher than the code, i.e. a cleanup nobody banked. Exits 1 so it goes red, but it is deliberately NOT a required check: its only repair is editing scripts/money-lint.ts, which the manager's template editor cannot open.",
+    "//lint:money:ratchet": "The ADVISORY arm \u2014 a budget higher than the code, i.e. a cleanup nobody banked. Exits 1 so it goes red, but it is deliberately NOT a required check: its only repair is editing scripts/money-lint.ts, which the manager's template editor cannot open.",
     "lint:money:ratchet": "deno run --allow-read scripts/money-lint.ts --direction=under",
-    "//scan:fixture-history": "PII scan over every fixture blob that ever existed — the discharge condition for making this repo public. NOT lint:fixtures pointed at history; see the script header.",
+    "//scan:fixture-history": "PII scan over every fixture blob that ever existed \u2014 the discharge condition for making this repo public. NOT lint:fixtures pointed at history; see the script header.",
     "scan:fixture-history": "deno run --allow-read --allow-run=git scripts/scan-fixture-history.ts",
     "lint:citations": "deno run --allow-read --allow-env scripts/lint-citations.ts",
-    "//lint:deployed-enums": "Does prod's DEPLOYED core have the enum members our sidecars name? Reads the RUNNING service's /openapi.json — the deployed version is not a fact this repo holds, so no pin-resolving lint can answer it. --base=<branch> picks the env (main -> prod, sandbox* -> dev); a main PR checked against dev always passes and means nothing.",
+    "//lint:citations:inbound": "The OTHER direction: sibling repos citing paths INTO this repo. MANUAL \u2014 templates has no git hooks by design (its branches are user-generated drafts, exempt from hygiene), and CI cannot run it because each workflow checks out one repo. Run it before pushing a rename or deletion.",
+    "lint:citations:inbound": "deno run --allow-read scripts/audit-inbound-citations.ts",
+    "//lint:deployed-enums": "Does prod's DEPLOYED core have the enum members our sidecars name? Reads the RUNNING service's /openapi.json \u2014 the deployed version is not a fact this repo holds, so no pin-resolving lint can answer it. --base=<branch> picks the env (main -> prod, sandbox* -> dev); a main PR checked against dev always passes and means nothing.",
     "lint:deployed-enums": "deno run --allow-read --allow-net=api.chicagofilmsupplies.com,dev-api.chicagofilmsupplies.com scripts/lint-deployed-enums.ts"
   }
 }
