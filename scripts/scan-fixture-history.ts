@@ -103,6 +103,11 @@ const PHONE = /(?:\+?1[\s.-]?)?(?:\(\d{3}\)[\s.-]?|\d{3}[\s.-])\d{3}[\s.-]?\d{4}
 const ALLOWED_EMAIL_DOMAIN = "chicagofilmsupplies.com";
 const CFS_PHONE_DIGITS = "3128183008";
 
+/** `fakeStreet`'s output: a 3-4 digit number and one `FAKE_STREETS` tail. */
+function isMaskedStreetLine(v: string): boolean {
+  return FAKE_STREETS.some((s) => new RegExp(`^\\d{3,4} ${s}$`).test(v));
+}
+
 /** Could ANY masker this repo has run have produced this? Value-only — see the
  *  note above on why that is a different question from `maskVerdict`'s. */
 function isMaskShaped(v: string): boolean {
@@ -110,7 +115,22 @@ function isMaskShaped(v: string): boolean {
     return true;
   }
   if (/^\(\d{3}\) 555-01\d{2}$/.test(v)) return true;
-  if (FAKE_STREETS.some((s) => new RegExp(`^\\d{3,4} ${s}$`).test(v))) return true;
+  if (isMaskedStreetLine(v)) return true;
+  // 🔴 **The COMPOSED `address.full` form, whose segment 0 is that same masked
+  // street line.** Measured 2026-09-07 over 164 blobs: without this arm, 33 of
+  // the 49 "hard PII" candidates were masker output — a 2:1 majority burying
+  // the 16 real historical addresses, which is exactly the failure the retired
+  // shapes above exist to prevent, and it grows with every capture.
+  //
+  // ⭐ **Segment 0 DECIDES, and that is `fakeAddressFull`'s own rule, not a
+  // relaxation of it**: the address line is always replaced, while the later
+  // segments are `city` / `region` / `country_name`, which the same `Address`
+  // publishes UNMASKED under an explicit `pii: "none"`. So a real
+  // `2621 W 15th Pl, Chicago, IL, …` still fails at segment 0, which is the
+  // case that matters. This is `maskVerdict`'s `address_full` arm, reachable
+  // here because it needs no field path — the one piece of the category-aware
+  // oracle that survives a value-only scan.
+  if (v.includes(",") && isMaskedStreetLine(v.split(",")[0].trim())) return true;
   if (FAKE_UNIT_PREFIXES.some((p) => new RegExp(`^${p} \\d{3}$`).test(v))) return true;
   if (/^Sample( text)?( for)?\b/.test(v)) return true;
   if (FAKE_VENUES.has(v)) return true;
