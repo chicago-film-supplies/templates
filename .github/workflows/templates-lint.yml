@@ -1,6 +1,21 @@
 name: templates-lint
 
-# Five always-on guards on every PR.
+# Six always-on guards on every PR.
+#
+# 0. LOCKFILE SYNC (scripts/check-lockfile-sync.ts) — do deno.json and deno.lock
+#    still agree about what is DIRECTLY wanted? Numbered 0 because its POSITION
+#    is the whole of its wiring: every step below resolves @cfs/core from the
+#    LOCK, so a pin bumped without a `deno install` leaves them all green and
+#    correctly answering about a version this repo has stopped claiming to use.
+#    templates#243 is the incident — a pin bumped with the lock left behind,
+#    merged with every check green.
+#
+#    🔴 It must be the FIRST deno invocation in the job, and a bare `deno run`
+#    rather than a `deno task`. Measured 2026-09-07: `deno task X` resolves the
+#    import map and REWRITES deno.lock in the launcher before X starts, so one
+#    earlier `deno task` repairs the desync in the runner and this guard then
+#    reports it no more. See scripts/check-lockfile-sync.ts for the three-way
+#    isolation.
 #
 # 1. FIXTURES (scripts/lint-fixtures.ts) — every fixtures/<gp>/*.json must satisfy
 #    the same schema the API enforces on save, and carry no customer PII. Fixtures
@@ -97,6 +112,21 @@ jobs:
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
+
+      # 0. LOCKFILE SYNC — see the workflow header. FIRST, and a bare `deno run`.
+      #
+      # ⚠️ Do not "tidy" this into `deno task lint:lockfile`. There is no such
+      # task on purpose (deno.json's `//lint:lockfile` explains), because the
+      # task LAUNCHER syncs the lock before the inner --no-lock can take effect.
+      #
+      # ⚠️ Do not move it below any `deno task` step either. Its verdict is only
+      # about the committed corpus while nothing has resolved the import map yet.
+      #
+      # Not blame-scoped: like the capture-floor guard it answers a question
+      # about the REPOSITORY, not about a family, so scoping which findings block
+      # would block on nothing, ever.
+      - name: Check deno.json / deno.lock agreement
+        run: deno run --no-lock --allow-read scripts/check-lockfile-sync.ts
 
       # ── Blame scoping — see scripts/affectedFamilies.ts ─────────────
       #
@@ -251,3 +281,12 @@ jobs:
           }
           console.log("pii-lint: no hardcoded customer PII found.");
           TS
+
+      # The unit arm. Today it is the lockfile guard's two polarities and
+      # nothing else, and that is exactly why it exists: guard 0 runs against a
+      # corpus that is nearly always right, so its silence means nothing unless
+      # something has shown it can speak. It reads synthetic pairs, never the
+      # real deno.lock (except for one ratchet arm), so it is order-independent
+      # and safely last.
+      - name: Unit tests
+        run: deno task test

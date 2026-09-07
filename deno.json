@@ -19,6 +19,8 @@
   },
   "imports": {
     "@bgub/eta": "jsr:@bgub/eta@^4.6.0",
+    "@std/assert": "jsr:@std/assert@^1.0.19",
+    "@std/semver": "jsr:@std/semver@^1.0.8",
     "@cfs/core/schemas": "jsr:@cfs/core@10.0.0-beta.362/schemas",
     "@cfs/core/utils/citations": "jsr:@cfs/core@10.0.0-beta.362/utils/citations",
     "@cfs/core/utils/orders": "jsr:@cfs/core@10.0.0-beta.362/utils/orders",
@@ -37,6 +39,9 @@
     "@date-fns/tz": "npm:@date-fns/tz@^1.5.0"
   },
   "tasks": {
+    "//lint:lockfile": "There is deliberately NO lint:lockfile task, and the absence is the guard. Run it as: deno run --no-lock --allow-read scripts/check-lockfile-sync.ts. Measured 2026-09-07: `deno task X` resolves the import map and REWRITES deno.lock before X starts, so wrapping this check in a task defeats the --no-lock it carries and the guard reports on a corpus the launcher just repaired — with a core pin bumped and no deno install, the desync vanished from the report entirely. The same fact decides its CI position: it must be the FIRST deno invocation in the job, because ANY earlier deno task syncs the lock in the runner. See scripts/check-lockfile-sync.ts.",
+    "//test": "The unit arm. Today it is the lockfile guard's two polarities and nothing else — a guard only ever run against a corpus that happens to be right is not verified. Add *.test.ts beside the script it tests. It exercises pure functions on synthetic pairs and never reads the real deno.lock, so the launcher's lock-sync above cannot bias it.",
+    "test": "deno test --no-lock --allow-read scripts/",
     "preview": "deno run --allow-read --allow-write --allow-run --allow-env=PREVIEW_BROWSER scripts/preview.ts",
     "preview:watch": "deno run --watch=templates/,layouts/,styles/,partials/ --allow-read --allow-write --allow-run --allow-env=PREVIEW_BROWSER scripts/preview.ts --background",
     "fetch-llms-docs": "deno run --allow-net --allow-read --allow-write scripts/fetch-llms-docs.ts",
