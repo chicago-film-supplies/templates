@@ -212,38 +212,66 @@ if (ungatedFamilies.length > 0) {
 }
 
 /**
+ * How to repair a `pii-mask` finding, printed ONCE for the run.
+ *
+ * 🔴 **This used to live on the ADVISORY path only, and check 2b flipped to
+ * BLOCKING on 2026-09-06 — so without moving it the guidance would have vanished
+ * at exactly the moment it started costing someone a red PR.** Core states the
+ * finding in one line on purpose (the explanation belongs to the presenter,
+ * printed once, not repeated per fixture); this is that presenter, and it has to
+ * follow the finding into whichever list it now lands in.
+ */
+const PII_MASK_GUIDANCE = `  A \`pii-mask\` finding says a \`pii: "mask"\` leaf holds a value the fixture
+  masker could not have produced. Two things cause it and the repair differs:
+
+    • A CAPTURED fixture — the value was never masked, or was masked by an
+      older build whose router chose the category from the value's SHAPE rather
+      than from the field (api-cloudrun#837). **Re-capture it** with
+      \`templates_capture_fixture\`. Do not hand-edit it, and do not "fix" the
+      value to something that merely looks masked.
+
+    • A HAND-BUILT fixture — \`multi-dest\` and \`discounts-and-fee\` are the only
+      two, and there is nothing to re-capture. Draw the value from
+      \`@cfs/core/utils/fixture-pii\`'s exported vocabularies (FAKE_ORGANIZATIONS,
+      FAKE_PLACES, FAKE_STREETS, FAKE_FIRST_NAMES/FAKE_LAST_NAMES,
+      FAKE_UNIT_PREFIXES) or the self-announcing filler, then re-bless the golden.
+
+  ⚠️ Not a carve-out either way. Both hand-built fixtures were PII-free by
+  construction and were still repaired rather than exempted — an exemption is
+  exactly where a genuinely leaked address would hide.
+`;
+
+const mentionsMask = (fs: { check: string }[]) => fs.some((f) => f.check === "pii-mask");
+
+/**
  * Advisories REPORT and never block — but they must be printed, or the check
  * does not exist.
  *
  * ⚠️ **They are not blame-scoped either.** Blame scoping decides who a *failure*
  * is fair to hold accountable; an advisory holds nobody accountable, so scoping
- * it would only hide it. The mask oracle currently reports across the whole
- * corpus by design — see its finding text.
+ * it would only hide it.
+ *
+ * ⚠️ **Nothing produces one today** (core's `LintFinding.severity`) — check 2b
+ * was the only producer and it flipped. Kept because the seam is how the next
+ * rule over an existing corpus ships, and a presenter that silently drops a
+ * category is how an advisory becomes a check that does not exist.
  */
 if (advisories.length > 0) {
-  console.log(
-    `\nⓘ ${advisories.length} advisory finding(s) — reported, NOT blocking.\n\n` +
-      `  The \`pii-mask\` ones say a \`pii: "mask"\` leaf holds a value the fixture\n` +
-      `  masker could not have produced. That means one of two things, and the\n` +
-      `  repair is the same for both: the value was never masked, or it was masked\n` +
-      `  by an older build whose router chose the category from the value's SHAPE\n` +
-      `  rather than from the field (api-cloudrun#837). Re-capture the fixture with\n` +
-      `  \`templates_capture_fixture\` — do not hand-edit it, and do not "fix" the\n` +
-      `  value to something that looks masked.\n\n` +
-      `  ⚠️ They are advisory because the whole committed corpus predates the fix,\n` +
-      `  not because they are unimportant. See templates#203.\n`,
-  );
+  console.log(`\nⓘ ${advisories.length} advisory finding(s) — reported, NOT blocking.\n`);
+  if (mentionsMask(advisories)) console.log(PII_MASK_GUIDANCE);
   for (const a of advisories) {
     console.log(`  ⓘ [${a.gitPath}] ${a.check}  ${a.file}\n     ${a.message}\n`);
   }
 }
 
+if (mentionsMask(notices)) console.log(PII_MASK_GUIDANCE);
 for (const finding of notices) {
   console.log(`  ⓘ [${finding.gitPath}] ${finding.check}  ${finding.file}\n     ${finding.message}\n`);
 }
 
 if (blocking.length > 0) {
   console.error(`\nlint-fixtures: ${blocking.length} finding(s).\n`);
+  if (mentionsMask(blocking)) console.error(PII_MASK_GUIDANCE);
   for (const finding of blocking) {
     console.error(`  [${finding.gitPath}] ${finding.check}  ${finding.file}\n     ${finding.message}\n`);
   }
