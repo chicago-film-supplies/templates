@@ -1,0 +1,103 @@
+/* statement.css — what is TRUE OF A STATEMENT and of nothing else.
+
+   The document chrome — the page grid, the two alignment edges, the letterhead,
+   the table rules, #details, #items and #totals — lives in `styles/base.css` and
+   reaches this family through the `base` component, the same way it reaches the
+   quote, the invoice and the receipt. A family is overlaid from `base.css` plus
+   its own sheet and nothing else (`ownsTemplatePath`), so anything copied here
+   would be a second copy that drifts.
+
+   A statement has no #destinations block and no #information note, so it needs
+   none of the rules those carry. What it does have that no other family does is
+   an #aging strip and a grid of money columns that are read DOWN rather than
+   across — the two things below. */
+
+/* THE STATEMENT'S OWN ROOT SIZE, matched to the quote, the invoice and the
+   receipt deliberately rather than inherited by accident.
+
+   `base.css` defaults the root to 10px; every customer-facing document opts down
+   to 9px so they read as the same company's paperwork at the same density, and a
+   statement is read beside the invoices it lists. Everything under the root is
+   em/rem — including `--label-col`, whose 24rem is 216px here exactly as it is on
+   an invoice — so this one declaration sets the whole document's scale
+   coherently.
+
+   ⚠️ It also fixes the FOOTER's fit, which is why it is not a free choice: the
+   shared footer carries no font-size of its own and inherits this root through
+   the overlay `api-cloudrun` injects into that isolated frame. The band's fit
+   inside `margin_bottom: 0.62in` was measured at a 9px root and has not been
+   re-measured at 10px — and neither the golden gate nor `deno task preview`
+   renders that frame (templates#137). See the longer note in `styles/receipt.css`. */
+html {
+  font-size: 9px;
+}
+
+/* THE MONEY COLUMNS ARE READ DOWN, so they are right-aligned and tabular.
+
+   ⚠️ This is a deliberate DIVERGENCE from the quote and the invoice, not an
+   oversight there. Their items grid right-aligns only its final Total column
+   (`td.total` in `styles/base.css`) because each row is a priced LINE whose
+   figures are read across — Unit Price, then Subtotal, then Total for that one
+   item. A statement's Charges / Payments / Balance columns are a ledger: the
+   reader is adding a column up, or checking that the Balance column steps the
+   way the two beside it say it should. Ragged-left figures make that unreadable.
+
+   `font-variant-numeric` rather than a monospace stack — the digits line up in a
+   column without changing the typeface mid-document, which is the same call
+   `styles/receipt.css` makes for its counts. */
+#items th.money,
+#items td.money,
+#items th.total,
+#items td.total,
+#aging th.money,
+#aging td.money,
+#aging th.total,
+#aging td.total {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The aging strip spans the page. It is a summary OF the grid above it rather
+   than a block sitting beside one, so it takes both grid columns — the same
+   `1 / -1` #items and #destinations take in `base.css`, and for the same reason:
+   there is nothing to put next to it. */
+#aging {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+/* Headed like #destinations' blocks are, so the two summary sections on the
+   page's lower half read as one family of headings. */
+#aging h2 {
+  border-bottom: 1px solid #121212;
+}
+
+/* Same rule, same reason, as `#details thead th` and `#items thead th` in
+   `base.css`: the blanket `th, td { width: 6rem }` plus the 24rem first-child
+   falls SHORT of the page at this table's eight columns, and Blink hands the
+   surplus back in proportion to the specified widths — so the widest column
+   takes the biggest share and every boundary drifts right. Releasing the others
+   to `auto` keeps the label column on `--label-col` exactly, which is the edge
+   #details and #totals are already on. `thead th`, not every cell, because under
+   `table-layout: fixed` only the first row sizes anything. */
+#aging thead th:not(:first-child) {
+  width: auto;
+}
+
+/* The empty-period statement's one line of prose. It sits where #items would
+   have, spans the page for the same reason, and takes its baseline from the same
+   `--cell-pad-y` every table cell does so it does not sit a couple of pixels off
+   the block above it. */
+#no-activity {
+  grid-column: 1 / -1;
+  padding: var(--cell-pad-y) 0;
+}
+
+/* #totals is NOT the last block on this page, and `base.css` gives it a 4em
+   bottom margin because on a quote and an invoice it is. Here the aging strip
+   follows it, and 4em of clear air between a total and the summary that explains
+   it reads as an unfinished page rather than as separation. 2em keeps them
+   distinct blocks without stranding one. */
+#totals {
+  margin-bottom: 2em;
+}
