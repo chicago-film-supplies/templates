@@ -30,7 +30,7 @@ import { CFS_LOGO_SVG } from "@cfs/core/utils/icons";
 import * as moneyUtils from "@cfs/core/utils/money";
 import * as organizationUtils from "@cfs/core/utils/organizations";
 import { availableUtilNamespaces } from "@cfs/core/schemas";
-import { resolveRenderParams } from "@cfs/core/utils/templates";
+import { injectPartDefaults, resolveRenderParams } from "@cfs/core/utils/templates";
 import type { TemplateCollectionType } from "@cfs/core/schemas";
 
 /**
@@ -369,9 +369,43 @@ if (renderConfig.filename) {
 if (renderConfig.footer) {
   const footerSrc = await Deno.readTextFile(renderConfig.footer);
   const footerHtml = await eta.renderStringAsync(footerSrc, ctx);
+  // 🔴 **An ISOLATED frame, built by the same function the PDF path uses.**
+  // This used to splice the rendered footer into the body document as a plain
+  // `<div>`, and both halves of that were wrong. It failed to reproduce the
+  // isolation — Chromium renders a header/footer in its own document, which is
+  // why the customer-facing quote footer rendered in Times for as long as it
+  // existed while this harness showed it in the page's font — and it CORRUPTED
+  // what it was previewing beside it, because the partial's own `<style>`
+  // (`body`, `a`, `div`, `footer` — all bare selectors) leaked onto the whole
+  // quote. So an author's local check disagreed with the shipped PDF and with
+  // the goldens, in both directions at once. templates#137 / #139.
+  //
+  // ⭐ **`injectPartDefaults` is imported, never reimplemented.** It is the one
+  // author of the frame document across three surfaces — this harness, the
+  // Gotenberg convert, and the golden gate — which is exactly why it lives in
+  // `@cfs/core/utils/templates` rather than in any of them. A local copy here
+  // would drift silently: nothing renders both and compares.
+  //
+  // ⚠️ The margins come from the family's own `render` block, and are passed
+  // straight through — `undefined` falls to `injectPartDefaults`' own
+  // `CHROMIUM_DEFAULT_MARGIN_IN`. Spelling the fallback again HERE would be a
+  // third copy of an external constant, which is the thing moving it into core
+  // was for.
+  const frame = injectPartDefaults(footerHtml, {
+    styles,
+    left: renderConfig.margin_left,
+    right: renderConfig.margin_right,
+  });
+  // `srcdoc` on a sandboxed iframe: a real nested browsing context, so the
+  // frame's cascade cannot reach the quote and the quote's cannot reach it —
+  // which is the property being previewed. `sandbox` with no tokens also blocks
+  // scripts, matching a print frame that runs none.
   html = html.replace(
     "</body>",
-    `<hr><div data-preview-footer>${footerHtml}</div></body>`,
+    `<hr><iframe data-preview-footer sandbox` +
+      ` style="width:100%;height:120px;border:0;display:block"` +
+      ` title="Footer frame (isolated, as Chromium renders it)"` +
+      ` srcdoc="${frame.replaceAll("&", "&amp;").replaceAll('"', "&quot;")}"></iframe></body>`,
   );
 }
 
