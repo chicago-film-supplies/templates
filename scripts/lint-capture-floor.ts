@@ -83,6 +83,28 @@
  * is a deliberate statement about the BUILD, and `capture-floor.json`'s `why`
  * is where it says which.
  *
+ * ## 🔴 DETECTION compares tag sets; the RECOMMENDATION compares tags AND
+ * routes (templates#251)
+ *
+ * The two bars differ deliberately, and reading the printed number as though it
+ * came from the detection bar is what templates#251 was.
+ *
+ * | | asks | why that bar |
+ * |---|---|---|
+ * | STALE / CURRENT | does some published core carry a `pii` tag this floor lacks? | a tag set is all `core` can answer about ITSELF |
+ * | the `min_core:` line | which is the earliest version carrying every tag **and routing them all as the newest does**? | a tag with no route falls to the generic filler — api-cloudrun#837's class |
+ *
+ * ⚠️ **So the recommended version can legitimately sit ABOVE the version that
+ * introduced the missing tag, and that is not a bug to tighten away.** When the
+ * `statements` schema landed, `core` `8404a6d` added the six tags as `beta.364`
+ * and `fe3858b` added the route as `beta.365`. A tag-only bisect answers `.364`
+ * — higher than the floor, plausible, and it defeats the guard it was raised for.
+ *
+ * ⭐ **The route is compared, never judged.** `categoryForField` returns `text`
+ * for an unrouted leaf AND for a genuinely free-text one, so "is this routed?"
+ * has no answer from the function alone; "does this version route it the way
+ * the newest does?" does.
+ *
  * ## Three states, and this one fails CLOSED where its neighbour fails OPEN
  *
  * `CURRENT` (exit 0) · `STALE` (exit 1) · `COULD NOT VERIFY` (**exit 1**).
@@ -124,11 +146,29 @@
  * Run: deno task lint:capture-floor
  */
 
+import { type CoverVerdict, suggestFloor } from "./captureFloorSuggest.ts";
+
 const FLOOR_FILE = "capture-floor.json";
 const JSR_META = "https://jsr.io/@cfs/core/meta.json";
 
 /** Every leaf the walk keeps, as `collection:dotted.path=tag`. */
 type TagSet = Set<string>;
+
+/**
+ * `dotted.path` → the `MaskCategory` that version's `categoryForField` routes
+ * it to. `text` appears both as a deliberate route (a free-text field) and as
+ * the unrouted fallback, which is why this is only ever COMPARED against
+ * another version's map and never judged on its own — see
+ * `scripts/captureFloorSuggest.ts`.
+ */
+type RouteMap = Map<string, string>;
+
+interface VersionWalk {
+  tags: TagSet;
+  /** `null` when that version does not export `categoryForField` at all. */
+  routes: RouteMap | null;
+  collections: number;
+}
 
 // Refuse arguments rather than ignore them — `scripts/lint-fixtures.ts`'s header
 // carries the incident behind that rule (an ignored argument made a history scan
@@ -289,12 +329,32 @@ if (compareVersions(parseVersion(floorVersion)!, parseVersion(newest)!) > 0) {
  * import map and lockfile, which pins one version and is the thing being
  * compared against.
  */
-async function tagsAt(version: string): Promise<{ tags: TagSet; collections: number } | null> {
+async function tagsAt(version: string): Promise<VersionWalk | null> {
   let mod: Record<string, unknown>;
   try {
     mod = await import(`jsr:@cfs/core@${version}/schemas`);
   } catch {
     return null;
+  }
+
+  // ⭐ The ROUTER, from the same version as the tags. `categoryForField` is what
+  // decides whether a `mask` tag produces a deliberate fake or the generic
+  // filler — the half `core`'s own tag walk cannot see, and the half
+  // templates#251 is about.
+  //
+  // ⚠️ **Its absence is `routes: null`, NOT a failed walk, and the difference is
+  // a real behaviour change if you get it wrong.** `categoryForField` only
+  // shipped in `beta.355` (api-cloudrun#837), so requiring it at every version
+  // would make a floor older than that fail the WHOLE lint — and the floor's
+  // routes are never compared to anything. Only the newest's are required; see
+  // where `newestRoutes` is bound.
+  let categoryForField: ((p: string) => string) | undefined;
+  try {
+    const piiMod = await import(`jsr:@cfs/core@${version}/utils/fixture-pii`);
+    const fn = (piiMod as Record<string, unknown>).categoryForField;
+    if (typeof fn === "function") categoryForField = fn as (p: string) => string;
+  } catch {
+    // Left undefined — the walk still yields tags.
   }
   const registry = mod.TEMPLATE_COLLECTION_SCHEMAS as Record<string, unknown> | undefined;
   const collect = mod.collectLeafPaths as
@@ -309,6 +369,7 @@ async function tagsAt(version: string): Promise<{ tags: TagSet; collections: num
   if (entries.length === 0) return null;
 
   const tags: TagSet = new Set();
+  const routes: RouteMap | null = categoryForField ? new Map() : null;
   for (const [collection, schema] of entries) {
     const walked = collect(schema, { inherit: ["pii"] });
     // Fails closed: a skipped subtree makes an absent tag and an unreachable
@@ -318,9 +379,14 @@ async function tagsAt(version: string): Promise<{ tags: TagSet; collections: num
       const tag = leaf.meta?.pii;
       if (tag === undefined || tag === "none") continue;
       tags.add(`${collection}:${leaf.path}=${String(tag)}`);
+      // Keyed on the PATH alone, without the collection: `categoryForField`
+      // normalizes and reads only the last two segments, so two collections
+      // sharing a path shape share a route by construction. Recording it per
+      // collection would invent a distinction the router does not make.
+      if (routes && categoryForField) routes.set(leaf.path, categoryForField(leaf.path));
     }
   }
-  return { tags, collections: entries.length };
+  return { tags, routes, collections: entries.length };
 }
 
 const floorWalk = await tagsAt(floorVersion);
@@ -353,6 +419,19 @@ if (floorWalk.tags.size === 0 || newestWalk.tags.size === 0) {
 // Bound once so the closure below can narrow — `newestWalk` is a `let`-scoped
 // nullable from TS's point of view inside a function body.
 const newestTags = newestWalk.tags;
+// ⚠️ Required HERE and nowhere else. The newest published core not exporting
+// `categoryForField` means the router has moved and this check needs rewriting
+// against wherever it went — the same fact `couldNotVerify` reports about the
+// registry, and the same fail-closed answer.
+if (!newestWalk.routes) {
+  couldNotVerify(
+    `@cfs/core@${newest} does not export \`categoryForField\` from ` +
+      `\`/utils/fixture-pii\`. The fixture-PII ROUTER is half of what makes a ` +
+      `\`pii: "mask"\` tag safe, so without it this check cannot say which ` +
+      `version a floor should be raised to (templates#251).`,
+  );
+}
+const newestRoutes = newestWalk.routes;
 
 // ── Compare ─────────────────────────────────────────────────────────
 const missing = [...newestWalk.tags].filter((t) => !floorWalk.tags.has(t)).sort();
@@ -378,53 +457,45 @@ if (missing.length === 0) {
 
 // ── STALE — name the minimal correct floor ──────────────────────────
 //
-// ⭐ The useful output is the number to write, not "go and find it". Bisect the
-// published list between the floor and the newest for the earliest version that
-// carries every tag the newest does.
+// ⭐ The useful output is the number to write, not "go and find it".
 //
-// ⚠️ The bisect assumes the predicate is MONOTONE (a mask, once landed, stays).
-// That is not guaranteed by anything, so the boundary is verified rather than
-// trusted: the version below the answer must NOT cover. If it does, say so and
-// fall back to the newest, which is always correct and merely over-strict.
-async function covers(version: string): Promise<boolean | null> {
+// 🔴 **The bar here is HIGHER than the one that produced the failure, and that
+// is the whole of templates#251.** Detection asks "does some published core
+// carry a tag this floor lacks?", because a tag set is all `core` can answer
+// about itself. But a tag whose ROUTE has not landed yet routes to the generic
+// filler — `api-cloudrun#837`'s defect class, *fake but the wrong kind of fake*
+// — so a floor at the earliest TAGGING version defeats the guard it was raised
+// for. Measured: `core` `8404a6d` added the `statements` tags as `beta.364` and
+// `fe3858b` added the route as `beta.365`; the tag-only bisect answered `.364`.
+//
+// The bisect itself lives in `scripts/captureFloorSuggest.ts` so it can be
+// tested on a synthetic ladder — this script reads JSR, and `deno task test` is
+// `--allow-read` only.
+async function covers(version: string): Promise<CoverVerdict> {
   const walk = await tagsAt(version);
   if (!walk || walk.tags.size === 0) return null;
-  return [...newestTags].every((t) => walk.tags.has(t));
+  if (![...newestTags].every((t) => walk.tags.has(t))) return false;
+  // ⚠️ Route agreement is a COMPARISON against the newest, never an absolute
+  // "is it routed" test: `categoryForField` returns `text` both for an
+  // unrouted leaf and for a genuinely free-text one, so the function alone
+  // cannot tell them apart. Whether this version routes each leaf the way the
+  // newest does is answerable, and it is the question that matters.
+  // A candidate with no router at all cannot be COMPARED — that is "could not
+  // ask", not "does not cover", and answering `false` would walk the bisect past
+  // a version nobody interrogated.
+  if (!walk.routes) return null;
+  for (const [path, category] of newestRoutes) {
+    if (walk.routes.get(path) !== category) return false;
+  }
+  return true;
 }
 
-let suggestion = newest;
-let suggestionNote =
-  `the newest published version — a bisect for the exact introducing version ` +
-  `could not complete, so this is the safe over-strict answer`;
-
-const floorIdx = published.indexOf(floorVersion);
-if (floorIdx !== -1) {
-  let lo = floorIdx + 1;
-  let hi = published.length - 1;
-  let bisectOk = true;
-  while (lo < hi) {
-    const mid = (lo + hi) >> 1;
-    const verdict = await covers(published[mid]);
-    if (verdict === null) {
-      bisectOk = false;
-      break;
-    }
-    if (verdict) hi = mid;
-    else lo = mid + 1;
-  }
-  if (bisectOk) {
-    const below = lo - 1 >= 0 ? await covers(published[lo - 1]) : false;
-    if (below === false) {
-      suggestion = published[lo];
-      suggestionNote = `the earliest published version carrying every tag the ` +
-        `newest does (verified: ${published[lo - 1]} does not)`;
-    } else {
-      suggestionNote = `the newest published version — the tag set is NOT ` +
-        `monotone across the range (${published[lo - 1]} also covers), so the ` +
-        `bisect's answer would not be safe`;
-    }
-  }
-}
+const { version: suggestion, note: suggestionNote } = await suggestFloor(
+  published,
+  floorVersion,
+  newest,
+  covers,
+);
 
 console.error(
   `\n🔴 lint-capture-floor: ${FLOOR_FILE}'s min_core is STALE.\n\n` +
@@ -436,6 +507,10 @@ console.error(
     `those\n    field(s) to git UNMASKED. Raise the floor:\n\n` +
     `      ${FLOOR_FILE}  min_core: "${suggestion}"\n` +
     `      (${suggestionNote})\n\n` +
+    `    ℹ️  That version may sit ABOVE the one that introduced the tag(s)\n` +
+    `       listed, and deliberately so: a tag whose fixture-PII ROUTE has not\n` +
+    `       landed yet masks to the generic filler. The number above clears\n` +
+    `       BOTH bars (templates#251).\n\n` +
     `    …and update its \`why\` to name the new mask(s).\n\n` +
     `    🔴 Then check what api-cloudrun actually has DEPLOYED before merging.\n` +
     `       A floor above the deployed core refuses every capture, including\n` +
