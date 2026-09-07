@@ -210,6 +210,22 @@ jobs:
             # carries the per-fixture detail used to surface candidate/diff
             # URLs on a real visual regression. `no-fixtures` is informational
             # — the family has no fixtures yet (capture one in the manager).
+            #
+            # ⚠️ A `diff` verdict is no longer decided by `delta` alone, so
+            # printing `delta` alone now MISREPRESENTS the gate. `comparePng`
+            # fails on the whole-page ratio OR on a single contiguous region of
+            # mismatched pixels over 20px (templates#137 half 1), and the whole
+            # point of the second rule is that it fires at deltas the first one
+            # waves through. A reviewer shown `delta=0.000410` with no other
+            # number reads a false alarm and reaches for an admin bypass —
+            # which is the failure mode this gate cannot survive. The blob is
+            # what says otherwise: 313 contiguous pixels at a named offset is a
+            # band that moved, and nothing else looks like that.
+            #
+            # `.largest_blob` is null on a pre-blob API, so this degrades to the
+            # old line rather than erroring — the workflow does not have to wait
+            # on a prod release. It is also null on a real size change, where
+            # `delta` is exactly 1 and there was no aligned comparison at all.
             case "$verdict" in
               match)
                 echo "✓ $gp: match across $(printf '%s' "$body" | jq -r '.results | length') fixture(s)" ;;
@@ -220,7 +236,16 @@ jobs:
                 echo "ℹ $gp: no-fixtures — capture a source doc in the manager to enable golden review" ;;
               diff)
                 echo "✗ $gp: VISUAL REGRESSION across $(printf '%s' "$body" | jq -r '[.results[] | select(.verdict=="diff")] | length') fixture(s)"
-                printf '%s' "$body" | jq -r '.results[] | select(.verdict=="diff") | "    \(.fixture) (delta=\(.delta))\n      candidate: https://ucarecdn.com/\(.image_uuids.candidate)/\n      diff:      https://ucarecdn.com/\(.image_uuids.diff)/"'
+                printf '%s' "$body" | jq -r '
+                  .results[] | select(.verdict=="diff")
+                  | "    \(.fixture) — delta \(.delta)"
+                    + (if .largest_blob then
+                         ", largest contiguous change \(.largest_blob.pixels)px at (\(.largest_blob.x),\(.largest_blob.y))"
+                       elif .delta == 1 then
+                         " — the page changed SIZE, so there was no aligned comparison"
+                       else "" end)
+                    + "\n      candidate: https://ucarecdn.com/\(.image_uuids.candidate)/"
+                    + "\n      diff:      https://ucarecdn.com/\(.image_uuids.diff)/"'
                 fail=1 ;;
               renderer-unavailable|*)
                 echo "✗ $gp: renderer unavailable after retries — NOT a visual regression; retry the job."
