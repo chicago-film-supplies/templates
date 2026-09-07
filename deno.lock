@@ -2,20 +2,20 @@
   "version": "5",
   "specifiers": {
     "jsr:@bgub/eta@^4.6.0": "4.6.0",
-    "jsr:@cfs/core@10.0.0-beta.360": "10.0.0-beta.360",
+    "jsr:@cfs/core@10.0.0-beta.362": "10.0.0-beta.362",
     "npm:@date-fns/tz@^1.4.1": "1.5.0",
     "npm:@date-fns/tz@^1.5.0": "1.5.0",
     "npm:currency.js@^2.0.4": "2.0.4",
     "npm:date-fns@^4.1.0": "4.4.0",
     "npm:date-fns@^4.4.0": "4.4.0",
-    "npm:zod@^4.3.6": "4.4.3"
+    "npm:zod@^4.5.4": "4.5.4"
   },
   "jsr": {
     "@bgub/eta@4.6.0": {
       "integrity": "fe872004cd6c64ca25c7e71fd80bbbad7d8d552cefd31828bddddb7db0f79eb1"
     },
-    "@cfs/core@10.0.0-beta.360": {
-      "integrity": "13e12a986d68d414a91cf58e44b7dba4a6dbd28f14db3ed596dbc50019deaa0c",
+    "@cfs/core@10.0.0-beta.362": {
+      "integrity": "7d4add55b1d5e0945352984c526b7d621f636021e72501ec6d898644525d161f",
       "dependencies": [
         "npm:@date-fns/tz@^1.4.1",
         "npm:currency.js",
@@ -34,14 +34,14 @@
     "date-fns@4.4.0": {
       "integrity": "sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w=="
     },
-    "zod@4.4.3": {
-      "integrity": "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="
+    "zod@4.5.4": {
+      "integrity": "sha512-sC95tT5iHHH9gtpj6A81kh+NEaRAUFN+qlUPDUbRfOMvNf5QCBqsb3WgvnpVtK5Y+4UfA6KqufotuTvMGiTlsA=="
     }
   },
   "workspace": {
     "dependencies": [
       "jsr:@bgub/eta@^4.6.0",
-      "jsr:@cfs/core@10.0.0-beta.360",
+      "jsr:@cfs/core@10.0.0-beta.362",
       "npm:@date-fns/tz@^1.5.0",
       "npm:date-fns@^4.4.0"
     ]
