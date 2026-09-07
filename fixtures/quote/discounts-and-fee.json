@@ -4,29 +4,29 @@
 	"status": "quoted",
 	"crms_id": null,
 	"uid_thread": "ThRd0DiscountsFee010",
-	"subject": "Riverwalk Summer Series — lighting + tables",
+	"subject": "Sample text for subject....................",
 	"reference": "PO-51200",
 	"version": 3,
 	"organization": {
-		"uid": "LakeshoreStageCo0001",
+		"uid": "KestrelMediaGroup001",
 		"path": [
 			{
-				"uid": "LakeshoreStageCo0001",
-				"name": "Lakeshore Stage Company",
+				"uid": "KestrelMediaGroup001",
+				"name": "Kestrel Media Group",
 				"derived": false
 			}
 		],
 		"crms_id": null,
 		"xero_id": "6f2b1c04-9a3d-4e7f-8b21-5c9d0e3a7f41",
 		"billing_address": {
-			"name": "Lakeshore Stage Company",
-			"street": "600 E Grand Ave",
+			"name": "Bayview Convention Center",
+			"street": "705 Magnolia Rd",
 			"street2": "",
 			"city": "Chicago",
 			"region": "IL",
-			"postcode": "60611",
+			"postcode": "64235",
 			"country_name": "United States",
-			"full": "600 E Grand Ave, Chicago, IL, United States",
+			"full": "705 Magnolia Rd, Chicago, IL, United States",
 			"mapbox_id": "",
 			"address_coordinates": null,
 			"user_coordinates": null
@@ -48,33 +48,33 @@
 				"days_active": 3
 			},
 			"delivery": {
-				"uid": "NavyPierDock00000001",
+				"uid": "IronworksLoftSpace01",
 				"address": {
-					"name": "Navy Pier",
-					"street": "600 E Grand Ave",
+					"name": "Ironworks Loft Space",
+					"street": "1180 Chestnut St",
 					"street2": "",
-					"postcode": "60611",
+					"postcode": "64431",
 					"city": "Chicago",
 					"region": "Illinois",
 					"country_name": "United States",
-					"full": "600 E Grand Ave, Chicago, IL, United States"
+					"full": "1180 Chestnut St, Chicago, IL, United States"
 				},
-				"instructions": "Dock 3, east service road.",
+				"instructions": "Sample instructions.......",
 				"contact": null
 			},
 			"collection": {
-				"uid": "NavyPierDock00000001",
+				"uid": "IronworksLoftSpace01",
 				"address": {
-					"name": "Navy Pier",
-					"street": "600 E Grand Ave",
+					"name": "Ironworks Loft Space",
+					"street": "1180 Chestnut St",
 					"street2": "",
-					"postcode": "60611",
+					"postcode": "64431",
 					"city": "Chicago",
 					"region": "Illinois",
 					"country_name": "United States",
-					"full": "600 E Grand Ave, Chicago, IL, United States"
+					"full": "1180 Chestnut St, Chicago, IL, United States"
 				},
-				"instructions": "Same dock.",
+				"instructions": "Sample....",
 				"contact": null
 			}
 		}
@@ -83,7 +83,7 @@
 		{
 			"uid": "b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c",
 			"type": "destination",
-			"name": "Navy Pier",
+			"name": "Ironworks Loft Space",
 			"description": "",
 			"path": [
 				"b7c1d2e3-4f56-4a78-9b0c-1d2e3f4a5b6c"
