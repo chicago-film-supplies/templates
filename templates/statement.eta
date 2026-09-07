@@ -1,0 +1,456 @@
+<%
+// ── What this document IS ───────────────────────────────────────────────────
+//
+// A customer statement for ONE organization subtree. Its source is an
+// `OrgStatement` (`@cfs/core/schemas/reporting.ts`): the fold of every invoice
+// in scope and every settlement against those invoices, replayed in date order.
+// Like a pick sheet or a movement session it is rebuilt per call and stored
+// NOWHERE — `collection_source: "statements"` names a document SHAPE, not a
+// Firestore collection.
+//
+// 🔴 **The document ties to itself, and that is a schema refinement rather than
+// a convention this template has to honour.** `OrgStatementSchema` asserts three
+// things: every line’s `|effect_cents| === amount_cents`, `balance_cents` is the
+// running sum from `opening_balance_cents`, and
+// `opening + Σ effect === closing_balance_cents`. A statement whose printed
+// lines did not add up to its own Amount Due is therefore UNPARSEABLE, not
+// merely wrong — so nothing below re-derives a balance, and the running column
+// is read off the document rather than accumulated here.
+//
+// ⚠️ **`balance_cents` is arithmetic over dated events and NOTHING MORE.** The
+// balance-forward presentation historically implies FIFO application — Oracle’s
+// wording is that payments *"are not matched to bills… implicitly relieve a
+// customer’s oldest debt"* — and CFS does not work that way: every settlement
+// names its `uid_invoice` explicitly. So no caption below may read the Balance
+// column as an application order, and none does.
+const statement = it.doc;
+const { lines, aging, scope } = statement;
+
+// EVERY date on this page is formatted THROUGH this. date-fns `format` renders
+// in the LOCAL timezone of the JS runtime unless given `{ in: … }`, stored
+// business datetimes are Chicago-offset INSTANTS, and the render container sets
+// no `TZ` — so an unpinned format prints the UTC day and any boundary at or
+// after 19:00 CDT is TOMORROW. Both halves of this document are exposed: the
+// as-of dates are `chicagoStartOfDay` (midnight, the worst case), and a
+// settlement line carries a real time of day — measured, 104 of 1,173 prod
+// settlements are not at midnight.
+const CHICAGO = it.tz("America/Chicago");
+const onDate = (iso) => it.dateFns.format(it.dateFns.parseISO(iso), "MMMM d, yyyy", { in: CHICAGO });
+const shortDate = (iso) => it.dateFns.format(it.dateFns.parseISO(iso), "M/d/yy", { in: CHICAGO });
+
+// ── The format is a POPULATION rule, and this is the only place it branches ──
+//
+// 🔴 **`format` is NOT a template `param`, and it could not be one.** A param is
+// a RENDER-time input; `OrgStatement.format` is a stored field on the document
+// the aggregator already produced, and the two formats differ in which invoices
+// are in scope, what `opening_balance_cents` is, and which events become lines.
+// A param declared here would either do nothing or contradict the document it is
+// rendering. The family covers both states with two FIXTURES instead — see
+// `templates/statement.meta.json`, where each entry’s description names the
+// branch the other one covers.
+//
+// The presentational difference the two formats ask for is exactly what
+// `STATEMENT_FORMATS` documents: balance-forward "leads with an opening balance
+// and a running column", open-item "lists the outstanding items".
+const isBalanceForward = statement.format === "balance_forward";
+
+// ⚠️ **The running column is DELIBERATELY absent on an open-item statement**,
+// and dropping it is the safer of the two readings. Open-item lines are the
+// events of several still-outstanding invoices interleaved by date, so a running
+// total across them is a number about the ACCOUNT and not about any invoice on
+// the page — which is precisely the "oldest debt" reading the schema note
+// forbids. Balance-forward is a period statement and the column is the point of
+// the format.
+const hasBalanceColumn = isBalanceForward;
+
+// ── Conditional columns ─────────────────────────────────────────────────────
+//
+// ⭐ Each line prints its own document’s FROZEN chain, while the statement is
+// SCOPED by the live tree (api-cloudrun#712). That is not a freeze-boundary
+// violation: the freeze governs what a document records, and a statement
+// re-rendered after a re-parent must not silently rewrite history.
+//
+// ⭐ **A line names what is BELOW the scope, not its whole chain**, and that is a
+// legibility decision with a correctness rule inside it. Every line on an
+// ordinary subtree statement starts with the same root — the one already in the
+// letterhead — so printing the full chain repeats it on every row and wraps the
+// column onto two or three lines, which on a fifty-line statement is a page of
+// paper spent restating the addressee.
+//
+// ⚠️ **The common prefix is matched by UID, and a line that diverges keeps its
+// WHOLE chain.** A line prints its own frozen chain, so an invoice raised before
+// a re-parent can sit under a different ancestor than the statement is scoped
+// at — and that is exactly the row a reader must not be shown as if it were a
+// plain sub-account. Stripping a fixed number of nodes, or stripping by NAME,
+// would silently flatten it into a sibling. At least the last node always
+// survives, so no row can render a blank account.
+const scopeUids = statement.organization_path.map((node) => node.uid);
+const relativeToScope = (path) => {
+  let depth = 0;
+  while (
+    depth < path.length - 1 && depth < scopeUids.length && path[depth].uid === scopeUids[depth]
+  ) depth++;
+  return path.slice(depth);
+};
+const lineAccount = (line) => it.organizations.composeOrgName(relativeToScope(line.organization_path));
+
+// A subtree roll-up puts several departments’ invoices on one page, and without
+// this column a customer cannot tell why a sibling department’s invoice is on
+// their statement. On a single-account statement every row would carry the same
+// name, so the column is conditional on the lines genuinely spanning more than
+// one — never on `subtree` being asked for, which can resolve to one account.
+const accountNames = new Set(lines.map(lineAccount));
+const hasAccountColumn = accountNames.size > 1;
+
+// Usually empty: an invoice’s `reference` is the customer’s own PO or job name
+// and most carry none, and `Settlement.reference` is nullable. A headed column
+// blank on every row reads as missing data rather than as inapplicable.
+const hasReference = lines.some((line) => line.reference);
+
+// FOUR unconditional columns — Date, Details, Charges, Payments — plus three
+// conditionals, so 4 through 7.
+const itemColumnCount = 4 + (hasReference ? 1 : 0) + (hasAccountColumn ? 1 : 0) +
+  (hasBalanceColumn ? 1 : 0);
+
+// The page’s second alignment edge: the #items column boundary NEAREST THE
+// HALF-WAY POINT, rounding left. Same derivation as the quote, the invoice and
+// the receipt (see styles/base.css) — it is a fact about the shared page grid,
+// not about any one family, and it is what keeps #details stopping on a real
+// column of the table below it.
+const edgeColumn = Math.floor((itemColumnCount - 1) / 2);
+const edgeColumns = itemColumnCount - 1;
+
+// ── Money ───────────────────────────────────────────────────────────────────
+//
+// 🔴 **Direction comes from `effect_cents`, never from `settlement_type`.** The
+// journal stores an always-positive `amount_cents` and resolves direction
+// through `getSettlementMultiplier`, which the aggregator has ALREADY applied
+// here. So a refund — a settlement whose multiplier is negative — correctly
+// lands in Charges, and this template needs no copy of that table. A `switch`
+// over the type would be a second author for a rule core already owns, and it
+// would be wrong for every member added after it was written.
+const chargeCents = (line) => (line.effect_cents > 0 ? line.amount_cents : 0);
+const paymentCents = (line) => (line.effect_cents < 0 ? line.amount_cents : 0);
+
+// Integer cents, so addition is closed at the storage quantum and exact by
+// construction — no money library, and nothing here divides or multiplies.
+// These two are the only figures on the page the document does not already
+// carry, and they are worth carrying because `opening + charges − payments`
+// is what makes Amount Due readable rather than merely asserted.
+const totalChargesCents = lines.reduce((sum, line) => sum + chargeCents(line), 0);
+const totalPaymentsCents = lines.reduce((sum, line) => sum + paymentCents(line), 0);
+
+// A statement is read, not reconciled: a zero in a per-row money column renders
+// nothing, so each row shows the one side it is. Grand totals are exempt — a
+// settled balance of zero is a fact about the account rather than an absent
+// value — which is the same rule the invoice applies to its own #totals block.
+const moneyCell = (cents) => (cents ? it.money.formatCents(cents) : "");
+
+// A settlement TYPE, rendered the way the manager renders one.
+//
+// ⚠️ Deliberately a generic transform, not a lookup table — the same call
+// `templates/receipt.eta` makes for a movement type, and for the same reason.
+// `@cfs/core` has no settlement-type label helper, the manager writes
+// `startCase(camelCase(t))`, and a hand-written map here would be a second
+// authority that disagrees with it the first time either side is edited, over
+// WORDING, which is a template’s own business.
+const titleCase = (value) =>
+  value.split("_").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+
+// Every line names its invoice, because that is how a customer matches a row to
+// their own copy: a settlement is a row ABOUT an invoice, not a document of its
+// own that happens to sit nearby.
+const detailFor = (line) =>
+  line.kind === "invoice"
+    ? `Invoice #${line.number}`
+    : `${titleCase(line.settlement_type)} — Invoice #${line.number}`;
+
+// ── The period ──────────────────────────────────────────────────────────────
+//
+// ⚠️ **`to_date` is an AS-OF date, not always an applied bound, and the document
+// cannot tell you which.** An open-item statement defaults to UNBOUNDED — the
+// owner’s ruling, because a post-dated invoice is still money owed — and
+// `foldOrgStatement` then stamps the DRAW DATE into `to_date`, since the
+// response contract requires a string. So an invoice dated after `to_date` can
+// legitimately appear in `lines`. Captioning this field "Statement Date" is
+// therefore true in both cases, where "Invoices through" would be false in one
+// of them. (`OrgStatement.to_date` is expected to become nullable in a later
+// `core` beta so the document can say "unbounded" outright; when it does, this
+// caption can become the more specific one and the open-item arm can say so.)
+//
+// 🔴 `from_date` is `null` on every open-item statement and `buildOrgStatement`
+// REFUSES one rather than ignoring it — an open-item statement reports the
+// outstanding account, not a period.
+const periodText = isBalanceForward
+  ? (statement.from_date
+    ? `${onDate(statement.from_date)} — ${onDate(statement.to_date)}`
+    : `Through ${onDate(statement.to_date)}`)
+  : "All outstanding items";
+
+// The opening row anchors the running column, so it renders on EVERY
+// balance-forward statement rather than only when there is a period start: a
+// Balance column whose first value has nothing above it is a number the reader
+// cannot check.
+const openingLabel = statement.from_date
+  ? `Balance forward as of ${onDate(statement.from_date)}`
+  : "Opening balance";
+
+// The same figure appears again in #totals, where it opens the arithmetic rather
+// than anchoring a column — so it is captioned SHORT there. The dated form wraps
+// onto two lines in a block whose label column is 60% of the return column, and
+// the date is already stated twice on the page: in the #details Period field and
+// on the grid row this recaps.
+const openingTotalsLabel = statement.from_date ? "Balance Forward" : "Opening Balance";
+
+// `uids` is the LIVE tree the roll-up actually ran on, self-inclusive. A
+// subtree statement carries invoices a customer did not raise from the account
+// in the letterhead, and this is the field that says so.
+const subAccountCount = scope.uids.length - 1;
+const accountsText = subAccountCount > 0
+  ? `This account and ${subAccountCount} sub-account${subAccountCount === 1 ? "" : "s"}`
+  : "This account";
+
+// ── What this template deliberately does NOT render ─────────────────────────
+//
+// Stated rather than left to be rediscovered, because each looks like an
+// omission and each is a decision:
+//
+// • `scope.name` — the scoped node’s display name at run time. The letterhead
+//   already prints the same customer, composed from `organization_path`, which
+//   is the LIVE chain the heading is supposed to use. Printing both puts one
+//   name on the page twice and invites a reader to treat a difference between
+//   them as meaningful when it is only a difference of derivation.
+//
+// • `lines[].uid_invoice` / `uid_settlement` — Firestore document ids. The
+//   invoice NUMBER is what a customer can match against their own paperwork;
+//   an opaque id is addressable only from inside CFS.
+//
+// • Any "apply this payment to that invoice" ordering. See the module note: the
+//   journal names its invoice explicitly and the Balance column is arithmetic.
+//
+// • A remittance slip or payment instructions. Real things to want on a
+//   statement, and each is a decision about the collections WORKFLOW — what we
+//   ask for, by when, and what happens next — rather than a layout choice, so
+//   neither is invented here.
+%>
+<div id="grid-wrapper" style="--block-3-fraction: calc(<%= edgeColumn %> / <%= edgeColumns %>)">
+<%/* The customer name is COMPOSED from the LIVE chain: a statement is drawn
+     now, for the account as it stands now, which is the one place the live tree
+     is the right authority. The LINES print their own frozen chains — the two
+     answer different questions and both are on the page deliberately.
+
+     `billing_address` is already resolved UP THE TREE by the aggregator
+     (`resolveOrgBillingAddress`), because a department states no billing address
+     at all — `OrganizationSchema` invariant 11 makes it unstorable there — so
+     the leaf’s own field is null on exactly the customers most likely to ask for
+     a statement. It may still be null when nothing in the chain records one, and
+     the partial guards every line of it. */%>
+<%~ await includeAsync("@partials/shared/letterhead.eta", {
+     title: "Statement",
+     customer_name: it.organizations.composeOrgName(statement.organization_path),
+     billing_address: statement.billing_address,
+   }) %>
+
+<table id="details">
+  <thead>
+    <tr>
+      <th scope="col">Statement Date:</th>
+      <th scope="col">Period:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= onDate(statement.to_date) %></td>
+      <td><%= periodText %></td>
+    </tr>
+  </tbody>
+  <thead>
+    <tr>
+      <%/* The second as-of date, and it is free only because `settlements` is a
+           dated allocation journal: `to_date` says which invoices existed,
+           `as_of_payment_date` says which settlements count. An audit view sets
+           both to the period end; a collections view sets payments to today.
+           A statement that printed only one of them would be unable to say
+           which question it answers. */%>
+      <th scope="col">Payments Through:</th>
+      <th scope="col">Accounts Included:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= onDate(statement.as_of_payment_date) %></td>
+      <td><%= accountsText %></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Activity -->
+<%/* An empty `lines` is a REAL case, not a rendering fault: a customer with an
+     opening balance and no activity in the period has nothing to list, and
+     `OrgStatementSchema`’s third clause exists precisely because clause 2 says
+     nothing when the array is empty. A headed table with no rows under it reads
+     as a fault, so the section says the fact instead. */%>
+<% if (lines.length > 0) { %>
+<section id="items">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col" class="wide">Details</th>
+        <th scope="col">Date</th>
+        <% if (hasReference) { %>
+        <th scope="col">Reference</th>
+        <% } %>
+        <% if (hasAccountColumn) { %>
+        <th scope="col">Account</th>
+        <% } %>
+        <th scope="col" class="money">Charges</th>
+        <th scope="col" class="<%= hasBalanceColumn ? "money" : "total" %>">Payments</th>
+        <% if (hasBalanceColumn) { %>
+        <th scope="col" class="total">Balance</th>
+        <% } %>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (isBalanceForward) { %>
+      <%/* Spans every column but the last, so the opening figure lands in the
+           Balance column it anchors — the same `colspan` convention the items
+           grid uses for a group banner, and the same rule keeps it with the rows
+           it introduces (`#items tbody tr:has(> td[colspan])`). */%>
+      <tr>
+        <td class="wide" colspan="<%= itemColumnCount - 1 %>"><strong><%= openingLabel %></strong></td>
+        <td class="total"><%= it.money.formatCents(statement.opening_balance_cents) %></td>
+      </tr>
+      <% } %>
+      <% lines.forEach((line) => { %>
+      <tr>
+        <td class="wide"><%= detailFor(line) %></td>
+        <td><%= shortDate(line.date) %></td>
+        <% if (hasReference) { %>
+        <%/* `reference` is nullable on BOTH kinds of line, and Eta prints a
+             bare `null` as the four-character word. An empty cell, not an absent
+             one: under `table-layout: fixed` a short row leaves a real trailing
+             gap rather than being absorbed. */%>
+        <td><%= line.reference ?? "" %></td>
+        <% } %>
+        <% if (hasAccountColumn) { %>
+        <td><%= lineAccount(line) %></td>
+        <% } %>
+        <td class="money"><%= moneyCell(chargeCents(line)) %></td>
+        <td class="<%= hasBalanceColumn ? "money" : "total" %>"><%= moneyCell(paymentCents(line)) %></td>
+        <% if (hasBalanceColumn) { %>
+        <%/* Read off the document, never accumulated here — the schema asserts
+             it IS the running sum, so a second derivation could only ever
+             disagree with a document that had already refused to parse. */%>
+        <td class="total"><%= it.money.formatCents(line.balance_cents) %></td>
+        <% } %>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+<% } else { %>
+<section id="no-activity">
+  <p>No activity in this period.</p>
+</section>
+<% } %>
+
+<!-- Totals -->
+<%/* NOT `partials/shared/totals.eta`. That partial reads an order-shaped
+     `totals` — `subtotal_cents`, `taxes[]`, `transaction_fees[]` — and a
+     statement has none of them: it has an opening balance, a closing balance and
+     an aging strip. A family takes the shared fragments its document has data
+     for, which is the same call `templates/receipt.eta` makes when it includes
+     the letterhead and nothing else. The markup below is `#totals` so it takes
+     the shared block’s geometry from `styles/base.css`. */%>
+<section id="totals">
+  <table>
+    <tbody>
+      <% if (isBalanceForward) { %>
+      <tr>
+        <th scope="row"><%= openingTotalsLabel %>: </th>
+        <td><%= it.money.formatCents(statement.opening_balance_cents) %></td>
+      </tr>
+      <% } %>
+      <tr>
+        <th scope="row">Charges: </th>
+        <td><%= it.money.formatCents(totalChargesCents) %></td>
+      </tr>
+      <tr>
+        <%/* "Payments and Credits" rather than "Payments": a credit note and a
+             void both reduce the balance through this column, and calling the
+             column Payments alone would tell a customer they had paid money
+             they did not pay. */%>
+        <th scope="row">Payments and Credits: </th>
+        <td>( <%= it.money.formatCents(totalPaymentsCents) %> )</td>
+      </tr>
+      <tr>
+        <%/* The grand total, and it is exempt from the blank-at-zero rule above
+             — a settled account of $0.00 is a fact the customer wants stated. */%>
+        <th scope="row" class="bold">Amount Due: </th>
+        <td class="bold"><%= it.money.formatCents(statement.closing_balance_cents) %></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Aging -->
+<%/* The aging strip over the SAME population, folded by `foldAgingReport` so
+     this strip and `GET /reports/ar-aging` cannot put one invoice in different
+     buckets.
+
+     ⚠️ Its Total is NOT `closing_balance_cents` and must not be captioned as
+     one. The strip covers invoices whose replayed balance is strictly positive
+     and shows unapplied credit in its own column; the closing balance nets
+     everything, credit balances included. Two different questions, and a
+     statement carrying both has to keep them apart. */%>
+<section id="aging">
+  <h2>Aging Summary</h2>
+  <table>
+    <thead>
+      <tr>
+        <%/* ⚠️ The BUCKET IDS are printed, not a label table, and that is a
+             deliberate trade. `AGING_BUCKET_EDGES` carries a prose label for
+             each (`90+` reads "Over 90 days") and lives in
+             `@cfs/core/schemas`, which a template never receives — so a label
+             here would be an inline RE-STATEMENT of a closed vocabulary: a copy
+             the compiler cannot find, silently wrong the day a bucket is added
+             or an edge moves. That is the failure this campaign already hit in
+             `manager/src/routes/TemplateDetail.tsx`, and it is not worth
+             re-creating for typography. The ids are legible under a "Days
+             Overdue" heading, and `.capitalize` turns `current` into `Current`
+             without touching the others. Take a labels helper from core the day
+             one exists. */%>
+        <th scope="col" class="wide">Days Overdue</th>
+        <% aging.buckets.forEach((bucket) => { %>
+        <th scope="col" class="money capitalize"><%= bucket.bucket %></th>
+        <% }) %>
+        <th scope="col" class="money">Credits</th>
+        <th scope="col" class="total">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <%/* One row, so the first cell labels what the figures ARE rather than
+             repeating the account name the letterhead already carries. The strip
+             is scope-wide: on a subtree roll-up it ages the whole family, which
+             is why it is not broken out per account here — `GET /reports/ar-aging`
+             is the report that does that, and it returns `organizations[]` for
+             exactly that purpose. */%>
+        <td class="wide">Amount outstanding</td>
+        <% aging.buckets.forEach((bucket) => { %>
+        <td class="money"><%= it.money.formatCents(bucket.amount_cents) %></td>
+        <% }) %>
+        <%/* A credit is shown as the deduction it is — the field is stored
+             positive and `AgingTotals.credit_cents` says a renderer shows it as
+             one, so the bracket is this document applying that instruction
+             rather than inventing a sign. Bracketed exactly as the discount row
+             in `partials/shared/totals.eta` is, so the two deductions do not
+             read as two conventions. */%>
+        <td class="money">( <%= it.money.formatCents(aging.credit_cents) %> )</td>
+        <td class="total bold"><%= it.money.formatCents(aging.total_cents) %></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+  <footer></footer>
+</div>
