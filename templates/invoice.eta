@@ -1,4 +1,4 @@
-<%/* draft draft/invoice/c7063524 */%>
+<%/* draft draft/invoice/7f8911c0 */%>
 <%
 const invoice = it.doc;
 const { destinations, items, totals } = invoice;
@@ -79,6 +79,12 @@ const addressColumnCount = itemColumnCount - 1;
 // A collection leg exists only if something is coming back. Nothing on a sale,
 // a service or a surcharge is ever collected, so an invoice with no rental line
 // has no return address, contact, end date or duration to print.
+//
+// ⚠️ Since `hasDeliverableItems` widened below, a FALSE value here is reachable
+// only on a SALE-only invoice — goods that go out and never come back. Every
+// other rental-less invoice now drops the whole table instead of rendering this
+// half of it, so NO fixture exercises the half-collapsed shape any more; it was
+// `service-untaxed-fee` until 2026-09-08. See templates#279.
 const hasCollection = hasRentals;
 const deliverySpan = hasCollection ? addressBoundary : addressColumnCount;
 const returnSpan = addressColumnCount - addressBoundary;
@@ -191,12 +197,36 @@ if (amountCreditedCents) {
 }
 settlementRows.push({ label: "Amount Due:", value: it.money.formatCents(amountDueCents) });
 
-// Does anything on this invoice actually GO anywhere? A `replacement` line
-// recovers the cost of an item lost or damaged in the customer’s possession —
-// nothing is delivered and nothing comes back — so an invoice whose every line
-// is a replacement has no addresses, contacts or dates to print, and a headed
-// table with nothing under it reads as missing data rather than inapplicable.
-const hasDeliverableItems = shownLineItems.some(i => i.type !== "replacement");
+// Does anything on this invoice actually SHIP? Only a `rental` or a `sale` puts
+// goods in a van. A `replacement` recovers the cost of something already lost
+// or damaged in the customer’s possession; a `service` and a `surcharge` are
+// work and money with nothing physical behind them. So an invoice carrying
+// neither shipping type has no addresses, contacts or dates to print, and a
+// headed table with nothing under it reads as missing data rather than
+// inapplicable.
+//
+// ⚠️ TEMPORARY, AND IT DELIBERATELY LOSES INFORMATION — a stopgap for
+// templates#279, which carries the measurement and the open decision. This read
+// `some(i => i.type !== "replacement")` until 2026-09-08, so a SERVICE-only
+// invoice still rendered the table, and `hasCollection` being `hasRentals` meant
+// it rendered the DELIVERY half alone. On prod invoice 2413 — $250 for
+// collecting 30 Z Racks on 9/9 — that printed the header `In Store Pickup`, the
+// date `Tue 6/23/26` and the address `3100 W Fillmore St`: the June leg on which
+// the customer took the racks away from OUR OWN warehouse. It suppressed the 9/9
+// date, the site address and the site contact the charge is actually about. Not
+// incomplete — the wrong leg, stated confidently, with nothing on the page to
+// say so.
+//
+// A service-only invoice genuinely HAS a date worth printing and this drops it.
+// Saying nothing beats saying something false, and that is the whole of the
+// argument; the operator states the date in the line’s description meanwhile.
+// Fix it by giving a service a leg it can own, not by narrowing this back.
+//
+// Same two members as `DISAMBIGUATED_ITEM_TYPES` above by coincidence, not by
+// shared meaning — that set is about a product stocked both for sale and for
+// rent needing the Type column to say which. Do not merge them.
+const SHIPPED_ITEM_TYPES = new Set(["rental", "sale"]);
+const hasDeliverableItems = shownLineItems.some(i => SHIPPED_ITEM_TYPES.has(i.type));
 
 // Both banners are conditional, and on the same principle: a divider that names
 // the only member of its level is noise. A single destination banner names the
@@ -266,9 +296,12 @@ const showOrderBanner = (invoice.number_orders || []).length > 1;
   </tbody>
 </table>
 
-<%/* THE WHOLE TABLE IS RENTAL/DELIVERY FURNITURE, and a replacement-only
-     invoice has none of it — dropping the section outright rather than emptying
-     it, the same call the address blocks already make for themselves. */%>
+<%/* THE WHOLE TABLE IS RENTAL/DELIVERY FURNITURE, and an invoice that ships
+     nothing has none of it — dropping the section outright rather than emptying
+     it, the same call the address blocks already make for themselves. One rule
+     covers the replacement-only, service-only and surcharge-only invoice; see
+     `hasDeliverableItems` above and templates#279 for why the service arm is a
+     stopgap rather than the answer. */%>
 <% if (hasDeliverableItems && destinations.length > 0) { %>
 <%~ await includeAsync("@partials/shared/destinations.eta", {
      u: it.invoices, destinations, addressColumnCount, hasCollection,
