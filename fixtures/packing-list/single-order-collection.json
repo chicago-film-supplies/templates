@@ -1,0 +1,542 @@
+{
+  "scope": {
+    "kind": "organization",
+    "uid": "kmyrrrizBnD4J2ADzThK",
+    "name": "Sample name........",
+    "uids": [
+      "kmyrrrizBnD4J2ADzThK"
+    ]
+  },
+  "gate": "all",
+  "leg": "collection",
+  "orders": [
+    {
+      "uid": "YWzMc44iBt6bFWPrci0f",
+      "number": 1007,
+      "status": "reserved",
+      "subject": "Sample..",
+      "organization": {
+        "uid": "kmyrrrizBnD4J2ADzThK",
+        "name": "Kestrel Media Group"
+      },
+      "destinations": [
+        {
+          "uid": "296b5655-0250-4fa1-9872-641c8640ec97",
+          "name": "Grandview Terrace Center",
+          "destination": {
+            "uid": "296b5655-0250-4fa1-9872-641c8640ec97",
+            "dates": {
+              "delivery_start": "2026-08-28T09:00:00.000-05:00",
+              "delivery_start_fs": {
+                "_seconds": 1787925600,
+                "_nanoseconds": 0
+              },
+              "delivery_end": "2026-08-28T09:00:00.000-05:00",
+              "delivery_end_fs": {
+                "_seconds": 1787925600,
+                "_nanoseconds": 0
+              },
+              "collection_start": "2026-08-31T09:00:00.000-05:00",
+              "collection_start_fs": {
+                "_seconds": 1788184800,
+                "_nanoseconds": 0
+              },
+              "collection_end": "2026-08-31T09:00:00.000-05:00",
+              "collection_end_fs": {
+                "_seconds": 1788184800,
+                "_nanoseconds": 0
+              },
+              "charge_start": "2026-08-28T09:00:00.000-05:00",
+              "charge_start_fs": {
+                "_seconds": 1787925600,
+                "_nanoseconds": 0
+              },
+              "charge_end": "2026-08-31T09:00:00.000-05:00",
+              "charge_end_fs": {
+                "_seconds": 1788184800,
+                "_nanoseconds": 0
+              },
+              "days_active": 2,
+              "days_charged": 2
+            },
+            "delivery": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "8255 Sycamore Pl, Chicago, IL 54411",
+                "name": "Grandview Terrace Center",
+                "postcode": "60404",
+                "region": "IL",
+                "street": "8255 Sycamore Pl",
+                "street2": "",
+                "mapbox_id": "eFIiCa7fkWTvasqdKBFxRgQjVI8tFBWsYNZtSDdxTCXnQu0fQzO1JTS1AZkuYZZ",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "collection": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "3453 Maple Ave, Chicago, IL 13894",
+                "name": "Grandview Terrace Center",
+                "postcode": "62097",
+                "region": "IL",
+                "street": "3453 Maple Ave",
+                "street2": "",
+                "mapbox_id": "zOLuBs0zwZAgceudOTFjXhRiOF1vQTCoLLHlCDncDLQzAq9kXjQ5KYN7GTbyNZQ",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "customer_collecting": true,
+            "customer_returning": true
+          },
+          "due_at": "2026-08-31T09:00:00.000-05:00",
+          "quantity": 140,
+          "breakdown": {
+            "damaged": 0,
+            "lost": 0,
+            "out": 140,
+            "prepped": 0,
+            "quoted": 0,
+            "reserved": 0,
+            "returned": 0
+          },
+          "bookings": [
+            {
+              "uid": "YWzMc44iBt6bFWPrci0f:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "ZsN1H4wR7vgLQnIf8gzX",
+              "name": "10' x 10' Pop Up Tent (Black)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 4,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "YWzMc44iBt6bFWPrci0f:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "3kzv0sanOljc25psMVkU",
+              "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 56,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 56,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "YWzMc44iBt6bFWPrci0f:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "HM7k3NDHG1GJ2uaykMKC",
+              "name": "Tent Canopy Rain Gutter",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 7,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 7,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "YWzMc44iBt6bFWPrci0f:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "WaQhdQliUvS0LCx5OUTv",
+              "name": "Tent Door (Black)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 4,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "YWzMc44iBt6bFWPrci0f:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "Ms2nlTfZZMoaR8yZwudF",
+              "name": "Long Milk Crate (18x12)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 7,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 7,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "YWzMc44iBt6bFWPrci0f:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "p2YQ9RZY8djeejSK2i0d",
+              "name": "Tent Side (Black)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 12,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 12,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "YWzMc44iBt6bFWPrci0f:J7svp77V0tLx6xBaKRBx:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "J7svp77V0tLx6xBaKRBx",
+              "name": "10' x 10' Pop Up Tent (White)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 10,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 10,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "YWzMc44iBt6bFWPrci0f:5H3Z7i8guIkuXOaYOVqb:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "5H3Z7i8guIkuXOaYOVqb",
+              "name": "Tent Side (White)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 30,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 30,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "YWzMc44iBt6bFWPrci0f:9jjGlzOiKG6ap3LpAGDA:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "9jjGlzOiKG6ap3LpAGDA",
+              "name": "Tent Door (White)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 10,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 10,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            }
+          ],
+          "items": [
+            {
+              "item": {
+                "uid": "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                "type": "group",
+                "name": "Tents",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa"
+                ],
+                "description": ""
+              },
+              "uid_booking": null
+            },
+            {
+              "item": {
+                "uid": "ZsN1H4wR7vgLQnIf8gzX",
+                "type": "rental",
+                "name": "10' x 10' Pop Up Tent (Black)",
+                "description": "",
+                "quantity": 4,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "ZsN1H4wR7vgLQnIf8gzX"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "3kzv0sanOljc25psMVkU",
+                "type": "rental",
+                "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+                "description": "",
+                "quantity": 16,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "3kzv0sanOljc25psMVkU"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "HM7k3NDHG1GJ2uaykMKC",
+                "type": "rental",
+                "name": "Tent Canopy Rain Gutter",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "HM7k3NDHG1GJ2uaykMKC"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "WaQhdQliUvS0LCx5OUTv",
+                "type": "rental",
+                "name": "Tent Door (Black)",
+                "description": "",
+                "quantity": 4,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "WaQhdQliUvS0LCx5OUTv"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "Ms2nlTfZZMoaR8yZwudF",
+                "type": "rental",
+                "name": "Long Milk Crate (18x12)",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "Ms2nlTfZZMoaR8yZwudF"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "p2YQ9RZY8djeejSK2i0d",
+                "type": "rental",
+                "name": "Tent Side (Black)",
+                "description": "",
+                "quantity": 12,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "p2YQ9RZY8djeejSK2i0d"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "J7svp77V0tLx6xBaKRBx",
+                "type": "rental",
+                "name": "10' x 10' Pop Up Tent (White)",
+                "description": "",
+                "quantity": 10,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "J7svp77V0tLx6xBaKRBx"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:J7svp77V0tLx6xBaKRBx:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "5H3Z7i8guIkuXOaYOVqb",
+                "type": "rental",
+                "name": "Tent Side (White)",
+                "description": "",
+                "quantity": 30,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "5H3Z7i8guIkuXOaYOVqb"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:5H3Z7i8guIkuXOaYOVqb:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "3kzv0sanOljc25psMVkU",
+                "type": "rental",
+                "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+                "description": "",
+                "quantity": 40,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "3kzv0sanOljc25psMVkU"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "Ms2nlTfZZMoaR8yZwudF",
+                "type": "rental",
+                "name": "Long Milk Crate (18x12)",
+                "description": "",
+                "quantity": 5,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "Ms2nlTfZZMoaR8yZwudF"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "9jjGlzOiKG6ap3LpAGDA",
+                "type": "rental",
+                "name": "Tent Door (White)",
+                "description": "",
+                "quantity": 10,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "9jjGlzOiKG6ap3LpAGDA"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:9jjGlzOiKG6ap3LpAGDA:vTn8CTAwwJHEJZLBzsOw"
+            },
+            {
+              "item": {
+                "uid": "HM7k3NDHG1GJ2uaykMKC",
+                "type": "rental",
+                "name": "Tent Canopy Rain Gutter",
+                "description": "",
+                "quantity": 5,
+                "stock_method": "bulk",
+                "path": [
+                  "296b5655-0250-4fa1-9872-641c8640ec97",
+                  "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "HM7k3NDHG1GJ2uaykMKC"
+                ],
+                "order_number": 1007,
+                "uid_order": "YWzMc44iBt6bFWPrci0f"
+              },
+              "uid_booking": "YWzMc44iBt6bFWPrci0f:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "order_count": 1,
+  "destination_count": 1,
+  "quantity": 140,
+  "organizations": [
+    {
+      "uid": "kmyrrrizBnD4J2ADzThK",
+      "name": "Meridian Media Group"
+    }
+  ],
+  "missing_order_uids": [],
+  "next_cursor": null,
+  "notice": null
+}
