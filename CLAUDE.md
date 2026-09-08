@@ -430,8 +430,19 @@ in a green CI run mentioned it. `evening-boundary` was in the same state inside
 the draft that became #126 and was blessed in the same commit only because
 someone counted. **templates#125.**
 
-**A capture now turns `templates-lint` red until its golden is blessed, and that
-sequence is intended rather than a deadlock.** `visual-diff` is a separate job:
+🔴 **A family's FIRST capture is the exception to everything in this section, and
+nothing reports it until you ask (templates#256).** Check 4 is graduation-scoped,
+so a family with NO baseline at all is outside it — the capture does NOT turn
+`templates-lint` red, `visual-diff` returns `no-golden` (a green ✓), and
+auto-merge lands the PR. Measured on `statement`: it reached `main` with two
+fixtures and zero goldens, and appeared in NEITHER the "no fixture" report nor
+"goldens at parity". **An hour earlier, with `fixtures: []`, it was reported.**
+Adding fixtures removed the signal and added no gate. `lint:fixtures` now prints
+a second ⓘ for exactly this state; read it.
+
+**A capture on a family that has ALREADY graduated turns `templates-lint` red
+until its golden is blessed, and that sequence is intended rather than a
+deadlock.** `visual-diff` is a separate job:
 it still runs, still renders the new fixture, still uploads the candidate. So the
 bless that clears the red is available immediately, and it is the same press that
 already clears a `no-golden` verdict.
