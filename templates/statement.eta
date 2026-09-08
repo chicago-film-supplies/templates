@@ -36,8 +36,35 @@ const { lines, aging, scope } = statement;
 // settlement line carries a real time of day — measured, 104 of 1,173 prod
 // settlements are not at midnight.
 const CHICAGO = it.tz("America/Chicago");
-const onDate = (iso) => it.dateFns.format(it.dateFns.parseISO(iso), "MMMM d, yyyy", { in: CHICAGO });
-const shortDate = (iso) => it.dateFns.format(it.dateFns.parseISO(iso), "M/d/yy", { in: CHICAGO });
+
+// 🔴 **`{ in: CHICAGO }` pins the FORMAT step and NOT the PARSE, and one field on
+// this document needs the difference.** `from_date` is a bare `YYYY-MM-DD` —
+// alone among the dates here, which are all Chicago-offset instants — and
+// `parseISO` resolves a date-only string at LOCAL midnight. The render container
+// sets no `TZ`, so production parses it as UTC midnight, converts to Chicago and
+// lands on the PREVIOUS DAY.
+//
+// ⚠️ Measured, not reasoned: `2026-09-01` printed as "August 31, 2026" in the
+// prod golden while a Chicago laptop printed "September 1, 2026", and the same
+// string formatted under `TZ=UTC` vs `TZ=America/Chicago` reproduces both. A
+// full offset instant is unaffected in either zone, which is why every other
+// date on the page was right and only the period start was wrong — in TWO
+// places, the Period field and the Balance forward row.
+//
+// ⭐ This is the asymmetry `quote`s `evening-boundary` fixture exists for, one
+// step EARLIER in the pipeline, and it has the same blind spot: local preview
+// runs on a Chicago laptop where the broken form is accidentally correct. Only
+// prod and this laptop disagreeing surfaced it.
+//
+// Anchoring a zone-less date at NOON makes the parse zone-independent for every
+// offset within ±12h, so it renders the calendar day it names in any container.
+// An instant that already carries an offset is passed through untouched.
+//
+// ⚠️ Keep this even after `from_date` is canonicalized upstream: the guard costs
+// one comparison and the failure it prevents is invisible to every local check.
+const parseDate = (iso) => it.dateFns.parseISO(iso.length === 10 ? `${iso}T12:00:00` : iso);
+const onDate = (iso) => it.dateFns.format(parseDate(iso), "MMMM d, yyyy", { in: CHICAGO });
+const shortDate = (iso) => it.dateFns.format(parseDate(iso), "M/d/yy", { in: CHICAGO });
 
 // ── The format is a POPULATION rule, and this is the only place it branches ──
 //
