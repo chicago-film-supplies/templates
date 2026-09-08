@@ -147,6 +147,15 @@ const totalPaymentsCents = lines.reduce((sum, line) => sum + paymentCents(line),
 // value — which is the same rule the invoice applies to its own #totals block.
 const moneyCell = (cents) => (cents ? it.money.formatCents(cents) : "");
 
+// ⚠️ **Charges and Payments are BOTH unconditional, and an empty one is not a
+// dead column to be tidied away.** They are the two sides of a ledger, so a
+// blank cell reads as ZERO, where the Reference column’s blank would read as
+// missing data — that difference is the whole reason one of them is conditional
+// and these two are not. The `balance-forward-subtree` fixture is the live
+// case: every settlement on it is a `payment_reversal`, which RAISES the
+// balance, so its Payments column is empty down the whole page while its
+// Charges column carries all nine. `open-item-floor` covers the other side.
+
 // A settlement TYPE, rendered the way the manager renders one.
 //
 // ⚠️ Deliberately a generic transform, not a lookup table — the same call
@@ -385,8 +394,13 @@ const accountsText = subAccountCount > 0
         <td>( <%= it.money.formatCents(totalPaymentsCents) %> )</td>
       </tr>
       <tr>
-        <%/* The grand total, and it is exempt from the blank-at-zero rule above
-             — a settled account of $0.00 is a fact the customer wants stated. */%>
+        <%/* ⚠️ **All four rows here are ONE derivation — opening + charges −
+             payments = due — so every term prints even at zero, brackets and
+             all.** `Payments and Credits: ( $0.00 )` looks like a row worth
+             deleting and is not: drop it and the reader is left to infer a term
+             of the arithmetic this block exists to show. That is a different
+             rule from the per-ROW blank-at-zero above, where nothing is being
+             derived and a blank is simply the absence of that side. */%>
         <th scope="row" class="bold">Amount Due: </th>
         <td class="bold"><%= it.money.formatCents(statement.closing_balance_cents) %></td>
       </tr>
