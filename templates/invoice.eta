@@ -2,14 +2,17 @@
 <%
 const invoice = it.doc;
 const { destinations, items, totals } = invoice;
-// EVERY date on this page is formatted THROUGH this. date-fns `format` renders
-// in the LOCAL timezone of the JS runtime unless given `{ in: … }`, stored
-// business datetimes are Chicago-offset INSTANTS, and the render container sets
-// no `TZ` — so an unpinned format prints the UTC day and any boundary at or
-// after 19:00 CDT is TOMORROW. Measured on the order corpus at 56 of 996
-// rendering a day late; an invoice’s `date` and `due_date` are
-// `chicagoStartOfDay`, i.e. midnight, which is the worst case for this.
-const CHICAGO = it.tz("America/Chicago");
+// EVERY date on this page goes through `it.dates.formatChicago*`, and the zone
+// is named nowhere. date-fns resolves BOTH the parse and the format against the
+// ambient zone unless each is given `{ in: … }`, stored business datetimes are
+// Chicago-offset INSTANTS, and the render container sets no `TZ` — so an
+// unpinned pair prints the UTC day and any boundary at or after 19:00 CDT is
+// TOMORROW. `@cfs/core/utils/dates` owns that pinning now; a call site that
+// spells the zone itself is a second owner of it.
+//
+// Measured on the order corpus at 56 of 996 rendering a day late; an invoice’s
+// `date` and `due_date` are `chicagoStartOfDay`, i.e. midnight, which is the
+// worst case for this.
 
 // ── Divider structure: THREE levels, not the order’s two ────────────────────
 //
@@ -232,11 +235,11 @@ const showOrderBanner = (invoice.number_orders || []).length > 1;
   </thead>
   <tbody>
     <tr>
-      <td><%= it.dateFns.format(it.dateFns.parseISO(invoice.date, { in: CHICAGO }), 'MMMM d, yyyy', { in: CHICAGO }) %></td>
+      <td><%= it.dates.formatChicagoDate(invoice.date) %></td>
       <%/* An empty cell, not an absent one: under `table-layout: fixed` a short
            row leaves a real trailing gap rather than being absorbed. */%>
       <% if (invoice.due_date) { %>
-      <td><%= it.dateFns.format(it.dateFns.parseISO(invoice.due_date, { in: CHICAGO }), 'MMMM d, yyyy', { in: CHICAGO }) %></td>
+      <td><%= it.dates.formatChicagoDate(invoice.due_date) %></td>
       <% } else { %>
       <td></td>
       <% } %>
@@ -269,7 +272,7 @@ const showOrderBanner = (invoice.number_orders || []).length > 1;
 <% if (hasDeliverableItems && destinations.length > 0) { %>
 <%~ await includeAsync("@partials/shared/destinations.eta", {
      u: it.invoices, destinations, addressColumnCount, hasCollection,
-     deliverySpan, returnSpan, CHICAGO,
+     deliverySpan, returnSpan,
    }) %>
 <% } %>
 

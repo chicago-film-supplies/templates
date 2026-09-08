@@ -244,21 +244,47 @@ but only for content authored through `templates_propose_edit`, and a file
 written on `main` with raw git reaches CI with no compile step in front of it.
 **Run `deno task preview <family> <fixture>` before pushing an `.eta`.**
 
-### Dates: EVERY `format` needs `{ in: … }` — the default is the wrong timezone
+### Dates: go through `it.dates.formatChicago*` — never through `it.dateFns`
 
-⚠️ **`it.dateFns.format(d, pattern)` renders in the LOCAL timezone of whatever machine is rendering, and that machine is UTC.** Nothing sets `TZ` on the render container (see `api-cloudrun`'s Dockerfile, and no `TZ` env in its `infra/cloud-run-api.tf`), while every stored business datetime is a **Chicago-offset instant**. So an unpinned format prints the UTC calendar day, and any boundary at or after 19:00 CDT / 18:00 CST is *the next day*.
+🔴 **No template in this repo names a timezone, and none should.** As of 2026-09-08 all 21
+`it.dateFns` call sites go through four helpers on `it.dates`, and `it.tz` is referenced nowhere.
 
 ```eta
-<%# WRONG — prints the UTC day %>
-<%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy') %>
-<%# RIGHT %>
+<%# WRONG — twice over: it prints the UTC day, AND it makes this file a second owner of the zone %>
 <% const CHICAGO = it.tz("America/Chicago"); %>
 <%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy', { in: CHICAGO }) %>
+<%# RIGHT %>
+<%= it.dates.formatChicagoWeekdayDate(d.delivery_start) %>
 ```
+
+| helper | renders | for |
+|---|---|---|
+| `formatChicagoDate` | `September 1, 2026` | a calendar date a customer reads |
+| `formatChicagoDateTime` | `September 1, 2026 · 2:05 PM` | WHEN something happened, to the minute |
+| `formatChicagoShortDate` | `9/1/26` | a dense column |
+| `formatChicagoWeekdayDate` | `Wed 9/1/26` | delivery and collection — the crew reads the weekday off the page |
+
+⚠️ **The hazard the old form existed for is unchanged, which is why `lint:dates` still runs.**
+`it.dateFns` is still on the render context; date-fns resolves BOTH the parse and the format against
+the ambient zone unless each is given `{ in: … }`, nothing sets `TZ` on the render container (see
+`api-cloudrun`'s Dockerfile, and no `TZ` env in its `infra/cloud-run-api.tf`), and every stored
+business datetime is a **Chicago-offset instant**. So an unpinned format prints the UTC calendar
+day, and any boundary at or after 19:00 CDT / 18:00 CST is *the next day*. The helpers pin both
+halves; a hand-rolled call site can still get it wrong, and the lint is what says so.
+
+⚠️ **`lint:dates` therefore counts BOTH forms and treats zero of both as a FAILURE.** Its original
+subject is now legitimately empty, so `0 … all pinned` can no longer tell a clean corpus from a
+scanner that lost its corpus. Read the second number.
 
 This is not a hypothetical. Measured 2026-08-24 across **all 996 prod orders**: **56** carry a `delivery_start` or `collection_start` that rendered one day late — 58 including the charge window, 121 field renders. `it.now` is `chicagoNowIso()` and sits on the same footing, so unpinned it dated **every** quote rendered after 19:00 Chicago as tomorrow.
 
 **Both of the things that should have caught it are blind to it by construction, which is why the rule is written here rather than left to review.** Local `deno task preview` runs on a laptop in Chicago, where the unpinned form is accidentally correct. And the golden gate is deterministic *by freezing the clock*, not by fixing the zone — `FROZEN_NOW` is midday, and until `evening-boundary` (prod order 872, 19:00 CDT = 00:00 UTC exactly) no fixture crossed the boundary, so all 12 goldens compared the defect to itself and passed. Reproduce either way with `TZ=UTC deno task preview quote evening-boundary`.
+
+⭐ **That fixture is also the only thing that makes a two-zone render a real control, and it is the
+control to use on any date change.** Render every fixture under `TZ=America/Chicago` and again under
+`TZ=UTC` and diff the HTML: on the converted tree all 36 are identical, and putting one call site
+back into the unpinned form moves `evening-boundary` from `Thu 4/30/26` to `Fri 5/1/26`. Both halves
+are needed — the agreement means nothing without the second run showing the probe can bite.
 
 ### Includes — how the document families share chrome
 
