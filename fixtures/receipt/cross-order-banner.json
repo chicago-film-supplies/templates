@@ -1,0 +1,106 @@
+{
+  "uuid_session": "5f2a91c4-7d38-4b61-9e02-3ac6d51f8b74",
+  "date": "2026-08-14T16:22:41.108-05:00",
+  "types": [
+    "check_in"
+  ],
+  "numbers": [
+    1101,
+    1102,
+    1103,
+    1104
+  ],
+  "quantity": 37,
+  "created_by": {
+    "uid": "hR4pWq2ZmT9vLdKx7nBs",
+    "name": "Rowan Castellano"
+  },
+  "orders": [
+    {
+      "uid": "Qb7mVx2LpTdR9swKf3Na",
+      "number": 1041
+    },
+    {
+      "uid": "Zk9tHc4NrYbW6xJm2Dqe",
+      "number": 1052
+    }
+  ],
+  "organization": {
+    "uid": "Ls3vBn8XwQfE1zCr5Ptu",
+    "name": "Kestrel Media Group"
+  },
+  "items": [
+    {
+      "uid": "5f2a91c4-7d38-4b61-9e02-3ac6d51f8b74|check_in|Qb7mVx2LpTdR9swKf3Na:Yt6cRw1KpLnB4qXz8Mdf:vTn8CTAwwJHEJZLBzsOw",
+      "number": 1101,
+      "type": "check_in",
+      "quantity": 12,
+      "uid_product": "Yt6cRw1KpLnB4qXz8Mdf",
+      "name": "Apple Box (Full)",
+      "uid_booking": "Qb7mVx2LpTdR9swKf3Na:Yt6cRw1KpLnB4qXz8Mdf:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "Qb7mVx2LpTdR9swKf3Na",
+      "order_number": 1041,
+      "custody": {
+        "from": "out",
+        "to": "returned"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "5f2a91c4-7d38-4b61-9e02-3ac6d51f8b74|check_in|Qb7mVx2LpTdR9swKf3Na:Nq2sJf7VmZxD5rTb1Cwh:vTn8CTAwwJHEJZLBzsOw",
+      "number": 1102,
+      "type": "check_in",
+      "quantity": 6,
+      "uid_product": "Nq2sJf7VmZxD5rTb1Cwh",
+      "name": "C-Stand (40in, Grip Head & Arm)",
+      "uid_booking": "Qb7mVx2LpTdR9swKf3Na:Nq2sJf7VmZxD5rTb1Cwh:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "Qb7mVx2LpTdR9swKf3Na",
+      "order_number": 1041,
+      "custody": {
+        "from": "out",
+        "to": "returned"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "5f2a91c4-7d38-4b61-9e02-3ac6d51f8b74|check_in|Zk9tHc4NrYbW6xJm2Dqe:Hd5nKp3WqRsY8vLc6Jbm:vTn8CTAwwJHEJZLBzsOw",
+      "number": 1103,
+      "type": "check_in",
+      "quantity": 14,
+      "uid_product": "Hd5nKp3WqRsY8vLc6Jbm",
+      "name": "Sandbag (25lb)",
+      "uid_booking": "Zk9tHc4NrYbW6xJm2Dqe:Hd5nKp3WqRsY8vLc6Jbm:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "Zk9tHc4NrYbW6xJm2Dqe",
+      "order_number": 1052,
+      "custody": {
+        "from": "out",
+        "to": "returned"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "5f2a91c4-7d38-4b61-9e02-3ac6d51f8b74|check_in|manual-5f2a91c4-0004",
+      "number": 1104,
+      "type": "check_in",
+      "quantity": 5,
+      "uid_product": "Wm8bTz6QcVhN2ykD4Fps",
+      "name": "Furniture Blanket",
+      "uid_booking": null,
+      "uid_order": null,
+      "order_number": null,
+      "custody": {
+        "from": "out",
+        "to": "returned"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    }
+  ]
+}
