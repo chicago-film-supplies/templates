@@ -1,0 +1,153 @@
+/* aging-report.css — what is TRUE OF AN AR AGING REPORT and of nothing else.
+
+   The document chrome — the page grid, the two alignment edges, the letterhead,
+   the table rules, #details and #items — lives in `styles/base.css` and reaches
+   this family through the `base` component, the same way it reaches the quote,
+   the invoice, the receipt and the statement. A family is overlaid from
+   `base.css` plus its own sheet and nothing else (`ownsTemplatePath`), so
+   anything copied here would be a second copy that drifts.
+
+   This family has no #destinations block, no #information note and no #totals
+   block. What it has that no other family does is a MATRIX — a table whose
+   figures are read down a column and across a row at once — plus a second full
+   -width table below it and an exceptions list. */
+
+/* THE REPORT'S OWN ROOT SIZE, matched to the other four families deliberately
+   rather than inherited by accident.
+
+   `base.css` defaults the root to 10px; every document opts down to 9px so they
+   read as the same company's paperwork at the same density. This report is read
+   beside the statements and invoices it summarises, which is the same argument
+   `styles/statement.css` makes.
+
+   ⚠️ It also fixes the FOOTER's fit, which is why it is not a free choice: the
+   shared footer carries no font-size of its own and inherits this root through
+   the overlay `api-cloudrun` injects into that isolated frame. The band's fit
+   inside `margin_bottom: 0.62in` was measured at a 9px root. Neither the golden
+   gate nor `deno task preview` renders that frame (templates#137), so this is
+   the one declaration on the page that no local check can verify. */
+html {
+  font-size: 9px;
+}
+
+/* THE MONEY IS READ DOWN, so it is right-aligned and tabular — in BOTH tables.
+
+   ⚠️ A deliberate divergence from the quote and the invoice, not an oversight
+   there. Their items grid right-aligns only its final Total column (`td.total`
+   in `base.css`) because each row is a priced LINE whose figures are read
+   across. Here the reader is adding a bucket column up and checking it against
+   the footer, which ragged-left figures make unreadable.
+
+   ⭐ The Days column takes `.money` for its alignment and is not money. That is
+   the honest reading of what the class does on this page — it is the
+   right-aligned tabular-numeral column style — and inventing a `.numeric` alias
+   for one column would be a second name for one rule. `base.css` owns no such
+   class, so there is nothing to be inconsistent with.
+
+   `font-variant-numeric` rather than a monospace stack — the digits line up in a
+   column without changing the typeface mid-document. */
+#items th.money,
+#items td.money,
+#items th.total,
+#items td.total,
+#open-invoices th.money,
+#open-invoices td.money,
+#open-invoices th.total,
+#open-invoices td.total {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Same rule, same reason, as `#details thead th` and `#items thead th` in
+   `base.css`: the blanket `th, td { width: 6rem }` plus the 24rem first-child
+   falls SHORT of the page at these tables' seven and six columns, and Blink
+   hands the surplus back in proportion to the specified widths — so the widest
+   column takes the biggest share and every boundary drifts right. Releasing the
+   others to `auto` keeps the account column on `--label-col` exactly, which is
+   the edge #details is already on. `thead th`, not every cell, because under
+   `table-layout: fixed` only the first row sizes anything. */
+#items thead th:not(:first-child),
+#open-invoices thead th:not(:first-child) {
+  width: auto;
+}
+
+/* THE FOOTER SEAM.
+
+   ⭐ On the ROW GROUP, which paints here and would not in the manager. Every
+   table in `base.css` is `border-collapse: collapse`, under which a `tfoot`
+   border is painted; under `separate` it is silently dropped while
+   `getComputedStyle` still reports the declared width. Manager's `/reports`
+   page is `separate` and hit exactly that — so if this rule is ever ported to
+   that surface it has to move onto the cells. Named rather than left to be
+   rediscovered, because the two surfaces render the same report. */
+#items tfoot {
+  border-top: 2px solid #121212;
+}
+
+/* The footer restates the header's alignment: `th` is left-aligned by
+   `base.css`, and the label cell wants to stay on the account column's edge
+   while every figure beside it stays right-aligned by the block above. */
+#items tfoot th {
+  text-align: left;
+}
+
+/* The detail table and the exceptions block each span the page. Each is a
+   section ABOUT the matrix rather than a block sitting beside one, so both take
+   both grid columns — the same `1 / -1` #items and #destinations take in
+   `base.css`, and for the same reason: there is nothing to put next to them. */
+#open-invoices,
+#exceptions,
+#no-activity {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+/* Headed like #destinations' blocks are, so every section heading on the page
+   reads as one family. */
+#open-invoices h2,
+#exceptions h2 {
+  border-bottom: 1px solid #121212;
+}
+
+/* The empty-book report's one line of prose. It sits where #items would have and
+   takes its baseline from the same `--cell-pad-y` every table cell does, so it
+   does not sit a couple of pixels off the block above it. */
+#no-activity {
+  padding: var(--cell-pad-y) 0;
+}
+
+/* The exceptions block is a REPAIR LIST, not part of the report's arithmetic, so
+   it is set apart rather than styled as another table. The uids are the point —
+   they are what addresses the documents someone is about to go and fix — so they
+   are set in a column that can be read and copied rather than run together as
+   prose. */
+#exceptions ul {
+  margin: var(--cell-pad-y) 0 0;
+  padding-left: 1.5em;
+}
+
+#exceptions li {
+  font-variant-numeric: tabular-nums;
+  line-height: 1.6em;
+}
+
+/* THE GUTTER BETWEEN A RIGHT-ALIGNED COLUMN AND THE LEFT-ALIGNED ONE AFTER IT.
+
+   🔴 **Found by looking at the rendered page, and invisible to every other
+   check.** `base.css` gives cells `padding: var(--cell-pad-y) 0` — vertical
+   only, deliberately, because on a quote and an invoice the columns that touch
+   are either both left-aligned or both right-aligned and the column boundary is
+   gutter enough. The detail table breaks that assumption for the first time: the
+   Days column is right-aligned and the Bucket column immediately after it is
+   left-aligned, so the two run together with nothing between them. It rendered
+   as `-17Current`, `5031-60`, `19090+` — three values that each read as one
+   wrong number, and the header as `DaysBucket`.
+
+   ⚠️ It is asserted on the PAIR rather than on the Bucket column, so the gutter
+   follows the collision: a column inserted between them takes it and Bucket
+   loses it, which is the correct outcome and would not be if this named Bucket
+   directly. `th` as well as `td` — the heading collided too. */
+#open-invoices td.money + td,
+#open-invoices th.money + th {
+  padding-left: 1.5em;
+}

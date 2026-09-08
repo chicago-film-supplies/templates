@@ -215,6 +215,28 @@ straight apostrophe in any `//` comment — measured, their only straight quotes
 are real JS (the `'MMMM d, yyyy'` date pattern) and `<%/* … */%>` tags. It reads as a typography
 preference and is actually a parser requirement.
 
+⭐ **Row 1 is also the REMEDY, not just a safe case: `<%/* … */%>` is where prose
+with ASCII punctuation belongs.** Re-probed 2026-09-08 against the same version —
+a comment tag takes any number of apostrophes, on any number of lines. So the
+choice is typographic quotes in a `//` comment, or ordinary prose in a comment
+tag; what has no safe spelling is a straight quote in a `//` comment.
+
+🔴 **There are TWO error shapes, and "the error is reported far from the cause"
+is true of only one of them — which is what makes reading the caret unreliable
+rather than merely unhelpful.** The `Unexpected token '%'` above is reported
+against the generated function, tens of lines away. But an unterminated quote
+that reaches EOF instead surfaces as `unclosed string at line N col M`, and that
+N **is** the offending line (measured: a one-apostrophe `//` comment on line 2
+reports line 2 col 16). A reader who has learned to distrust the position from
+one shape will ignore a correct pointer in the other.
+
+⭐ **So bisect rather than deciding which shape you are looking at.** Compile
+`lines.slice(0, n).join("\n")` for increasing `n` and take the first `n` that
+fails; it is exact for both shapes and costs one short script. The AR Aging
+family's first failure reported line 353 — inside an innocent `<%/* … */%>` tag
+— while the bisect put the cause at line 92, a `"…"` phrase wrapped across two
+lines in a `//` comment 260 lines earlier.
+
 ⚠️ **Almost nothing catches this.** `money-lint` reads paths; the golden gate
 compares pixels of a document that already rendered; `lint:fixtures` never opens
 an `.eta`. The API's `gateDraftContent` DOES Eta-compile every `.eta` on save —
@@ -368,6 +390,12 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 `deno task preview [name] [fixture-slug]` renders a template + fixture to `preview.html` with the same overlay the API performs (component styles → template styles → layout), registers every `partials/shared/**` and `partials/<name>/**` file as an includable partial, prints the rendered `filename` and the partials it registered, and inlines the footer partial below the body to confirm it parses. `deno task preview:watch` re-renders on change — and **watches `partials/` too**, which it did not until 2026-08-26, so editing the shared footer used to trigger no re-render at all.
 
 ⚠️ **The harness runs TWO Eta instances, and that is not an accident.** The document surfaces (body, footer, filename) render on the engine that has partials registered; the LAYOUT renders on a partial-free one, because production registers none there. One shared engine would make an include in `layouts/base.eta` work here and throw in prod — the exact direction this harness exists to prevent.
+
+🔴 **A `preview` you have not LOOKED AT is not a verification, and this repo has no test suite, so looking is the only instrument there is.** Render the HTML to an image and read it. macOS here has no headless Chrome, but any Chromium does: `"/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" --headless --disable-gpu --screenshot=out.png --window-size=1100,900 --hide-scrollbars file:///…/preview.html`. ⭐ **The fixture argument accepts an arbitrary PATH, not only a `fixtures/<name>/<slug>` slug** — so a family that is not registered yet, and therefore cannot hold a fixture, can still be rendered against a hand-built JSON kept OUTSIDE the repo. That is what makes a new family verifiable before the merge that registers it. ⚠️ Keep such a file out of `fixtures/` — it never went through `applyPii` and is not a fixture.
+
+🔴 **But a path outside `fixtures/<name>/` matches NO sidecar entry, so it declares NO param state and renders at the family's DECLARED DEFAULTS.** That is deliberate — it is what stops one fixture's declared state being applied to an unrelated file that happens to share its basename — and it means **an out-of-repo preview verifies the default arm only**. Every param-dependent branch stays unrendered until the fixture is registered in the sidecar and can carry its own `params`, or until you pass `--param` explicitly. So a new family verified this way is verified in exactly one state; say which one, and do not read it as coverage of the document. The AR Aging family (#271) was written this way and the page caught two defects lint, the citation audit and every enum check were green on: a right-aligned column against a left-aligned one with no horizontal cell padding rendered `-17Current` and `19090+` under a `DaysBucket` heading, and a bracketed `( $0.00 )` read as a deduction that was not there.
+
+⚠️ **A `.eta` that will not compile is almost always the `//`-comment apostrophe** — see § *A straight apostrophe in a `//` comment breaks the `.eta` parse* above, which owns that fact and carries the probe table. It is the first thing to check, and it cost the AR Aging family three compile failures.
 
 **A util namespace this harness cannot provide is a hard error, deliberately.** `UTIL_MODULES` in `scripts/preview.ts` must mirror the server's (`api-cloudrun/src/lib/templates/eta.ts`); if it doesn't, the resolver throws and names the fix. It used to skip silently, and that is how `money` came to be missing here while the server injected it — and `money` is in core's `ALWAYS_ON_UTIL_NAMESPACES`, so *every* template requests it. The result was that the first `it.money.*` call rendered correctly in production and died here with `Cannot read properties of undefined`, which reads as a template bug rather than a harness one. This repo has no test suite, so the throw is the guarantee (the server side is covered by `renderUtilNamespaces.test.ts`). **Do not re-add a silent skip.**
 
