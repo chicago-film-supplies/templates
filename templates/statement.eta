@@ -1,4 +1,4 @@
-<%/* draft draft/statement/ebb3c2f5 */%>
+<%/* draft draft/statement/2cae322b */%>
 <%
 // ── What this document IS ───────────────────────────────────────────────────
 //
@@ -36,8 +36,37 @@ const { lines, aging, scope } = statement;
 // settlement line carries a real time of day — measured, 104 of 1,173 prod
 // settlements are not at midnight.
 const CHICAGO = it.tz("America/Chicago");
-const onDate = (iso) => it.dateFns.format(it.dateFns.parseISO(iso), "MMMM d, yyyy", { in: CHICAGO });
-const shortDate = (iso) => it.dateFns.format(it.dateFns.parseISO(iso), "M/d/yy", { in: CHICAGO });
+
+// 🔴 **PARSE in Chicago as well as FORMAT in Chicago — `{ in: CHICAGO }` on the
+// format alone does not save you, because the zone is already lost by then.**
+// `parseISO` resolves a string carrying NO offset against the AMBIENT zone, and
+// the render container sets no `TZ` (neither the api Dockerfile nor
+// `infra/cloud-run-api.tf`), so a zone-less date read as UTC midnight and
+// formatted into Chicago lands on the PREVIOUS day.
+//
+// ⚠️ Measured, not reasoned. The same string, three container zones:
+//
+//     TZ=UTC              2026-09-01  ->  August 31, 2026
+//     TZ=America/Chicago  2026-09-01  ->  September 1, 2026
+//     TZ=Asia/Tokyo       2026-09-01  ->  August 31, 2026
+//     any of the three    2026-09-07T00:00:00.000-05:00  ->  September 7, 2026
+//
+// With `{ in: CHICAGO }` on the PARSE, all three print September 1, and the
+// offset-bearing form is untouched — so this is render-neutral for every date
+// that already meets the storage contract, and correct for any that does not.
+//
+// ⭐ This is the same blind spot `quote`s `evening-boundary` fixture exists for,
+// one step EARLIER in the pipeline: local preview runs on a Chicago laptop where
+// the ambient parse is accidentally right, so only prod and a laptop disagreeing
+// could surface it — which is exactly how it was found.
+//
+// ⚠️ Keep this even though `foldOrgStatement` now canonicalizes what it echoes.
+// The two are not redundant: that fix makes THIS document carry offsets, this
+// one makes the RENDER independent of the container, and the next zone-less
+// field to appear will not announce itself.
+const parse = (iso) => it.dateFns.parseISO(iso, { in: CHICAGO });
+const onDate = (iso) => it.dateFns.format(parse(iso), "MMMM d, yyyy", { in: CHICAGO });
+const shortDate = (iso) => it.dateFns.format(parse(iso), "M/d/yy", { in: CHICAGO });
 
 // ── The format is a POPULATION rule, and this is the only place it branches ──
 //

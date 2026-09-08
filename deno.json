@@ -52,6 +52,8 @@
     "lint:money:ratchet": "deno run --allow-read scripts/money-lint.ts --direction=under",
     "//scan:fixture-history": "PII scan over every fixture blob that ever existed \u2014 the discharge condition for making this repo public. NOT lint:fixtures pointed at history; see the script header.",
     "scan:fixture-history": "deno run --allow-read --allow-run=git scripts/scan-fixture-history.ts",
+    "//lint:dates": "Every date-fns call in an .eta must name the Chicago timezone on the PARSE as well as the FORMAT. Pinning only the format leaves the parse resolving against the container zone, which in production is UTC \u2014 a date with no offset then prints the PREVIOUS Chicago day, and every local check stays green because a Chicago laptop gets the right answer by accident. Whole-tree, always; takes no arguments. See scripts/lint-dates.ts.",
+    "lint:dates": "deno run --allow-read scripts/lint-dates.ts",
     "lint:citations": "deno run --allow-read --allow-env scripts/lint-citations.ts",
     "//lint:citations:inbound": "The OTHER direction: sibling repos citing paths INTO this repo. MANUAL \u2014 templates has no git hooks by design (its branches are user-generated drafts, exempt from hygiene), and CI cannot run it because each workflow checks out one repo. Run it before pushing a rename or deletion.",
     "lint:citations:inbound": "deno run --allow-read scripts/audit-inbound-citations.ts",

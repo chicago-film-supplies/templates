@@ -91,6 +91,7 @@
  *      deno task lint:money:ratchet (advisory arm)
  */
 import { BLAME_FLAG, familiesOfPath, readBlameSet } from "./affectedFamilies.ts";
+import { commentLines, etaRoots, walkEta } from "./_etaScan.ts";
 
 // ── Arguments ───────────────────────────────────────────────────────
 
@@ -171,61 +172,8 @@ const RAW_BUDGET: Record<string, number> = {
 
 // ── Scan ────────────────────────────────────────────────────────────
 
-async function* walk(dir: string): AsyncGenerator<string> {
-  for await (const e of Deno.readDir(dir)) {
-    const p = `${dir}/${e.name}`;
-    if (e.isDirectory) yield* walk(p);
-    else if (e.isFile && p.endsWith(".eta")) yield p;
-  }
-}
+const roots = await etaRoots();
 
-const roots: string[] = [];
-for (const d of ["templates", "layouts", "partials", "template-components"]) {
-  try {
-    await Deno.stat(d);
-    roots.push(d);
-  } catch { /* absent */ }
-}
-
-/**
- * Which lines of a source are inside an Eta comment block.
- *
- * ⚠️ **Prose about the rule is not a violation of it, and the previous test
- * could not tell the difference.** It skipped a line STARTING with `//`, `*` or
- * `<%/*` — so the first line of a `<%/* … *\/%>` block was exempt and every
- * continuation line was not. A partial whose docblock explains "money-lint
- * fails CI on `.divide(`/`.multiply(`" therefore reported three non-closed
- * operations in a comment, and a props list reading
- * `numberCell/moneyCell/itemTaxCents/pathKey` reported raw arithmetic. Neither
- * line executes.
- *
- * Comments cannot compute, so exempting them weakens nothing: there is no code
- * to hide in one. Line numbers are preserved (the set is of indices, not a
- * rewritten string) so every finding still points at the line the author reads.
- */
-function commentLines(src: string): Set<number> {
-  const out = new Set<number>();
-  const lines = src.split("\n");
-  let inBlock = false;
-  lines.forEach((line, i) => {
-    let rest = line;
-    if (inBlock) {
-      out.add(i);
-      const close = rest.indexOf("*/");
-      if (close === -1) return;
-      inBlock = false;
-      rest = rest.slice(close + 2);
-    }
-    // `<%/* … */%>` (Eta) and `/* … */` (inside an eval tag) alike.
-    const open = rest.search(/<%\/\*|\/\*/);
-    if (open !== -1 && rest.indexOf("*/", open) === -1) {
-      inBlock = true;
-      out.add(i);
-    }
-    if (/^\s*(?:\/\/|\*|<%\/\*|<%#)/.test(line)) out.add(i);
-  });
-  return out;
-}
 
 /**
  * Rule 3 keys on a `*` or `/` beside a money-named identifier, which is
@@ -252,7 +200,7 @@ const rawSites: string[] = [];
 let files = 0;
 
 for (const root of roots) {
-  for await (const file of walk(root)) {
+  for await (const file of walkEta(root)) {
     files++;
     const src = await Deno.readTextFile(file);
     counts.set(file, [...src.matchAll(CURRENCY)].length);
