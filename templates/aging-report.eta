@@ -1,0 +1,381 @@
+<%
+// ── What this document IS ───────────────────────────────────────────────────
+//
+// The AR Aging report (api-cloudrun#712). Its source is an `AgingReport`
+// (`core/src/schemas/reporting.ts`): every invoice whose stored balance is still
+// positive, aged into buckets from a chosen anchor date, grouped by the LIVE
+// organization tree. Like a statement or a pick sheet it is rebuilt per call and
+// stored NOWHERE — `collection_source: "aging-reports"` names a document SHAPE,
+// not a Firestore collection.
+//
+// 🔴 **This is an INTERNAL document, and that is the decision every layout
+// choice below follows from.** A statement is handed to one customer, so it
+// leads with that customer’s name and billing address. An aging report is read
+// by whoever is chasing money, spans every customer by default, and is never
+// posted to anybody — so the letterhead carries our identity and NO addressee.
+// See the `#bill-to` note at the include.
+//
+// 🔴 **RENDER THE FOLD; NEVER RECOMPUTE IT.** `AgingReport.organizations[]` is
+// already a SECOND derivation of `AgingReport.totals` — deliberately, so the two
+// can disagree and catch a roll-up bug that an assertion derived from the
+// roll-up itself could never see. A template summing `rows[]` into its own
+// per-account subtotals would be a THIRD derivation, and a third cannot catch
+// anything: it can only drift, on a printed financial document. So every figure
+// on this page is read off the document. The ONE exception is the residual, and
+// it is a subtraction rather than a re-derivation — see `residualCents`.
+//
+// ⭐ **Every date goes through `it.dates.formatChicago*`, and this family is
+// born that way rather than being converted later.** The other four templates
+// each carry a `const CHICAGO = it.tz("America/Chicago")` and pin the zone at
+// eleven `parseISO` call sites between them, because they predate the helpers.
+// `@cfs/core@10.0.0-beta.368` put `formatChicagoDate` / `formatChicagoShortDate`
+// on `it.dates`, so the zone is named ZERO times here. The hazard those call
+// sites exist for is real and unchanged — `parseISO` resolves a zone-less string
+// against the AMBIENT zone and the render container sets no `TZ`, so an unpinned
+// parse of `2026-09-01` prints August 31 — the helpers just own it now.
+const report = it.doc;
+const { scope, rows, totals, organizations } = report;
+
+// ── The shape of the page ───────────────────────────────────────────────────
+//
+// Two tables answering two questions, in the order a reader needs them: WHO owes
+// (the account × bucket matrix) and then WHICH INVOICES (one row each). The
+// matrix is the report; the detail is the evidence for it.
+const buckets = totals.buckets;
+
+// SUMMARY: Account, one column per bucket, Credits, Total.
+const summaryColumnCount = 3 + buckets.length;
+
+// The page’s second alignment edge: the column boundary NEAREST THE HALF-WAY
+// POINT, rounding left. Same derivation as the quote, the invoice, the receipt
+// and the statement (see `styles/base.css`) — a fact about the shared page grid
+// rather than about any one family.
+const edgeColumn = Math.floor((summaryColumnCount - 1) / 2);
+const edgeColumns = summaryColumnCount - 1;
+
+// ── The account label ───────────────────────────────────────────────────────
+//
+// 🔴 **The WHOLE chain, on every row of both tables — no common-prefix trim.**
+// `templates/statement.eta` trims each line’s chain against the statement’s own
+// scope, because there every row starts with the addressee already printed in
+// the letterhead and repeating it wastes a page of paper. Neither half of that
+// holds here: an `all`-scope report has no common prefix to trim against, and
+// there is no addressee in the letterhead to have already said it.
+//
+// ⚠️ **And the untrimmed chain is the POINT, not merely acceptable**
+// (api-cloudrun#923). Censused over all 318 prod organizations on 2026-09-07,
+// the 29 department nodes carry only 8 distinct names — 24 of them sharing just
+// `Locations` (12), `Office` (10) and `Transpo` (2). Measured on prod’s open
+// receivables the same day, two accounts both read `Locations` and are separated
+// only by the levels a leaf segment discards. **A leaf name is not an identity
+// here**, which is why `organizations[]` carries `uid` plus the chain and no
+// composed `name` at all.
+const accountName = (path) => it.organizations.composeOrgName(path);
+
+// ── Money ───────────────────────────────────────────────────────────────────
+//
+// Integer cents throughout, and nothing on this page multiplies or divides — the
+// only arithmetic is the residual subtraction below, which is closed at the
+// storage quantum and therefore exact by construction. No money library.
+//
+// A zero renders as `$0.00` rather than blank, unlike a statement’s per-row
+// money cells. The difference is what a blank would MEAN: on a statement, a row
+// is either a charge or a payment and the empty side reads as “not this side”.
+// Here every cell is the same question — how much is outstanding in this bucket
+// — so a blank reads as missing data, and a bucket a customer genuinely has
+// nothing in is a fact worth printing.
+const money = (cents) => it.money.formatCents(cents);
+
+// A credit is shown as the deduction it is — the field is stored positive and
+// `AgingTotals.credit_cents` says a renderer shows it as one, so the bracket is
+// this document applying that instruction rather than inventing a sign.
+// Bracketed exactly as the discount row in `partials/shared/totals.eta` is, so
+// the two deductions do not read as two conventions.
+//
+// ⭐ **A ZERO is not bracketed, and only the rendered page settled that.** Every
+// figure on this matrix prints at zero — see `money` above — but four rows of
+// `( $0.00 )` down the Credits column read as four deductions a reader then goes
+// looking for. The bracket is not a currency convention here, it is a SIGN: it
+// says “this one is subtracted”, which is false of zero. So the column still
+// prints at zero and only a real credit wears the bracket.
+const creditCell = (cents) => (cents ? `( ${money(cents)} )` : money(cents));
+
+// A bucket’s amount for one `AgingTotals`, by id rather than by position.
+//
+// ⚠️ **By id, because two `buckets` arrays are two independent orderings until
+// something says otherwise.** `AgingTotals.buckets` is documented as “in report order”
+// on each totals object, and the fold does emit them consistently — but a
+// positional read is a claim about a correspondence the schema does not assert,
+// and it would fail SILENTLY, putting one bucket’s money under another’s
+// heading. The header row is driven by `totals.buckets`, so that is the order
+// every row is looked up against.
+const bucketCents = (agingTotals, bucket) =>
+  agingTotals.buckets.find((b) => b.bucket === bucket)?.amount_cents ?? 0;
+
+// ── The residual: the one figure this template derives ──────────────────────
+//
+// 🔴 **Σ of the grouped rows does not always equal `totals`, and on a printed
+// financial document a footer that does not tie to the column above it reads as
+// a defect a reader will report.** api-cloudrun#923 closed the case that made
+// this common — an organization holding credits and no open invoice now gets its
+// own node — but one hole survives it: a row whose frozen chain is empty reaches
+// `totals` and no grouped node. That case is not writer-reachable today
+// (`DocumentOrganizationSnapshot.path` is `.min(1).max(3)` and both
+// `Invoice.organization` and `CreditNote.organization` require the block), so
+// this row is expected to render on nothing in the corpus as it stands.
+//
+// ⭐ **It survives as ARITHMETIC rather than as a fix for a known cause**, which
+// is what makes it cover a third cause nobody has met yet. `manager`’s
+// `agingAccountRows` keeps its own copy for the same reason and by the same
+// ruling; two implementations of one subtraction is the accepted cost of both
+// surfaces tying, and neither is re-deriving any money.
+//
+// ⚠️ **It is a SUBTRACTION, not a re-derivation, and the distinction is the
+// whole of the render-the-fold rule above.** Nothing here recomputes what an
+// account owes; this asks only what the grouped nodes failed to account for.
+const groupedTotalCents = organizations.reduce((sum, org) => sum + org.totals.total_cents, 0);
+const residualCents = totals.total_cents - groupedTotalCents;
+
+// ── The scope line ──────────────────────────────────────────────────────────
+//
+// ⭐ `scope.name` is safe to print here, and that is worth stating because the
+// sibling grammars warn about the same field. On a `pick-sheets` scope it can be
+// a street address, and `AgingScope.name` is `""` on an `all` run — but where it
+// IS populated it is `composeOrgName(org.path)` (`resolveOrganizationSubtree`),
+// the full chain rather than the leaf segment #923 was filed about. So the guard
+// below is on `kind`, which is the field that actually decides, never on the
+// name being non-empty.
+const scopeText = scope.kind === "all"
+  ? "Every open receivable"
+  : `${scope.name}${scope.uids.length > 1 ? ` and ${scope.uids.length - 1} sub-account${scope.uids.length === 2 ? "" : "s"}` : ""}`;
+
+// ⚠️ **The anchor is printed because it CHANGES EVERY BUCKET on the page.**
+// `due_date` matches the live Xero tenant, whose aged-receivables links all
+// carry `ageingBy=due`; `date` ages from the invoice date instead. Two runs of
+// this report on one morning can disagree entirely and both be right, so a
+// document that did not say which it used could not be reconciled against
+// anything.
+const anchorText = report.anchor === "due_date" ? "Due date" : "Invoice date";
+%>
+<div id="grid-wrapper" style="--block-3-fraction: calc(<%= edgeColumn %> / <%= edgeColumns %>)">
+<%/* 🔴 **`customer_name` and `billing_address` are BOTH null, deliberately, and
+     null is an ANSWER rather than missing data.** The partial already supports
+     it — a movement session spanning two customers passes null so that one
+     customer’s name never lands on another’s goods — and the reasoning carries
+     straight across: an aging report spans every customer by default, and there
+     is no addressee because the document is not sent to anyone. The letterhead
+     therefore renders our identity and the logo, and `#bill-to` stays empty.
+
+     ⚠️ Do NOT “improve” this by passing `scope.name` on a scoped run. The field
+     is `#bill-to` — it states who the document is FOR — and an internal report
+     is not for the customer it is about. The scope is stated as a parameter in
+     `#details` below, which is what it is. */%>
+<%~ await includeAsync("@partials/shared/letterhead.eta", {
+     title: "AR Aging",
+     customer_name: null,
+     billing_address: null,
+   }) %>
+
+<table id="details">
+  <thead>
+    <tr>
+      <th scope="col">Accounts:</th>
+      <th scope="col">Aged By:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= scopeText %></td>
+      <td><%= anchorText %></td>
+    </tr>
+  </tbody>
+  <thead>
+    <tr>
+      <%/* Both as-of dates, and the pair is the reason this report can be
+           reconciled at all: `as_of_invoice_date` says which invoices existed,
+           `as_of_payment_date` says which settlements count. An audit view sets
+           both to the period end; a collections view sets payments to today.
+           Printing one would leave the reader unable to say which question the
+           page answers.
+
+           ⚠️ Both are today on every document this family can currently hold —
+           `buildAgingReport` refuses any other value — so they will read the
+           same until a retrospective run is built. They are printed separately
+           anyway: collapsing them to one “As of” field now would have to be
+           un-collapsed then, and a golden blessed on the collapsed form would
+           defend it. */%>
+      <th scope="col">Invoices Through:</th>
+      <th scope="col">Payments Through:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= it.dates.formatChicagoDate(report.as_of_invoice_date) %></td>
+      <td><%= it.dates.formatChicagoDate(report.as_of_payment_date) %></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- The account × bucket matrix -->
+<%/* An empty book is a REAL case and a good one — everything is paid. A headed
+     table with no rows under it reads as a fault, so the section says the fact
+     instead, exactly as the statement’s `#no-activity` does. */%>
+<% if (organizations.length > 0 || residualCents !== 0) { %>
+<section id="items">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col" class="wide">Account</th>
+        <%/* ⚠️ The BUCKET IDS are printed, not a label table — the same trade
+             `templates/statement.eta` makes for its aging strip, and for the
+             same reason. `AGING_BUCKET_EDGES` carries a prose label for each and
+             lives in `@cfs/core/schemas`, which a template never receives, so a
+             label here would be an inline RE-STATEMENT of a closed vocabulary:
+             a copy the compiler cannot find, silently wrong the day a bucket is
+             added or an edge moves. `.capitalize` turns `current` into `Current`
+             without touching the others. Take a labels helper from core the day
+             one exists. */%>
+        <% buckets.forEach((bucket) => { %>
+        <th scope="col" class="money capitalize"><%= bucket.bucket %></th>
+        <% }) %>
+        <th scope="col" class="money">Credits</th>
+        <th scope="col" class="total">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% organizations.forEach((org) => { %>
+      <tr>
+        <td class="wide"><%= accountName(org.organization_path) %></td>
+        <% buckets.forEach((bucket) => { %>
+        <td class="money"><%= money(bucketCents(org.totals, bucket.bucket)) %></td>
+        <% }) %>
+        <%/* See `creditCell` — bracketed as a deduction, and a zero is not one. */%>
+        <td class="money"><%= creditCell(org.totals.credit_cents) %></td>
+        <td class="total"><%= money(org.totals.total_cents) %></td>
+      </tr>
+      <% }) %>
+      <% if (residualCents !== 0) { %>
+      <%/* See `residualCents`. Labelled rather than folded silently into the
+           footer: a reader who can see an unattributed figure can ask about it,
+           where a footer quietly adjusted to tie hides the very disagreement the
+           second derivation exists to expose. The bucket columns are blank
+           because the residual has no bucket — it is whatever the grouped nodes
+           did not account for, and inventing a bucket for it would be this
+           template deriving something. */%>
+      <tr>
+        <td class="wide"><em>Unattributed</em></td>
+        <% buckets.forEach(() => { %>
+        <td class="money"></td>
+        <% }) %>
+        <td class="money"></td>
+        <td class="total"><%= money(residualCents) %></td>
+      </tr>
+      <% } %>
+    </tbody>
+    <tfoot>
+      <%/* ⚠️ The footer is `totals`, read off the document — NOT the sum of the
+           column above it. That is the entire point of the two derivations: if
+           they disagree, this row and the rows above it disagree ON THE PAGE,
+           which is a report a reader can act on. A summed footer would agree
+           with the column by construction and tell nobody anything.
+
+           ⭐ The seam above this row is drawn on the `tfoot` in
+           `styles/aging-report.css`, which WORKS HERE and would not in the
+           manager: `styles/base.css` sets `border-collapse: collapse` on every
+           table, and a row-group border paints under `collapse`. Under
+           `separate` it does not, while `getComputedStyle` still reports the
+           declared width — a computed style is not a painted one. That is the
+           live defect this campaign hit on manager’s `/reports` page
+           (`.detail-table` is `separate` there), and it is named here because
+           the two surfaces render the same report and only one of them can use
+           this rule. */%>
+      <tr>
+        <th scope="row" class="wide">Total</th>
+        <% buckets.forEach((bucket) => { %>
+        <td class="money bold"><%= money(bucketCents(totals, bucket.bucket)) %></td>
+        <% }) %>
+        <td class="money bold"><%= creditCell(totals.credit_cents) %></td>
+        <td class="total bold"><%= money(totals.total_cents) %></td>
+      </tr>
+    </tfoot>
+  </table>
+</section>
+<% } else { %>
+<section id="no-activity">
+  <p>No open receivables.</p>
+</section>
+<% } %>
+
+<!-- The open invoices behind the matrix -->
+<% if (rows.length > 0) { %>
+<section id="open-invoices">
+  <h2>Open Invoices</h2>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col" class="wide">Account</th>
+        <th scope="col">Invoice</th>
+        <%/* The anchor’s own stored value, headed by which field it is — the
+             heading changes with `report.anchor`, because a column captioned
+             "Due Date" carrying invoice dates is worse than no column. */%>
+        <th scope="col"><%= anchorText %></th>
+        <th scope="col" class="money">Days</th>
+        <th scope="col" class="capitalize">Bucket</th>
+        <th scope="col" class="total">Amount Due</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% rows.forEach((row) => { %>
+      <tr>
+        <%/* Each row prints its OWN document’s frozen chain, while the matrix
+             above groups by the LIVE tree. A reader who knows the freeze rule
+             will read that as a bug and it is not: the freeze governs what a
+             document records, never how a report groups documents. For this
+             population the two agree by construction anyway — the cascade keeps
+             an unsettled invoice’s chain current, and every row here is
+             unsettled by definition. */%>
+        <td class="wide"><%= accountName(row.organization_path) %></td>
+        <td>#<%= row.number %></td>
+        <td><%= it.dates.formatChicagoShortDate(row.anchor_date) %></td>
+        <%/* Negative on an invoice not yet due, which is correct and is why the
+             column is "Days" rather than "Days Overdue": the `current` bucket
+             holds invoices with days still to run, and a heading promising
+             overdue-ness would make every one of them read as wrong. */%>
+        <td class="money"><%= row.days_overdue %></td>
+        <td class="capitalize"><%= row.bucket %></td>
+        <td class="total"><%= money(row.amount_due_cents) %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+<% } %>
+
+<!-- Exceptions -->
+<%/* 🔴 Surfaced as an exception and never given a bucket. Prod carries ZERO
+     (1,037 of 1,037 invoices hold both `date` and `due_date`, re-measured
+     2026-09-07) and `createInvoice` now defaults `due_date`, so a non-empty list
+     here is a DATA DEFECT TO REPAIR rather than a state the report supports.
+     Giving it a bucket would build a vocabulary for a gap that is being closed,
+     and would make the defect permanent by making it representable.
+
+     ⚠️ It is still reachable — `updateInvoice` accepts an explicit `null` as a
+     CLEAR verb — which is why the block exists at all rather than an assertion.
+     The uids are printed raw on purpose: this block is read by whoever is going
+     to go and fix those documents, and a document id is what addresses one. */%>
+<% if (report.missing_anchor_uids.length > 0) { %>
+<section id="exceptions">
+  <h2>Excluded — no <%= anchorText.toLowerCase() %></h2>
+  <p>
+    These invoices carry a balance and cannot be aged, so their money is in no
+    bucket above. Repair the documents rather than the report.
+  </p>
+  <ul>
+    <% report.missing_anchor_uids.forEach((uid) => { %>
+    <li><%= uid %></li>
+    <% }) %>
+  </ul>
+</section>
+<% } %>
+  <footer></footer>
+</div>

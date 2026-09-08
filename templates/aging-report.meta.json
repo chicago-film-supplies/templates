@@ -1,0 +1,22 @@
+{
+  "display_name": "AR Aging",
+  "collection_source": "aging-reports",
+  "collection_target": "aging-reports",
+  "surfaces": [
+    "report"
+  ],
+  "depends_on": {
+    "components": [
+      "base"
+    ]
+  },
+  "fixtures": [],
+  "render": {
+    "margin_top": 0.5,
+    "margin_bottom": 0.62,
+    "margin_left": 0.5,
+    "margin_right": 0.5,
+    "filename": "AR Aging - <%= it.doc.scope.kind === 'all' ? 'All Accounts' : it.doc.scope.name %> - <%= it.doc.as_of_invoice_date.slice(0, 10) %>",
+    "footer": "partials/shared/footer.eta"
+  }
+}
