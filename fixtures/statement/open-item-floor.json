@@ -1,0 +1,189 @@
+{
+  "scope": {
+    "kind": "organization",
+    "uid": "YWRsfgi3ARPpivx4eLh7",
+    "name": "Sample text for name..........",
+    "uids": [
+      "YWRsfgi3ARPpivx4eLh7"
+    ]
+  },
+  "format": "open_item",
+  "from_date": null,
+  "to_date": "2026-09-07T00:00:00.000-05:00",
+  "as_of_payment_date": "2026-09-07T00:00:00.000-05:00",
+  "organization_path": [
+    {
+      "uid": "PRqxpQMdcfhdEIabdw7C",
+      "name": "Foxglove Films LLC",
+      "derived": false
+    },
+    {
+      "uid": "bJ9uakUaNOBLJNIEHnuX",
+      "name": "Northgate Pictures LLC",
+      "derived": true
+    },
+    {
+      "uid": "YWRsfgi3ARPpivx4eLh7",
+      "name": "Harborlight Studios Inc",
+      "derived": false
+    }
+  ],
+  "billing_address": {
+    "city": "Chicago",
+    "country_name": "United States",
+    "full": "1109 Walnut Blvd, Chicago, IL, 92729, United States",
+    "name": "Sunset Park Arena",
+    "postcode": "65440",
+    "region": "IL",
+    "street": "1109 Walnut Blvd",
+    "street2": "",
+    "address_coordinates": null,
+    "user_coordinates": null
+  },
+  "opening_balance_cents": 0,
+  "lines": [
+    {
+      "kind": "invoice",
+      "uid_invoice": "BI0tkxwlRiY7CljfafK8",
+      "number": 2363,
+      "uid_settlement": null,
+      "settlement_type": null,
+      "date": "2026-08-07T00:00:00.000-05:00",
+      "reference": null,
+      "amount_cents": 59790,
+      "effect_cents": 59790,
+      "balance_cents": 59790,
+      "organization_path": [
+        {
+          "uid": "PRqxpQMdcfhdEIabdw7C",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        },
+        {
+          "uid": "bJ9uakUaNOBLJNIEHnuX",
+          "name": "Kestrel Media Group",
+          "derived": true
+        },
+        {
+          "uid": "YWRsfgi3ARPpivx4eLh7",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "invoice",
+      "uid_invoice": "kccQGnmuh4GiSEop0uVI",
+      "number": 2364,
+      "uid_settlement": null,
+      "settlement_type": null,
+      "date": "2026-08-07T00:00:00.000-05:00",
+      "reference": null,
+      "amount_cents": 30650,
+      "effect_cents": 30650,
+      "balance_cents": 90440,
+      "organization_path": [
+        {
+          "uid": "PRqxpQMdcfhdEIabdw7C",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        },
+        {
+          "uid": "bJ9uakUaNOBLJNIEHnuX",
+          "name": "Kestrel Media Group",
+          "derived": true
+        },
+        {
+          "uid": "YWRsfgi3ARPpivx4eLh7",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "invoice",
+      "uid_invoice": "w5YF1Zamc0osMMSvcA7n",
+      "number": 2371,
+      "uid_settlement": null,
+      "settlement_type": null,
+      "date": "2026-08-07T00:00:00.000-05:00",
+      "reference": null,
+      "amount_cents": 38410,
+      "effect_cents": 38410,
+      "balance_cents": 128850,
+      "organization_path": [
+        {
+          "uid": "PRqxpQMdcfhdEIabdw7C",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        },
+        {
+          "uid": "bJ9uakUaNOBLJNIEHnuX",
+          "name": "Kestrel Media Group",
+          "derived": true
+        },
+        {
+          "uid": "YWRsfgi3ARPpivx4eLh7",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "settlement",
+      "uid_invoice": "kccQGnmuh4GiSEop0uVI",
+      "number": 2364,
+      "uid_settlement": "c753275cea482ed6f09b",
+      "settlement_type": "payment",
+      "date": "2026-08-21T00:00:00.000-05:00",
+      "reference": null,
+      "amount_cents": 19625,
+      "effect_cents": -19625,
+      "balance_cents": 109225,
+      "organization_path": [
+        {
+          "uid": "PRqxpQMdcfhdEIabdw7C",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        },
+        {
+          "uid": "bJ9uakUaNOBLJNIEHnuX",
+          "name": "Kestrel Media Group",
+          "derived": true
+        },
+        {
+          "uid": "YWRsfgi3ARPpivx4eLh7",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    }
+  ],
+  "closing_balance_cents": 109225,
+  "aging": {
+    "buckets": [
+      {
+        "bucket": "current",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "1-30",
+        "amount_cents": 109225
+      },
+      {
+        "bucket": "31-60",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "61-90",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "90+",
+        "amount_cents": 0
+      }
+    ],
+    "credit_cents": 0,
+    "total_cents": 109225
+  }
+}
