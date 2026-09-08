@@ -155,7 +155,9 @@ for (const gitPath of gitPaths) {
 
 // ── Fold ────────────────────────────────────────────────────────────
 
-const { findings, advisories, tally, ungatedFamilies } = lintFixtureSet({ families });
+const { findings, advisories, tally, ungatedFamilies, fixturedUngatedFamilies } = lintFixtureSet(
+  { families },
+);
 
 // ── Report ──────────────────────────────────────────────────────────
 //
@@ -208,6 +210,24 @@ if (ungatedFamilies.length > 0) {
       `golden-gates them: ${ungatedFamilies.join(", ")}.\n` +
       `  Not a finding — a family mid-build is expected — but they render in ` +
       `production ungated.\n`,
+  );
+}
+
+// 🔴 The state this reports is INVISIBLE everywhere else, and it is strictly
+// worse-observed than the one above it (templates#256). A family with fixtures
+// and no baseline falls out of `ungatedFamilies` (it has fixtures) AND out of
+// "goldens at parity" (it has no golden tree), while check 4 stays quiet because
+// it is graduation-scoped. Measured on `statement`: adding its first two
+// fixtures DELETED the ⓘ line above and added no gate, so committing a fixture
+// set made the family less observed than leaving it empty.
+if (fixturedUngatedFamilies.length > 0) {
+  console.log(
+    `\nⓘ ${fixturedUngatedFamilies.length} registered family(ies) have fixtures but NO ` +
+      `golden tree, so nothing gates what they render: ` +
+      `${fixturedUngatedFamilies.join(", ")}.\n` +
+      `  Not a finding — a first bless cannot happen on the PR that adds the fixtures, ` +
+      `because\n  \`visual-diff\` returns \`no-golden\`, an informational PASS. Approve the ` +
+      `renders on the next\n  PR that touches them.\n`,
   );
 }
 

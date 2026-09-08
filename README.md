@@ -91,6 +91,13 @@ presses merge on the happy path.
 - A **meaningful visual change fails the golden check by design** — that is the
   check doing its job. Review the per-fixture diffs in the manager and approve
   the renders; there is one path, not two.
+- ⚠️ **That is true of a `diff` against an EXISTING baseline, and not of a
+  family's FIRST fixtures.** With no baseline to compare, `visual-diff` returns
+  `no-golden` — a green ✓, exit 0 — and auto-merge is already armed by release,
+  so the one PR where blessing is the entire point is the one PR that does not
+  wait for it (measured on `statement`: checks green at 00:05:51, merged at
+  00:06:10). `deno task lint:fixtures` reports such a family; the bless happens
+  on the next PR that touches it.
 - **Abandon** archives a draft (recoverable) and closes its PR.
 
 ## Start from an existing template (fork)
