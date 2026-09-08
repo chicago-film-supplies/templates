@@ -1,0 +1,495 @@
+{
+  "uuid_session": "b2b50277-377d-4585-b69c-6eaff89f7a73",
+  "date": "2026-08-27T13:59:16.866-05:00",
+  "types": [
+    "prep",
+    "check_out"
+  ],
+  "numbers": [
+    943,
+    944,
+    945,
+    946,
+    947,
+    948,
+    949,
+    950,
+    951,
+    952,
+    953,
+    954,
+    955,
+    956,
+    957,
+    958,
+    959,
+    960
+  ],
+  "quantity": 280,
+  "created_by": {
+    "uid": "KXj2LPztjhdB5Wf3qwaR",
+    "name": "Skyler Glenn"
+  },
+  "orders": [
+    {
+      "uid": "YWzMc44iBt6bFWPrci0f",
+      "number": 1007
+    }
+  ],
+  "organization": {
+    "uid": "kmyrrrizBnD4J2ADzThK",
+    "name": "Two Rivers Pictures"
+  },
+  "items": [
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|prep|YWzMc44iBt6bFWPrci0f:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw",
+      "number": 943,
+      "type": "prep",
+      "quantity": 56,
+      "uid_product": "3kzv0sanOljc25psMVkU",
+      "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "reserved",
+        "to": "prepped"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|check_out|YWzMc44iBt6bFWPrci0f:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw",
+      "number": 944,
+      "type": "check_out",
+      "quantity": 56,
+      "uid_product": "3kzv0sanOljc25psMVkU",
+      "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "prepped",
+        "to": "out"
+      },
+      "lines": [
+        {
+          "quantity": 56,
+          "location": {
+            "from": {
+              "collection": "locations",
+              "uid": "GkXsgzl9vG3vJV0vvHmZ"
+            },
+            "to": {
+              "collection": "bookings",
+              "uid": "YWzMc44iBt6bFWPrci0f:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|prep|YWzMc44iBt6bFWPrci0f:5H3Z7i8guIkuXOaYOVqb:vTn8CTAwwJHEJZLBzsOw",
+      "number": 945,
+      "type": "prep",
+      "quantity": 30,
+      "uid_product": "5H3Z7i8guIkuXOaYOVqb",
+      "name": "Tent Side (White)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:5H3Z7i8guIkuXOaYOVqb:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "reserved",
+        "to": "prepped"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|check_out|YWzMc44iBt6bFWPrci0f:5H3Z7i8guIkuXOaYOVqb:vTn8CTAwwJHEJZLBzsOw",
+      "number": 946,
+      "type": "check_out",
+      "quantity": 30,
+      "uid_product": "5H3Z7i8guIkuXOaYOVqb",
+      "name": "Tent Side (White)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:5H3Z7i8guIkuXOaYOVqb:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "prepped",
+        "to": "out"
+      },
+      "lines": [
+        {
+          "quantity": 30,
+          "location": {
+            "from": {
+              "collection": "locations",
+              "uid": "wzx93gV5BCUUCyCws0zQ"
+            },
+            "to": {
+              "collection": "bookings",
+              "uid": "YWzMc44iBt6bFWPrci0f:5H3Z7i8guIkuXOaYOVqb:vTn8CTAwwJHEJZLBzsOw"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|prep|YWzMc44iBt6bFWPrci0f:9jjGlzOiKG6ap3LpAGDA:vTn8CTAwwJHEJZLBzsOw",
+      "number": 947,
+      "type": "prep",
+      "quantity": 10,
+      "uid_product": "9jjGlzOiKG6ap3LpAGDA",
+      "name": "Tent Door (White)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:9jjGlzOiKG6ap3LpAGDA:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "reserved",
+        "to": "prepped"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|check_out|YWzMc44iBt6bFWPrci0f:9jjGlzOiKG6ap3LpAGDA:vTn8CTAwwJHEJZLBzsOw",
+      "number": 948,
+      "type": "check_out",
+      "quantity": 10,
+      "uid_product": "9jjGlzOiKG6ap3LpAGDA",
+      "name": "Tent Door (White)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:9jjGlzOiKG6ap3LpAGDA:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "prepped",
+        "to": "out"
+      },
+      "lines": [
+        {
+          "quantity": 10,
+          "location": {
+            "from": {
+              "collection": "locations",
+              "uid": "0wNuFXDf2jU1xXML7lFB"
+            },
+            "to": {
+              "collection": "bookings",
+              "uid": "YWzMc44iBt6bFWPrci0f:9jjGlzOiKG6ap3LpAGDA:vTn8CTAwwJHEJZLBzsOw"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|prep|YWzMc44iBt6bFWPrci0f:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw",
+      "number": 949,
+      "type": "prep",
+      "quantity": 7,
+      "uid_product": "HM7k3NDHG1GJ2uaykMKC",
+      "name": "Tent Canopy Rain Gutter",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "reserved",
+        "to": "prepped"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|check_out|YWzMc44iBt6bFWPrci0f:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw",
+      "number": 950,
+      "type": "check_out",
+      "quantity": 7,
+      "uid_product": "HM7k3NDHG1GJ2uaykMKC",
+      "name": "Tent Canopy Rain Gutter",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "prepped",
+        "to": "out"
+      },
+      "lines": [
+        {
+          "quantity": 7,
+          "location": {
+            "from": {
+              "collection": "locations",
+              "uid": "NT90bf6RAHsBXqPDOB9i"
+            },
+            "to": {
+              "collection": "bookings",
+              "uid": "YWzMc44iBt6bFWPrci0f:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|prep|YWzMc44iBt6bFWPrci0f:J7svp77V0tLx6xBaKRBx:vTn8CTAwwJHEJZLBzsOw",
+      "number": 951,
+      "type": "prep",
+      "quantity": 10,
+      "uid_product": "J7svp77V0tLx6xBaKRBx",
+      "name": "10' x 10' Pop Up Tent (White)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:J7svp77V0tLx6xBaKRBx:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "reserved",
+        "to": "prepped"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|check_out|YWzMc44iBt6bFWPrci0f:J7svp77V0tLx6xBaKRBx:vTn8CTAwwJHEJZLBzsOw",
+      "number": 952,
+      "type": "check_out",
+      "quantity": 10,
+      "uid_product": "J7svp77V0tLx6xBaKRBx",
+      "name": "10' x 10' Pop Up Tent (White)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:J7svp77V0tLx6xBaKRBx:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "prepped",
+        "to": "out"
+      },
+      "lines": [
+        {
+          "quantity": 10,
+          "location": {
+            "from": {
+              "collection": "locations",
+              "uid": "LVJTMRrNIAGu0SBpZWeg"
+            },
+            "to": {
+              "collection": "bookings",
+              "uid": "YWzMc44iBt6bFWPrci0f:J7svp77V0tLx6xBaKRBx:vTn8CTAwwJHEJZLBzsOw"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|prep|YWzMc44iBt6bFWPrci0f:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw",
+      "number": 953,
+      "type": "prep",
+      "quantity": 7,
+      "uid_product": "Ms2nlTfZZMoaR8yZwudF",
+      "name": "Long Milk Crate (18x12)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "reserved",
+        "to": "prepped"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|check_out|YWzMc44iBt6bFWPrci0f:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw",
+      "number": 954,
+      "type": "check_out",
+      "quantity": 7,
+      "uid_product": "Ms2nlTfZZMoaR8yZwudF",
+      "name": "Long Milk Crate (18x12)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "prepped",
+        "to": "out"
+      },
+      "lines": [
+        {
+          "quantity": 7,
+          "location": {
+            "from": {
+              "collection": "locations",
+              "uid": "iOdtwh21aNPkQooYJpXV"
+            },
+            "to": {
+              "collection": "bookings",
+              "uid": "YWzMc44iBt6bFWPrci0f:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|prep|YWzMc44iBt6bFWPrci0f:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw",
+      "number": 955,
+      "type": "prep",
+      "quantity": 4,
+      "uid_product": "WaQhdQliUvS0LCx5OUTv",
+      "name": "Tent Door (Black)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "reserved",
+        "to": "prepped"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|check_out|YWzMc44iBt6bFWPrci0f:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw",
+      "number": 956,
+      "type": "check_out",
+      "quantity": 4,
+      "uid_product": "WaQhdQliUvS0LCx5OUTv",
+      "name": "Tent Door (Black)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "prepped",
+        "to": "out"
+      },
+      "lines": [
+        {
+          "quantity": 4,
+          "location": {
+            "from": {
+              "collection": "locations",
+              "uid": "2vcwiWkkf3erX7vcEv18"
+            },
+            "to": {
+              "collection": "bookings",
+              "uid": "YWzMc44iBt6bFWPrci0f:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|prep|YWzMc44iBt6bFWPrci0f:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw",
+      "number": 957,
+      "type": "prep",
+      "quantity": 4,
+      "uid_product": "ZsN1H4wR7vgLQnIf8gzX",
+      "name": "10' x 10' Pop Up Tent (Black)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "reserved",
+        "to": "prepped"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|check_out|YWzMc44iBt6bFWPrci0f:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw",
+      "number": 958,
+      "type": "check_out",
+      "quantity": 4,
+      "uid_product": "ZsN1H4wR7vgLQnIf8gzX",
+      "name": "10' x 10' Pop Up Tent (Black)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "prepped",
+        "to": "out"
+      },
+      "lines": [
+        {
+          "quantity": 4,
+          "location": {
+            "from": {
+              "collection": "locations",
+              "uid": "W1PBK95RhUIAYRuib3Pi"
+            },
+            "to": {
+              "collection": "bookings",
+              "uid": "YWzMc44iBt6bFWPrci0f:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|prep|YWzMc44iBt6bFWPrci0f:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw",
+      "number": 959,
+      "type": "prep",
+      "quantity": 12,
+      "uid_product": "p2YQ9RZY8djeejSK2i0d",
+      "name": "Tent Side (Black)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "reserved",
+        "to": "prepped"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "b2b50277-377d-4585-b69c-6eaff89f7a73|check_out|YWzMc44iBt6bFWPrci0f:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw",
+      "number": 960,
+      "type": "check_out",
+      "quantity": 12,
+      "uid_product": "p2YQ9RZY8djeejSK2i0d",
+      "name": "Tent Side (Black)",
+      "uid_booking": "YWzMc44iBt6bFWPrci0f:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "YWzMc44iBt6bFWPrci0f",
+      "order_number": 1007,
+      "custody": {
+        "from": "prepped",
+        "to": "out"
+      },
+      "lines": [
+        {
+          "quantity": 12,
+          "location": {
+            "from": {
+              "collection": "locations",
+              "uid": "hoJnhdakCdABy0QzPpzr"
+            },
+            "to": {
+              "collection": "bookings",
+              "uid": "YWzMc44iBt6bFWPrci0f:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": ""
+    }
+  ]
+}
