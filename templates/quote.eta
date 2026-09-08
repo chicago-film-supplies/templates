@@ -1,4 +1,4 @@
-<%/* draft draft/quote/7bfa98ce */%>
+<%/* draft draft/quote/dc19c835 */%>
 <%
 const order = it.doc;
 const { destinations, items, totals } = order;
@@ -444,7 +444,7 @@ const replacementLine = (item) => {
   </thead>
   <tbody>
     <tr>
-      <td><%= it.dateFns.format(it.dateFns.parseISO(it.now), 'MMMM d, yyyy', { in: CHICAGO }) %></td>
+      <td><%= it.dateFns.format(it.dateFns.parseISO(it.now, { in: CHICAGO }), 'MMMM d, yyyy', { in: CHICAGO }) %></td>
       <%/* An empty cell, not an absent one: under `table-layout: fixed` a short
            row leaves a real trailing gap rather than being absorbed. */%>
       <% if (order.subject) { %>

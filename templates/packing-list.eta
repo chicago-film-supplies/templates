@@ -1,4 +1,4 @@
-<%/* draft draft/packing-list/3030b59a */%>
+<%/* draft draft/packing-list/5d718727 */%>
 <%
 // ── What this document IS ───────────────────────────────────────────────────
 //
@@ -303,7 +303,7 @@ const returnSpan = addressColumnCount - addressBoundary;
            stored instant — unpinned it dated every quote rendered after 19:00
            Chicago as tomorrow. A packing list is printed at the moment of
            picking, which is exactly when an evening boundary is crossed. */%>
-      <td><%= it.dateFns.format(it.dateFns.parseISO(it.now), 'MMMM d, yyyy · h:mm a', { in: CHICAGO }) %></td>
+      <td><%= it.dateFns.format(it.dateFns.parseISO(it.now, { in: CHICAGO }), 'MMMM d, yyyy · h:mm a', { in: CHICAGO }) %></td>
       <%/* The SCOPE counts, which by the refusal above are also the page counts.
            `order_count` rather than `orders.length` deliberately: they are equal
            here by assertion, and naming the scope-wide one keeps the document
