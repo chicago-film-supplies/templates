@@ -175,6 +175,26 @@ jobs:
       - name: Lint citations
         run: deno task lint:citations
 
+      # 3b. TIMEZONE — every date-fns call in an .eta must name Chicago on the
+      #     PARSE as well as the FORMAT.
+      #
+      #     🔴 **This is the one arm here that no other environment can run.**
+      #     Template content is canonical in THIS repo, so no ratchet in
+      #     `api-cloudrun` or `core` can see any of it — the same argument
+      #     `money-lint.yml` makes for itself.
+      #
+      #     ⚠️ And it guards a defect that is INVISIBLE to every local check:
+      #     `deno task preview` runs on a Chicago laptop where the unpinned parse
+      #     is accidentally correct, and the golden gate freezes whatever
+      #     production renders — so once a wrong render is blessed, the gate
+      #     DEFENDS it. A statement printed its period start a day early in prod
+      #     for exactly this reason, and it surfaced only because two
+      #     environments happened to disagree.
+      #
+      #     Whole-tree and argument-free by design; see `scripts/lint-dates.ts`.
+      - name: Lint timezones
+        run: deno task lint:dates
+
       # 4. DEPLOYED ENUMS — see the workflow header.
       #
       # ⚠️ **`--base` is what makes this check mean anything.** The env it
