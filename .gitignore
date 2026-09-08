@@ -1,6 +1,7 @@
 .claude/docs/
 .claude/settings.local.json
 preview.html
+preview.png
 
 # Agent worktrees — a checkout, never content.
 .claude/worktrees/
