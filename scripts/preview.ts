@@ -30,7 +30,10 @@ import { CFS_LOGO_SVG } from "@cfs/core/utils/icons";
 import * as moneyUtils from "@cfs/core/utils/money";
 import * as organizationUtils from "@cfs/core/utils/organizations";
 import { availableUtilNamespaces } from "@cfs/core/schemas";
-import { injectPartDefaults, resolveRenderParams } from "@cfs/core/utils/templates";
+import {
+  injectPartDefaults,
+  resolveRenderParams,
+} from "@cfs/core/utils/templates";
 import type { TemplateCollectionType } from "@cfs/core/schemas";
 
 /**
@@ -142,12 +145,178 @@ const layoutEta = new Eta({ autoEscape: true, cache: false });
 const flag = (f: string) => Deno.args.includes(f);
 const positional = Deno.args.filter((a) => !a.startsWith("--"));
 
+/** `--foo=bar` → "bar"; `--foo bar` → "bar"; absent → undefined. Both spellings
+ * because `--param` already accepts both and one flag syntax per script is the
+ * least a caller should have to remember. */
+function flagValue(f: string): string | undefined {
+  const eq = Deno.args.find((a) => a.startsWith(`${f}=`));
+  if (eq) return eq.slice(f.length + 1);
+  const i = Deno.args.indexOf(f);
+  const next = i === -1 ? undefined : Deno.args[i + 1];
+  return next && !next.startsWith("--") ? next : undefined;
+}
+
+/**
+ * Chromium binaries this harness will screenshot with, most-preferred first.
+ *
+ * ⚠️ These are BINARIES, not app names — `open -a "Brave Browser"` takes the
+ * latter and headless takes the former, and they are not interchangeable.
+ * `$PREVIEW_BROWSER_BIN` overrides the search outright; `$PREVIEW_BROWSER` (the
+ * app name, which the `--open` path also reads) is mapped onto the macOS bundle
+ * layout so one variable configures both surfaces.
+ */
+const BROWSER_CANDIDATES = [
+  "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+  "/Applications/Chromium.app/Contents/MacOS/Chromium",
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+  "/usr/bin/brave-browser",
+  "/usr/bin/chromium",
+  "/usr/bin/chromium-browser",
+  "/usr/bin/google-chrome",
+];
+
+/** App names for the `--open` path, in the same preference order — so a GUI
+ * open lands on Chromium rather than on the OS default (Safari here), which is
+ * the wrong engine for the reason given at the bottom of this file. */
+const MACOS_APP_PREFERENCE = [
+  "Brave Browser",
+  "Chromium",
+  "Google Chrome",
+  "Microsoft Edge",
+];
+
+/** A `file://` URL for a path Chromium is about to open. Built here rather than
+ * pulled from `@std/path`: two call sites do not earn a dependency in a preview
+ * harness, and `new URL` percent-encodes the spaces a macOS app bundle path is
+ * full of, which naive concatenation does not. */
+const fileUrl = (path: string) => new URL(path, `file://${Deno.cwd()}/`).href;
+
+/** The binary's own name, for the log line. */
+const binName = (path: string) => path.split("/").pop() ?? path;
+
+function exists(path: string): boolean {
+  try {
+    Deno.statSync(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+const appExists = (app: string) => exists(`/Applications/${app}.app`);
+
+function resolveHeadlessBrowser(): string | undefined {
+  const explicit = Deno.env.get("PREVIEW_BROWSER_BIN");
+  if (explicit) {
+    if (!exists(explicit)) {
+      // Named and absent is an ERROR, where "found nothing" is a warning: the
+      // caller stated which binary to use, so falling back to a different one
+      // would silently screenshot with an engine they did not choose.
+      throw new Error(`PREVIEW_BROWSER_BIN=${explicit} does not exist.`);
+    }
+    return explicit;
+  }
+  const named = Deno.env.get("PREVIEW_BROWSER");
+  const fromName = named
+    ? `/Applications/${named}.app/Contents/MacOS/${named}`
+    : undefined;
+  if (fromName && exists(fromName)) return fromName;
+  return BROWSER_CANDIDATES.find(exists);
+}
+
+/**
+ * Viewport width the screenshot is taken at.
+ *
+ * ⚠️ **A deliberate copy of `DEFAULT_SCREENSHOT_WIDTH_PX` in
+ * `api-cloudrun/src/lib/templates/golden.ts`, which is the authority** — it is
+ * private there and reaches no shared package, so this cannot be imported the
+ * way `injectPartDefaults` is. Matching it is what makes a local look and a
+ * `visual-diff` candidate the same layout; drifting apart costs that agreement
+ * and nothing else, so this is a soft copy rather than a load-bearing one. If
+ * the gate's number moves, move this one and say so.
+ */
+const SCREENSHOT_WIDTH_PX = 1280;
+
+/** Fallback canvas height when the document cannot be measured. Generous on
+ * purpose — a too-tall canvas wastes white space, a too-short one silently cuts
+ * the bottom off the page. */
+const FALLBACK_HEIGHT_PX = 2400;
+
+/**
+ * The canvas to screenshot on, measured from the document itself.
+ *
+ * `--window-size=W,H` short-circuits both halves. Otherwise the width is
+ * `SCREENSHOT_WIDTH_PX` and the height is the document's own `scrollHeight`,
+ * read by a throwaway `--dump-dom` pass — a second browser launch, which is the
+ * price of old-headless `--screenshot` capturing the viewport rather than the
+ * full page.
+ */
+async function resolveCanvas(
+  browser: string,
+  file: string,
+): Promise<{ width: number; height: number }> {
+  const override = flagValue("--window-size");
+  if (override) {
+    const [w, h] = override.split(",").map((n) => Number.parseInt(n, 10));
+    if (Number.isFinite(w) && Number.isFinite(h)) {
+      return { width: w, height: h };
+    }
+    throw new Error(`--window-size needs <width>,<height>, got: ${override}`);
+  }
+  const probe = `${file}.measure.html`;
+  try {
+    const html = await Deno.readTextFile(file);
+    // Appended AFTER everything, so it measures the finished document. The
+    // marker is read out of the dumped DOM rather than out of stdout, because
+    // Chromium writes its own noise to both streams.
+    await Deno.writeTextFile(
+      probe,
+      `${html}<script>document.body.insertAdjacentHTML("beforeend",` +
+        `'<i id=H>' + document.documentElement.scrollHeight + '</i>')</script>`,
+    );
+    const out = await new Deno.Command(browser, {
+      args: [
+        "--headless",
+        "--disable-gpu",
+        "--hide-scrollbars",
+        `--window-size=${SCREENSHOT_WIDTH_PX},1000`,
+        "--virtual-time-budget=2000",
+        "--dump-dom",
+        fileUrl(probe),
+      ],
+      stdout: "piped",
+      stderr: "null",
+    }).output();
+    const measured = Number.parseInt(
+      new TextDecoder().decode(out.stdout).match(/<i id="H">(\d+)<\/i>/)?.[1] ??
+        "",
+      10,
+    );
+    // `+ 1` absorbs a fractional scrollHeight rounding down onto the last line
+    // of text; the alternative is a one-pixel crop nobody would think to look
+    // for.
+    if (Number.isFinite(measured) && measured > 0) {
+      return { width: SCREENSHOT_WIDTH_PX, height: measured + 1 };
+    }
+  } catch {
+    // Fall through to the fallback — a measurement failure must not cost the
+    // screenshot, only its exact height.
+  } finally {
+    await Deno.remove(probe).catch(() => {});
+  }
+  return { width: SCREENSHOT_WIDTH_PX, height: FALLBACK_HEIGHT_PX };
+}
+
 const name = positional[0] || "quote";
 
 /** Resolve the fixture file: explicit path (contains `/` or ends `.json`),
  * a bare slug → `fixtures/<name>/<slug>.json`, or the first fixture in
  * `fixtures/<name>/` when no argument is passed. */
-async function resolveFixturePath(name: string, arg: string | undefined): Promise<string> {
+async function resolveFixturePath(
+  name: string,
+  arg: string | undefined,
+): Promise<string> {
   if (arg && (arg.includes("/") || arg.endsWith(".json"))) return arg;
   if (arg) return `fixtures/${name}/${arg}.json`;
   const dir = `fixtures/${name}`;
@@ -158,12 +327,16 @@ async function resolveFixturePath(name: string, arg: string | undefined): Promis
     }
     entries.sort();
     if (entries.length === 0) {
-      throw new Error(`No fixtures in ${dir}/ — capture one in the manager or drop a JSON file here.`);
+      throw new Error(
+        `No fixtures in ${dir}/ — capture one in the manager or drop a JSON file here.`,
+      );
     }
     return `${dir}/${entries[0]}`;
   } catch (err) {
     if (err instanceof Deno.errors.NotFound) {
-      throw new Error(`No fixtures directory at ${dir}/ — capture one in the manager first.`);
+      throw new Error(
+        `No fixtures directory at ${dir}/ — capture one in the manager first.`,
+      );
     }
     throw err;
   }
@@ -187,7 +360,13 @@ interface Sidecar {
   collection_source?: TemplateCollectionType;
   collection_target?: TemplateCollectionType;
   depends_on?: { components?: string[] };
-  params?: { key: string; type: "boolean"; label?: string; default?: boolean; required?: boolean }[];
+  params?: {
+    key: string;
+    type: "boolean";
+    label?: string;
+    default?: boolean;
+    required?: boolean;
+  }[];
   fixtures?: { slug: string; params?: Record<string, boolean> }[];
   render?: RenderConfig;
 }
@@ -228,17 +407,22 @@ const renderConfig = sidecar.render ?? {};
 // family's own dir rather than on the basename, which would silently apply one
 // fixture's declared state to an unrelated file that happens to share its name.
 const fixtureDir = `fixtures/${name}/`;
-const fixtureSlug = fixtureFile.startsWith(fixtureDir) && fixtureFile.endsWith(".json")
-  ? fixtureFile.slice(fixtureDir.length, -".json".length)
-  : null;
+const fixtureSlug =
+  fixtureFile.startsWith(fixtureDir) && fixtureFile.endsWith(".json")
+    ? fixtureFile.slice(fixtureDir.length, -".json".length)
+    : null;
 const paramOverrides: Record<string, unknown> = {
   ...(sidecar.fixtures?.find((f) => f.slug === fixtureSlug)?.params ?? {}),
 };
 for (const arg of Deno.args) {
   if (!arg.startsWith("--param")) continue;
-  const spec = arg.startsWith("--param=") ? arg.slice("--param=".length) : Deno.args[Deno.args.indexOf(arg) + 1];
+  const spec = arg.startsWith("--param=")
+    ? arg.slice("--param=".length)
+    : Deno.args[Deno.args.indexOf(arg) + 1];
   if (!spec || !spec.includes("=")) {
-    throw new Error(`--param needs <key>=<true|false>, got: ${spec ?? "(nothing)"}`);
+    throw new Error(
+      `--param needs <key>=<true|false>, got: ${spec ?? "(nothing)"}`,
+    );
   }
   const [key, raw] = spec.split("=", 2);
   paramOverrides[key] = raw === "true" ? true : raw === "false" ? false : raw;
@@ -405,7 +589,9 @@ if (renderConfig.footer) {
     `<hr><iframe data-preview-footer sandbox` +
       ` style="width:100%;height:120px;border:0;display:block"` +
       ` title="Footer frame (isolated, as Chromium renders it)"` +
-      ` srcdoc="${frame.replaceAll("&", "&amp;").replaceAll('"', "&quot;")}"></iframe></body>`,
+      ` srcdoc="${
+        frame.replaceAll("&", "&amp;").replaceAll('"', "&quot;")
+      }"></iframe></body>`,
   );
 }
 
@@ -425,20 +611,85 @@ if (renderConfig.margin_top !== undefined) {
   );
 }
 
-// Open in `$PREVIEW_BROWSER` when set, otherwise the OS default.
+// ── Looking at the render ───────────────────────────────────────────────────
 //
-// This is not a preference. Gotenberg renders the PDF with CHROMIUM, so a
-// preview opened in Safari is a different engine than the one that produces the
-// artifact — WebKit distributes `table-layout: fixed` surplus differently, and
-// its font metrics differ, so column widths and wrap points you eyeball there
-// are not the ones that ship. Point this at a Chromium build and the preview
-// agrees with the PDF:
+// 🔴 **The default is a HEADLESS Chromium screenshot, and opening a GUI window
+// is opt-in (`--open`).** It was the other way round until 2026-09-08, and both
+// halves of that were wrong.
 //
-//   export PREVIEW_BROWSER="Brave Browser"   # or "Google Chrome", "Chromium"
+// The engine was wrong. Gotenberg renders the PDF with CHROMIUM, so a preview
+// opened in Safari — the macOS default, and what a bare `open` reaches — is a
+// different engine than the one that produces the artifact: WebKit distributes
+// `table-layout: fixed` surplus differently and its font metrics differ, so the
+// column widths and wrap points you eyeball there are not the ones that ship.
+// `$PREVIEW_BROWSER` existed to fix that and had to be exported by hand, so the
+// default stayed wrong for anyone who had not read this comment.
 //
-// Unset keeps the previous behaviour (bare `open` → the macOS default browser).
-if (!flag("--no-open")) {
-  const browser = Deno.env.get("PREVIEW_BROWSER");
+// And a WINDOW is the wrong artifact for the caller this harness now mostly
+// has. `CLAUDE.md` is explicit that "a `preview` you have not LOOKED AT is not
+// a verification, and this repo has no test suite, so looking is the only
+// instrument there is" — an agent looks by reading a PNG, and cannot look at a
+// window at all. Rendering one per fixture across a family put eight browser
+// windows on a person's screen and stole focus from each, which is what
+// prompted this.
+//
+// A human iterating still wants the window: `--open` is that, and
+// `preview:watch` bakes it in.
+const shotFile = flagValue("--screenshot") ?? "preview.png";
+
+if (!flag("--no-screenshot")) {
+  const browser = resolveHeadlessBrowser();
+  if (!browser) {
+    // ⚠️ A WARNING rather than a throw, and the asymmetry is deliberate. The
+    // silent-skip ban this file carries elsewhere (`UTIL_MODULES`) is about a
+    // skip that changes what RENDERS — the harness would disagree with
+    // production and read as a template bug. A missing browser changes nothing
+    // about the HTML; it only means no PNG was written, which is visible by its
+    // absence and named here. The render already succeeded and is still useful.
+    console.warn(
+      `⚠️  No Chromium found — wrote no ${shotFile}. Install Brave/Chromium, or set\n` +
+        `    PREVIEW_BROWSER_BIN=/path/to/binary. Tried: ${
+          BROWSER_CANDIDATES.join(", ")
+        }`,
+    );
+  } else {
+    const { width, height } = await resolveCanvas(browser, outputFile);
+    // Old-headless `--screenshot` captures THE VIEWPORT, not the full page, so
+    // the canvas has to be sized to the document before the shot rather than
+    // after — which is what `resolveCanvas` measures. Getting this wrong is not
+    // a cosmetic loss: a truncated PNG silently omits the bottom of a long
+    // document, and `long-multi-group` is several pages.
+    const shot = new Deno.Command(browser, {
+      args: [
+        "--headless",
+        "--disable-gpu",
+        "--hide-scrollbars",
+        `--window-size=${width},${height}`,
+        `--screenshot=${shotFile}`,
+        fileUrl(outputFile),
+      ],
+      stdout: "null",
+      // Chromium writes GPU/display noise to stderr on every run even when it
+      // succeeds. Swallowed rather than shown, so a working screenshot does not
+      // read as a failed one.
+      stderr: "null",
+    });
+    const { success } = await shot.output();
+    console.log(
+      success
+        ? `Screenshot → ${shotFile} (${width}x${height}, ${binName(browser)})`
+        : `⚠️  ${
+          binName(browser)
+        } exited non-zero — ${shotFile} may be stale or missing.`,
+    );
+  }
+}
+
+// The GUI window, now opt-in. `$PREVIEW_BROWSER` still selects the app, and
+// still should be a Chromium build for the engine reason above.
+if (flag("--open")) {
+  const browser = Deno.env.get("PREVIEW_BROWSER") ??
+    MACOS_APP_PREFERENCE.find(appExists);
   // `--background` maps to `open -g`: launch/raise the file WITHOUT activating
   // the app. `preview:watch` re-opens on every render, so without it the
   // browser steals focus on every save, which is unusable. Measured: `-g` holds
