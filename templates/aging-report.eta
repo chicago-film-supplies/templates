@@ -25,15 +25,13 @@
 // on this page is read off the document. The ONE exception is the residual, and
 // it is a subtraction rather than a re-derivation — see `residualCents`.
 //
-// ⭐ **Every date goes through `it.dates.formatChicago*`, and this family is
-// born that way rather than being converted later.** The other four templates
-// each carry a `const CHICAGO = it.tz("America/Chicago")` and pin the zone at
-// eleven `parseISO` call sites between them, because they predate the helpers.
-// `@cfs/core@10.0.0-beta.368` put `formatChicagoDate` / `formatChicagoShortDate`
-// on `it.dates`, so the zone is named ZERO times here. The hazard those call
-// sites exist for is real and unchanged — `parseISO` resolves a zone-less string
-// against the AMBIENT zone and the render container sets no `TZ`, so an unpinned
-// parse of `2026-09-01` prints August 31 — the helpers just own it now.
+// ⭐ **Every date goes through `it.dates.formatChicago*`, and this family was
+// born that way.** It was the first; the other five have since been converted,
+// so `it.tz` and `it.dateFns` are now named in no template in this repo and the
+// zone is spelled ZERO times anywhere. The hazard the old call sites existed for
+// is real and unchanged — date-fns resolves a zone-less string against the
+// AMBIENT zone and the render container sets no `TZ`, so an unpinned parse of
+// `2026-09-01` prints August 31 — `@cfs/core/utils/dates` just owns it now.
 const report = it.doc;
 const { scope, rows, totals, organizations } = report;
 

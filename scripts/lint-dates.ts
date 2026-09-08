@@ -61,12 +61,62 @@
  * omission is what it detects; a deliberately wrong zone is a different and much
  * louder mistake.
  *
+ * ## ⚠️ The oracle, once every call site has been converted
+ *
+ * The rule above only ever fires on `it.dateFns.*`, and as of 2026-09-08 the
+ * corpus contains **none** — all 21 call sites now go through
+ * `it.dates.formatChicago*` (`@cfs/core/utils/dates`), which pins both halves
+ * for them. A scanner whose subject has emptied prints `0 … all pinned`, and
+ * this repo has a standing rule that reads that as a finding rather than a pass.
+ *
+ * 🔴 **So the success line counts BOTH populations, and zero of both is a
+ * FAILURE.** Every family prints dates, so a run that can see neither the old
+ * form nor the new one is not looking at the templates — a moved directory, a
+ * renamed namespace, a `walkEta` that stopped matching. Counting only the
+ * converted form would be the same trap one step later; counting both is what
+ * keeps this reachable in either direction, including a partial revert.
+ *
  * Run: deno task lint:dates
  */
 import { callArgs, commentLines, etaRoots, walkEta } from "./_etaScan.ts";
 
 /** The two date-fns entry points that resolve a zone. */
 const ZONE_SENSITIVE = /\.dateFns\.(parseISO|format)\s*\(/g;
+
+/**
+ * The converted form — `it.dates.formatChicagoDate` and its three siblings.
+ *
+ * ⚠️ **Matched on `formatChicago` rather than on the whole namespace.**
+ * `it.dates` also carries `formatChargeDays`, which resolves no zone and is no
+ * evidence of anything this lint is about; a bare `.dates.format` would count it
+ * and make the oracle look reachable on a page with no date on it.
+ */
+const CHICAGO_HELPER = /\.dates\.formatChicago[A-Za-z]*\s*\(/g;
+
+/**
+ * How many converted call sites a source holds, comments excluded.
+ *
+ * Exported for the test, which must not touch the disk — the same contract
+ * {@link scanSource} has, and for the same reason.
+ */
+export function countHelperCalls(src: string): number {
+  const comments = commentLines(src);
+  const lineStarts: number[] = [0];
+  for (let i = 0; i < src.length; i++) if (src[i] === "\n") lineStarts.push(i + 1);
+  let n = 0;
+  CHICAGO_HELPER.lastIndex = 0;
+  let m: RegExpExecArray | null;
+  while ((m = CHICAGO_HELPER.exec(src)) !== null) {
+    let lo = 0, hi = lineStarts.length - 1;
+    while (lo < hi) {
+      const mid = (lo + hi + 1) >> 1;
+      if (lineStarts[mid] <= m.index) lo = mid;
+      else hi = mid - 1;
+    }
+    if (!comments.has(lo)) n++;
+  }
+  return n;
+}
 
 interface Finding {
   file: string;
@@ -128,11 +178,13 @@ if (import.meta.main) {
   const findings: Finding[] = [];
   let files = 0;
   let calls = 0;
+  let helpers = 0;
   for (const root of await etaRoots()) {
     for await (const file of walkEta(root)) {
       files++;
       const src = await Deno.readTextFile(file);
       calls += (src.match(ZONE_SENSITIVE) ?? []).length;
+      helpers += countHelperCalls(src);
       findings.push(...scanSource(file, src));
     }
   }
@@ -153,11 +205,28 @@ if (import.meta.main) {
     Deno.exit(1);
   }
 
-  // ⭐ The COUNT is load-bearing, not decoration. A scan that silently matched
-  // nothing — a moved directory, a renamed namespace — would print the same
-  // success line as a clean corpus, and "0 checked" is a finding rather than a
-  // pass. Same rule `lint:deployed-enums` is read by.
+  // ⭐ The COUNTS are load-bearing, not decoration. A scan that silently
+  // matched nothing — a moved directory, a renamed namespace — would print the
+  // same success line as a clean corpus, and "0 checked" is a finding rather
+  // than a pass. Same rule `lint:deployed-enums` is read by.
+  //
+  // 🔴 Which is why zero of BOTH forms is an error rather than a quiet zero.
+  // The `it.dateFns` form is now legitimately 0 — every call site goes through
+  // `it.dates.formatChicago*` — so `calls` alone can no longer tell a clean
+  // corpus from an unread one. Every family prints dates; a run that sees
+  // neither form is not looking at the templates.
+  if (calls === 0 && helpers === 0) {
+    console.error(
+      `lint-dates: read ${files} .eta file(s) and found NO date formatting of either form.\n\n` +
+        `  That is not a clean corpus, it is an unreachable oracle: every family\n` +
+        `  prints dates. Check that etaRoots() still names the template directories\n` +
+        `  and that the helper namespace is still it.dates.\n`,
+    );
+    Deno.exit(1);
+  }
+
   console.log(
-    `lint-dates: ${calls} zone-sensitive call(s) across ${files} .eta file(s), all pinned.`,
+    `lint-dates: ${calls} zone-sensitive call(s) and ${helpers} it.dates.formatChicago* ` +
+      `call(s) across ${files} .eta file(s), all pinned.`,
   );
 }

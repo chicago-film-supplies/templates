@@ -27,46 +27,28 @@
 const statement = it.doc;
 const { lines, aging, scope } = statement;
 
-// EVERY date on this page is formatted THROUGH this. date-fns `format` renders
-// in the LOCAL timezone of the JS runtime unless given `{ in: … }`, stored
-// business datetimes are Chicago-offset INSTANTS, and the render container sets
-// no `TZ` — so an unpinned format prints the UTC day and any boundary at or
-// after 19:00 CDT is TOMORROW. Both halves of this document are exposed: the
-// as-of dates are `chicagoStartOfDay` (midnight, the worst case), and a
-// settlement line carries a real time of day — measured, 104 of 1,173 prod
-// settlements are not at midnight.
-const CHICAGO = it.tz("America/Chicago");
-
-// 🔴 **PARSE in Chicago as well as FORMAT in Chicago — `{ in: CHICAGO }` on the
-// format alone does not save you, because the zone is already lost by then.**
-// `parseISO` resolves a string carrying NO offset against the AMBIENT zone, and
-// the render container sets no `TZ` (neither the api Dockerfile nor
-// `infra/cloud-run-api.tf`), so a zone-less date read as UTC midnight and
-// formatted into Chicago lands on the PREVIOUS day.
+// EVERY date on this page goes through `it.dates.formatChicago*`, and the zone
+// is named nowhere. date-fns resolves BOTH the parse and the format against the
+// ambient zone unless each is given `{ in: … }`, stored business datetimes are
+// Chicago-offset INSTANTS, and the render container sets no `TZ` — so an
+// unpinned pair prints the UTC day and any boundary at or after 19:00 CDT is
+// TOMORROW. `@cfs/core/utils/dates` owns that pinning now; a call site that
+// spells the zone itself is a second owner of it.
 //
-// ⚠️ Measured, not reasoned. The same string, three container zones:
+// 🔴 **This document is the one that PROVED the parse half matters**, and both
+// its halves are still exposed: the as-of dates are `chicagoStartOfDay`
+// (midnight, the worst case), and a settlement line carries a real time of day —
+// measured, 104 of 1,173 prod settlements are not at midnight. Every
+// balance-forward statement printed its period start one day early in production
+// until this was fixed. `scripts/lint-dates.ts` carries the measurement and the
+// reason a review could not have caught it; do not restate either here.
 //
-//     TZ=UTC              2026-09-01  ->  August 31, 2026
-//     TZ=America/Chicago  2026-09-01  ->  September 1, 2026
-//     TZ=Asia/Tokyo       2026-09-01  ->  August 31, 2026
-//     any of the three    2026-09-07T00:00:00.000-05:00  ->  September 7, 2026
-//
-// With `{ in: CHICAGO }` on the PARSE, all three print September 1, and the
-// offset-bearing form is untouched — so this is render-neutral for every date
-// that already meets the storage contract, and correct for any that does not.
-//
-// ⭐ This is the same blind spot `quote`s `evening-boundary` fixture exists for,
-// one step EARLIER in the pipeline: local preview runs on a Chicago laptop where
-// the ambient parse is accidentally right, so only prod and a laptop disagreeing
-// could surface it — which is exactly how it was found.
-//
-// ⚠️ Keep this even though `foldOrgStatement` now canonicalizes what it echoes.
-// The two are not redundant: that fix makes THIS document carry offsets, this
-// one makes the RENDER independent of the container, and the next zone-less
-// field to appear will not announce itself.
-const parse = (iso) => it.dateFns.parseISO(iso, { in: CHICAGO });
-const onDate = (iso) => it.dateFns.format(parse(iso), "MMMM d, yyyy", { in: CHICAGO });
-const shortDate = (iso) => it.dateFns.format(parse(iso), "M/d/yy", { in: CHICAGO });
+// ⚠️ Keep going through the helpers even though `foldOrgStatement` now
+// canonicalizes what it echoes. The two are not redundant: that fix makes THIS
+// document carry offsets, these make the RENDER independent of the container,
+// and the next zone-less field to appear will not announce itself.
+const onDate = (iso) => it.dates.formatChicagoDate(iso);
+const shortDate = (iso) => it.dates.formatChicagoShortDate(iso);
 
 // ── The format is a POPULATION rule, and this is the only place it branches ──
 //

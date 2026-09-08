@@ -2,14 +2,13 @@
 <%
 const order = it.doc;
 const { destinations, items, totals } = order;
-// EVERY date on this page is formatted THROUGH this, and that is not a style
-// preference — it is the difference between the right day and the next one.
-//
-// date-fns `format` renders in the LOCAL timezone of the JS runtime unless it
-// is given `{ in: … }`. Stored business datetimes are Chicago-offset INSTANTS,
-// and the render container sets no `TZ` (see the api-cloudrun Dockerfile, and
-// no `TZ` env in `infra/cloud-run-api.tf`), so it runs UTC. An unpinned format
-// therefore prints the UTC day: a 20:00 Chicago boundary is 01:00 UTC TOMORROW.
+// EVERY date on this page goes through `it.dates.formatChicago*`, and the zone
+// is named nowhere. date-fns resolves BOTH the parse and the format against the
+// ambient zone unless each is given `{ in: … }`, stored business datetimes are
+// Chicago-offset INSTANTS, and the render container sets no `TZ` — so an
+// unpinned pair prints the UTC day and any boundary at or after 19:00 CDT is
+// TOMORROW. `@cfs/core/utils/dates` owns that pinning now; a call site that
+// spells the zone itself is a second owner of it.
 //
 // Measured across all 996 prod orders: 56 carry a `delivery_start` or
 // `collection_start` that renders one day late, 58 including the charge window,
@@ -17,13 +16,12 @@ const { destinations, items, totals } = order;
 // unpinned it dates every quote rendered after 19:00 Chicago as tomorrow.
 //
 // It was invisible for two reasons, and both are worth knowing before anyone
-// "simplifies" the `{ in: CHICAGO }` away again. Local preview runs on a laptop
-// in Chicago, where the unpinned form is accidentally right. And NO fixture
-// crossed the boundary — the latest time in the set was 18:00 and `FROZEN_NOW`
-// is midday — so the golden gate compared this branch to itself and passed.
+// simplifies the pinning away again. Local preview runs on a laptop in Chicago,
+// where the unpinned form is accidentally right. And NO fixture crossed the
+// boundary — the latest time in the set was 18:00 and `FROZEN_NOW` is midday —
+// so the golden gate compared this branch to itself and passed.
 // `evening-boundary` (prod order 872) exists to close exactly that hole: its
 // delivery is 19:00 CDT, which is 00:00 UTC to the second.
-const CHICAGO = it.tz("America/Chicago");
 // Divider rows are structure, not stock. They are interleaved with the real
 // line items in one array, and `path` records BOTH kinds of ancestor — which is
 // why the indent below has to subtract them rather than assume how many there
@@ -444,7 +442,7 @@ const replacementLine = (item) => {
   </thead>
   <tbody>
     <tr>
-      <td><%= it.dateFns.format(it.dateFns.parseISO(it.now, { in: CHICAGO }), 'MMMM d, yyyy', { in: CHICAGO }) %></td>
+      <td><%= it.dates.formatChicagoDate(it.now) %></td>
       <%/* An empty cell, not an absent one: under `table-layout: fixed` a short
            row leaves a real trailing gap rather than being absorbed. */%>
       <% if (order.subject) { %>
@@ -500,7 +498,7 @@ const replacementLine = (item) => {
 <% if (hasDeliverableItems) { %>
 <%~ await includeAsync("@partials/shared/destinations.eta", {
      u: it.orders, destinations, addressColumnCount, hasCollection,
-     deliverySpan, returnSpan, CHICAGO,
+     deliverySpan, returnSpan,
    }) %>
 <% } %>
 

@@ -15,14 +15,17 @@
 const session = it.doc;
 const { items, orders } = session;
 
-// EVERY date on this page is formatted THROUGH this. date-fns `format` renders
-// in the LOCAL timezone of the JS runtime unless given `{ in: … }`, stored
-// business datetimes are Chicago-offset INSTANTS, and the render container sets
-// no `TZ` — so an unpinned format prints the UTC day and any boundary at or
-// after 19:00 CDT is TOMORROW. A session’s `date` is the earliest movement’s
-// instant, i.e. whenever the worker pressed the button, so an evening check-in
-// is exactly the case that goes wrong unpinned.
-const CHICAGO = it.tz("America/Chicago");
+// EVERY date on this page goes through `it.dates.formatChicago*`, and the zone
+// is named nowhere. date-fns resolves BOTH the parse and the format against the
+// ambient zone unless each is given `{ in: … }`, stored business datetimes are
+// Chicago-offset INSTANTS, and the render container sets no `TZ` — so an
+// unpinned pair prints the UTC day and any boundary at or after 19:00 CDT is
+// TOMORROW. `@cfs/core/utils/dates` owns that pinning now; a call site that
+// spells the zone itself is a second owner of it.
+//
+// A session’s `date` is the earliest movement’s instant, i.e. whenever the
+// worker pressed the button, so an evening check-in is exactly the case that
+// goes wrong unpinned.
 
 // `it.sessions`, NOT `it.orders`. A movement-sessions→receipts family resolves
 // to {dates, money, icons, sessions} and gets no `it.orders` at all, so naming
@@ -140,7 +143,7 @@ const showOrderBanner = groups.length > 1;
       <%/* The instant the action happened, to the minute. A receipt for goods
            changing hands is a record of WHEN, and two check-ins on one day are
            routine — a date alone could not tell them apart. */%>
-      <td><%= it.dateFns.format(it.dateFns.parseISO(session.date, { in: CHICAGO }), 'MMMM d, yyyy · h:mm a', { in: CHICAGO }) %></td>
+      <td><%= it.dates.formatChicagoDateTime(session.date) %></td>
       <td><%= session.created_by.name %></td>
     </tr>
   </tbody>

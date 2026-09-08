@@ -9,7 +9,6 @@
        hasCollection       whether anything is coming back at all
        deliverySpan        sub-columns the delivery block spans
        returnSpan          sub-columns the return block spans
-       CHICAGO             the tz object EVERY date on the page formats through
 
      A shared partial never NAMES a namespace. `it.orders` resolves only for an
      orders-source family, so `it.orders.getDestinationsLegend(...)` here would
@@ -18,11 +17,16 @@
      asserted to carry the shared sub-interface by core's
      `tests/template-helpers.test.ts`.
 
-     CHICAGO is passed, not computed. One tz object for the whole document is
-     the point — an unpinned `format` prints the UTC day, and 56 of 996 prod
-     orders render a date one day late without it. */%>
+     Dates go through `it.dates.formatChicagoWeekdayDate`, which is reached
+     rather than passed — `it.dates` is on the render context of every family, and
+     `includeAsync` spreads the caller's `it` into this one. It replaced a
+     `CHICAGO` prop that four call sites had to remember to hand over, and the
+     zone is now named nowhere on this page. The hazard that prop existed for is
+     unchanged: date-fns resolves BOTH the parse and the format against the
+     ambient zone, the render container sets no `TZ`, and 56 of 996 prod orders
+     render a date one day late unpinned. */%>
 <%
-const { u, destinations, addressColumnCount, hasCollection, deliverySpan, returnSpan, CHICAGO } = it;
+const { u, destinations, addressColumnCount, hasCollection, deliverySpan, returnSpan } = it;
 %>
 <table id="destinations">
   <colgroup>
@@ -91,7 +95,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
          block. The four <col>s keep their widths either way. */%>
     <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
       <% if (d.delivery_start) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start, { in: CHICAGO }), 'EEE M/d/yy', { in: CHICAGO }) %>
+      <%= it.dates.formatChicagoWeekdayDate(d.delivery_start) %>
       <% } %>
     </td>
     <%/* ARROW, END DATE AND DURATION ARE ALL RENTAL FURNITURE, and they now
@@ -112,7 +116,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
     </td>
     <td class="date">
       <% if (d.collection_start) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.collection_start, { in: CHICAGO }), 'EEE M/d/yy', { in: CHICAGO }) %>
+      <%= it.dates.formatChicagoWeekdayDate(d.collection_start) %>
       <% } %>
     </td>
     <td>
@@ -151,7 +155,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
            the instructions columns slide. */%>
       <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
       <% if (showCharged) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_start, { in: CHICAGO }), 'EEE M/d/yy', { in: CHICAGO }) %>
+      <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %>
       <% } %>
       </td>
       <% if (hasCollection) { %>
@@ -160,7 +164,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
       </td>
       <td class="date">
       <% if (showCharged) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_end, { in: CHICAGO }), 'EEE M/d/yy', { in: CHICAGO }) %>
+      <%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
       <% } %>
       </td>
       <td>

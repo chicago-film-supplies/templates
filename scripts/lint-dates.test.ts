@@ -10,7 +10,7 @@
  * These read synthetic sources and never touch the disk.
  */
 import { assertEquals } from "@std/assert";
-import { scanSource } from "./lint-dates.ts";
+import { countHelperCalls, scanSource } from "./lint-dates.ts";
 
 const src = (...lines: string[]) => lines.join("\n");
 
@@ -117,4 +117,63 @@ Deno.test("every call site is reported, not just the first per file", () => {
   );
   assertEquals(f.length, 2);
   assertEquals(f.map((x) => x.line), [1, 2]);
+});
+
+// ── The second population: the converted call sites ─────────────────────────
+//
+// ⭐ These exist because `scanSource`'s own subject is now EMPTY. Every
+// `it.dateFns` call site went through `it.dates.formatChicago*` on 2026-09-08,
+// so the lint's headline count is legitimately 0 and can no longer distinguish a
+// clean corpus from a scanner that lost its corpus. `countHelperCalls` is the
+// other half of that discriminator, and it needs its own polarity pair for the
+// same reason every guard in this repo does.
+
+Deno.test("the converted call sites are counted", () => {
+  assertEquals(
+    countHelperCalls(src(
+      `<td><%= it.dates.formatChicagoDate(invoice.date) %></td>`,
+      `<td><%= it.dates.formatChicagoDateTime(session.date) %></td>`,
+      `<td><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %></td>`,
+      `<td><%= it.dates.formatChicagoShortDate(row.anchor_date) %></td>`,
+    )),
+    4,
+  );
+});
+
+Deno.test("🔴 formatChargeDays is NOT counted — it resolves no zone", () => {
+  // The failure this prevents is subtle and one-directional: a bare
+  // `.dates.format` match would count the charge-days formatter, so a page with
+  // no date on it at all would look like evidence that the scanner is reading
+  // the templates. That makes the zero-of-both check unreachable, which is the
+  // exact defect it was added to close.
+  assertEquals(
+    countHelperCalls(src(
+      `<td><%= it.dates.formatChargeDays(d.days_active).periodLabel %></td>`,
+      `<td><%= it.money.formatCents(item.price.total_cents) %></td>`,
+    )),
+    0,
+  );
+});
+
+Deno.test("a converted call named only in a comment is not counted", () => {
+  // Same exemption `scanSource` makes, and for the mirror-image reason: the
+  // templates that EXPLAIN the helpers spell them, and prose must not be able to
+  // satisfy the oracle that says the corpus was read.
+  assertEquals(
+    countHelperCalls(src(
+      `<%/* every date goes through it.dates.formatChicagoDate(x) */%>`,
+      `// it.dates.formatChicagoShortDate(y) would do here`,
+    )),
+    0,
+  );
+});
+
+Deno.test("a corpus with neither form counts zero of both", () => {
+  // The state the run-level check calls an unreachable oracle. Asserted here on
+  // the two counters directly, because the check itself lives behind
+  // `import.meta.main` and a test that shelled out to the task would be
+  // measuring the task runner.
+  const noDates = src(`<td><%= it.money.formatCents(x) %></td>`);
+  assertEquals(countHelperCalls(noDates), 0);
+  assertEquals(scanSource("t.eta", noDates), []);
 });
