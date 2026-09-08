@@ -1,0 +1,140 @@
+{
+  "scope": {
+    "kind": "organization",
+    "uid": "Omyms3GkmyIreWjSuh2K",
+    "name": "Sample text for name.........",
+    "uids": [
+      "Omyms3GkmyIreWjSuh2K"
+    ]
+  },
+  "format": "balance_forward",
+  "from_date": "2026-09-01",
+  "to_date": "2026-09-07T00:00:00.000-05:00",
+  "as_of_payment_date": "2026-09-07T00:00:00.000-05:00",
+  "organization_path": [
+    {
+      "uid": "Omyms3GkmyIreWjSuh2K",
+      "name": "Amberline Studios Inc",
+      "derived": false
+    }
+  ],
+  "billing_address": {
+    "city": "Rantoul",
+    "country_name": "United States",
+    "full": "4451 Juniper Ct, Rantoul, IL, 75424, United States",
+    "name": "Summit Field House",
+    "postcode": "69126",
+    "region": "IL",
+    "street": "4451 Juniper Ct",
+    "street2": "",
+    "mapbox_id": "fQCdWw3bdLQzfqkxQPikOwX6IG45BGP2YHQpLbVuFQf0Bi25HMq8MvEhHRI7CdR",
+    "address_coordinates": null,
+    "user_coordinates": null
+  },
+  "opening_balance_cents": 2143642,
+  "lines": [
+    {
+      "kind": "invoice",
+      "uid_invoice": "pfojrdVCq4TxvhcCnEuu",
+      "number": 2406,
+      "uid_settlement": null,
+      "settlement_type": null,
+      "date": "2026-09-03T00:00:00.000-05:00",
+      "reference": null,
+      "amount_cents": 46434,
+      "effect_cents": 46434,
+      "balance_cents": 2190076,
+      "organization_path": [
+        {
+          "uid": "Omyms3GkmyIreWjSuh2K",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "invoice",
+      "uid_invoice": "9K7QSuZmnxbpoMl9Riqq",
+      "number": 2407,
+      "uid_settlement": null,
+      "settlement_type": null,
+      "date": "2026-09-03T00:00:00.000-05:00",
+      "reference": null,
+      "amount_cents": 40775,
+      "effect_cents": 40775,
+      "balance_cents": 2230851,
+      "organization_path": [
+        {
+          "uid": "Omyms3GkmyIreWjSuh2K",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "invoice",
+      "uid_invoice": "lvie5Gj2pGNFK6NP9HMx",
+      "number": 2408,
+      "uid_settlement": null,
+      "settlement_type": null,
+      "date": "2026-09-03T00:00:00.000-05:00",
+      "reference": null,
+      "amount_cents": 134724,
+      "effect_cents": 134724,
+      "balance_cents": 2365575,
+      "organization_path": [
+        {
+          "uid": "Omyms3GkmyIreWjSuh2K",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "settlement",
+      "uid_invoice": "pfojrdVCq4TxvhcCnEuu",
+      "number": 2406,
+      "uid_settlement": "42993c419224e7a95d46",
+      "settlement_type": "void",
+      "date": "2026-09-03T11:14:32.277-05:00",
+      "reference": null,
+      "amount_cents": 46434,
+      "effect_cents": -46434,
+      "balance_cents": 2319141,
+      "organization_path": [
+        {
+          "uid": "Omyms3GkmyIreWjSuh2K",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    }
+  ],
+  "closing_balance_cents": 2319141,
+  "aging": {
+    "buckets": [
+      {
+        "bucket": "current",
+        "amount_cents": 175499
+      },
+      {
+        "bucket": "1-30",
+        "amount_cents": 2143642
+      },
+      {
+        "bucket": "31-60",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "61-90",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "90+",
+        "amount_cents": 0
+      }
+    ],
+    "credit_cents": 0,
+    "total_cents": 2319141
+  }
+}
