@@ -91,7 +91,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
          block. The four <col>s keep their widths either way. */%>
     <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
       <% if (d.delivery_start) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start), 'EEE M/d/yy', { in: CHICAGO }) %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.delivery_start, { in: CHICAGO }), 'EEE M/d/yy', { in: CHICAGO }) %>
       <% } %>
     </td>
     <%/* ARROW, END DATE AND DURATION ARE ALL RENTAL FURNITURE, and they now
@@ -112,7 +112,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
     </td>
     <td class="date">
       <% if (d.collection_start) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.collection_start), 'EEE M/d/yy', { in: CHICAGO }) %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.collection_start, { in: CHICAGO }), 'EEE M/d/yy', { in: CHICAGO }) %>
       <% } %>
     </td>
     <td>
@@ -151,7 +151,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
            the instructions columns slide. */%>
       <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
       <% if (showCharged) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_start), 'EEE M/d/yy', { in: CHICAGO }) %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_start, { in: CHICAGO }), 'EEE M/d/yy', { in: CHICAGO }) %>
       <% } %>
       </td>
       <% if (hasCollection) { %>
@@ -160,7 +160,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
       </td>
       <td class="date">
       <% if (showCharged) { %>
-      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_end), 'EEE M/d/yy', { in: CHICAGO }) %>
+      <%= it.dateFns.format(it.dateFns.parseISO(d.charge_end, { in: CHICAGO }), 'EEE M/d/yy', { in: CHICAGO }) %>
       <% } %>
       </td>
       <td>
