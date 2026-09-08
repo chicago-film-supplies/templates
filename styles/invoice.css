@@ -27,3 +27,30 @@
 html {
   font-size: 9px;
 }
+
+/* ── EFT Instructions ────────────────────────────────────────────────────────
+   The left half of the row #totals sits in — the slot the quote fills with
+   #information and the invoice had standing empty. Both halves of the placement
+   the request asked for are here:
+
+   `grid-column: 1` is what "left-aligned to the items table" means on this page.
+   The page grid's first track starts at the left margin, and #items spans both
+   tracks from that same edge, so the block's text edge and the Item Description
+   column's are one edge by construction rather than by a matched number.
+
+   `padding-top: var(--cell-pad-y)` is what puts the heading's first line on the
+   Subtotal row's baseline, and it is the SAME trick #information uses on the
+   quote for the same reason: a table's first text baseline sits exactly one
+   `--cell-pad-y` below its box, so anything sitting beside a table shares that
+   baseline by matching the padding rather than by naming a pixel.
+   ⚠️ `align-self: baseline` is the property that MEANS this and Blink gets it
+   wrong here — see the note in `styles/base.css`, which measured it landing 2px
+   the wrong side. Gotenberg renders in Blink. Do not swap it back untested. */
+#eft {
+  grid-column: 1;
+  align-self: start;
+}
+
+#eft h2 {
+  padding-top: var(--cell-pad-y);
+}

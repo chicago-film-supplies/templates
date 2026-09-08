@@ -289,6 +289,30 @@ const showOrderBanner = (invoice.number_orders || []).length > 1;
    }) %>
 <% } %>
 
+<!-- EFT Instructions -->
+<%/* The invoice's half of the row #totals sits in, and the reason this family
+     needs its own section where the quote has #information: an invoice ASKS FOR
+     MONEY, so it has to say where the money goes. The quote does not, and must
+     not — it is not a payable document.
+
+     STATIC on purpose. These are CFS's own banking details, not a fact about
+     the document, so there is nothing on `it.doc` to read them from and no
+     branch to take: every invoice is payable to the same account. The
+     letterhead's `#cfs` block is the precedent — our own address, phone and
+     email are literals there for the same reason.
+
+     Unconditional, including on an invoice already paid in full. A settled
+     invoice is still re-rendered and re-sent, and a payment instruction that
+     disappears once `amount_due_cents` reaches 0 is missing from exactly the
+     copy a customer keeps for their records. */%>
+<section id="eft">
+  <h2>EFT Instructions:</h2>
+  <div>Zelle: team@chicagofilmsupplies.com</div>
+  <div>Bank Name: J.P. Morgan Chase · Account Name: Chicago Film Supplies LLC</div>
+  <div>ACH Routing: 071000013 · Wire Routing: 021000021</div>
+  <div>Account Number: 906160863</div>
+</section>
+
 <!-- Totals -->
 <%~ await includeAsync("@partials/shared/totals.eta", {
      totals, extraRows: settlementRows,
