@@ -240,14 +240,28 @@ This is not a hypothetical. Measured 2026-08-24 across **all 996 prod orders**: 
 
 ### Includes — how the document families share chrome
 
-⚠️ **THREE, and the third shares only part of the chrome** — `quote`, `invoice`
-and `receipt` are every document family that exists. Read the set from
-`ls templates/*.meta.json`, never from a number in this file: this section said
-*three* when it was written (#142, 2026-08-26) while only two existed, counting a
-packing-list family that was designed but never registered. That one is still
-unregistered — Phase 3 is on hold pending a grain decision (templates#150), and a
-`git_path` is permanently reserved at create, so nothing is pre-registered
-against it.
+🔴 **This section names NO family count and NO roster, deliberately — read them off disk.**
+
+```sh
+ls templates/*.meta.json                 # every registered family
+deno task lint:fixtures                  # which have graduated, and their parity
+```
+
+⭐ **The count has rotted twice in this same paragraph, in the same direction, and the second time
+it took a real fact down with it.** It said *three* while two existed (#142), was corrected to name
+three by hand, and by 2026-09-07 there were **five** — with the correction still asserting
+`packing-list` was *"still unregistered… nothing is pre-registered against it"* while that family
+had a sidecar, a fixture and two blessed goldens on `main`. **The instruction to read from disk was
+already written here, and people read the number beside it instead** (templates#255). So the number
+is deleted rather than updated; a command cannot go stale.
+
+⚠️ **What a stale roster COSTS is why this matters more than tidiness.** A reader told
+`packing-list` is unregistered does not go looking for its fixture set — and it has exactly one,
+which is templates#226's whole subject: the collection leg has never rendered. **Prose that denies a
+family exists hides the issue about that family being half-gated.**
+
+**What belongs here is the RULE, which does not change with the roster:** a family takes the shared
+fragments its document has data for, and no more.
 
 `receipt` (templates#154) includes `letterhead` and **nothing else**: it renders
 a movement SESSION, which carries no destinations, no items grid and no money, so
@@ -325,15 +339,21 @@ An unknown name **throws** (listing near matches) rather than rendering nothing 
 
 Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
-**Collection-dependent — `it.orders` is NOT guaranteed:** the `@cfs/core/utils` namespaces a template gets are the union of the always-on set (`it.dates`, `it.money`, `it.icons`) plus each of its `collection_source` + `collection_target` namespaces — `orders` → `it.orders`, `invoices` → `it.invoices`, `fulfillments` → `it.fulfillments`, `movement-sessions` → `it.sessions`; `quotes`, `packing_lists` and `receipts` contribute none, because a template *produces* those rather than computing over them. The quote template (orders → quotes) gets `it.orders` and NOT `it.invoices`; an invoices-source template gets the reverse. Resolved by `availableUtilNamespaces` (`@cfs/core/schemas`), which `api-cloudrun/src/lib/templates/eta.ts` (render), `api-cloudrun/src/services/templates/goldenDiff.ts` (golden gate) and `scripts/preview.ts` (this harness) all funnel through, so preview, gate and prod cannot diverge. Calling a namespace your collections don't resolve to throws at render — and fails the golden gate. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
+**Collection-dependent — `it.orders` is NOT guaranteed:** the `@cfs/core/utils` namespaces a template gets are the union of the always-on set (`it.dates`, `it.money`, `it.icons`) plus each of its `collection_source` + `collection_target` namespaces. 🔴 **The map is `TEMPLATE_COLLECTION_UTILS` (`core/src/schemas/template-context.ts`) — short enough to read whole, and the only correct copy. This file no longer restates it** (templates#255): the restatement here has been wrong twice, and it is wrong in the direction that tells an author the one namespace their family resolves to will throw. ⚠️ The map is `Partial`, so **a collection can resolve NO namespace at all** — a template *produces* its target rather than computing over it, and a source can lack one too. The quote template (orders → quotes) gets `it.orders` and NOT `it.invoices`; an invoices-source template gets the reverse. Resolved by `availableUtilNamespaces` (`@cfs/core/schemas`), which `api-cloudrun/src/lib/templates/eta.ts` (render), `api-cloudrun/src/services/templates/goldenDiff.ts` (golden gate) and `scripts/preview.ts` (this harness) all funnel through, so preview, gate and prod cannot diverge. Calling a namespace your collections don't resolve to throws at render — and fails the golden gate. Full semantics, data shapes, and authoring patterns: `cfs-template-authoring` skill.
 
-⚠️ **`it.fulfillments` is REAL, and the sentence above used to deny it.** It shipped in `@cfs/core@10.0.0-beta.272`; this paragraph listed `orders` and `invoices` only, and closed with *"calling a namespace your collections don't resolve to throws at render"* — so it told a future packing-list author that the one namespace their family resolves to would throw. Nothing in the repo would have contradicted it: no `fulfillments`-sourced family is registered, so no render exercises the mapping and no golden covers it. **A stale namespace list is a correctness bug, not a count** — check it against `TEMPLATE_COLLECTION_UTILS` (`core/src/schemas/template-context.ts`), which is the whole map in nine lines.
+⚠️ **`it.fulfillments` is REAL, and the sentence above used to deny it.** It shipped in `@cfs/core@10.0.0-beta.272`; this paragraph listed `orders` and `invoices` only, and closed with *"calling a namespace your collections don't resolve to throws at render"* — so it told a future packing-list author that the one namespace their family resolves to would throw. Nothing in the repo would have contradicted it: no `fulfillments`-sourced family is registered, so no render exercises the mapping and no golden covers it. **A stale namespace list is a correctness bug, not a count** — check it against `TEMPLATE_COLLECTION_UTILS` (`core/src/schemas/template-context.ts`), which is the whole map. ⭐ **That citation said *"the whole map in nine lines"* until templates#255; it is 26 now.** A line count is a restatement of the file too, and this one had rotted inside the very sentence warning that a stale list is a correctness bug — which is the argument for citing the symbol and stopping there.
 
 `it.fulfillments` is a **re-export namespace over `utils/orders`**, not a mapping to the string `"orders"`. A fulfillment's items and destinations are the same structural shapes, so the helpers transfer; the document is not an order, so `it.orders` on one would be a lie. It also renders what was **picked** rather than what was ordered — a fulfillment line carries `quantity` beside `quantity_order`, and `path_substituted_for` when a picker swapped an item.
 
 `it.sessions` (`@cfs/core/utils/sessions`, live on `receipt` since templates#154) is the opposite kind of namespace: **its own three helpers, not a re-export of anything.** `groupSessionItemsByOrder` splits a session's rows one group per order — a session can span orders, because `POST /returns` accepts whatever a worker was actually handed back — `sessionQuantity` sums units across a set of rows, and `sessionItemPlaces` turns a movement line's `location.from`/`to` into `{from, to}` labels. ⚠️ **It is deliberately NOT a re-export of `utils/movements.ts`**: that module is the LEDGER fold (`applyMovementToLedger`, `costOfUnits`), and a receipt is a statement about what a person handed over, not an accounting operation — putting the fold on it would advertise arithmetic no template should be doing. ⚠️ **`sessionItemPlaces` renders nothing today**: a `DocSource`'s `label` is `.optional()` and, measured 2026-08-28, not one stored custody movement in either env sets it, so a From/To column would be blank on every row of every document. Call it when a writer starts setting labels.
 
-**Three axes, and they are not the same axis.** `collection_source` is what `it.doc` **is** (`orders`, `invoices`, `fulfillments`, `movement-sessions`); `collection_target` is what the render **produces** (`quotes`, `packing_lists`, `invoices`, `receipts`); `surfaces` is where the family is **offered** in the manager (`order`, `fulfillment`, `invoice`) and resolves no namespace at all. The three enums overlap by name and are not interchangeable: `fulfillments` and `movement-sessions` are sources but never targets, `quotes`/`packing_lists`/`receipts` are targets but never sources — so **no template can read a packing list**, only write one — and `invoices` is the only collection on both lists, which is why the invoice family's source and target coincide.
+**Three axes, and they are not the same axis.** `collection_source` is what `it.doc` **is**; `collection_target` is what the render **produces**; `surfaces` is where the family is **offered** in the manager, and resolves no namespace at all. 🔴 **The members are `TEMPLATE_SOURCE_COLLECTIONS`, `TEMPLATE_TARGET_COLLECTIONS` and `TEMPLATE_SURFACES` (`core/src/schemas/template.ts`) — this file deliberately does not list them** (templates#255): all three went stale at once when `pick-sheets`, `statements` and the `organization` surface landed, and each of core's declarations carries the reasoning for its own newest member.
+
+**The RULES, which are what this file is for:**
+
+- The three enums **overlap by name and are not interchangeable.** A name appearing on one list says nothing about the others.
+- **A collection on the SOURCE list but not the TARGET list can be read and never written**, and vice versa — so **no template can read a packing list**, only write one.
+- ⚠️ **A collection can sit on BOTH lists, and *"`invoices` is the only one"* is no longer true** — `statements` is too, which core's own docblock flags as *"the first target that is neither a stored collection nor schema-less"*. That is why the invoice and statement families each have a source and target that coincide, and it is why **a both-lists check must not be written as an `invoices` special case.**
 
 🔴 **Adding a NEW member to ANY of the three enums is a DEPLOY-ORDERED change, and merging the PR is the wrong first step.** The publish webhook validates the merged sidecar against **prod's DEPLOYED `@cfs/core`**, not against this repo's pin and not against api-cloudrun's `main`. So the member has to be live *in a released api-cloudrun* before a sidecar naming it reaches `main`. Measured 2026-08-28 on #155: `movement-sessions`/`receipts` shipped in `beta.278`, api-cloudrun `main` was pinned to it, prod was still serving `beta.277` from `v0.190.0` — the merge webhook 500'd with `Invalid option: expected one of "orders"|"invoices"|"fulfillments"` and **the whole publish rolled back**, taking `quote` and `invoice` with it because the PR also touched `partials/shared/**`. ⚠️ **Check the RELEASE, not `main`** — `git show $(gh release view --json tagName -q .tagName -R chicago-film-supplies/api-cloudrun):deno.json`. And nothing self-heals it: the hourly reconcile sweep scans for `status:"draft"` versions, and a register-on-merge creates none, so it is invisible to the backstop. Recovery is `POST /admin/templates/rebuild` after the deploy.
 
@@ -353,13 +373,22 @@ Deep reference: the `cfs-money` skill → *"The ratchets"*.
 
 ## Goldens are LIVE on `main` (first blessed 2026-08-16) — and absent on `sandbox`
 
-**Two of the three families have graduated on `main`**, each at full parity with
-its own fixture set: `goldens/main/quote/` holds 14 PNGs and
-`goldens/main/invoice/` holds 7. **`receipt` has neither a fixture nor a
-baseline** — it shipped as a family first (templates#154) because
-`templates_capture_fixture` needs the family to EXIST before it can capture
-against it, so until its fixture PR lands `visual-diff` reports `no-fixtures` for
-it: an informational PASS that says nothing at all about how it renders.
+**Some families have graduated on `main` and some have not, and the split moves — so this section
+names no count.** ⚠️ The line here used to read *"two of the three families… quote holds 14 PNGs and
+invoice holds 7"*; measured 2026-09-07 it was three of **five**, at 16 and 9 (templates#255). Ask the
+tree, which answers in one command:
+
+```sh
+deno task lint:fixtures     # graduated families, golden↔fixture parity, and what is mid-build
+ls goldens/main/<git_path>/ # one family, by hand
+```
+
+🔴 **`receipt` is the one worth stating, because it is a RULE rather than a count and it has held
+since the family shipped: it has neither a fixture nor a baseline.** It shipped as a family FIRST
+(templates#154) because `templates_capture_fixture` needs the family to EXIST before it can capture
+against it — so until its fixture PR lands, `visual-diff` reports `no-fixtures` for it: an
+informational **PASS that says nothing at all about how it renders**, on a document that is live in
+production.
 
 `quote` got there in five blessings — nine by `acaafcd` / #83,
 `replacement-only` by `ebbe2f2` / #104 (2026-08-21),
