@@ -1,0 +1,42 @@
+{
+  "scope": {
+    "kind": "organization",
+    "uid": "ebTofZBRYryagasD4wIX",
+    "name": "Sample text for name...................",
+    "uids": [
+      "ebTofZBRYryagasD4wIX"
+    ]
+  },
+  "anchor": "due_date",
+  "as_of_invoice_date": "2026-09-08T00:00:00.000-05:00",
+  "as_of_payment_date": "2026-09-08T00:00:00.000-05:00",
+  "rows": [],
+  "totals": {
+    "buckets": [
+      {
+        "bucket": "current",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "1-30",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "31-60",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "61-90",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "90+",
+        "amount_cents": 0
+      }
+    ],
+    "credit_cents": 0,
+    "total_cents": 0
+  },
+  "organizations": [],
+  "missing_anchor_uids": []
+}

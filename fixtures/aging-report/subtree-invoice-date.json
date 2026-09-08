@@ -1,0 +1,224 @@
+{
+  "scope": {
+    "kind": "organization",
+    "uid": "gql6Tjro2tSVrgP5NKOH",
+    "name": "Sample text for name....",
+    "uids": [
+      "5spRplcKLjcyqfryluqA",
+      "Eqa6fbxkev7dC8T16aso",
+      "OFEYTO9lSvGZxcCLS7A4",
+      "QNpzUvSGWZErf9s64yue",
+      "SHEVKDnprwbro2w9bNTq",
+      "SoRyB6xf1ByZFsVK2XdY",
+      "TXQfo7P2LXDFzesvdhbS",
+      "XbPouPV72q0pUY4t1c3h",
+      "gql6Tjro2tSVrgP5NKOH",
+      "ocfX39MZjTBkO9uQlFgk",
+      "p5FQMnsTPfD6wNEluAcf",
+      "s7WXepzsnaTbaKF0Et1T",
+      "wipXH66t2poV4SrEfBoV",
+      "y4YTTOL8vSpGwj3nzjI0"
+    ]
+  },
+  "anchor": "date",
+  "as_of_invoice_date": "2026-09-08T00:00:00.000-05:00",
+  "as_of_payment_date": "2026-09-08T00:00:00.000-05:00",
+  "rows": [
+    {
+      "uid": "DD5TNlYzGsuDzbFzw43I",
+      "number": 2386,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Copperline Studios LLC",
+          "derived": false
+        },
+        {
+          "uid": "TXQfo7P2LXDFzesvdhbS",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        },
+        {
+          "uid": "s7WXepzsnaTbaKF0Et1T",
+          "name": "Amberline Studios Inc",
+          "derived": false
+        }
+      ],
+      "anchor_date": "2026-09-17T00:00:00.000-05:00",
+      "days_overdue": -9,
+      "bucket": "current",
+      "amount_due_cents": 113557
+    },
+    {
+      "uid": "5PimgwLkRCtM7plp2x9Z",
+      "number": 2402,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Copperline Studios LLC",
+          "derived": false
+        },
+        {
+          "uid": "TXQfo7P2LXDFzesvdhbS",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        },
+        {
+          "uid": "5spRplcKLjcyqfryluqA",
+          "name": "Blue Chair Films LLC",
+          "derived": false
+        }
+      ],
+      "anchor_date": "2026-09-02T00:00:00.000-05:00",
+      "days_overdue": 6,
+      "bucket": "1-30",
+      "amount_due_cents": 134920
+    },
+    {
+      "uid": "9F9BCq771SgrRyzfmjmO",
+      "number": 2403,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Copperline Studios LLC",
+          "derived": false
+        },
+        {
+          "uid": "TXQfo7P2LXDFzesvdhbS",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        },
+        {
+          "uid": "5spRplcKLjcyqfryluqA",
+          "name": "Blue Chair Films LLC",
+          "derived": false
+        }
+      ],
+      "anchor_date": "2026-09-02T00:00:00.000-05:00",
+      "days_overdue": 6,
+      "bucket": "1-30",
+      "amount_due_cents": 16575
+    }
+  ],
+  "totals": {
+    "buckets": [
+      {
+        "bucket": "current",
+        "amount_cents": 113557
+      },
+      {
+        "bucket": "1-30",
+        "amount_cents": 151495
+      },
+      {
+        "bucket": "31-60",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "61-90",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "90+",
+        "amount_cents": 0
+      }
+    ],
+    "credit_cents": 0,
+    "total_cents": 265052
+  },
+  "organizations": [
+    {
+      "uid": "s7WXepzsnaTbaKF0Et1T",
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Wayfarer Productions LLC",
+          "derived": false
+        },
+        {
+          "uid": "TXQfo7P2LXDFzesvdhbS",
+          "name": "Meridian Media Group",
+          "derived": false
+        },
+        {
+          "uid": "s7WXepzsnaTbaKF0Et1T",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        }
+      ],
+      "totals": {
+        "buckets": [
+          {
+            "bucket": "current",
+            "amount_cents": 113557
+          },
+          {
+            "bucket": "1-30",
+            "amount_cents": 0
+          },
+          {
+            "bucket": "31-60",
+            "amount_cents": 0
+          },
+          {
+            "bucket": "61-90",
+            "amount_cents": 0
+          },
+          {
+            "bucket": "90+",
+            "amount_cents": 0
+          }
+        ],
+        "credit_cents": 0,
+        "total_cents": 113557
+      }
+    },
+    {
+      "uid": "5spRplcKLjcyqfryluqA",
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Wayfarer Productions LLC",
+          "derived": false
+        },
+        {
+          "uid": "TXQfo7P2LXDFzesvdhbS",
+          "name": "Meridian Media Group",
+          "derived": false
+        },
+        {
+          "uid": "5spRplcKLjcyqfryluqA",
+          "name": "Harborlight Studios Inc",
+          "derived": false
+        }
+      ],
+      "totals": {
+        "buckets": [
+          {
+            "bucket": "current",
+            "amount_cents": 0
+          },
+          {
+            "bucket": "1-30",
+            "amount_cents": 151495
+          },
+          {
+            "bucket": "31-60",
+            "amount_cents": 0
+          },
+          {
+            "bucket": "61-90",
+            "amount_cents": 0
+          },
+          {
+            "bucket": "90+",
+            "amount_cents": 0
+          }
+        ],
+        "credit_cents": 0,
+        "total_cents": 151495
+      }
+    }
+  ],
+  "missing_anchor_uids": []
+}
