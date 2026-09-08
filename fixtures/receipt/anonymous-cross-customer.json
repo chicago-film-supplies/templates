@@ -1,0 +1,65 @@
+{
+  "uuid_session": "c81d40f7-6b2e-4a95-8d13-72fe5c0a9e36",
+  "date": "2026-08-19T18:05:12.446-05:00",
+  "types": [
+    "check_in"
+  ],
+  "numbers": [
+    1207,
+    1208
+  ],
+  "quantity": 9,
+  "created_by": {
+    "uid": "Vt2mQx8ZpLrK5ncW7Bhd",
+    "name": "Avery Holloway"
+  },
+  "orders": [
+    {
+      "uid": "Rf4kNb9TmXsQ2wZc6Jpv",
+      "number": 1063
+    },
+    {
+      "uid": "Gy7pLd3VnHtB8xMr1Wqk",
+      "number": 1078
+    }
+  ],
+  "organization": null,
+  "items": [
+    {
+      "uid": "c81d40f7-6b2e-4a95-8d13-72fe5c0a9e36|check_in|Rf4kNb9TmXsQ2wZc6Jpv:Bq3wYh6LcNfV9tKd5Rzm:vTn8CTAwwJHEJZLBzsOw",
+      "number": 1207,
+      "type": "check_in",
+      "quantity": 4,
+      "uid_product": "Bq3wYh6LcNfV9tKd5Rzm",
+      "name": "Combo Stand (Junior, Double Riser)",
+      "uid_booking": "Rf4kNb9TmXsQ2wZc6Jpv:Bq3wYh6LcNfV9tKd5Rzm:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "Rf4kNb9TmXsQ2wZc6Jpv",
+      "order_number": 1063,
+      "custody": {
+        "from": "out",
+        "to": "returned"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    },
+    {
+      "uid": "c81d40f7-6b2e-4a95-8d13-72fe5c0a9e36|check_in|Gy7pLd3VnHtB8xMr1Wqk:Jc5rTn2QwBdH7yLp4Xsf:vTn8CTAwwJHEJZLBzsOw",
+      "number": 1208,
+      "type": "check_in",
+      "quantity": 5,
+      "uid_product": "Jc5rTn2QwBdH7yLp4Xsf",
+      "name": "Apple Box (Half)",
+      "uid_booking": "Gy7pLd3VnHtB8xMr1Wqk:Jc5rTn2QwBdH7yLp4Xsf:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "Gy7pLd3VnHtB8xMr1Wqk",
+      "order_number": 1078,
+      "custody": {
+        "from": "out",
+        "to": "returned"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": ""
+    }
+  ]
+}
