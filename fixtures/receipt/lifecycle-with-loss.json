@@ -1,0 +1,147 @@
+{
+  "uuid_session": "83bf4176-a4d2-8646-8b1d-5652cf3b5d1c",
+  "date": "2026-07-08T20:54:59.535-05:00",
+  "types": [
+    "prep",
+    "check_out",
+    "check_in",
+    "mark_lost"
+  ],
+  "numbers": [
+    877,
+    879,
+    881,
+    882
+  ],
+  "quantity": 90,
+  "created_by": {
+    "uid": "journal-migration",
+    "name": "Parker Bishop"
+  },
+  "orders": [
+    {
+      "uid": "ToeejCKTYMIO3EiqI5fB",
+      "number": 893
+    }
+  ],
+  "organization": {
+    "uid": "uKy6p0sk0ZXpc7ThwEdf",
+    "name": "Wayfarer Productions LLC"
+  },
+  "items": [
+    {
+      "uid": "83bf4176-a4d2-8646-8b1d-5652cf3b5d1c|prep|ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+      "number": 877,
+      "type": "prep",
+      "quantity": 30,
+      "uid_product": "kETzgYqCmiCLZvjwBfpE",
+      "name": "3 ' x 5' Floor Mat",
+      "uid_booking": "ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "ToeejCKTYMIO3EiqI5fB",
+      "order_number": 893,
+      "custody": {
+        "from": "reserved",
+        "to": "prepped"
+      },
+      "lines": [],
+      "serialized_details": null,
+      "reference": "Journal cutover — reconstructed from the booking's stored breakdown"
+    },
+    {
+      "uid": "83bf4176-a4d2-8646-8b1d-5652cf3b5d1c|check_out|ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+      "number": 879,
+      "type": "check_out",
+      "quantity": 30,
+      "uid_product": "kETzgYqCmiCLZvjwBfpE",
+      "name": "3 ' x 5' Floor Mat",
+      "uid_booking": "ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "ToeejCKTYMIO3EiqI5fB",
+      "order_number": 893,
+      "custody": {
+        "from": "prepped",
+        "to": "out"
+      },
+      "lines": [
+        {
+          "quantity": 30,
+          "location": {
+            "from": {
+              "collection": "locations",
+              "uid": "nTAEjCAE2bqyE2dBiK3R"
+            },
+            "to": {
+              "collection": "bookings",
+              "uid": "ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": "Journal cutover — reconstructed from the booking's stored breakdown"
+    },
+    {
+      "uid": "83bf4176-a4d2-8646-8b1d-5652cf3b5d1c|check_in|ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+      "number": 881,
+      "type": "check_in",
+      "quantity": 25,
+      "uid_product": "kETzgYqCmiCLZvjwBfpE",
+      "name": "3 ' x 5' Floor Mat",
+      "uid_booking": "ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "ToeejCKTYMIO3EiqI5fB",
+      "order_number": 893,
+      "custody": {
+        "from": "out",
+        "to": "returned"
+      },
+      "lines": [
+        {
+          "quantity": 25,
+          "location": {
+            "from": {
+              "collection": "bookings",
+              "uid": "ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw"
+            },
+            "to": {
+              "collection": "locations",
+              "uid": "nTAEjCAE2bqyE2dBiK3R"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": "Journal cutover — reconstructed from the booking's stored breakdown"
+    },
+    {
+      "uid": "83bf4176-a4d2-8646-8b1d-5652cf3b5d1c|mark_lost|ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+      "number": 882,
+      "type": "mark_lost",
+      "quantity": 5,
+      "uid_product": "kETzgYqCmiCLZvjwBfpE",
+      "name": "3 ' x 5' Floor Mat",
+      "uid_booking": "ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+      "uid_order": "ToeejCKTYMIO3EiqI5fB",
+      "order_number": 893,
+      "custody": {
+        "from": "out",
+        "to": "lost"
+      },
+      "lines": [
+        {
+          "quantity": 5,
+          "location": {
+            "from": {
+              "collection": "bookings",
+              "uid": "ToeejCKTYMIO3EiqI5fB:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw"
+            },
+            "to": {
+              "collection": "out-of-service",
+              "uid": "JhX3rv5NJJ96HTd6ck7c"
+            }
+          }
+        }
+      ],
+      "serialized_details": null,
+      "reference": "Journal cutover — reconstructed from the booking's stored breakdown"
+    }
+  ]
+}

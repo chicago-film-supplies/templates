@@ -10,7 +10,13 @@
       "base"
     ]
   },
-  "fixtures": [],
+  "fixtures": [
+    {
+      "slug": "lifecycle-with-loss",
+      "label": "One product, four movement types — the 5-column Reference arm",
+      "description": "The only fixture rendering the CONDITIONAL Reference column — the 5-column arm, where `checkout-no-reference` is the 4-column floor. `hasReference` is `items.some((i) => i.reference)` and the two fixtures cover its two answers; a template that hard-coded the column would pass on this one alone. It also pins `itemColumnCount = 4 + 1`, which `edgeColumn` derives the page's second alignment edge from — so a column-count regression moves the #details block as well as the grid.\n\n⭐ The only fixture reaching all FOUR movement types in one document — `prep`, `check_out`, `check_in`, `mark_lost` (movements 877, 879, 881, 882). That is what exercises `actionLabel`, the generic transform the template carries deliberately instead of a lookup table in `@cfs/core` (the manager's `MovementTimeline.tsx` writes the same `startCase(camelCase(t))`, so `check_in` must read \"Check In\" on both surfaces). A one- or two-type session leaves most of it unrendered.\n\n⚠️ THE TWO WRITERS DIFFER, WHICH IS WHY BOTH CAPTURES ARE KEPT. This is a `journal-migration` reconstruction: `created_by.name` is \"Journal Migration\" rather than a person, and the cutover wrote a sentence into `reference` on EVERY row. The live check-out path writes `reference: \"\"` — that is `checkout-no-reference`. The pair covers both the column arm and both writers; neither is a near-duplicate.\n\nIt is also the only fixture whose quantities deliberately do not reconcile line-to-line: 30 prepped and checked out, 25 checked back in, 5 marked lost. A receipt states what changed hands per movement rather than a net, so the partial return and the loss are two rows, not one adjustment — an edit that starts netting them goes red here.\n\nCaptured from prod session `83bf4176-a4d2-8646-8b1d-5652cf3b5d1c` (order 893, one product, 90 units over 4 rows). Single order, so `showOrderBanner` is FALSE here and the banner arm is not covered — it has no prod carrier and is hand-authored beside these."
+    }
+  ],
   "render": {
     "margin_top": 0.5,
     "margin_bottom": 0.62,
