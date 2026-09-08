@@ -1,0 +1,384 @@
+{
+  "scope": {
+    "kind": "organization",
+    "uid": "gql6Tjro2tSVrgP5NKOH",
+    "name": "Sample text for name....",
+    "uids": [
+      "5spRplcKLjcyqfryluqA",
+      "Eqa6fbxkev7dC8T16aso",
+      "OFEYTO9lSvGZxcCLS7A4",
+      "QNpzUvSGWZErf9s64yue",
+      "SHEVKDnprwbro2w9bNTq",
+      "SoRyB6xf1ByZFsVK2XdY",
+      "TXQfo7P2LXDFzesvdhbS",
+      "XbPouPV72q0pUY4t1c3h",
+      "gql6Tjro2tSVrgP5NKOH",
+      "ocfX39MZjTBkO9uQlFgk",
+      "p5FQMnsTPfD6wNEluAcf",
+      "s7WXepzsnaTbaKF0Et1T",
+      "wipXH66t2poV4SrEfBoV",
+      "y4YTTOL8vSpGwj3nzjI0"
+    ]
+  },
+  "format": "balance_forward",
+  "from_date": "2026-08-01",
+  "to_date": "2026-09-07T00:00:00.000-05:00",
+  "as_of_payment_date": "2026-09-07T00:00:00.000-05:00",
+  "organization_path": [
+    {
+      "uid": "gql6Tjro2tSVrgP5NKOH",
+      "name": "Longview Productions LLC",
+      "derived": false
+    }
+  ],
+  "billing_address": null,
+  "opening_balance_cents": -2829371,
+  "lines": [
+    {
+      "kind": "settlement",
+      "uid_invoice": "iqcywE0r4jqgClvQcN4n",
+      "number": 1710,
+      "uid_settlement": "cf6120b9158ba415331b",
+      "settlement_type": "payment_reversal",
+      "date": "2026-08-09T22:05:21.402-05:00",
+      "reference": "1706-2",
+      "amount_cents": 83250,
+      "effect_cents": 83250,
+      "balance_cents": -2746121,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "SoRyB6xf1ByZFsVK2XdY",
+          "name": "Kestrel Media Group",
+          "derived": true
+        },
+        {
+          "uid": "XbPouPV72q0pUY4t1c3h",
+          "name": "Two Rivers Pictures",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "settlement",
+      "uid_invoice": "ep7pApPxszte18pAXNFY",
+      "number": 1711,
+      "uid_settlement": "0e1d9db068c17b578318",
+      "settlement_type": "payment_reversal",
+      "date": "2026-08-09T22:05:24.737-05:00",
+      "reference": "1708-2",
+      "amount_cents": 111000,
+      "effect_cents": 111000,
+      "balance_cents": -2635121,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "SoRyB6xf1ByZFsVK2XdY",
+          "name": "Kestrel Media Group",
+          "derived": true
+        },
+        {
+          "uid": "XbPouPV72q0pUY4t1c3h",
+          "name": "Two Rivers Pictures",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "settlement",
+      "uid_invoice": "1acGDuRj3rMeluYYOzKo",
+      "number": 2092,
+      "uid_settlement": "a98b4d55860624748236",
+      "settlement_type": "payment_reversal",
+      "date": "2026-08-10T10:54:04.352-05:00",
+      "reference": null,
+      "amount_cents": 324084,
+      "effect_cents": 324084,
+      "balance_cents": -2311037,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "SHEVKDnprwbro2w9bNTq",
+          "name": "Silverline Media Group",
+          "derived": false
+        },
+        {
+          "uid": "ocfX39MZjTBkO9uQlFgk",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "settlement",
+      "uid_invoice": "ogyAB0qbM25tQWhw9IrW",
+      "number": 2079,
+      "uid_settlement": "16e2afbfca661795db02",
+      "settlement_type": "payment_reversal",
+      "date": "2026-08-10T10:58:51.862-05:00",
+      "reference": null,
+      "amount_cents": 539461,
+      "effect_cents": 539461,
+      "balance_cents": -1771576,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "SHEVKDnprwbro2w9bNTq",
+          "name": "Silverline Media Group",
+          "derived": false
+        },
+        {
+          "uid": "ocfX39MZjTBkO9uQlFgk",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "settlement",
+      "uid_invoice": "qZFWlRhaYnlVhTJvfNxo",
+      "number": 2096,
+      "uid_settlement": "487b35fea2c8b54e877c",
+      "settlement_type": "payment_reversal",
+      "date": "2026-08-10T10:59:05.219-05:00",
+      "reference": null,
+      "amount_cents": 277070,
+      "effect_cents": 277070,
+      "balance_cents": -1494506,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "SHEVKDnprwbro2w9bNTq",
+          "name": "Silverline Media Group",
+          "derived": false
+        },
+        {
+          "uid": "ocfX39MZjTBkO9uQlFgk",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "settlement",
+      "uid_invoice": "yOJGuPFR8wDORyuOhgCE",
+      "number": 2093,
+      "uid_settlement": "758fa2292ebc0d38968b",
+      "settlement_type": "payment_reversal",
+      "date": "2026-08-10T11:00:03.854-05:00",
+      "reference": null,
+      "amount_cents": 149950,
+      "effect_cents": 149950,
+      "balance_cents": -1344556,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "SHEVKDnprwbro2w9bNTq",
+          "name": "Silverline Media Group",
+          "derived": false
+        },
+        {
+          "uid": "ocfX39MZjTBkO9uQlFgk",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "settlement",
+      "uid_invoice": "zAuC2YM6fziQJ951NLrC",
+      "number": 2105,
+      "uid_settlement": "6e1f9aae9d9ae26afee9",
+      "settlement_type": "payment_reversal",
+      "date": "2026-08-10T11:00:17.959-05:00",
+      "reference": null,
+      "amount_cents": 597133,
+      "effect_cents": 597133,
+      "balance_cents": -747423,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "SHEVKDnprwbro2w9bNTq",
+          "name": "Silverline Media Group",
+          "derived": false
+        },
+        {
+          "uid": "ocfX39MZjTBkO9uQlFgk",
+          "name": "Sixpoint Pictures Inc",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "settlement",
+      "uid_invoice": "C5v60u4c3IPOACQl9DDD",
+      "number": 1768,
+      "uid_settlement": "93e31248cb4d728e8cbb",
+      "settlement_type": "payment_reversal",
+      "date": "2026-08-20T10:54:55.211-05:00",
+      "reference": null,
+      "amount_cents": 403512,
+      "effect_cents": 403512,
+      "balance_cents": -343911,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "SoRyB6xf1ByZFsVK2XdY",
+          "name": "Kestrel Media Group",
+          "derived": true
+        },
+        {
+          "uid": "XbPouPV72q0pUY4t1c3h",
+          "name": "Two Rivers Pictures",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "settlement",
+      "uid_invoice": "MoOTansk77ElzIc4zAGF",
+      "number": 1770,
+      "uid_settlement": "86400d38417da8307b71",
+      "settlement_type": "payment_reversal",
+      "date": "2026-08-20T10:54:55.934-05:00",
+      "reference": null,
+      "amount_cents": 343911,
+      "effect_cents": 343911,
+      "balance_cents": 0,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "SoRyB6xf1ByZFsVK2XdY",
+          "name": "Kestrel Media Group",
+          "derived": true
+        },
+        {
+          "uid": "XbPouPV72q0pUY4t1c3h",
+          "name": "Two Rivers Pictures",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "invoice",
+      "uid_invoice": "5PimgwLkRCtM7plp2x9Z",
+      "number": 2402,
+      "uid_settlement": null,
+      "settlement_type": null,
+      "date": "2026-09-02T00:00:00.000-05:00",
+      "reference": "PO# BR-0156",
+      "amount_cents": 134920,
+      "effect_cents": 134920,
+      "balance_cents": 134920,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "TXQfo7P2LXDFzesvdhbS",
+          "name": "Kestrel Media Group",
+          "derived": false
+        },
+        {
+          "uid": "5spRplcKLjcyqfryluqA",
+          "name": "Two Rivers Pictures",
+          "derived": false
+        }
+      ]
+    },
+    {
+      "kind": "invoice",
+      "uid_invoice": "9F9BCq771SgrRyzfmjmO",
+      "number": 2403,
+      "uid_settlement": null,
+      "settlement_type": null,
+      "date": "2026-09-02T00:00:00.000-05:00",
+      "reference": null,
+      "amount_cents": 16575,
+      "effect_cents": 16575,
+      "balance_cents": 151495,
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Northgate Pictures LLC",
+          "derived": false
+        },
+        {
+          "uid": "TXQfo7P2LXDFzesvdhbS",
+          "name": "Kestrel Media Group",
+          "derived": false
+        },
+        {
+          "uid": "5spRplcKLjcyqfryluqA",
+          "name": "Two Rivers Pictures",
+          "derived": false
+        }
+      ]
+    }
+  ],
+  "closing_balance_cents": 151495,
+  "aging": {
+    "buckets": [
+      {
+        "bucket": "current",
+        "amount_cents": 151495
+      },
+      {
+        "bucket": "1-30",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "31-60",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "61-90",
+        "amount_cents": 0
+      },
+      {
+        "bucket": "90+",
+        "amount_cents": 0
+      }
+    ],
+    "credit_cents": 0,
+    "total_cents": 151495
+  }
+}
