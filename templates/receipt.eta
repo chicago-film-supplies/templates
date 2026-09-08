@@ -1,3 +1,4 @@
+<%/* draft draft/receipt/968f0c74 */%>
 <%
 // ── What this document IS ───────────────────────────────────────────────────
 //
@@ -139,7 +140,7 @@ const showOrderBanner = groups.length > 1;
       <%/* The instant the action happened, to the minute. A receipt for goods
            changing hands is a record of WHEN, and two check-ins on one day are
            routine — a date alone could not tell them apart. */%>
-      <td><%= it.dateFns.format(it.dateFns.parseISO(session.date), 'MMMM d, yyyy · h:mm a', { in: CHICAGO }) %></td>
+      <td><%= it.dateFns.format(it.dateFns.parseISO(session.date, { in: CHICAGO }), 'MMMM d, yyyy · h:mm a', { in: CHICAGO }) %></td>
       <td><%= session.created_by.name %></td>
     </tr>
   </tbody>
