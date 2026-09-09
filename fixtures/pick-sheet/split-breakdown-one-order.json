@@ -17,12 +17,18 @@
       "subject": "Sample..",
       "organization": {
         "uid": "Omyms3GkmyIreWjSuh2K",
-        "name": "Foxglove Films LLC"
+        "organization_path": [
+          {
+            "uid": "Omyms3GkmyIreWjSuh2K",
+            "name": "Goldenrod Media Inc",
+            "derived": false
+          }
+        ]
       },
       "destinations": [
         {
           "uid": "b8036e25-5b04-4460-902b-20bc5b379b8d",
-          "name": "Grandview Terrace Center",
+          "name": "Prairie Exhibition Hall",
           "destination": {
             "uid": "b8036e25-5b04-4460-902b-20bc5b379b8d",
             "dates": {
@@ -64,13 +70,13 @@
               "address": {
                 "city": "Chicago",
                 "country_name": "United States",
-                "full": "8255 Sycamore Pl, Chicago, IL 54411",
-                "name": "Grandview Terrace Center",
-                "postcode": "60404",
+                "full": "2148 Magnolia Rd, Chicago, IL 95827",
+                "name": "Prairie Exhibition Hall",
+                "postcode": "63536",
                 "region": "IL",
-                "street": "8255 Sycamore Pl",
+                "street": "2148 Magnolia Rd",
                 "street2": "",
-                "mapbox_id": "eFIiCa7fkWTvasqdKBFxRgQjVI8tFBWsYNZtSDdxTCXnQu0fQzO1JTS1AZkuYZZ",
+                "mapbox_id": "qGHpBp8ynNIiomixLLJpCnTqRK0iFSRoALZpQEhnATFmTo2wKxZ5MAT7XBnsDFL",
                 "address_coordinates": null,
                 "user_coordinates": null
               },
@@ -82,13 +88,13 @@
               "address": {
                 "city": "Chicago",
                 "country_name": "United States",
-                "full": "3453 Maple Ave, Chicago, IL 13894",
-                "name": "Grandview Terrace Center",
-                "postcode": "62097",
+                "full": "2148 Magnolia Rd, Chicago, IL 95827",
+                "name": "Prairie Exhibition Hall",
+                "postcode": "63536",
                 "region": "IL",
-                "street": "3453 Maple Ave",
+                "street": "2148 Magnolia Rd",
                 "street2": "",
-                "mapbox_id": "zOLuBs0zwZAgceudOTFjXhRiOF1vQTCoLLHlCDncDLQzAq9kXjQ5KYN7GTbyNZQ",
+                "mapbox_id": "qGHpBp8ynNIiomixLLJpCnTqRK0iFSRoALZpQEhnATFmTo2wKxZ5MAT7XBnsDFL",
                 "address_coordinates": null,
                 "user_coordinates": null
               },
@@ -976,7 +982,13 @@
   "organizations": [
     {
       "uid": "Omyms3GkmyIreWjSuh2K",
-      "name": "Copperline Studios LLC"
+      "organization_path": [
+        {
+          "uid": "Omyms3GkmyIreWjSuh2K",
+          "name": "Goldenrod Media Inc",
+          "derived": false
+        }
+      ]
     }
   ],
   "missing_order_uids": [],
