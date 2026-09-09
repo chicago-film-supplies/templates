@@ -2,32 +2,31 @@
   "scope": {
     "kind": "organization",
     "uid": "Omyms3GkmyIreWjSuh2K",
-    "name": "Sample text for name.........",
     "uids": [
       "Omyms3GkmyIreWjSuh2K"
     ]
   },
   "format": "balance_forward",
-  "from_date": "2026-09-01",
-  "to_date": "2026-09-07T00:00:00.000-05:00",
-  "as_of_payment_date": "2026-09-07T00:00:00.000-05:00",
+  "from_date": "2026-09-01T00:00:00.000-05:00",
+  "to_date": "2026-09-09T00:00:00.000-05:00",
+  "as_of_payment_date": "2026-09-09T00:00:00.000-05:00",
   "organization_path": [
     {
       "uid": "Omyms3GkmyIreWjSuh2K",
-      "name": "Amberline Studios Inc",
+      "name": "Goldenrod Media Inc",
       "derived": false
     }
   ],
   "billing_address": {
     "city": "Rantoul",
     "country_name": "United States",
-    "full": "4451 Juniper Ct, Rantoul, IL, 75424, United States",
-    "name": "Summit Field House",
-    "postcode": "69126",
+    "full": "8325 Pine Ct, Rantoul, IL, 57390, United States",
+    "name": "Cedar Point Lodge",
+    "postcode": "62999",
     "region": "IL",
-    "street": "4451 Juniper Ct",
+    "street": "8325 Pine Ct",
     "street2": "",
-    "mapbox_id": "fQCdWw3bdLQzfqkxQPikOwX6IG45BGP2YHQpLbVuFQf0Bi25HMq8MvEhHRI7CdR",
+    "mapbox_id": "bRIySi3frVXjjvdrKLioRxE8KH47JDM6UGHsApXzRZp7Hs11UAs6HvZyGHG9JvA",
     "address_coordinates": null,
     "user_coordinates": null
   },
@@ -47,7 +46,7 @@
       "organization_path": [
         {
           "uid": "Omyms3GkmyIreWjSuh2K",
-          "name": "Sixpoint Pictures Inc",
+          "name": "Goldenrod Media Inc",
           "derived": false
         }
       ]
@@ -66,7 +65,7 @@
       "organization_path": [
         {
           "uid": "Omyms3GkmyIreWjSuh2K",
-          "name": "Sixpoint Pictures Inc",
+          "name": "Goldenrod Media Inc",
           "derived": false
         }
       ]
@@ -85,7 +84,7 @@
       "organization_path": [
         {
           "uid": "Omyms3GkmyIreWjSuh2K",
-          "name": "Sixpoint Pictures Inc",
+          "name": "Goldenrod Media Inc",
           "derived": false
         }
       ]
@@ -104,7 +103,7 @@
       "organization_path": [
         {
           "uid": "Omyms3GkmyIreWjSuh2K",
-          "name": "Sixpoint Pictures Inc",
+          "name": "Goldenrod Media Inc",
           "derived": false
         }
       ]
