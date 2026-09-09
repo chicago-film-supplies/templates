@@ -85,9 +85,21 @@ if (sheet.orders.length !== sheet.order_count) {
 // never from a literal list here. `BOOKING_BREAKDOWN_KEYS` and
 // `BOOKING_BREAKDOWN_LABELS` are declared beside `BookingBreakdownSchema` in
 // `@cfs/core`; the hand-written copy that used to sit in
-// `manager/src/utils/fulfillmentStage.ts` had already drifted, saying "Out"
-// where the declaration says **"Checked Out"**, and nothing asserted either
-// string.
+// `manager/src/utils/fulfillmentStage.ts` had drifted, saying "Out" where the
+// declaration said "Checked Out".
+//
+// ⭐ **The declaration now says "Out" as well** — the owner settled the wording
+// in the copy’s favour on 2026-09-09 — so that example no longer shows two live
+// strings. It still shows the MECHANISM, which is the point of citing it: a
+// second spelling is how the two come apart, whichever word wins. `out` is now
+// the one breakdown state that is not the past participle of its
+// `FULFILLMENT_STAGE_LABELS` action ("Check Out"), where `prepped` and
+// `returned` still are — deliberate, and bought with the width it saves as the
+// longest heading on an eleven-column sheet.
+//
+// ⚠️ `core/tests/fulfillment-stage.test.ts` pins the string, so a reappearing
+// copy still goes red. That closes the "nothing asserted either string" this
+// paragraph used to end on.
 //
 // ⚠️ `"booked"` is NOT one of them. It is DERIVED — reserved + prepped +
 // out-unless-sale — so an eighth column for it would double-count three of the
