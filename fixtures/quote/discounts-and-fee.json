@@ -39,11 +39,35 @@
 			"customer_returning": false,
 			"dates": {
 				"delivery_start": "2026-07-09T08:00:00.000-05:00",
+				"delivery_start_fs": {
+					"_seconds": 1783602000,
+					"_nanoseconds": 0
+				},
 				"delivery_end": "2026-07-09T10:00:00.000-05:00",
+				"delivery_end_fs": {
+					"_seconds": 1783609200,
+					"_nanoseconds": 0
+				},
 				"collection_start": "2026-07-12T16:00:00.000-05:00",
+				"collection_start_fs": {
+					"_seconds": 1783890000,
+					"_nanoseconds": 0
+				},
 				"collection_end": "2026-07-12T18:00:00.000-05:00",
+				"collection_end_fs": {
+					"_seconds": 1783897200,
+					"_nanoseconds": 0
+				},
 				"charge_start": "2026-07-09T08:00:00.000-05:00",
+				"charge_start_fs": {
+					"_seconds": 1783602000,
+					"_nanoseconds": 0
+				},
 				"charge_end": "2026-07-12T18:00:00.000-05:00",
+				"charge_end_fs": {
+					"_seconds": 1783897200,
+					"_nanoseconds": 0
+				},
 				"days_charged": 3,
 				"days_active": 3
 			},
