@@ -437,12 +437,39 @@ const newestRoutes = newestWalk.routes;
 const missing = [...newestWalk.tags].filter((t) => !floorWalk.tags.has(t)).sort();
 const dropped = [...floorWalk.tags].filter((t) => !newestWalk.tags.has(t)).sort();
 
+// ── The SECOND staleness, and it used to be undetectable ────────────
+//
+// 🔴 **Routes never reached the trigger at all.** Staleness was `missing`
+// alone — the TAG set — and `newestRoutes` was consulted only inside
+// `covers()`, which runs *after* `missing` is already non-empty. So routes
+// refined the suggested ANSWER and never armed the QUESTION: a change that
+// re-routes an existing tag without adding a new one printed
+// `✅ min_core covers every pii tag` and let the floor rot.
+//
+// That is not hypothetical. core#91 re-routes `scope.name` from the generic
+// filler onto a sibling discriminant and adds NO tag, so the floor would have
+// stayed at `beta.376` while every capture below the fix wrote the wrong KIND
+// of fake — `api-cloudrun#837`'s defect class, which templates#251 raised the
+// bar of the answer for without ever arming the trigger.
+//
+// The comparison is the one `covers()` already makes, hoisted to where it can
+// fire. Only paths present at BOTH versions count: a path that exists solely in
+// the newest is a new tag and is `missing`'s business, and reporting it twice
+// would name one change as two.
+const rerouted = floorWalk.routes === null ? [] : [...newestRoutes]
+  .filter(([path, category]) => {
+    const before = floorWalk.routes?.get(path);
+    return before !== undefined && before !== category;
+  })
+  .map(([path, category]) => `${path}: ${floorWalk.routes?.get(path)} → ${category}`)
+  .sort();
+
 const tally = `floor @${floorVersion}: ${floorWalk.tags.size} tagged leaf(s) across ` +
   `${floorWalk.collections} collection(s) · newest @${newest}: ` +
   `${newestWalk.tags.size} across ${newestWalk.collections} · ` +
   `${published.length} version(s) published`;
 
-if (missing.length === 0) {
+if (missing.length === 0 && rerouted.length === 0) {
   const droppedLine = dropped.length === 0 ? "" : `\n\n` +
     `    ℹ️  ${dropped.length} tagged leaf(s) present at the floor are GONE from\n` +
     `        ${newest}. That is a rename or a removal, not staleness — but the\n` +
@@ -499,12 +526,19 @@ const { version: suggestion, note: suggestionNote } = await suggestFloor(
 
 console.error(
   `\n🔴 lint-capture-floor: ${FLOOR_FILE}'s min_core is STALE.\n\n` +
-    `    ${missing.length} pii tag(s) exist in @cfs/core@${newest} that ` +
-    `@cfs/core@${floorVersion} does not have:\n` +
-    missing.map((t) => `      + ${t}`).join("\n") +
-    `\n\n` +
-    `    A build at the floor passes captureFloorVerdict and writes ` +
-    `those\n    field(s) to git UNMASKED. Raise the floor:\n\n` +
+    (missing.length === 0 ? "" : `    ${missing.length} pii tag(s) exist in @cfs/core@${newest} that ` +
+      `@cfs/core@${floorVersion} does not have:\n` +
+      missing.map((t) => `      + ${t}`).join("\n") + `\n\n`) +
+    // A ROUTE raise, not a TAG raise. Worth naming as such in the output: the
+    // remedy is identical but the reason is not, and a reader who greps the
+    // floor's `why` for a new field name will not find one.
+    (rerouted.length === 0 ? "" : `    ${rerouted.length} pii tag(s) are ROUTED DIFFERENTLY at ` +
+      `@cfs/core@${newest} than at the floor.\n    No tag was added — this is a ` +
+      `ROUTE raise, so the \`why\` will not name a new field:\n` +
+      rerouted.map((r) => `      ~ ${r}`).join("\n") + `\n\n`) +
+    `    A build at the floor passes captureFloorVerdict and writes those\n` +
+    `    field(s) to git ${missing.length > 0 ? "UNMASKED" : "under the WRONG MASK"}. ` +
+    `Raise the floor:\n\n` +
     `      ${FLOOR_FILE}  min_core: "${suggestion}"\n` +
     `      (${suggestionNote})\n\n` +
     `    ℹ️  That version may sit ABOVE the one that introduced the tag(s)\n` +

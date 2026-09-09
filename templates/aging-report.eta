@@ -137,16 +137,20 @@ const residualCents = totals.total_cents - groupedTotalCents;
 
 // ── The scope line ──────────────────────────────────────────────────────────
 //
-// ⭐ `scope.name` is safe to print here, and that is worth stating because the
-// sibling grammars warn about the same field. On a `pick-sheets` scope it can be
-// a street address, and `AgingScope.name` is `""` on an `all` run — but where it
-// IS populated it is `composeOrgName(org.path)` (`resolveOrganizationSubtree`),
-// the full chain rather than the leaf segment #923 was filed about. So the guard
-// below is on `kind`, which is the field that actually decides, never on the
-// name being non-empty.
+// ⭐ **`scope.name` is GONE (core#92) and the chain replaced it.** The old note
+// here argued the field was safe to print because "where it IS populated it is
+// `composeOrgName(org.path)`" — which was true, and was the argument for
+// deleting it: a label composed on the server and stored beside the chain it
+// composed from is a second owner of one fact. `organization_path` is the chain,
+// and this line is now the one place the label is composed for this document.
+//
+// The guard stays on `kind`, which is the field that actually decides — never on
+// the composed name being non-empty. `organization_path` is null on an `all`
+// run, which is a statement about the RUN ("not about one account") rather than
+// about the account.
 const scopeText = scope.kind === "all"
   ? "Every open receivable"
-  : `${scope.name}${scope.uids.length > 1 ? ` and ${scope.uids.length - 1} sub-account${scope.uids.length === 2 ? "" : "s"}` : ""}`;
+  : `${it.organizations.composeOrgName(report.organization_path ?? [])}${scope.uids.length > 1 ? ` and ${scope.uids.length - 1} sub-account${scope.uids.length === 2 ? "" : "s"}` : ""}`;
 
 // ⚠️ **The anchor is printed because it CHANGES EVERY BUCKET on the page.**
 // `due_date` matches the live Xero tenant, whose aged-receivables links all
@@ -165,7 +169,8 @@ const anchorText = report.anchor === "due_date" ? "Due date" : "Invoice date";
      is no addressee because the document is not sent to anyone. The letterhead
      therefore renders our identity and the logo, and `#bill-to` stays empty.
 
-     ⚠️ Do NOT “improve” this by passing `scope.name` on a scoped run. The field
+     ⚠️ Do NOT “improve” this by passing the scoped account on a scoped run
+     (it was `scope.name`; it is `organization_path` since core#92). The field
      is `#bill-to` — it states who the document is FOR — and an internal report
      is not for the customer it is about. The scope is stated as a parameter in
      `#details` below, which is what it is. */%>
