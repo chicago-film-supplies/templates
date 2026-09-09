@@ -16,7 +16,7 @@
   "quantity": 90,
   "created_by": {
     "uid": "journal-migration",
-    "name": "Parker Bishop"
+    "name": "Morgan Owen"
   },
   "orders": [
     {
@@ -26,7 +26,13 @@
   ],
   "organization": {
     "uid": "uKy6p0sk0ZXpc7ThwEdf",
-    "name": "Wayfarer Productions LLC"
+    "organization_path": [
+      {
+        "uid": "uKy6p0sk0ZXpc7ThwEdf",
+        "name": "Kingfisher Media Group",
+        "derived": false
+      }
+    ]
   },
   "items": [
     {
@@ -43,6 +49,11 @@
         "from": "reserved",
         "to": "prepped"
       },
+      "owner_path": [
+        "10b97f63-216c-4f8f-a8a8-7fad040ed301",
+        "0ca9aaa5-656c-4d0b-b3f2-20074d4984b5",
+        "kETzgYqCmiCLZvjwBfpE"
+      ],
       "lines": [],
       "serialized_details": null,
       "reference": "Journal cutover — reconstructed from the booking's stored breakdown"
@@ -61,6 +72,11 @@
         "from": "prepped",
         "to": "out"
       },
+      "owner_path": [
+        "10b97f63-216c-4f8f-a8a8-7fad040ed301",
+        "0ca9aaa5-656c-4d0b-b3f2-20074d4984b5",
+        "kETzgYqCmiCLZvjwBfpE"
+      ],
       "lines": [
         {
           "quantity": 30,
@@ -93,6 +109,11 @@
         "from": "out",
         "to": "returned"
       },
+      "owner_path": [
+        "10b97f63-216c-4f8f-a8a8-7fad040ed301",
+        "0ca9aaa5-656c-4d0b-b3f2-20074d4984b5",
+        "kETzgYqCmiCLZvjwBfpE"
+      ],
       "lines": [
         {
           "quantity": 25,
@@ -125,6 +146,11 @@
         "from": "out",
         "to": "lost"
       },
+      "owner_path": [
+        "10b97f63-216c-4f8f-a8a8-7fad040ed301",
+        "0ca9aaa5-656c-4d0b-b3f2-20074d4984b5",
+        "kETzgYqCmiCLZvjwBfpE"
+      ],
       "lines": [
         {
           "quantity": 5,

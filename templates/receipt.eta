@@ -127,7 +127,9 @@ const showOrderBanner = groups.length > 1;
      partial guards the name for it. */%>
 <%~ await includeAsync("@partials/shared/letterhead.eta", {
      title: "Receipt",
-     customer_name: session.organization?.name ?? null,
+     customer_name: session.organization
+       ? it.organizations.composeOrgName(session.organization.organization_path ?? [])
+       : null,
      billing_address: null,
    }) %>
 

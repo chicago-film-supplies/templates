@@ -28,7 +28,7 @@
   "quantity": 280,
   "created_by": {
     "uid": "KXj2LPztjhdB5Wf3qwaR",
-    "name": "Skyler Glenn"
+    "name": "Rowan Carmichael"
   },
   "orders": [
     {
@@ -38,7 +38,13 @@
   ],
   "organization": {
     "uid": "kmyrrrizBnD4J2ADzThK",
-    "name": "Two Rivers Pictures"
+    "organization_path": [
+      {
+        "uid": "kmyrrrizBnD4J2ADzThK",
+        "name": "Lanternhouse Films LLC",
+        "derived": false
+      }
+    ]
   },
   "items": [
     {
@@ -55,6 +61,12 @@
         "from": "reserved",
         "to": "prepped"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx",
+        "3kzv0sanOljc25psMVkU"
+      ],
       "lines": [],
       "serialized_details": null,
       "reference": ""
@@ -73,6 +85,12 @@
         "from": "prepped",
         "to": "out"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx",
+        "3kzv0sanOljc25psMVkU"
+      ],
       "lines": [
         {
           "quantity": 56,
@@ -105,6 +123,12 @@
         "from": "reserved",
         "to": "prepped"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx",
+        "5H3Z7i8guIkuXOaYOVqb"
+      ],
       "lines": [],
       "serialized_details": null,
       "reference": ""
@@ -123,6 +147,12 @@
         "from": "prepped",
         "to": "out"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx",
+        "5H3Z7i8guIkuXOaYOVqb"
+      ],
       "lines": [
         {
           "quantity": 30,
@@ -155,6 +185,12 @@
         "from": "reserved",
         "to": "prepped"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx",
+        "9jjGlzOiKG6ap3LpAGDA"
+      ],
       "lines": [],
       "serialized_details": null,
       "reference": ""
@@ -173,6 +209,12 @@
         "from": "prepped",
         "to": "out"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx",
+        "9jjGlzOiKG6ap3LpAGDA"
+      ],
       "lines": [
         {
           "quantity": 10,
@@ -205,6 +247,12 @@
         "from": "reserved",
         "to": "prepped"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx",
+        "HM7k3NDHG1GJ2uaykMKC"
+      ],
       "lines": [],
       "serialized_details": null,
       "reference": ""
@@ -223,6 +271,12 @@
         "from": "prepped",
         "to": "out"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx",
+        "HM7k3NDHG1GJ2uaykMKC"
+      ],
       "lines": [
         {
           "quantity": 7,
@@ -255,6 +309,11 @@
         "from": "reserved",
         "to": "prepped"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx"
+      ],
       "lines": [],
       "serialized_details": null,
       "reference": ""
@@ -273,6 +332,11 @@
         "from": "prepped",
         "to": "out"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx"
+      ],
       "lines": [
         {
           "quantity": 10,
@@ -305,6 +369,12 @@
         "from": "reserved",
         "to": "prepped"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx",
+        "Ms2nlTfZZMoaR8yZwudF"
+      ],
       "lines": [],
       "serialized_details": null,
       "reference": ""
@@ -323,6 +393,12 @@
         "from": "prepped",
         "to": "out"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "J7svp77V0tLx6xBaKRBx",
+        "Ms2nlTfZZMoaR8yZwudF"
+      ],
       "lines": [
         {
           "quantity": 7,
@@ -355,6 +431,12 @@
         "from": "reserved",
         "to": "prepped"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "ZsN1H4wR7vgLQnIf8gzX",
+        "WaQhdQliUvS0LCx5OUTv"
+      ],
       "lines": [],
       "serialized_details": null,
       "reference": ""
@@ -373,6 +455,12 @@
         "from": "prepped",
         "to": "out"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "ZsN1H4wR7vgLQnIf8gzX",
+        "WaQhdQliUvS0LCx5OUTv"
+      ],
       "lines": [
         {
           "quantity": 4,
@@ -405,6 +493,11 @@
         "from": "reserved",
         "to": "prepped"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "ZsN1H4wR7vgLQnIf8gzX"
+      ],
       "lines": [],
       "serialized_details": null,
       "reference": ""
@@ -423,6 +516,11 @@
         "from": "prepped",
         "to": "out"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "ZsN1H4wR7vgLQnIf8gzX"
+      ],
       "lines": [
         {
           "quantity": 4,
@@ -455,6 +553,12 @@
         "from": "reserved",
         "to": "prepped"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "ZsN1H4wR7vgLQnIf8gzX",
+        "p2YQ9RZY8djeejSK2i0d"
+      ],
       "lines": [],
       "serialized_details": null,
       "reference": ""
@@ -473,6 +577,12 @@
         "from": "prepped",
         "to": "out"
       },
+      "owner_path": [
+        "296b5655-0250-4fa1-9872-641c8640ec97",
+        "e771a6f3-3f3f-4ee6-8526-c348f53324fa",
+        "ZsN1H4wR7vgLQnIf8gzX",
+        "p2YQ9RZY8djeejSK2i0d"
+      ],
       "lines": [
         {
           "quantity": 12,

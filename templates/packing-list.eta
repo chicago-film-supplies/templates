@@ -174,8 +174,12 @@ const legLabel = sheet.leg === "collection" ? "Collection" : "Delivery";
 // ⭐ Read off `sheet.organizations`, the distinct set across EVERY page rather
 // than off the page, so this cannot become "one customer" on a document that was
 // assembled correctly but happens to begin with one.
+// core#93: the sheet carries the CHAIN, not a pre-joined name, so the label is
+// composed here by the same `composeOrgName` that authors every other account
+// label. `organization_path` is null exactly when the uid is — an unattributed
+// order, which is "no customer" rather than "a customer with no name".
 const customerName = sheet.organizations.length === 1
-  ? sheet.organizations[0].name
+  ? it.organizations.composeOrgName(sheet.organizations[0].organization_path ?? [])
   : null;
 
 // Both banner gates follow the same principle — a divider that names the only
@@ -375,7 +379,7 @@ const returnSpan = addressColumnCount - addressBoundary;
              customers (otherwise the letterhead already said it once). */%>
       <tr class="order-banner">
         <td class="wide" colspan="<%= bannerSpan %>">
-          <strong>Order #<%= section.order.number %></strong><%= section.order.subject ? ` — ${section.order.subject}` : "" %><% if (customerName === null && section.order.organization.name) { %> · <%= section.order.organization.name %><% } %>
+          <strong>Order #<%= section.order.number %></strong><%= section.order.subject ? ` — ${section.order.subject}` : "" %><% const orderOrgName = it.organizations.composeOrgName(section.order.organization.organization_path ?? []); %><% if (customerName === null && orderOrgName) { %> · <%= orderOrgName %><% } %>
         </td>
       </tr>
         <% } %>

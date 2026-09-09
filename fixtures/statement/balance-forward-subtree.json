@@ -2,7 +2,6 @@
   "scope": {
     "kind": "organization",
     "uid": "gql6Tjro2tSVrgP5NKOH",
-    "name": "Sample text for name....",
     "uids": [
       "5spRplcKLjcyqfryluqA",
       "Eqa6fbxkev7dC8T16aso",
@@ -21,13 +20,13 @@
     ]
   },
   "format": "balance_forward",
-  "from_date": "2026-08-01",
-  "to_date": "2026-09-07T00:00:00.000-05:00",
-  "as_of_payment_date": "2026-09-07T00:00:00.000-05:00",
+  "from_date": "2026-08-01T00:00:00.000-05:00",
+  "to_date": "2026-09-09T00:00:00.000-05:00",
+  "as_of_payment_date": "2026-09-09T00:00:00.000-05:00",
   "organization_path": [
     {
       "uid": "gql6Tjro2tSVrgP5NKOH",
-      "name": "Longview Productions LLC",
+      "name": "Nightjar Productions LLC",
       "derived": false
     }
   ],
@@ -48,17 +47,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "SoRyB6xf1ByZFsVK2XdY",
-          "name": "Kestrel Media Group",
+          "name": "Kingfisher Media Group",
           "derived": true
         },
         {
           "uid": "XbPouPV72q0pUY4t1c3h",
-          "name": "Two Rivers Pictures",
+          "name": "Lanternhouse Films LLC",
           "derived": false
         }
       ]
@@ -77,17 +76,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "SoRyB6xf1ByZFsVK2XdY",
-          "name": "Kestrel Media Group",
+          "name": "Kingfisher Media Group",
           "derived": true
         },
         {
           "uid": "XbPouPV72q0pUY4t1c3h",
-          "name": "Two Rivers Pictures",
+          "name": "Lanternhouse Films LLC",
           "derived": false
         }
       ]
@@ -106,17 +105,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "SHEVKDnprwbro2w9bNTq",
-          "name": "Silverline Media Group",
+          "name": "Thistledown Films LLC",
           "derived": false
         },
         {
           "uid": "ocfX39MZjTBkO9uQlFgk",
-          "name": "Sixpoint Pictures Inc",
+          "name": "Goldenrod Media Inc",
           "derived": false
         }
       ]
@@ -135,17 +134,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "SHEVKDnprwbro2w9bNTq",
-          "name": "Silverline Media Group",
+          "name": "Thistledown Films LLC",
           "derived": false
         },
         {
           "uid": "ocfX39MZjTBkO9uQlFgk",
-          "name": "Sixpoint Pictures Inc",
+          "name": "Goldenrod Media Inc",
           "derived": false
         }
       ]
@@ -164,17 +163,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "SHEVKDnprwbro2w9bNTq",
-          "name": "Silverline Media Group",
+          "name": "Thistledown Films LLC",
           "derived": false
         },
         {
           "uid": "ocfX39MZjTBkO9uQlFgk",
-          "name": "Sixpoint Pictures Inc",
+          "name": "Goldenrod Media Inc",
           "derived": false
         }
       ]
@@ -193,17 +192,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "SHEVKDnprwbro2w9bNTq",
-          "name": "Silverline Media Group",
+          "name": "Thistledown Films LLC",
           "derived": false
         },
         {
           "uid": "ocfX39MZjTBkO9uQlFgk",
-          "name": "Sixpoint Pictures Inc",
+          "name": "Goldenrod Media Inc",
           "derived": false
         }
       ]
@@ -222,17 +221,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "SHEVKDnprwbro2w9bNTq",
-          "name": "Silverline Media Group",
+          "name": "Thistledown Films LLC",
           "derived": false
         },
         {
           "uid": "ocfX39MZjTBkO9uQlFgk",
-          "name": "Sixpoint Pictures Inc",
+          "name": "Goldenrod Media Inc",
           "derived": false
         }
       ]
@@ -251,17 +250,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "SoRyB6xf1ByZFsVK2XdY",
-          "name": "Kestrel Media Group",
+          "name": "Kingfisher Media Group",
           "derived": true
         },
         {
           "uid": "XbPouPV72q0pUY4t1c3h",
-          "name": "Two Rivers Pictures",
+          "name": "Lanternhouse Films LLC",
           "derived": false
         }
       ]
@@ -280,17 +279,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "SoRyB6xf1ByZFsVK2XdY",
-          "name": "Kestrel Media Group",
+          "name": "Kingfisher Media Group",
           "derived": true
         },
         {
           "uid": "XbPouPV72q0pUY4t1c3h",
-          "name": "Two Rivers Pictures",
+          "name": "Lanternhouse Films LLC",
           "derived": false
         }
       ]
@@ -309,17 +308,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "TXQfo7P2LXDFzesvdhbS",
-          "name": "Kestrel Media Group",
+          "name": "Hollowpine Films Group",
           "derived": false
         },
         {
           "uid": "5spRplcKLjcyqfryluqA",
-          "name": "Two Rivers Pictures",
+          "name": "Northgate Pictures LLC",
           "derived": false
         }
       ]
@@ -338,17 +337,17 @@
       "organization_path": [
         {
           "uid": "gql6Tjro2tSVrgP5NKOH",
-          "name": "Northgate Pictures LLC",
+          "name": "Nightjar Productions LLC",
           "derived": false
         },
         {
           "uid": "TXQfo7P2LXDFzesvdhbS",
-          "name": "Kestrel Media Group",
+          "name": "Hollowpine Films Group",
           "derived": false
         },
         {
           "uid": "5spRplcKLjcyqfryluqA",
-          "name": "Two Rivers Pictures",
+          "name": "Northgate Pictures LLC",
           "derived": false
         }
       ]

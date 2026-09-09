@@ -1,76 +1,92 @@
 {
   "scope": {
     "kind": "organization",
-    "uid": "nTpq3YIY4cth5todd4PV",
-    "name": "Sample name......",
+    "uid": "s7WXepzsnaTbaKF0Et1T",
+    "name": "Rooksbridge Media Group",
     "uids": [
-      "nTpq3YIY4cth5todd4PV"
+      "s7WXepzsnaTbaKF0Et1T"
     ]
   },
   "gate": "all",
   "leg": "delivery",
   "orders": [
     {
-      "uid": "OXrpYQkLQGO7aopOFsAW",
-      "number": 964,
-      "status": "active",
-      "subject": "Sample subject.",
+      "uid": "dtccFoAX5waFiC9115ks",
+      "number": 970,
+      "status": "complete",
+      "subject": "Sample subject....",
       "organization": {
-        "uid": "nTpq3YIY4cth5todd4PV",
-        "name": "Northgate Pictures LLC"
+        "uid": "s7WXepzsnaTbaKF0Et1T",
+        "organization_path": [
+          {
+            "uid": "gql6Tjro2tSVrgP5NKOH",
+            "name": "Nightjar Productions LLC",
+            "derived": false
+          },
+          {
+            "uid": "TXQfo7P2LXDFzesvdhbS",
+            "name": "Hollowpine Films Group",
+            "derived": false
+          },
+          {
+            "uid": "s7WXepzsnaTbaKF0Et1T",
+            "name": "Rooksbridge Media Group",
+            "derived": false
+          }
+        ]
       },
       "destinations": [
         {
-          "uid": "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
+          "uid": "d42416f2-908d-43c5-b155-1b92b09e0cb5",
           "name": "Prairie Exhibition Hall",
           "destination": {
-            "uid": "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
+            "uid": "d42416f2-908d-43c5-b155-1b92b09e0cb5",
             "dates": {
-              "delivery_start": "2026-08-10T09:00:00.000-05:00",
+              "delivery_start": "2026-07-30T09:00:00.000-05:00",
               "delivery_start_fs": {
-                "_seconds": 1786370400,
+                "_seconds": 1785420000,
                 "_nanoseconds": 0
               },
-              "delivery_end": "2026-08-10T09:00:00.000-05:00",
+              "delivery_end": "2026-07-30T09:00:00.000-05:00",
               "delivery_end_fs": {
-                "_seconds": 1786370400,
+                "_seconds": 1785420000,
                 "_nanoseconds": 0
               },
-              "collection_start": "2026-09-10T15:00:00.000-05:00",
+              "collection_start": "2026-10-23T15:00:00.000-05:00",
               "collection_start_fs": {
-                "_seconds": 1789070400,
+                "_seconds": 1792785600,
                 "_nanoseconds": 0
               },
-              "collection_end": "2026-09-10T15:00:00.000-05:00",
+              "collection_end": "2026-10-23T15:00:00.000-05:00",
               "collection_end_fs": {
-                "_seconds": 1789070400,
+                "_seconds": 1792785600,
                 "_nanoseconds": 0
               },
-              "charge_start": "2026-08-10T09:00:00.000-05:00",
+              "charge_start": "2026-07-30T09:00:00.000-05:00",
               "charge_start_fs": {
-                "_seconds": 1786370400,
+                "_seconds": 1785420000,
                 "_nanoseconds": 0
               },
-              "charge_end": "2026-09-10T15:00:00.000-05:00",
+              "charge_end": "2026-10-22T15:00:00.000-05:00",
               "charge_end_fs": {
-                "_seconds": 1789070400,
+                "_seconds": 1792699200,
                 "_nanoseconds": 0
               },
-              "days_active": 23,
-              "days_charged": 23
+              "days_active": 60,
+              "days_charged": 59
             },
             "delivery": {
               "uid": "vTn8CTAwwJHEJZLBzsOw",
               "address": {
                 "city": "Chicago",
                 "country_name": "United States",
-                "full": "8255 Sycamore Pl, Chicago, IL, United States",
-                "name": "Ironworks Loft Space",
-                "postcode": "60404",
+                "full": "2148 Magnolia Rd, Chicago, IL 95827",
+                "name": "Prairie Exhibition Hall",
+                "postcode": "63536",
                 "region": "IL",
-                "street": "8255 Sycamore Pl",
+                "street": "2148 Magnolia Rd",
                 "street2": "",
-                "mapbox_id": "eFIiCa7fkWTvasqdKBFxRgQjVI8tFBWsYNZtSDdxTCXnQu0fQzO1JTS1AZkuYZZ",
+                "mapbox_id": "qGHpBp8ynNIiomixLLJpCnTqRK0iFSRoALZpQEhnATFmTo2wKxZ5MAT7XBnsDFL",
                 "address_coordinates": null,
                 "user_coordinates": null
               },
@@ -82,13 +98,13 @@
               "address": {
                 "city": "Chicago",
                 "country_name": "United States",
-                "full": "3453 Maple Ave, Chicago, IL, United States",
-                "name": "Brookfield Commons Lot",
-                "postcode": "62097",
+                "full": "2148 Magnolia Rd, Chicago, IL 95827",
+                "name": "Prairie Exhibition Hall",
+                "postcode": "63536",
                 "region": "IL",
-                "street": "3453 Maple Ave",
+                "street": "2148 Magnolia Rd",
                 "street2": "",
-                "mapbox_id": "zOLuBs0zwZAgceudOTFjXhRiOF1vQTCoLLHlCDncDLQzAq9kXjQ5KYN7GTbyNZQ",
+                "mapbox_id": "qGHpBp8ynNIiomixLLJpCnTqRK0iFSRoALZpQEhnATFmTo2wKxZ5MAT7XBnsDFL",
                 "address_coordinates": null,
                 "user_coordinates": null
               },
@@ -98,46 +114,46 @@
             "customer_collecting": true,
             "customer_returning": true
           },
-          "due_at": "2026-08-10T09:00:00.000-05:00",
-          "quantity": 5,
+          "due_at": "2026-07-30T09:00:00.000-05:00",
+          "quantity": 51,
           "breakdown": {
             "damaged": 0,
             "lost": 0,
             "out": 0,
             "prepped": 0,
             "quoted": 0,
-            "reserved": 5,
-            "returned": 0
+            "reserved": 0,
+            "returned": 51
           },
           "bookings": [
             {
-              "uid": "OXrpYQkLQGO7aopOFsAW:Vc6h3YvLOL9zmcpuDpXI:vTn8CTAwwJHEJZLBzsOw",
-              "uid_product": "Vc6h3YvLOL9zmcpuDpXI",
-              "name": "Metro Rack (18\" x 36\")",
+              "uid": "dtccFoAX5waFiC9115ks:L4yEx8oVkk9Vfj8EG14n:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "L4yEx8oVkk9Vfj8EG14n",
+              "name": "Safety Vest (ANSI II)",
               "type": "rental",
               "status": "active",
-              "quantity": 2,
-              "shortage": 1,
+              "quantity": 50,
+              "shortage": 0,
               "breakdown": {
                 "damaged": 0,
                 "lost": 0,
                 "out": 0,
                 "prepped": 0,
                 "quoted": 0,
-                "reserved": 2,
-                "returned": 0
+                "reserved": 0,
+                "returned": 50
               },
               "stores": [
                 {
                   "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
                   "name": "Fillmore",
                   "default": true,
-                  "quantity": 1,
+                  "quantity": 50,
                   "locations": [
                     {
-                      "uid_location": "hWIDMupo3ToJKjoBFQl9",
-                      "name": "Unknown Location - Metro Rack (18\" x 36\")",
-                      "quantity": 1,
+                      "uid_location": "FcG11vXvhkl3lPxLpegb",
+                      "name": "Unknown Location - Safety Vest (ANSI II)",
+                      "quantity": 50,
                       "default": false
                     }
                   ]
@@ -145,40 +161,21 @@
               ]
             },
             {
-              "uid": "OXrpYQkLQGO7aopOFsAW:RZWp0RITeUIGSE9mIfTb:vTn8CTAwwJHEJZLBzsOw",
-              "uid_product": "RZWp0RITeUIGSE9mIfTb",
-              "name": "Driving Sign Kit",
+              "uid": "dtccFoAX5waFiC9115ks:hSEZoPfyGEkRNmLpuFoX:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "hSEZoPfyGEkRNmLpuFoX",
+              "name": "Duffel Bag for Safety Vests",
               "type": "rental",
               "status": "active",
               "quantity": 1,
-              "shortage": 1,
+              "shortage": 0,
               "breakdown": {
                 "damaged": 0,
                 "lost": 0,
                 "out": 0,
                 "prepped": 0,
                 "quoted": 0,
-                "reserved": 1,
-                "returned": 0
-              },
-              "stores": []
-            },
-            {
-              "uid": "OXrpYQkLQGO7aopOFsAW:jC2BBRgZL5mXAfYAu9bf:vTn8CTAwwJHEJZLBzsOw",
-              "uid_product": "jC2BBRgZL5mXAfYAu9bf",
-              "name": "Stop/Slow Paddle Sign",
-              "type": "rental",
-              "status": "active",
-              "quantity": 2,
-              "shortage": 1,
-              "breakdown": {
-                "damaged": 0,
-                "lost": 0,
-                "out": 0,
-                "prepped": 0,
-                "quoted": 0,
-                "reserved": 2,
-                "returned": 0
+                "reserved": 0,
+                "returned": 1
               },
               "stores": [
                 {
@@ -188,8 +185,8 @@
                   "quantity": 1,
                   "locations": [
                     {
-                      "uid_location": "MOks5uHrDAHiV4OCPv2Q",
-                      "name": "Unknown Location - Stop/Slow Paddle Sign",
+                      "uid_location": "dWuuIbE1nkBeGVTXtkeM",
+                      "name": "Unknown Location - Duffel Bag for Safety Vests",
                       "quantity": 1,
                       "default": false
                     }
@@ -201,194 +198,375 @@
           "items": [
             {
               "item": {
-                "uid": "a9cde9a3-cd2f-487d-9687-795b06390e25",
-                "type": "group",
-                "name": "Carts & Ramps",
-                "path": [
-                  "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
-                  "a9cde9a3-cd2f-487d-9687-795b06390e25"
-                ],
-                "description": ""
-              },
-              "uid_booking": null
-            },
-            {
-              "item": {
-                "uid": "Vc6h3YvLOL9zmcpuDpXI",
-                "type": "rental",
-                "name": "Metro Rack (18\" x 36\")",
-                "description": "",
-                "quantity": 2,
-                "stock_method": "bulk",
-                "path": [
-                  "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
-                  "a9cde9a3-cd2f-487d-9687-795b06390e25",
-                  "Vc6h3YvLOL9zmcpuDpXI"
-                ],
-                "order_number": 964,
-                "uid_order": "OXrpYQkLQGO7aopOFsAW"
-              },
-              "uid_booking": "OXrpYQkLQGO7aopOFsAW:Vc6h3YvLOL9zmcpuDpXI:vTn8CTAwwJHEJZLBzsOw"
-            },
-            {
-              "item": {
-                "uid": "020f17d3-1cf8-474d-9063-c676cafc06c2",
+                "uid": "f3b50406-807a-4bb9-83c6-83d05c01922e",
                 "type": "group",
                 "name": "Traffic, Safety & Signage",
                 "path": [
-                  "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
-                  "020f17d3-1cf8-474d-9063-c676cafc06c2"
+                  "d42416f2-908d-43c5-b155-1b92b09e0cb5",
+                  "f3b50406-807a-4bb9-83c6-83d05c01922e"
                 ],
                 "description": ""
               },
-              "uid_booking": null
+              "uid_booking": null,
+              "owner_path": null
             },
             {
               "item": {
-                "uid": "RZWp0RITeUIGSE9mIfTb",
+                "uid": "0BIQ73UMiHTtd8mo0yNk",
                 "type": "rental",
-                "name": "Driving Sign Kit",
-                "description": "8x Crew Parking, 8x Arrows, 4x Set, 4x Next Set, 4x Lunch, 4x Holding, 4x BG Parking, 2x Wrong Way",
+                "name": "Safety Vest (Duffel Bag of 50)",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "none",
+                "path": [
+                  "d42416f2-908d-43c5-b155-1b92b09e0cb5",
+                  "f3b50406-807a-4bb9-83c6-83d05c01922e",
+                  "0BIQ73UMiHTtd8mo0yNk"
+                ],
+                "order_number": 970,
+                "uid_order": "dtccFoAX5waFiC9115ks"
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "L4yEx8oVkk9Vfj8EG14n",
+                "type": "rental",
+                "name": "Safety Vest (ANSI II)",
+                "description": "",
+                "quantity": 50,
+                "stock_method": "bulk",
+                "path": [
+                  "d42416f2-908d-43c5-b155-1b92b09e0cb5",
+                  "f3b50406-807a-4bb9-83c6-83d05c01922e",
+                  "0BIQ73UMiHTtd8mo0yNk",
+                  "L4yEx8oVkk9Vfj8EG14n"
+                ],
+                "order_number": 970,
+                "uid_order": "dtccFoAX5waFiC9115ks"
+              },
+              "uid_booking": "dtccFoAX5waFiC9115ks:L4yEx8oVkk9Vfj8EG14n:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "hSEZoPfyGEkRNmLpuFoX",
+                "type": "rental",
+                "name": "Duffel Bag for Safety Vests",
+                "description": "",
                 "quantity": 1,
                 "stock_method": "bulk",
                 "path": [
-                  "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
-                  "020f17d3-1cf8-474d-9063-c676cafc06c2",
-                  "RZWp0RITeUIGSE9mIfTb"
+                  "d42416f2-908d-43c5-b155-1b92b09e0cb5",
+                  "f3b50406-807a-4bb9-83c6-83d05c01922e",
+                  "0BIQ73UMiHTtd8mo0yNk",
+                  "hSEZoPfyGEkRNmLpuFoX"
                 ],
-                "order_number": 964,
-                "uid_order": "OXrpYQkLQGO7aopOFsAW"
+                "order_number": 970,
+                "uid_order": "dtccFoAX5waFiC9115ks"
               },
-              "uid_booking": "OXrpYQkLQGO7aopOFsAW:RZWp0RITeUIGSE9mIfTb:vTn8CTAwwJHEJZLBzsOw"
-            },
-            {
-              "item": {
-                "uid": "jC2BBRgZL5mXAfYAu9bf",
-                "type": "rental",
-                "name": "Stop/Slow Paddle Sign",
-                "description": "",
-                "quantity": 2,
-                "stock_method": "bulk",
-                "path": [
-                  "05ec0c0a-e22b-4c0f-834a-ea9eee1301c2",
-                  "020f17d3-1cf8-474d-9063-c676cafc06c2",
-                  "jC2BBRgZL5mXAfYAu9bf"
-                ],
-                "order_number": 964,
-                "uid_order": "OXrpYQkLQGO7aopOFsAW"
-              },
-              "uid_booking": "OXrpYQkLQGO7aopOFsAW:jC2BBRgZL5mXAfYAu9bf:vTn8CTAwwJHEJZLBzsOw"
+              "uid_booking": "dtccFoAX5waFiC9115ks:hSEZoPfyGEkRNmLpuFoX:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
             }
           ]
         }
       ]
     },
     {
-      "uid": "eXQBQR7k3lYr2iAwv6nF",
-      "number": 1020,
-      "status": "complete",
-      "subject": "Sample text.",
+      "uid": "Unv8qfr4EnRYxhFPnBtE",
+      "number": 1013,
+      "status": "reserved",
+      "subject": "Sample....",
       "organization": {
-        "uid": "nTpq3YIY4cth5todd4PV",
-        "name": "Northgate Pictures LLC"
+        "uid": "s7WXepzsnaTbaKF0Et1T",
+        "organization_path": [
+          {
+            "uid": "gql6Tjro2tSVrgP5NKOH",
+            "name": "Nightjar Productions LLC",
+            "derived": false
+          },
+          {
+            "uid": "TXQfo7P2LXDFzesvdhbS",
+            "name": "Hollowpine Films Group",
+            "derived": false
+          },
+          {
+            "uid": "s7WXepzsnaTbaKF0Et1T",
+            "name": "Rooksbridge Media Group",
+            "derived": false
+          }
+        ]
       },
       "destinations": [
         {
-          "uid": "18b31ebb-ec39-42eb-a912-2e565e13ecf5",
-          "name": "Grandview Terrace Center",
+          "uid": "d0429040-bb05-45d6-a638-f0499f76273d",
+          "name": "Westline Production Stage",
           "destination": {
-            "uid": "18b31ebb-ec39-42eb-a912-2e565e13ecf5",
+            "uid": "d0429040-bb05-45d6-a638-f0499f76273d",
             "dates": {
-              "delivery_start": "2026-09-02T09:00:00.000-05:00",
+              "delivery_start": "2026-08-31T09:00:00.000-05:00",
               "delivery_start_fs": {
-                "_seconds": 1788357600,
+                "_seconds": 1788184800,
                 "_nanoseconds": 0
               },
-              "delivery_end": "2026-09-02T09:00:00.000-05:00",
+              "delivery_end": "2026-08-31T09:00:00.000-05:00",
               "delivery_end_fs": {
-                "_seconds": 1788357600,
+                "_seconds": 1788184800,
                 "_nanoseconds": 0
               },
-              "collection_start": "2026-09-02T09:00:00.000-05:00",
+              "collection_start": "2026-09-25T15:00:00.000-05:00",
               "collection_start_fs": {
-                "_seconds": 1788357600,
+                "_seconds": 1790366400,
                 "_nanoseconds": 0
               },
-              "collection_end": "2026-09-02T09:00:00.000-05:00",
+              "collection_end": "2026-09-25T15:00:00.000-05:00",
               "collection_end_fs": {
-                "_seconds": 1788357600,
+                "_seconds": 1790366400,
                 "_nanoseconds": 0
               },
-              "charge_start": "2026-09-02T09:00:00.000-05:00",
+              "charge_start": "2026-08-31T09:00:00.000-05:00",
               "charge_start_fs": {
-                "_seconds": 1788357600,
+                "_seconds": 1788184800,
                 "_nanoseconds": 0
               },
-              "charge_end": "2026-09-02T09:00:00.000-05:00",
+              "charge_end": "2026-09-25T15:00:00.000-05:00",
               "charge_end_fs": {
-                "_seconds": 1788357600,
+                "_seconds": 1790366400,
                 "_nanoseconds": 0
               },
-              "days_active": 1,
-              "days_charged": 1
+              "days_active": 19,
+              "days_charged": 19
             },
             "delivery": {
-              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "uid": "IomudCeD1TEzkkbJxfbY",
               "address": {
-                "city": "Chicago",
+                "city": "Northbrook",
                 "country_name": "United States",
-                "full": "8255 Sycamore Pl, Chicago, IL 54411",
-                "name": "Grandview Terrace Center",
-                "postcode": "60404",
+                "full": "2738 Walnut Blvd, Northbrook, IL, United States",
+                "name": "",
+                "postcode": "62065",
                 "region": "IL",
-                "street": "8255 Sycamore Pl",
+                "street": "2738 Walnut Blvd",
                 "street2": "",
-                "mapbox_id": "eFIiCa7fkWTvasqdKBFxRgQjVI8tFBWsYNZtSDdxTCXnQu0fQzO1JTS1AZkuYZZ",
+                "mapbox_id": "uCVsSf9qtEWonyvlFWPxDHRbVm7zOpFgKIGzMoZbNAO6Uf7pLvR1PDY7SAesPSN",
                 "address_coordinates": null,
                 "user_coordinates": null
               },
-              "instructions": "",
-              "contact": null
+              "instructions": "Sample..",
+              "contact": {
+                "uid": "bGuOFQihEiAxO1QFJLau",
+                "first_name": "Drew",
+                "middle_name": null,
+                "last_name": "Ellsworth",
+                "pronunciation": null,
+                "name": "Quinn Maddox",
+                "phones": [
+                  "(909) 555-0110"
+                ]
+              }
             },
             "collection": {
-              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "uid": "IomudCeD1TEzkkbJxfbY",
               "address": {
-                "city": "Chicago",
+                "city": "Northbrook",
                 "country_name": "United States",
-                "full": "3453 Maple Ave, Chicago, IL 13894",
-                "name": "Grandview Terrace Center",
-                "postcode": "62097",
+                "full": "2738 Walnut Blvd, Northbrook, IL, United States",
+                "name": "",
+                "postcode": "62065",
                 "region": "IL",
-                "street": "3453 Maple Ave",
+                "street": "2738 Walnut Blvd",
                 "street2": "",
-                "mapbox_id": "zOLuBs0zwZAgceudOTFjXhRiOF1vQTCoLLHlCDncDLQzAq9kXjQ5KYN7GTbyNZQ",
+                "mapbox_id": "uCVsSf9qtEWonyvlFWPxDHRbVm7zOpFgKIGzMoZbNAO6Uf7pLvR1PDY7SAesPSN",
                 "address_coordinates": null,
                 "user_coordinates": null
               },
-              "instructions": "",
-              "contact": null
+              "instructions": "Sample..",
+              "contact": {
+                "uid": "bGuOFQihEiAxO1QFJLau",
+                "first_name": "Drew",
+                "middle_name": null,
+                "last_name": "Ellsworth",
+                "pronunciation": null,
+                "name": "Quinn Maddox",
+                "phones": [
+                  "(909) 555-0110"
+                ]
+              }
             },
-            "customer_collecting": true,
-            "customer_returning": true
+            "customer_collecting": false,
+            "customer_returning": false
           },
-          "due_at": "2026-09-02T09:00:00.000-05:00",
-          "quantity": 8,
+          "due_at": "2026-08-31T09:00:00.000-05:00",
+          "quantity": 302,
           "breakdown": {
             "damaged": 0,
             "lost": 0,
-            "out": 8,
+            "out": 294,
             "prepped": 0,
             "quoted": 0,
-            "reserved": 0,
+            "reserved": 8,
             "returned": 0
           },
           "bookings": [
             {
-              "uid": "eXQBQR7k3lYr2iAwv6nF:VQim9zNSP2k4gdhBEdnX:vTn8CTAwwJHEJZLBzsOw",
-              "uid_product": "VQim9zNSP2k4gdhBEdnX",
-              "name": "Open Water - 16oz Aluminum Bottle (24 Case)",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:kETzgYqCmiCLZvjwBfpE:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "kETzgYqCmiCLZvjwBfpE",
+              "name": "3 ' x 5' Floor Mat",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 30,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 30,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:WU65HeTi4HHMMk6JLkly:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "WU65HeTi4HHMMk6JLkly",
+              "name": "Carpet Mask (36\" x 200')",
               "type": "sale",
-              "status": "active",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:nXrZlo5kGVMSqjkSWWaz:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "nXrZlo5kGVMSqjkSWWaz",
+              "name": "Corrugated Roll (48\" x 250')",
+              "type": "sale",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:eqOJlpjvKjSNxDrB3N8v:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "eqOJlpjvKjSNxDrB3N8v",
+              "name": "Layout Board (4' x 6')",
+              "type": "sale",
+              "status": "reserved",
+              "quantity": 70,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 70,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:rYxQapfObjx5jhQbhZGw:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "rYxQapfObjx5jhQbhZGw",
+              "name": "Blue Painters Tape (1.88\") - 3M",
+              "type": "sale",
+              "status": "reserved",
+              "quantity": 6,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 6,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:1cJUHUiX7JMdPfvLxhHf:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "1cJUHUiX7JMdPfvLxhHf",
+              "name": "Booties - Premium (40 Pack)",
+              "type": "sale",
+              "status": "reserved",
+              "quantity": 3,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 3,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:U8WC4Js2oPaTdYpkvbcx:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "U8WC4Js2oPaTdYpkvbcx",
+              "name": "18\" Traffic Cone",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 55,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 55,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "bRKsHMVgxtVQJ26FCRWH",
+              "name": "A Frame Sign (Large)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 8,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 8,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:Wnj0LODXW6zCYRmnJoxQ:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "Wnj0LODXW6zCYRmnJoxQ",
+              "name": "20lb Shot Bag",
+              "type": "rental",
+              "status": "reserved",
               "quantity": 8,
               "shortage": 0,
               "breakdown": {
@@ -401,52 +579,2026 @@
                 "returned": 0
               },
               "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:Jmiobz6vcsUhDkAgNhBy:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "Jmiobz6vcsUhDkAgNhBy",
+              "name": "Pedestal Stop Sign",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:peQWi2dcj86px8T6Mkj6:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "peQWi2dcj86px8T6Mkj6",
+              "name": "6' H x 1.75\" Square Post (White)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:meFdYSXLmSDVwf0XukWm:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "meFdYSXLmSDVwf0XukWm",
+              "name": "30lb Base (1.75\" Square Post)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 4,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "UFfujWpRyZZ6PeSqQQtE",
+              "name": "4' - 7' Cone Pole",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 34,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 34,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:kCysq2sl0TF4Ov1JQK2u:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "kCysq2sl0TF4Ov1JQK2u",
+              "name": "Pop Up Garbage Can",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:aosey66Ih8tTaoWKQXmO:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "aosey66Ih8tTaoWKQXmO",
+              "name": "6' Folding Table",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "NDEwEmpNVxMWWLNMYp5h",
+              "name": "28\" Traffic Cone",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 60,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 60,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:tBwBGKOWStjnoL05lT3S:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "tBwBGKOWStjnoL05lT3S",
+              "name": "44 Gallon Brute Garbage Can",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 3,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 3,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:OYvggZa70ccCCbcQ8o1H:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "OYvggZa70ccCCbcQ8o1H",
+              "name": "55 Gallon Heavy Duty Garbage Bags",
+              "type": "sale",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:NySHJnsT5BXbAVxfJfnQ:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "NySHJnsT5BXbAVxfJfnQ",
+              "name": "Roll Up Fence (6.5' Section)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:oxcvKWbEEBEc6MqgKUAm:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "oxcvKWbEEBEc6MqgKUAm",
+              "name": "42\" Traffic Delineator",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 4,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Unv8qfr4EnRYxhFPnBtE:xGiq9QsqXPiTS4YsQ5GZ:IomudCeD1TEzkkbJxfbY",
+              "uid_product": "xGiq9QsqXPiTS4YsQ5GZ",
+              "name": "Delineator Base (18lb)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 4,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
             }
           ],
           "items": [
             {
               "item": {
-                "uid": "5a9a1aea-a4e9-47bf-b145-4c07935cb90e",
+                "uid": "2de5c8c8-2e07-403d-aa02-5e3bb4edf7dc",
                 "type": "group",
-                "name": "Crafty",
+                "name": "1234 Blue Hill Terrace Northbrook, IL 60062",
                 "path": [
-                  "18b31ebb-ec39-42eb-a912-2e565e13ecf5",
-                  "5a9a1aea-a4e9-47bf-b145-4c07935cb90e"
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "2de5c8c8-2e07-403d-aa02-5e3bb4edf7dc"
                 ],
                 "description": ""
               },
-              "uid_booking": null
+              "uid_booking": null,
+              "owner_path": null
             },
             {
               "item": {
-                "uid": "VQim9zNSP2k4gdhBEdnX",
+                "uid": "kETzgYqCmiCLZvjwBfpE",
+                "type": "rental",
+                "name": "3 ' x 5' Floor Mat",
+                "description": "",
+                "quantity": 15,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "2de5c8c8-2e07-403d-aa02-5e3bb4edf7dc",
+                  "kETzgYqCmiCLZvjwBfpE"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:kETzgYqCmiCLZvjwBfpE:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "1fc6fc02-530e-4207-81b5-7639cd3dac56",
+                "type": "group",
+                "name": "1227 Blue Hill Terrace Northbrook, IL 60062",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "1fc6fc02-530e-4207-81b5-7639cd3dac56"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "13254399-8872-4297-a584-e13a9c7a5a4b",
+                "type": "group",
+                "name": "Surface Protection",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "13254399-8872-4297-a584-e13a9c7a5a4b"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "kETzgYqCmiCLZvjwBfpE",
+                "type": "rental",
+                "name": "3 ' x 5' Floor Mat",
+                "description": "",
+                "quantity": 15,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "13254399-8872-4297-a584-e13a9c7a5a4b",
+                  "kETzgYqCmiCLZvjwBfpE"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:kETzgYqCmiCLZvjwBfpE:IomudCeD1TEzkkbJxfbY",
+              "owner_path": [
+                "d0429040-bb05-45d6-a638-f0499f76273d",
+                "2de5c8c8-2e07-403d-aa02-5e3bb4edf7dc",
+                "kETzgYqCmiCLZvjwBfpE"
+              ]
+            },
+            {
+              "item": {
+                "uid": "WU65HeTi4HHMMk6JLkly",
                 "type": "sale",
-                "name": "Open Water - 16oz Aluminum Bottle (24 Case)",
+                "name": "Carpet Mask (36\" x 200')",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "13254399-8872-4297-a584-e13a9c7a5a4b",
+                  "WU65HeTi4HHMMk6JLkly"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:WU65HeTi4HHMMk6JLkly:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "nXrZlo5kGVMSqjkSWWaz",
+                "type": "sale",
+                "name": "Corrugated Roll (48\" x 250')",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "13254399-8872-4297-a584-e13a9c7a5a4b",
+                  "nXrZlo5kGVMSqjkSWWaz"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:nXrZlo5kGVMSqjkSWWaz:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "eqOJlpjvKjSNxDrB3N8v",
+                "type": "sale",
+                "name": "Layout Board (4' x 6')",
+                "description": "",
+                "quantity": 70,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "13254399-8872-4297-a584-e13a9c7a5a4b",
+                  "eqOJlpjvKjSNxDrB3N8v"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:eqOJlpjvKjSNxDrB3N8v:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "rYxQapfObjx5jhQbhZGw",
+                "type": "sale",
+                "name": "Blue Painters Tape (1.88\") - 3M",
+                "description": "",
+                "quantity": 6,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "13254399-8872-4297-a584-e13a9c7a5a4b",
+                  "eqOJlpjvKjSNxDrB3N8v",
+                  "rYxQapfObjx5jhQbhZGw"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:rYxQapfObjx5jhQbhZGw:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "1cJUHUiX7JMdPfvLxhHf",
+                "type": "sale",
+                "name": "Booties - Premium (40 Pack)",
+                "description": "",
+                "quantity": 3,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "13254399-8872-4297-a584-e13a9c7a5a4b",
+                  "1cJUHUiX7JMdPfvLxhHf"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:1cJUHUiX7JMdPfvLxhHf:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "d2d4cbc2-5b99-45ad-8159-f525da57758d",
+                "type": "group",
+                "name": "Traffic, Safety & Signage",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "d2d4cbc2-5b99-45ad-8159-f525da57758d"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "U8WC4Js2oPaTdYpkvbcx",
+                "type": "rental",
+                "name": "18\" Traffic Cone",
+                "description": "",
+                "quantity": 25,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "d2d4cbc2-5b99-45ad-8159-f525da57758d",
+                  "U8WC4Js2oPaTdYpkvbcx"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:U8WC4Js2oPaTdYpkvbcx:IomudCeD1TEzkkbJxfbY",
+              "owner_path": [
+                "d0429040-bb05-45d6-a638-f0499f76273d",
+                "e8046154-2fec-4df5-8622-6cfb3ecf4897",
+                "U8WC4Js2oPaTdYpkvbcx"
+              ]
+            },
+            {
+              "item": {
+                "uid": "bRKsHMVgxtVQJ26FCRWH",
+                "type": "rental",
+                "name": "A Frame Sign (Large)",
+                "description": "",
+                "quantity": 4,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "d2d4cbc2-5b99-45ad-8159-f525da57758d",
+                  "bRKsHMVgxtVQJ26FCRWH"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "Wnj0LODXW6zCYRmnJoxQ",
+                "type": "rental",
+                "name": "20lb Shot Bag",
                 "description": "",
                 "quantity": 8,
                 "stock_method": "bulk",
                 "path": [
-                  "18b31ebb-ec39-42eb-a912-2e565e13ecf5",
-                  "5a9a1aea-a4e9-47bf-b145-4c07935cb90e",
-                  "VQim9zNSP2k4gdhBEdnX"
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "d2d4cbc2-5b99-45ad-8159-f525da57758d",
+                  "bRKsHMVgxtVQJ26FCRWH",
+                  "Wnj0LODXW6zCYRmnJoxQ"
                 ],
-                "order_number": 1020,
-                "uid_order": "eXQBQR7k3lYr2iAwv6nF"
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
               },
-              "uid_booking": "eXQBQR7k3lYr2iAwv6nF:VQim9zNSP2k4gdhBEdnX:vTn8CTAwwJHEJZLBzsOw"
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:Wnj0LODXW6zCYRmnJoxQ:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "Jmiobz6vcsUhDkAgNhBy",
+                "type": "rental",
+                "name": "Pedestal Stop Sign",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "d2d4cbc2-5b99-45ad-8159-f525da57758d",
+                  "Jmiobz6vcsUhDkAgNhBy"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:Jmiobz6vcsUhDkAgNhBy:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "peQWi2dcj86px8T6Mkj6",
+                "type": "rental",
+                "name": "6' H x 1.75\" Square Post (White)",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "d2d4cbc2-5b99-45ad-8159-f525da57758d",
+                  "Jmiobz6vcsUhDkAgNhBy",
+                  "peQWi2dcj86px8T6Mkj6"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:peQWi2dcj86px8T6Mkj6:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "meFdYSXLmSDVwf0XukWm",
+                "type": "rental",
+                "name": "30lb Base (1.75\" Square Post)",
+                "description": "",
+                "quantity": 4,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "d2d4cbc2-5b99-45ad-8159-f525da57758d",
+                  "Jmiobz6vcsUhDkAgNhBy",
+                  "meFdYSXLmSDVwf0XukWm"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:meFdYSXLmSDVwf0XukWm:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "UFfujWpRyZZ6PeSqQQtE",
+                "type": "rental",
+                "name": "4' - 7' Cone Pole",
+                "description": "",
+                "quantity": 6,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "d2d4cbc2-5b99-45ad-8159-f525da57758d",
+                  "UFfujWpRyZZ6PeSqQQtE"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "owner_path": [
+                "d0429040-bb05-45d6-a638-f0499f76273d",
+                "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
+                "UFfujWpRyZZ6PeSqQQtE"
+              ]
+            },
+            {
+              "item": {
+                "uid": "d6dafab2-286a-48d5-afbd-863dd57378ea",
+                "type": "group",
+                "name": "Janitorial",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "d6dafab2-286a-48d5-afbd-863dd57378ea"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "kCysq2sl0TF4Ov1JQK2u",
+                "type": "rental",
+                "name": "Pop Up Garbage Can",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "d6dafab2-286a-48d5-afbd-863dd57378ea",
+                  "kCysq2sl0TF4Ov1JQK2u"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:kCysq2sl0TF4Ov1JQK2u:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "6f157706-9d0c-490d-a55e-8ccd5c050815",
+                "type": "group",
+                "name": "Tables & Chairs",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "6f157706-9d0c-490d-a55e-8ccd5c050815"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "aosey66Ih8tTaoWKQXmO",
+                "type": "rental",
+                "name": "6' Folding Table",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "6f157706-9d0c-490d-a55e-8ccd5c050815",
+                  "aosey66Ih8tTaoWKQXmO"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:aosey66Ih8tTaoWKQXmO:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "b8c31893-342e-4efa-b96f-6e5f3a389ddb",
+                "type": "group",
+                "name": "1234 Candlewood Hill",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "b8c31893-342e-4efa-b96f-6e5f3a389ddb"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "NDEwEmpNVxMWWLNMYp5h",
+                "type": "rental",
+                "name": "28\" Traffic Cone",
+                "description": "",
+                "quantity": 15,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "b8c31893-342e-4efa-b96f-6e5f3a389ddb",
+                  "NDEwEmpNVxMWWLNMYp5h"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:IomudCeD1TEzkkbJxfbY",
+              "owner_path": [
+                "d0429040-bb05-45d6-a638-f0499f76273d",
+                "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
+                "NDEwEmpNVxMWWLNMYp5h"
+              ]
+            },
+            {
+              "item": {
+                "uid": "UFfujWpRyZZ6PeSqQQtE",
+                "type": "rental",
+                "name": "4' - 7' Cone Pole",
+                "description": "",
+                "quantity": 6,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "b8c31893-342e-4efa-b96f-6e5f3a389ddb",
+                  "UFfujWpRyZZ6PeSqQQtE"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "owner_path": [
+                "d0429040-bb05-45d6-a638-f0499f76273d",
+                "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
+                "UFfujWpRyZZ6PeSqQQtE"
+              ]
+            },
+            {
+              "item": {
+                "uid": "3a8e1bf3-ac53-4460-8df1-31c26d2df61a",
+                "type": "group",
+                "name": "2653 Cherry Ln",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "3a8e1bf3-ac53-4460-8df1-31c26d2df61a"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "NDEwEmpNVxMWWLNMYp5h",
+                "type": "rental",
+                "name": "28\" Traffic Cone",
+                "description": "",
+                "quantity": 15,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "3a8e1bf3-ac53-4460-8df1-31c26d2df61a",
+                  "NDEwEmpNVxMWWLNMYp5h"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:IomudCeD1TEzkkbJxfbY",
+              "owner_path": [
+                "d0429040-bb05-45d6-a638-f0499f76273d",
+                "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
+                "NDEwEmpNVxMWWLNMYp5h"
+              ]
+            },
+            {
+              "item": {
+                "uid": "UFfujWpRyZZ6PeSqQQtE",
+                "type": "rental",
+                "name": "4' - 7' Cone Pole",
+                "description": "",
+                "quantity": 6,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "3a8e1bf3-ac53-4460-8df1-31c26d2df61a",
+                  "UFfujWpRyZZ6PeSqQQtE"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "owner_path": [
+                "d0429040-bb05-45d6-a638-f0499f76273d",
+                "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
+                "UFfujWpRyZZ6PeSqQQtE"
+              ]
+            },
+            {
+              "item": {
+                "uid": "bRKsHMVgxtVQJ26FCRWH",
+                "type": "rental",
+                "name": "A Frame Sign (Large)",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "3a8e1bf3-ac53-4460-8df1-31c26d2df61a",
+                  "bRKsHMVgxtVQJ26FCRWH"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:IomudCeD1TEzkkbJxfbY",
+              "owner_path": [
+                "d0429040-bb05-45d6-a638-f0499f76273d",
+                "d2d4cbc2-5b99-45ad-8159-f525da57758d",
+                "bRKsHMVgxtVQJ26FCRWH"
+              ]
+            },
+            {
+              "item": {
+                "uid": "e8046154-2fec-4df5-8622-6cfb3ecf4897",
+                "type": "group",
+                "name": "2682 Cherry Ln Northbrook, IL 60062",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "e8046154-2fec-4df5-8622-6cfb3ecf4897"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "bRKsHMVgxtVQJ26FCRWH",
+                "type": "rental",
+                "name": "A Frame Sign (Large)",
+                "description": "",
+                "quantity": 3,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "e8046154-2fec-4df5-8622-6cfb3ecf4897",
+                  "bRKsHMVgxtVQJ26FCRWH"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:IomudCeD1TEzkkbJxfbY",
+              "owner_path": [
+                "d0429040-bb05-45d6-a638-f0499f76273d",
+                "d2d4cbc2-5b99-45ad-8159-f525da57758d",
+                "bRKsHMVgxtVQJ26FCRWH"
+              ]
+            },
+            {
+              "item": {
+                "uid": "tBwBGKOWStjnoL05lT3S",
+                "type": "rental",
+                "name": "44 Gallon Brute Garbage Can",
+                "description": "",
+                "quantity": 3,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "e8046154-2fec-4df5-8622-6cfb3ecf4897",
+                  "tBwBGKOWStjnoL05lT3S"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:tBwBGKOWStjnoL05lT3S:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "OYvggZa70ccCCbcQ8o1H",
+                "type": "sale",
+                "name": "55 Gallon Heavy Duty Garbage Bags",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "e8046154-2fec-4df5-8622-6cfb3ecf4897",
+                  "tBwBGKOWStjnoL05lT3S",
+                  "OYvggZa70ccCCbcQ8o1H"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:OYvggZa70ccCCbcQ8o1H:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "U8WC4Js2oPaTdYpkvbcx",
+                "type": "rental",
+                "name": "18\" Traffic Cone",
+                "description": "",
+                "quantity": 30,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "e8046154-2fec-4df5-8622-6cfb3ecf4897",
+                  "U8WC4Js2oPaTdYpkvbcx"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:U8WC4Js2oPaTdYpkvbcx:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "UFfujWpRyZZ6PeSqQQtE",
+                "type": "rental",
+                "name": "4' - 7' Cone Pole",
+                "description": "",
+                "quantity": 6,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "e8046154-2fec-4df5-8622-6cfb3ecf4897",
+                  "UFfujWpRyZZ6PeSqQQtE"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "owner_path": [
+                "d0429040-bb05-45d6-a638-f0499f76273d",
+                "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
+                "UFfujWpRyZZ6PeSqQQtE"
+              ]
+            },
+            {
+              "item": {
+                "uid": "NySHJnsT5BXbAVxfJfnQ",
+                "type": "rental",
+                "name": "Roll Up Fence (6.5' Section)",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "e8046154-2fec-4df5-8622-6cfb3ecf4897",
+                  "NySHJnsT5BXbAVxfJfnQ"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NySHJnsT5BXbAVxfJfnQ:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "oxcvKWbEEBEc6MqgKUAm",
+                "type": "rental",
+                "name": "42\" Traffic Delineator",
+                "description": "",
+                "quantity": 4,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "e8046154-2fec-4df5-8622-6cfb3ecf4897",
+                  "NySHJnsT5BXbAVxfJfnQ",
+                  "oxcvKWbEEBEc6MqgKUAm"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:oxcvKWbEEBEc6MqgKUAm:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "xGiq9QsqXPiTS4YsQ5GZ",
+                "type": "rental",
+                "name": "Delineator Base (18lb)",
+                "description": "",
+                "quantity": 4,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "e8046154-2fec-4df5-8622-6cfb3ecf4897",
+                  "NySHJnsT5BXbAVxfJfnQ",
+                  "oxcvKWbEEBEc6MqgKUAm",
+                  "xGiq9QsqXPiTS4YsQ5GZ"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:xGiq9QsqXPiTS4YsQ5GZ:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
+                "type": "group",
+                "name": "2525 Shermer Rd Northbrook, IL 60062",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "NDEwEmpNVxMWWLNMYp5h",
+                "type": "rental",
+                "name": "28\" Traffic Cone",
+                "description": "",
+                "quantity": 30,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
+                  "NDEwEmpNVxMWWLNMYp5h"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "UFfujWpRyZZ6PeSqQQtE",
+                "type": "rental",
+                "name": "4' - 7' Cone Pole",
+                "description": "",
+                "quantity": 10,
+                "stock_method": "bulk",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
+                  "UFfujWpRyZZ6PeSqQQtE"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "8c6c1390-1ad8-4c4a-952c-de150fc03198",
+                "type": "group",
+                "name": "Delivery",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "8c6c1390-1ad8-4c4a-952c-de150fc03198"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "F4ZiJl7ZzMChlRufw8RL",
+                "type": "service",
+                "name": "Delivery/Setup/Removal",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "none",
+                "path": [
+                  "d0429040-bb05-45d6-a638-f0499f76273d",
+                  "8c6c1390-1ad8-4c4a-952c-de150fc03198",
+                  "F4ZiJl7ZzMChlRufw8RL"
+                ],
+                "order_number": 1013,
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+              },
+              "uid_booking": null,
+              "owner_path": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "uid": "oSPiB2dMvZweGjaXQs4A",
+      "number": 1014,
+      "status": "active",
+      "subject": "Sample subject...",
+      "organization": {
+        "uid": "s7WXepzsnaTbaKF0Et1T",
+        "organization_path": [
+          {
+            "uid": "gql6Tjro2tSVrgP5NKOH",
+            "name": "Nightjar Productions LLC",
+            "derived": false
+          },
+          {
+            "uid": "TXQfo7P2LXDFzesvdhbS",
+            "name": "Hollowpine Films Group",
+            "derived": false
+          },
+          {
+            "uid": "s7WXepzsnaTbaKF0Et1T",
+            "name": "Rooksbridge Media Group",
+            "derived": false
+          }
+        ]
+      },
+      "destinations": [
+        {
+          "uid": "8d296bdf-41aa-473d-bd06-a05876d78f80",
+          "name": "Prairie Exhibition Hall",
+          "destination": {
+            "uid": "8d296bdf-41aa-473d-bd06-a05876d78f80",
+            "dates": {
+              "delivery_start": "2026-09-01T09:00:00.000-05:00",
+              "delivery_start_fs": {
+                "_seconds": 1788271200,
+                "_nanoseconds": 0
+              },
+              "delivery_end": "2026-09-01T09:00:00.000-05:00",
+              "delivery_end_fs": {
+                "_seconds": 1788271200,
+                "_nanoseconds": 0
+              },
+              "collection_start": "2026-10-23T15:00:00.000-05:00",
+              "collection_start_fs": {
+                "_seconds": 1792785600,
+                "_nanoseconds": 0
+              },
+              "collection_end": "2026-10-23T15:00:00.000-05:00",
+              "collection_end_fs": {
+                "_seconds": 1792785600,
+                "_nanoseconds": 0
+              },
+              "charge_start": "2026-09-01T09:00:00.000-05:00",
+              "charge_start_fs": {
+                "_seconds": 1788271200,
+                "_nanoseconds": 0
+              },
+              "charge_end": "2026-10-23T15:00:00.000-05:00",
+              "charge_end_fs": {
+                "_seconds": 1792785600,
+                "_nanoseconds": 0
+              },
+              "days_active": 37,
+              "days_charged": 37
+            },
+            "delivery": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "2148 Magnolia Rd, Chicago, IL 95827",
+                "name": "Prairie Exhibition Hall",
+                "postcode": "63536",
+                "region": "IL",
+                "street": "2148 Magnolia Rd",
+                "street2": "",
+                "mapbox_id": "qGHpBp8ynNIiomixLLJpCnTqRK0iFSRoALZpQEhnATFmTo2wKxZ5MAT7XBnsDFL",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "collection": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "2148 Magnolia Rd, Chicago, IL 95827",
+                "name": "Prairie Exhibition Hall",
+                "postcode": "63536",
+                "region": "IL",
+                "street": "2148 Magnolia Rd",
+                "street2": "",
+                "mapbox_id": "qGHpBp8ynNIiomixLLJpCnTqRK0iFSRoALZpQEhnATFmTo2wKxZ5MAT7XBnsDFL",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "customer_collecting": true,
+            "customer_returning": true
+          },
+          "due_at": "2026-09-01T09:00:00.000-05:00",
+          "quantity": 70,
+          "breakdown": {
+            "damaged": 0,
+            "lost": 0,
+            "out": 53,
+            "prepped": 0,
+            "quoted": 0,
+            "reserved": 17,
+            "returned": 0
+          },
+          "bookings": [
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:Vc6h3YvLOL9zmcpuDpXI:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "Vc6h3YvLOL9zmcpuDpXI",
+              "name": "Metro Rack (18\" x 36\")",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:vWBkilYWnhKTjJFdWmk7:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "vWBkilYWnhKTjJFdWmk7",
+              "name": "Magliner Gemini Sr",
+              "type": "rental",
+              "status": "active",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:RZWp0RITeUIGSE9mIfTb:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "RZWp0RITeUIGSE9mIfTb",
+              "name": "Driving Sign Kit",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:FLbBeO0R62vRs4AWiw2l:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "FLbBeO0R62vRs4AWiw2l",
+              "name": "Walking Sign Kit",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:jC2BBRgZL5mXAfYAu9bf:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "jC2BBRgZL5mXAfYAu9bf",
+              "name": "Stop/Slow Paddle Sign",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "kETzgYqCmiCLZvjwBfpE",
+              "name": "3 ' x 5' Floor Mat",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 8,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 8,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:kCysq2sl0TF4Ov1JQK2u:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "kCysq2sl0TF4Ov1JQK2u",
+              "name": "Pop Up Garbage Can",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:urf6KT60uszcM0etGDMX:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "urf6KT60uszcM0etGDMX",
+              "name": "Folding Chair",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 10,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 10,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "ZsN1H4wR7vgLQnIf8gzX",
+              "name": "10' x 10' Pop Up Tent (Black)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 3,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 3,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "3kzv0sanOljc25psMVkU",
+              "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 12,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 12,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "HM7k3NDHG1GJ2uaykMKC",
+              "name": "Tent Canopy Rain Gutter",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "WaQhdQliUvS0LCx5OUTv",
+              "name": "Tent Door (Black)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 3,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 3,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "Ms2nlTfZZMoaR8yZwudF",
+              "name": "Long Milk Crate (18x12)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 2,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:Wnj0LODXW6zCYRmnJoxQ:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "Wnj0LODXW6zCYRmnJoxQ",
+              "name": "20lb Shot Bag",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 4,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "p2YQ9RZY8djeejSK2i0d",
+              "name": "Tent Side (Black)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 9,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 9,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:0LtFyxGYui7JjwRVQHxm:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "0LtFyxGYui7JjwRVQHxm",
+              "name": "Dewalt Work Light",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:eioftRapzd1n7lz2Y59z:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "eioftRapzd1n7lz2Y59z",
+              "name": "Dewalt Battery Charger (4 Port)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:Xuq7Ij3moxPgtZuLC6fg:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "Xuq7Ij3moxPgtZuLC6fg",
+              "name": "Milk Crate (12x12)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "oSPiB2dMvZweGjaXQs4A:Dmaie3W1OoRGvo9BMDC7:vTn8CTAwwJHEJZLBzsOw",
+              "uid_product": "Dmaie3W1OoRGvo9BMDC7",
+              "name": "Dewalt Battery (9Ah)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 4,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            }
+          ],
+          "items": [
+            {
+              "item": {
+                "uid": "d30f0919-ecf2-435c-a0f1-819795fc7064",
+                "type": "group",
+                "name": "Carts & Ramps",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "d30f0919-ecf2-435c-a0f1-819795fc7064"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "Vc6h3YvLOL9zmcpuDpXI",
+                "type": "rental",
+                "name": "Metro Rack (18\" x 36\")",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "d30f0919-ecf2-435c-a0f1-819795fc7064",
+                  "Vc6h3YvLOL9zmcpuDpXI"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Vc6h3YvLOL9zmcpuDpXI:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "vWBkilYWnhKTjJFdWmk7",
+                "type": "rental",
+                "name": "Magliner Gemini Sr",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "d30f0919-ecf2-435c-a0f1-819795fc7064",
+                  "vWBkilYWnhKTjJFdWmk7"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:vWBkilYWnhKTjJFdWmk7:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "fdfbc72b-6625-4730-b1d5-d18014632514",
+                "type": "group",
+                "name": "Traffic, Safety & Signage",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "fdfbc72b-6625-4730-b1d5-d18014632514"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "RZWp0RITeUIGSE9mIfTb",
+                "type": "rental",
+                "name": "Driving Sign Kit",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "fdfbc72b-6625-4730-b1d5-d18014632514",
+                  "RZWp0RITeUIGSE9mIfTb"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:RZWp0RITeUIGSE9mIfTb:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "FLbBeO0R62vRs4AWiw2l",
+                "type": "rental",
+                "name": "Walking Sign Kit",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "fdfbc72b-6625-4730-b1d5-d18014632514",
+                  "FLbBeO0R62vRs4AWiw2l"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:FLbBeO0R62vRs4AWiw2l:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "jC2BBRgZL5mXAfYAu9bf",
+                "type": "rental",
+                "name": "Stop/Slow Paddle Sign",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "fdfbc72b-6625-4730-b1d5-d18014632514",
+                  "jC2BBRgZL5mXAfYAu9bf"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:jC2BBRgZL5mXAfYAu9bf:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "43f82c86-03a6-48d3-8c34-4b856926543d",
+                "type": "group",
+                "name": "Surface Protection",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "43f82c86-03a6-48d3-8c34-4b856926543d"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "kETzgYqCmiCLZvjwBfpE",
+                "type": "rental",
+                "name": "3 ' x 5' Floor Mat",
+                "description": "",
+                "quantity": 8,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "43f82c86-03a6-48d3-8c34-4b856926543d",
+                  "kETzgYqCmiCLZvjwBfpE"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "b1a341f2-a267-419e-8594-a261b59c05ae",
+                "type": "group",
+                "name": "Janitorial",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "b1a341f2-a267-419e-8594-a261b59c05ae"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "kCysq2sl0TF4Ov1JQK2u",
+                "type": "rental",
+                "name": "Pop Up Garbage Can",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "b1a341f2-a267-419e-8594-a261b59c05ae",
+                  "kCysq2sl0TF4Ov1JQK2u"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:kCysq2sl0TF4Ov1JQK2u:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "ac218848-13a9-442d-bdae-7f79249c99a3",
+                "type": "group",
+                "name": "Tables & Chairs",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "ac218848-13a9-442d-bdae-7f79249c99a3"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "urf6KT60uszcM0etGDMX",
+                "type": "rental",
+                "name": "Folding Chair",
+                "description": "",
+                "quantity": 10,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "ac218848-13a9-442d-bdae-7f79249c99a3",
+                  "urf6KT60uszcM0etGDMX"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:urf6KT60uszcM0etGDMX:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "92524363-1a1c-4ebf-b333-e90b43ba77a2",
+                "type": "group",
+                "name": "Tents",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "92524363-1a1c-4ebf-b333-e90b43ba77a2"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "ZsN1H4wR7vgLQnIf8gzX",
+                "type": "rental",
+                "name": "10' x 10' Pop Up Tent (Black)",
+                "description": "",
+                "quantity": 3,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "92524363-1a1c-4ebf-b333-e90b43ba77a2",
+                  "ZsN1H4wR7vgLQnIf8gzX"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "3kzv0sanOljc25psMVkU",
+                "type": "rental",
+                "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+                "description": "",
+                "quantity": 12,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "92524363-1a1c-4ebf-b333-e90b43ba77a2",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "3kzv0sanOljc25psMVkU"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "HM7k3NDHG1GJ2uaykMKC",
+                "type": "rental",
+                "name": "Tent Canopy Rain Gutter",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "92524363-1a1c-4ebf-b333-e90b43ba77a2",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "HM7k3NDHG1GJ2uaykMKC"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "WaQhdQliUvS0LCx5OUTv",
+                "type": "rental",
+                "name": "Tent Door (Black)",
+                "description": "",
+                "quantity": 3,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "92524363-1a1c-4ebf-b333-e90b43ba77a2",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "WaQhdQliUvS0LCx5OUTv"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "Ms2nlTfZZMoaR8yZwudF",
+                "type": "rental",
+                "name": "Long Milk Crate (18x12)",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "92524363-1a1c-4ebf-b333-e90b43ba77a2",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "Ms2nlTfZZMoaR8yZwudF"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "Wnj0LODXW6zCYRmnJoxQ",
+                "type": "rental",
+                "name": "20lb Shot Bag",
+                "description": "",
+                "quantity": 4,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "92524363-1a1c-4ebf-b333-e90b43ba77a2",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "Wnj0LODXW6zCYRmnJoxQ"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Wnj0LODXW6zCYRmnJoxQ:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "p2YQ9RZY8djeejSK2i0d",
+                "type": "rental",
+                "name": "Tent Side (Black)",
+                "description": "",
+                "quantity": 9,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "92524363-1a1c-4ebf-b333-e90b43ba77a2",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "p2YQ9RZY8djeejSK2i0d"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "124d2b3a-5fd7-4da0-9124-d664276f1a64",
+                "type": "group",
+                "name": "Power, Lights & Tools",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "124d2b3a-5fd7-4da0-9124-d664276f1a64"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "0LtFyxGYui7JjwRVQHxm",
+                "type": "rental",
+                "name": "Dewalt Work Light",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "124d2b3a-5fd7-4da0-9124-d664276f1a64",
+                  "0LtFyxGYui7JjwRVQHxm"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:0LtFyxGYui7JjwRVQHxm:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "eioftRapzd1n7lz2Y59z",
+                "type": "rental",
+                "name": "Dewalt Battery Charger (4 Port)",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "124d2b3a-5fd7-4da0-9124-d664276f1a64",
+                  "0LtFyxGYui7JjwRVQHxm",
+                  "eioftRapzd1n7lz2Y59z"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:eioftRapzd1n7lz2Y59z:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "Xuq7Ij3moxPgtZuLC6fg",
+                "type": "rental",
+                "name": "Milk Crate (12x12)",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "124d2b3a-5fd7-4da0-9124-d664276f1a64",
+                  "0LtFyxGYui7JjwRVQHxm",
+                  "Xuq7Ij3moxPgtZuLC6fg"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Xuq7Ij3moxPgtZuLC6fg:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "Dmaie3W1OoRGvo9BMDC7",
+                "type": "rental",
+                "name": "Dewalt Battery (9Ah)",
+                "description": "",
+                "quantity": 4,
+                "stock_method": "bulk",
+                "path": [
+                  "8d296bdf-41aa-473d-bd06-a05876d78f80",
+                  "124d2b3a-5fd7-4da0-9124-d664276f1a64",
+                  "0LtFyxGYui7JjwRVQHxm",
+                  "Dmaie3W1OoRGvo9BMDC7"
+                ],
+                "order_number": 1014,
+                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+              },
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Dmaie3W1OoRGvo9BMDC7:vTn8CTAwwJHEJZLBzsOw",
+              "owner_path": null
             }
           ]
         }
       ]
     }
   ],
-  "order_count": 2,
-  "destination_count": 2,
-  "quantity": 13,
+  "order_count": 3,
+  "destination_count": 3,
+  "quantity": 423,
   "organizations": [
     {
-      "uid": "nTpq3YIY4cth5todd4PV",
-      "name": "Wayfarer Productions LLC"
+      "uid": "s7WXepzsnaTbaKF0Et1T",
+      "organization_path": [
+        {
+          "uid": "gql6Tjro2tSVrgP5NKOH",
+          "name": "Nightjar Productions LLC",
+          "derived": false
+        },
+        {
+          "uid": "TXQfo7P2LXDFzesvdhbS",
+          "name": "Hollowpine Films Group",
+          "derived": false
+        },
+        {
+          "uid": "s7WXepzsnaTbaKF0Et1T",
+          "name": "Rooksbridge Media Group",
+          "derived": false
+        }
+      ]
     }
   ],
   "missing_order_uids": [],

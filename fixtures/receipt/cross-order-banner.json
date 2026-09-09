@@ -27,7 +27,13 @@
   ],
   "organization": {
     "uid": "Ls3vBn8XwQfE1zCr5Ptu",
-    "name": "Kestrel Media Group"
+    "organization_path": [
+      {
+        "uid": "Ls3vBn8XwQfE1zCr5Ptu",
+        "name": "Kestrel Media Group",
+        "derived": false
+      }
+    ]
   },
   "items": [
     {
