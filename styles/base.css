@@ -350,7 +350,7 @@ th.center, td.center {
    and the statement 10px, and a px here would be a second opinion about scale.
 
    ⚠️ It must not widen the column, and it is now at the DATE's size — measured
-   `12:00 AM` is 41.4px against `col.date`'s 67.5rem-derived 67.5px, so the full
+   `12:00 AM` is 41.4px against `col.date`'s 7.5rem, which is 67.5px here, so the full
    size still fits with room and the two-line cell costs height rather than
    width. That is the whole reason the time is on its own line; anything that
    puts it back on the date's line widens `--label-col` and re-grids every
