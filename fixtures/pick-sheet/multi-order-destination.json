@@ -1,0 +1,1312 @@
+{
+  "scope": {
+    "kind": "destination",
+    "uid": "x07P9fuCbGctZmB4zqhg",
+    "name": "Sample text for name.............................................",
+    "uids": [
+      "x07P9fuCbGctZmB4zqhg"
+    ]
+  },
+  "gate": "crew",
+  "leg": null,
+  "orders": [
+    {
+      "uid": "Z9RfHZD2e8F1JCxaFgH9",
+      "number": 988,
+      "status": "reserved",
+      "subject": "Sample...",
+      "organization": {
+        "uid": "5spRplcKLjcyqfryluqA",
+        "name": "Meridian Media Group"
+      },
+      "destinations": [
+        {
+          "uid": "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+          "name": "Grandview Terrace Center",
+          "destination": {
+            "uid": "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+            "dates": {
+              "delivery_start": "2026-08-25T09:30:00.000-05:00",
+              "delivery_start_fs": {
+                "_seconds": 1787668200,
+                "_nanoseconds": 0
+              },
+              "delivery_end": "2026-08-25T09:30:00.000-05:00",
+              "delivery_end_fs": {
+                "_seconds": 1787668200,
+                "_nanoseconds": 0
+              },
+              "collection_start": "2026-08-31T09:30:00.000-05:00",
+              "collection_start_fs": {
+                "_seconds": 1788186600,
+                "_nanoseconds": 0
+              },
+              "collection_end": "2026-08-31T09:30:00.000-05:00",
+              "collection_end_fs": {
+                "_seconds": 1788186600,
+                "_nanoseconds": 0
+              },
+              "charge_start": "2026-08-25T09:30:00.000-05:00",
+              "charge_start_fs": {
+                "_seconds": 1787668200,
+                "_nanoseconds": 0
+              },
+              "charge_end": "2026-08-31T09:30:00.000-05:00",
+              "charge_end_fs": {
+                "_seconds": 1788186600,
+                "_nanoseconds": 0
+              },
+              "days_active": 5,
+              "days_charged": 5
+            },
+            "delivery": {
+              "uid": "x07P9fuCbGctZmB4zqhg",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "1024 Magnolia Rd, , Chicago, IL, United States",
+                "name": "Grandview Terrace Center",
+                "postcode": "69364",
+                "region": "IL",
+                "street": "4246 Cypress Ter",
+                "street2": "",
+                "mapbox_id": "rGSqCn7alPOqepdyXyO8YTArAA9iWnUlCGHaHhfqKJeuRZ36TLb5TqZqKINzZ1Y",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "Sample instructions.....",
+              "contact": null
+            },
+            "collection": {
+              "uid": "x07P9fuCbGctZmB4zqhg",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "7015 Spruce Ln, , Chicago, IL, United States",
+                "name": "Northgate Community Hall",
+                "postcode": "62422",
+                "region": "IL",
+                "street": "8883 Walnut Blvd",
+                "street2": "",
+                "mapbox_id": "gCYyMt1ofOEhrymxWdE5GVFgFN6wBbXwCDVsCazhYEceEQ39NLv1XcDaJXEeZ8N",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "customer_collecting": false,
+            "customer_returning": false
+          },
+          "due_at": "2026-08-25T09:30:00.000-05:00",
+          "quantity": 171,
+          "breakdown": {
+            "damaged": 0,
+            "lost": 0,
+            "out": 163,
+            "prepped": 0,
+            "quoted": 0,
+            "reserved": 8,
+            "returned": 0
+          },
+          "bookings": [
+            {
+              "uid": "Z9RfHZD2e8F1JCxaFgH9:aosey66Ih8tTaoWKQXmO:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "aosey66Ih8tTaoWKQXmO",
+              "name": "6' Folding Table",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 37,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 37,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Z9RfHZD2e8F1JCxaFgH9:F11YiOJqGIR8nIsGnfl2:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "F11YiOJqGIR8nIsGnfl2",
+              "name": "Table Cloth (Black)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 10,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 10,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Z9RfHZD2e8F1JCxaFgH9:urf6KT60uszcM0etGDMX:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "urf6KT60uszcM0etGDMX",
+              "name": "Folding Chair",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 105,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 105,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Z9RfHZD2e8F1JCxaFgH9:tBwBGKOWStjnoL05lT3S:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "tBwBGKOWStjnoL05lT3S",
+              "name": "44 Gallon Brute Garbage Can",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 5,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 5,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Z9RfHZD2e8F1JCxaFgH9:OYvggZa70ccCCbcQ8o1H:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "OYvggZa70ccCCbcQ8o1H",
+              "name": "55 Gallon Heavy Duty Garbage Bags",
+              "type": "sale",
+              "status": "reserved",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 2,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Z9RfHZD2e8F1JCxaFgH9:TknpoaZcsPf39aYCc4OJ:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "TknpoaZcsPf39aYCc4OJ",
+              "name": "12' Seamless Paper Roll (#57 Thunder Gray / Med Gray)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Z9RfHZD2e8F1JCxaFgH9:NHEuJq8iT5WlVngWIZlI:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "NHEuJq8iT5WlVngWIZlI",
+              "name": "Seamless Stand Kit (12' x 12')",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Z9RfHZD2e8F1JCxaFgH9:RZWp0RITeUIGSE9mIfTb:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "RZWp0RITeUIGSE9mIfTb",
+              "name": "Driving Sign Kit",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Z9RfHZD2e8F1JCxaFgH9:FLbBeO0R62vRs4AWiw2l:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "FLbBeO0R62vRs4AWiw2l",
+              "name": "Walking Sign Kit",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 1,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "Z9RfHZD2e8F1JCxaFgH9:bRKsHMVgxtVQJ26FCRWH:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "bRKsHMVgxtVQJ26FCRWH",
+              "name": "A Frame Sign (Large)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 8,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 8,
+                "returned": 0
+              },
+              "stores": []
+            }
+          ],
+          "items": [
+            {
+              "item": {
+                "uid": "f6414354-5e94-472f-8dad-4e2d168036af",
+                "type": "group",
+                "name": "Suite 503",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "f6414354-5e94-472f-8dad-4e2d168036af"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "aosey66Ih8tTaoWKQXmO",
+                "type": "rental",
+                "name": "6' Folding Table",
+                "description": "",
+                "quantity": 12,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "f6414354-5e94-472f-8dad-4e2d168036af",
+                  "aosey66Ih8tTaoWKQXmO"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:aosey66Ih8tTaoWKQXmO:x07P9fuCbGctZmB4zqhg",
+              "owner_path": [
+                "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                "7f6c3c43-ff40-4be2-938a-8cf44a1737b6",
+                "aosey66Ih8tTaoWKQXmO"
+              ]
+            },
+            {
+              "item": {
+                "uid": "F11YiOJqGIR8nIsGnfl2",
+                "type": "rental",
+                "name": "Table Cloth (Black)",
+                "description": "",
+                "quantity": 10,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "f6414354-5e94-472f-8dad-4e2d168036af",
+                  "F11YiOJqGIR8nIsGnfl2"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:F11YiOJqGIR8nIsGnfl2:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "urf6KT60uszcM0etGDMX",
+                "type": "rental",
+                "name": "Folding Chair",
+                "description": "",
+                "quantity": 25,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "f6414354-5e94-472f-8dad-4e2d168036af",
+                  "urf6KT60uszcM0etGDMX"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:urf6KT60uszcM0etGDMX:x07P9fuCbGctZmB4zqhg",
+              "owner_path": [
+                "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                "7f6c3c43-ff40-4be2-938a-8cf44a1737b6",
+                "urf6KT60uszcM0etGDMX"
+              ]
+            },
+            {
+              "item": {
+                "uid": "tBwBGKOWStjnoL05lT3S",
+                "type": "rental",
+                "name": "44 Gallon Brute Garbage Can",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "f6414354-5e94-472f-8dad-4e2d168036af",
+                  "tBwBGKOWStjnoL05lT3S"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:tBwBGKOWStjnoL05lT3S:x07P9fuCbGctZmB4zqhg",
+              "owner_path": [
+                "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                "7f6c3c43-ff40-4be2-938a-8cf44a1737b6",
+                "tBwBGKOWStjnoL05lT3S"
+              ]
+            },
+            {
+              "item": {
+                "uid": "OYvggZa70ccCCbcQ8o1H",
+                "type": "sale",
+                "name": "55 Gallon Heavy Duty Garbage Bags",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "f6414354-5e94-472f-8dad-4e2d168036af",
+                  "tBwBGKOWStjnoL05lT3S",
+                  "OYvggZa70ccCCbcQ8o1H"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:OYvggZa70ccCCbcQ8o1H:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "7f6c3c43-ff40-4be2-938a-8cf44a1737b6",
+                "type": "group",
+                "name": "Mezzanine",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "7f6c3c43-ff40-4be2-938a-8cf44a1737b6"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "aosey66Ih8tTaoWKQXmO",
+                "type": "rental",
+                "name": "6' Folding Table",
+                "description": "",
+                "quantity": 25,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "7f6c3c43-ff40-4be2-938a-8cf44a1737b6",
+                  "aosey66Ih8tTaoWKQXmO"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:aosey66Ih8tTaoWKQXmO:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "urf6KT60uszcM0etGDMX",
+                "type": "rental",
+                "name": "Folding Chair",
+                "description": "",
+                "quantity": 80,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "7f6c3c43-ff40-4be2-938a-8cf44a1737b6",
+                  "urf6KT60uszcM0etGDMX"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:urf6KT60uszcM0etGDMX:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "tBwBGKOWStjnoL05lT3S",
+                "type": "rental",
+                "name": "44 Gallon Brute Garbage Can",
+                "description": "",
+                "quantity": 4,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "7f6c3c43-ff40-4be2-938a-8cf44a1737b6",
+                  "tBwBGKOWStjnoL05lT3S"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:tBwBGKOWStjnoL05lT3S:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "2d0c92ea-7998-48d9-8cae-a19f3c8c7bcd",
+                "type": "group",
+                "name": "Support Space 1",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "2d0c92ea-7998-48d9-8cae-a19f3c8c7bcd"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "TknpoaZcsPf39aYCc4OJ",
+                "type": "rental",
+                "name": "12' Seamless Paper Roll (#57 Thunder Gray / Med Gray)",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "2d0c92ea-7998-48d9-8cae-a19f3c8c7bcd",
+                  "TknpoaZcsPf39aYCc4OJ"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:TknpoaZcsPf39aYCc4OJ:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "NHEuJq8iT5WlVngWIZlI",
+                "type": "rental",
+                "name": "Seamless Stand Kit (12' x 12')",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "2d0c92ea-7998-48d9-8cae-a19f3c8c7bcd",
+                  "NHEuJq8iT5WlVngWIZlI"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:NHEuJq8iT5WlVngWIZlI:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "21ddf774-9c89-4316-82a2-0c4a7a32a5c2",
+                "type": "group",
+                "name": "Traffic, Safety & Signage",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "21ddf774-9c89-4316-82a2-0c4a7a32a5c2"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "RZWp0RITeUIGSE9mIfTb",
+                "type": "rental",
+                "name": "Driving Sign Kit",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "21ddf774-9c89-4316-82a2-0c4a7a32a5c2",
+                  "RZWp0RITeUIGSE9mIfTb"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:RZWp0RITeUIGSE9mIfTb:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "FLbBeO0R62vRs4AWiw2l",
+                "type": "rental",
+                "name": "Walking Sign Kit",
+                "description": "",
+                "quantity": 1,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "21ddf774-9c89-4316-82a2-0c4a7a32a5c2",
+                  "FLbBeO0R62vRs4AWiw2l"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:FLbBeO0R62vRs4AWiw2l:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "bRKsHMVgxtVQJ26FCRWH",
+                "type": "rental",
+                "name": "A Frame Sign (Large)",
+                "description": "",
+                "quantity": 8,
+                "stock_method": "bulk",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "21ddf774-9c89-4316-82a2-0c4a7a32a5c2",
+                  "bRKsHMVgxtVQJ26FCRWH"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": "Z9RfHZD2e8F1JCxaFgH9:bRKsHMVgxtVQJ26FCRWH:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "a9cf9855-b2c6-4ecb-8564-502110959699",
+                "type": "group",
+                "name": "Delivery",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "a9cf9855-b2c6-4ecb-8564-502110959699"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "F4ZiJl7ZzMChlRufw8RL",
+                "type": "service",
+                "name": "Delivery/Setup/Removal",
+                "description": "",
+                "quantity": 2,
+                "stock_method": "none",
+                "path": [
+                  "661c2f20-e4e5-4c6e-bad3-bf53509cc8b9",
+                  "a9cf9855-b2c6-4ecb-8564-502110959699",
+                  "F4ZiJl7ZzMChlRufw8RL"
+                ],
+                "order_number": 988,
+                "uid_order": "Z9RfHZD2e8F1JCxaFgH9"
+              },
+              "uid_booking": null,
+              "owner_path": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "uid": "jIAV9v8BostNIsZ7PY8F",
+      "number": 1006,
+      "status": "active",
+      "subject": "Sample..",
+      "organization": {
+        "uid": "5spRplcKLjcyqfryluqA",
+        "name": "Meridian Media Group"
+      },
+      "destinations": [
+        {
+          "uid": "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+          "name": "Cedar Point Lodge",
+          "destination": {
+            "uid": "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+            "dates": {
+              "delivery_start": "2026-08-24T09:00:00.000-05:00",
+              "delivery_start_fs": {
+                "_seconds": 1787580000,
+                "_nanoseconds": 0
+              },
+              "delivery_end": "2026-08-24T09:00:00.000-05:00",
+              "delivery_end_fs": {
+                "_seconds": 1787580000,
+                "_nanoseconds": 0
+              },
+              "collection_start": "2026-10-23T15:00:00.000-05:00",
+              "collection_start_fs": {
+                "_seconds": 1792785600,
+                "_nanoseconds": 0
+              },
+              "collection_end": "2026-10-23T15:00:00.000-05:00",
+              "collection_end_fs": {
+                "_seconds": 1792785600,
+                "_nanoseconds": 0
+              },
+              "charge_start": "2026-08-25T09:00:00.000-05:00",
+              "charge_start_fs": {
+                "_seconds": 1787666400,
+                "_nanoseconds": 0
+              },
+              "charge_end": "2026-10-23T15:00:00.000-05:00",
+              "charge_end_fs": {
+                "_seconds": 1792785600,
+                "_nanoseconds": 0
+              },
+              "days_active": 43,
+              "days_charged": 42
+            },
+            "delivery": {
+              "uid": "x07P9fuCbGctZmB4zqhg",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "1024 Magnolia Rd, #466, Chicago, IL, United States",
+                "name": "Lakeside Annex Building",
+                "postcode": "69364",
+                "region": "IL",
+                "street": "7207 Linden Ave",
+                "street2": "",
+                "mapbox_id": "rGSqCn7alPOqepdyXyO8YTArAA9iWnUlCGHaHhfqKJeuRZ36TLb5TqZqKINzZ1Y",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "collection": {
+              "uid": "x07P9fuCbGctZmB4zqhg",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "7015 Spruce Ln, #414, Chicago, IL, United States",
+                "name": "Prairie Exhibition Hall",
+                "postcode": "62422",
+                "region": "IL",
+                "street": "6964 Aspen Dr",
+                "street2": "",
+                "mapbox_id": "gCYyMt1ofOEhrymxWdE5GVFgFN6wBbXwCDVsCazhYEceEQ39NLv1XcDaJXEeZ8N",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "customer_collecting": false,
+            "customer_returning": false
+          },
+          "due_at": "2026-10-23T15:00:00.000-05:00",
+          "quantity": 168,
+          "breakdown": {
+            "damaged": 0,
+            "lost": 0,
+            "out": 168,
+            "prepped": 0,
+            "quoted": 0,
+            "reserved": 0,
+            "returned": 0
+          },
+          "bookings": [
+            {
+              "uid": "jIAV9v8BostNIsZ7PY8F:ZsN1H4wR7vgLQnIf8gzX:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "ZsN1H4wR7vgLQnIf8gzX",
+              "name": "10' x 10' Pop Up Tent (Black)",
+              "type": "rental",
+              "status": "active",
+              "quantity": 6,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 6,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "jIAV9v8BostNIsZ7PY8F:3kzv0sanOljc25psMVkU:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "3kzv0sanOljc25psMVkU",
+              "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+              "type": "rental",
+              "status": "active",
+              "quantity": 48,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 48,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "jIAV9v8BostNIsZ7PY8F:HM7k3NDHG1GJ2uaykMKC:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "HM7k3NDHG1GJ2uaykMKC",
+              "name": "Tent Canopy Rain Gutter",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 6,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 6,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "jIAV9v8BostNIsZ7PY8F:WaQhdQliUvS0LCx5OUTv:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "WaQhdQliUvS0LCx5OUTv",
+              "name": "Tent Door (Black)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 6,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 6,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "jIAV9v8BostNIsZ7PY8F:Ms2nlTfZZMoaR8yZwudF:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "Ms2nlTfZZMoaR8yZwudF",
+              "name": "Long Milk Crate (18x12)",
+              "type": "rental",
+              "status": "active",
+              "quantity": 6,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 6,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "jIAV9v8BostNIsZ7PY8F:Wnj0LODXW6zCYRmnJoxQ:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "Wnj0LODXW6zCYRmnJoxQ",
+              "name": "20lb Shot Bag",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 48,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 48,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "jIAV9v8BostNIsZ7PY8F:p2YQ9RZY8djeejSK2i0d:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "p2YQ9RZY8djeejSK2i0d",
+              "name": "Tent Side (Black)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 18,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 18,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "jIAV9v8BostNIsZ7PY8F:J7svp77V0tLx6xBaKRBx:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "J7svp77V0tLx6xBaKRBx",
+              "name": "10' x 10' Pop Up Tent (White)",
+              "type": "rental",
+              "status": "active",
+              "quantity": 6,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 6,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "jIAV9v8BostNIsZ7PY8F:5H3Z7i8guIkuXOaYOVqb:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "5H3Z7i8guIkuXOaYOVqb",
+              "name": "Tent Side (White)",
+              "type": "rental",
+              "status": "active",
+              "quantity": 18,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 18,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "jIAV9v8BostNIsZ7PY8F:9jjGlzOiKG6ap3LpAGDA:x07P9fuCbGctZmB4zqhg",
+              "uid_product": "9jjGlzOiKG6ap3LpAGDA",
+              "name": "Tent Door (White)",
+              "type": "rental",
+              "status": "active",
+              "quantity": 6,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 6,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": []
+            }
+          ],
+          "items": [
+            {
+              "item": {
+                "uid": "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                "type": "group",
+                "name": "Tents",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "ZsN1H4wR7vgLQnIf8gzX",
+                "type": "rental",
+                "name": "10' x 10' Pop Up Tent (Black)",
+                "description": "",
+                "quantity": 6,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "ZsN1H4wR7vgLQnIf8gzX"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:ZsN1H4wR7vgLQnIf8gzX:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "3kzv0sanOljc25psMVkU",
+                "type": "rental",
+                "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+                "description": "",
+                "quantity": 24,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "3kzv0sanOljc25psMVkU"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:3kzv0sanOljc25psMVkU:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "HM7k3NDHG1GJ2uaykMKC",
+                "type": "rental",
+                "name": "Tent Canopy Rain Gutter",
+                "description": "",
+                "quantity": 3,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "HM7k3NDHG1GJ2uaykMKC"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:HM7k3NDHG1GJ2uaykMKC:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "WaQhdQliUvS0LCx5OUTv",
+                "type": "rental",
+                "name": "Tent Door (Black)",
+                "description": "",
+                "quantity": 6,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "WaQhdQliUvS0LCx5OUTv"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:WaQhdQliUvS0LCx5OUTv:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "Ms2nlTfZZMoaR8yZwudF",
+                "type": "rental",
+                "name": "Long Milk Crate (18x12)",
+                "description": "",
+                "quantity": 3,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "Ms2nlTfZZMoaR8yZwudF"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:Ms2nlTfZZMoaR8yZwudF:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "Wnj0LODXW6zCYRmnJoxQ",
+                "type": "rental",
+                "name": "20lb Shot Bag",
+                "description": "",
+                "quantity": 24,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "Wnj0LODXW6zCYRmnJoxQ"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:Wnj0LODXW6zCYRmnJoxQ:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "p2YQ9RZY8djeejSK2i0d",
+                "type": "rental",
+                "name": "Tent Side (Black)",
+                "description": "",
+                "quantity": 18,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "ZsN1H4wR7vgLQnIf8gzX",
+                  "p2YQ9RZY8djeejSK2i0d"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:p2YQ9RZY8djeejSK2i0d:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "J7svp77V0tLx6xBaKRBx",
+                "type": "rental",
+                "name": "10' x 10' Pop Up Tent (White)",
+                "description": "",
+                "quantity": 6,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "J7svp77V0tLx6xBaKRBx"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:J7svp77V0tLx6xBaKRBx:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "5H3Z7i8guIkuXOaYOVqb",
+                "type": "rental",
+                "name": "Tent Side (White)",
+                "description": "",
+                "quantity": 18,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "5H3Z7i8guIkuXOaYOVqb"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:5H3Z7i8guIkuXOaYOVqb:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "3kzv0sanOljc25psMVkU",
+                "type": "rental",
+                "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+                "description": "",
+                "quantity": 24,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "3kzv0sanOljc25psMVkU"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:3kzv0sanOljc25psMVkU:x07P9fuCbGctZmB4zqhg",
+              "owner_path": [
+                "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                "ZsN1H4wR7vgLQnIf8gzX",
+                "3kzv0sanOljc25psMVkU"
+              ]
+            },
+            {
+              "item": {
+                "uid": "Wnj0LODXW6zCYRmnJoxQ",
+                "type": "rental",
+                "name": "20lb Shot Bag",
+                "description": "",
+                "quantity": 24,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "Wnj0LODXW6zCYRmnJoxQ"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:Wnj0LODXW6zCYRmnJoxQ:x07P9fuCbGctZmB4zqhg",
+              "owner_path": [
+                "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                "ZsN1H4wR7vgLQnIf8gzX",
+                "Wnj0LODXW6zCYRmnJoxQ"
+              ]
+            },
+            {
+              "item": {
+                "uid": "Ms2nlTfZZMoaR8yZwudF",
+                "type": "rental",
+                "name": "Long Milk Crate (18x12)",
+                "description": "",
+                "quantity": 3,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "Ms2nlTfZZMoaR8yZwudF"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:Ms2nlTfZZMoaR8yZwudF:x07P9fuCbGctZmB4zqhg",
+              "owner_path": [
+                "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                "ZsN1H4wR7vgLQnIf8gzX",
+                "Ms2nlTfZZMoaR8yZwudF"
+              ]
+            },
+            {
+              "item": {
+                "uid": "9jjGlzOiKG6ap3LpAGDA",
+                "type": "rental",
+                "name": "Tent Door (White)",
+                "description": "",
+                "quantity": 6,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "9jjGlzOiKG6ap3LpAGDA"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:9jjGlzOiKG6ap3LpAGDA:x07P9fuCbGctZmB4zqhg",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "HM7k3NDHG1GJ2uaykMKC",
+                "type": "rental",
+                "name": "Tent Canopy Rain Gutter",
+                "description": "",
+                "quantity": 3,
+                "stock_method": "bulk",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                  "J7svp77V0tLx6xBaKRBx",
+                  "HM7k3NDHG1GJ2uaykMKC"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": "jIAV9v8BostNIsZ7PY8F:HM7k3NDHG1GJ2uaykMKC:x07P9fuCbGctZmB4zqhg",
+              "owner_path": [
+                "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                "91eb438b-6591-475c-9ae9-1acbabed0bd7",
+                "ZsN1H4wR7vgLQnIf8gzX",
+                "HM7k3NDHG1GJ2uaykMKC"
+              ]
+            },
+            {
+              "item": {
+                "uid": "51d9623b-e5e9-4382-a3f0-21a4d3e5a229",
+                "type": "group",
+                "name": "Delivery",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "51d9623b-e5e9-4382-a3f0-21a4d3e5a229"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "F4ZiJl7ZzMChlRufw8RL",
+                "type": "service",
+                "name": "Delivery/Setup/Removal",
+                "description": "pickup only, delivered #988 - Prep Week Support",
+                "quantity": 1,
+                "stock_method": "none",
+                "path": [
+                  "27bbc522-7e30-4565-a0de-a9fffa798ba0",
+                  "51d9623b-e5e9-4382-a3f0-21a4d3e5a229",
+                  "F4ZiJl7ZzMChlRufw8RL"
+                ],
+                "order_number": 1006,
+                "uid_order": "jIAV9v8BostNIsZ7PY8F"
+              },
+              "uid_booking": null,
+              "owner_path": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "order_count": 2,
+  "destination_count": 2,
+  "quantity": 339,
+  "organizations": [
+    {
+      "uid": "5spRplcKLjcyqfryluqA",
+      "name": "Meridian Media Group"
+    }
+  ],
+  "missing_order_uids": [],
+  "next_cursor": null,
+  "notice": null
+}
