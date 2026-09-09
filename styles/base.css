@@ -343,6 +343,22 @@ th.center, td.center {
   width: 2rem;
 }
 
+/* The delivery/collection TIME, stacked under its date by a <br> in the partial.
+   De-emphasised because the two lines are not peers: the date is what the reader
+   scans the column for and the time qualifies it, so equal weight reads as two
+   dates stacked. `em` so it tracks whatever root a family sets — the quote is 9px
+   and the statement 10px, and a px here would be a second opinion about scale.
+
+   ⚠️ It must not widen the column. `col.date` is 7.5rem and sized for the date
+   line (`Wed 12/22/26`, 60.6px); the time at this size is well inside that, so
+   the two-line cell costs height rather than width — which is the whole reason
+   the time is on its own line. Anything that puts it back on the date's line
+   widens `--label-col` and re-grids every family. See the partial's docblock. */
+#destinations .time {
+  font-size: 0.9em;
+  color: #555;
+}
+
 #destinations col.days {
   width: calc(var(--label-col) - 17rem);
 }

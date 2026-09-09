@@ -17,14 +17,35 @@
      asserted to carry the shared sub-interface by core's
      `tests/template-helpers.test.ts`.
 
-     Dates go through `it.dates.formatChicagoWeekdayDate`, which is reached
-     rather than passed — `it.dates` is on the render context of every family, and
-     `includeAsync` spreads the caller's `it` into this one. It replaced a
-     `CHICAGO` prop that four call sites had to remember to hand over, and the
-     zone is now named nowhere on this page. The hazard that prop existed for is
-     unchanged: date-fns resolves BOTH the parse and the format against the
-     ambient zone, the render container sets no `TZ`, and 56 of 996 prod orders
-     render a date one day late unpinned. */%>
+     Dates go through `it.dates.formatChicagoWeekdayDate` and — on the ACTIVE
+     window only — `it.dates.formatChicagoTime`, both reached rather than passed:
+     `it.dates` is on the render context of every family, and `includeAsync`
+     spreads the caller's `it` into this one. They replaced a `CHICAGO` prop that
+     four call sites had to remember to hand over, and the zone is named nowhere
+     on this page. The hazard that prop existed for is unchanged: date-fns
+     resolves BOTH the parse and the format against the ambient zone, the render
+     container sets no `TZ`, and 56 of 996 prod orders render a date one day late
+     unpinned.
+
+     ⚠️ THE TIME IS STACKED ON A SECOND LINE, AND THAT IS A WIDTH DECISION, not a
+     typographic one — do not "tidy" it onto one line. The four columns here sum
+     BY CONSTRUCTION to `--label-col`, the alignment edge #items, #totals,
+     #details and the statement, aging-report and pick-sheet label columns all
+     share. Measured in Chromium at 9px: `Wed 12/22/26` is 60.6px and
+     `Wed 12/22/26 · 12:00 AM` is 110.3px, so an inline time does not widen a
+     cell — it widens that shared edge from 24rem to ~35rem (30% to 44% of the
+     page) and re-grids all seven families. The time alone is 41.4px and fits the
+     67.5px column already here.
+
+     ⚠️ ONE boundary per leg, never a range. `delivery_end` equals
+     `delivery_start` on every destination of the 190 prod orders sampled
+     2026-09-09, so `9:00 AM – 9:00 AM` would be a window one instant wide that
+     does not exist — which is the same argument the arrow and end date were
+     split up for below.
+
+     ⚠️ The CHARGE window below stays dates-only, deliberately. It is a billing
+     period counted in days; an hour on it states a precision the charge does not
+     have, and competes with the active window for the reader. */%>
 <%
 const { u, destinations, addressColumnCount, hasCollection, deliverySpan, returnSpan } = it;
 %>
@@ -95,7 +116,8 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
          block. The four <col>s keep their widths either way. */%>
     <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
       <% if (d.delivery_start) { %>
-      <%= it.dates.formatChicagoWeekdayDate(d.delivery_start) %>
+      <%= it.dates.formatChicagoWeekdayDate(d.delivery_start) %><br>
+      <span class="time"><%= it.dates.formatChicagoTime(d.delivery_start) %></span>
       <% } %>
     </td>
     <%/* ARROW, END DATE AND DURATION ARE ALL RENTAL FURNITURE, and they now
@@ -116,7 +138,8 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
     </td>
     <td class="date">
       <% if (d.collection_start) { %>
-      <%= it.dates.formatChicagoWeekdayDate(d.collection_start) %>
+      <%= it.dates.formatChicagoWeekdayDate(d.collection_start) %><br>
+      <span class="time"><%= it.dates.formatChicagoTime(d.collection_start) %></span>
       <% } %>
     </td>
     <td>
