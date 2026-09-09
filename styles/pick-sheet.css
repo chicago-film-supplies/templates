@@ -1,0 +1,155 @@
+/* pick-sheet.css — what is TRUE OF THE OPERATOR'S SHEET and of nothing else.
+
+   The document chrome — the page grid, the alignment edges, the letterhead, the
+   table rules, #details, #destinations and #items — lives in `styles/base.css`
+   and reaches this family through the `base` component. A family is overlaid
+   from `base.css` plus its own sheet and nothing else (`ownsTemplatePath`), so
+   anything copied here would be a second copy that drifts.
+
+   ⚠️ **This sheet is a near-twin of `packing-list.css` and the duplication is
+   deliberate.** The two families render the same source for different
+   audiences, so their chrome coincides today and is free to diverge: this one
+   grows a bucket-column grid the packing list must never have, and the packing
+   list carries a customer-facing density this one is free to give up. Factoring
+   the overlap into a third sheet would make every future divergence a
+   negotiation. */
+
+/* THE SHEET'S ROOT SIZE.
+
+   `base.css` defaults the root to 10px; every customer-facing document opts
+   down to 9px. This one follows them — NOT for the density argument, which does
+   not apply to a document nobody outside the building reads, but for the FOOTER:
+   `partials/shared/footer.eta` carries no font-size of its own and inherits the
+   document's root through the overlay `api-cloudrun` injects into that isolated
+   frame, while its `padding-top: 12px` stays absolute. The band's fit inside
+   `margin_bottom: 0.62in` was measured at a 9px root, and neither the golden
+   gate nor `deno task preview` renders that frame (templates#137) — so a larger
+   root would be legible in a warehouse and unverified at the paper edge.
+
+   ⭐ It also buys the column budget this family actually needs: eleven columns
+   against the packing list's four. */
+html {
+  font-size: 9px;
+}
+
+/* Every number in this table is a count. `font-variant-numeric` rather than a
+   monospace stack — the digits line up in a column without changing the typeface
+   mid-document. `.center` (base.css) does the alignment; this is only about the
+   glyphs. */
+#items th.center,
+#items td.center {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ⚠️ **The seven bucket columns get NO width rule here, and the first draft of
+   this file had one.** `#items thead th:not(:first-child) { width: auto }` in
+   base.css releases every column but the first, and that is what lands column 2
+   on `--label-col` at EVERY column count — the shared alignment edge #details,
+   #destinations and #items all sit on. This family emits ten or eleven columns
+   where the widest sibling emits nine, so it is the strongest test that rule has
+   and the last place to override it.
+
+   A 5.5% cap was tried and lost to that rule on specificity, which is the right
+   outcome: winning would have taken the alignment edge with it. The even spread
+   at eleven columns is legible — the longest heading is "Checked Out" and the
+   longest value is three digits. If a future column count breaks that, the fix
+   is fewer columns, not a local width. */
+
+/* The ORDER banner, and the reason it needs a rule the other families' banners
+   do not.
+
+   Every other document is one order deep, so its banners divide a level BELOW
+   the document. This one's top banner divides the document itself: the rows
+   under `Order #1042` belong to a different customer job than the rows under
+   `Order #1043`, and a picker reading a mis-attributed row hands one
+   production's gear to another. So it is separated from what precedes it rather
+   than merely labelled — the visual weight is doing safety work.
+
+   `border-top` on the cell rather than a margin: these are rows under
+   `table-layout: fixed`, where a margin does not apply. */
+#items tr.order-banner > td {
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule, #999);
+}
+
+/* Three banner levels nest inside one table — order, destination, group — and
+   each has to read as subordinate to the one above at arm's length on a loading
+   dock, which is the one place this document is read. The indent carries the
+   hierarchy; base.css already supplies the weight. */
+#items tr.destination-banner > td {
+  padding-left: 1rem;
+}
+
+#items tr.group-banner > td {
+  padding-left: 2rem;
+  font-style: italic;
+}
+
+/* The first order banner needs no rule above it — the table header is already
+   the boundary, and a second line there reads as a stray. */
+#items tbody > tr.order-banner:first-child > td {
+  padding-top: 0;
+  border-top: none;
+}
+
+/* The document total closes the table. It restates `PickSheet.quantity`, which
+   #details also prints — deliberately, because the two are read at different
+   moments: #details before picking starts, this after the last row has been
+   checked off. */
+#items tr.grand-total > td {
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--rule, #999);
+}
+
+/* The scope line — what this whole sheet is an answer to, printed once under the
+   letterhead. It carries the leg AND the gate, which the packing list's does
+   not: `crew` and `counter` deliberately overlap rather than partition, so a
+   picker holding one of two sheets for the same place needs to know which slice
+   they have or the pair reads as contradicting itself. */
+#scope {
+  margin-bottom: 0.6rem;
+}
+
+/* The gate, set apart from the scope sentence around it. It is a dispatch fact
+   rather than part of what the sheet is about, and it earns emphasis without
+   competing with the leg. */
+#scope .gate {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85em;
+}
+
+/* ⚠️ A NOTICE and the missing-order list are EXCEPTIONS, and they are styled to
+   look like exceptions.
+
+   `PickSheet.missing_order_uids` names orders in the scope whose fulfillment
+   document could not be read — `bookings` and the projection disagree, which is
+   a finding rather than a display problem. Printing it quietly would defeat the
+   point: the document is short and the person holding it is the only one in a
+   position to notice. */
+#exceptions {
+  margin-top: 1.4rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--rule, #999);
+}
+
+#exceptions p {
+  margin: 0;
+}
+
+#exceptions p + p {
+  margin-top: 0.4rem;
+}
+
+/* The non-owner note — "counted under <kit>", set on the row whose quantity
+   cells are blank.
+
+   Muted and small because it is an EXPLANATION rather than data: the row is
+   real, its units are real, and they are being picked one line away. At full
+   weight it would compete with the product name it hangs off, which is the one
+   thing a picker is scanning for. */
+#items td .counted-under {
+  color: #555;
+  font-size: 0.85em;
+  font-style: italic;
+}

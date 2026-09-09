@@ -208,6 +208,16 @@ Probed against `@bgub/eta@4.6.0`, 2026-08-28 — the boundary is exactly this:
 | a `//` comment, balanced pair on ONE line | ✅ safe — `// "is this a divider", never a LENGTH` |
 | a `//` comment, `'` or `"` pair across two lines | 🔴 **breaks** |
 | a `//` comment, odd `'`, `"` or `` ` `` | 🔴 **breaks** |
+| a `//` comment containing a literal Eta OPEN tag | 🔴 **breaks**, and differently |
+
+⚠️ **That last row is not a quoting problem and does not fail like one** (added
+2026-09-08, `pick-sheet.eta`). The scanner has no string state to get wrong — it
+simply finds the open tag, and the block then ends at the *next* `%>`, which is
+usually the terminator of some later comment tag. So the generated function
+contains raw markup as code and the error is `Unexpected token '%'` with the
+caret nowhere near the comment. It is the one shape the bisect below reports
+honestly and the caret never does. **Prose about Eta syntax belongs in a
+`<%/* … */%>` tag, or writes the tag with its characters separated.**
 
 So, for prose in a `//` comment: **write the typographic `’` (U+2019)**, and keep
 a `"…"` phrase on one line. That is why `quote.eta` and `invoice.eta` carry no

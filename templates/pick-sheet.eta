@@ -1,0 +1,472 @@
+<%
+// ── What this document IS, and what it is NOT ───────────────────────────────
+//
+// **The OPERATOR’s sheet.** One row per line, the units spread across the seven
+// `breakdown` state columns, both directions at once. It is the printable form
+// of `/pick-sheet` — the same fold, the same rows, the same owner designation —
+// so a picker can carry the screen to the shelves.
+//
+// 🔴 **It is NOT the packing list, and the split is the whole design.**
+// `packing-list.eta` renders the SAME source collection for a different
+// audience: it travels in the box, is served from a public route, names ONE
+// direction and shows one Qty column. Custody buckets are internal — quoted,
+// prepped, lost, damaged are facts about our warehouse, not about what a
+// customer is receiving — so putting them on that document would have been the
+// change this family exists to avoid making.
+//
+// ⚠️ **So the two bodies are near-neighbours and must not be merged.** Every
+// difference below is a difference in AUDIENCE, and a `params` flag switching
+// between them would put both audiences behind one golden that can only freeze
+// one of them.
+//
+// ⚠️ **Every apostrophe in a `//` comment here is U+2019 (’), not ASCII, and
+// that is a parser requirement rather than a typographic preference.** Eta’s
+// lexer does not model a line comment, so a straight quote inside one opens a
+// string as far as it is concerned. The full boundary — which quote shapes
+// break, in which comment kind, and the two different error shapes they produce
+// — is the CLAUDE.md section on it; this line exists only so the next editor of
+// this file does not undo the punctuation.
+const sheet = it.doc;
+
+// `it.pickSheets`, NOT `it.orders`. A pick-sheets→packing_lists family resolves
+// to {dates, money, icons, pickSheets} and gets no `it.orders` at all, so naming
+// it here would throw at render AND fail the golden gate.
+const u = it.pickSheets;
+
+// EVERY date on this page goes through `it.dates.formatChicago*`, and the zone
+// is named nowhere. date-fns resolves BOTH the parse and the format against the
+// ambient zone unless each is given `{ in: … }`, stored business datetimes are
+// Chicago-offset INSTANTS, and the render container sets no `TZ` — so an
+// unpinned pair prints the UTC day and any boundary at or after 19:00 CDT is
+// TOMORROW. `@cfs/core/utils/dates` owns that pinning; a call site that spells
+// the zone itself is a second owner of it.
+
+// ── One refusal, and it is the one that produces a WRONG document ───────────
+//
+// 🔴 **This document is PAGED, and a short one is indistinguishable from a small
+// one once a template is running.**
+//
+// `PickSheet.orders` is *the orders on THIS PAGE*; `order_count`,
+// `destination_count` and `quantity` describe the whole SCOPE. That split is
+// right for a screen and is a trap for paper: a sheet rendered from a default
+// page is silently short, showing a page of orders under a scope-wide total that
+// disagrees with them. `GET /pick-sheets?address=` returns the complete sheet by
+// construction; this assertion is what catches a caller that reached for a paged
+// route instead.
+//
+// ⭐ **Asserted on `order_count`, NOT on `next_cursor`.** `next_cursor` is the
+// assembler reporting on its own work, so a check against it can only ever agree
+// with whatever the assembler believes; `orders.length === order_count` holds
+// independently of it. Pair every fixed-point check with one that does not
+// consult the same oracle.
+if (sheet.orders.length !== sheet.order_count) {
+  throw new Error(
+    `pick-sheet: this document is SHORT — ${sheet.orders.length} order(s) on the page ` +
+      `against ${sheet.order_count} in the scope. A PickSheet is paged by ORDER; build it ` +
+      "from `GET /pick-sheets?address=`, which returns every order with `next_cursor: null` " +
+      "by construction. Printing this page would put a scope-wide unit total over a subset " +
+      "of the goods.",
+  );
+}
+
+// ⭐ **There is deliberately NO leg refusal here, and that is the difference
+// from `packing-list.eta` worth stating out loud.** That template throws on
+// `leg === null`, because it accompanies ONE movement and because
+// `groupByDestination` returns delivery as rental + sale and collection as
+// rental only — two overlapping lists that double every rental line. This
+// document calls neither builder and renders one row per line, so there is
+// nothing to double; and a worker standing at a place wants both directions,
+// which is exactly what the screen shows them.
+
+// ── The columns ─────────────────────────────────────────────────────────────
+//
+// 🔴 **The seven bucket keys and their headings come from the DECLARATION**,
+// never from a literal list here. `BOOKING_BREAKDOWN_KEYS` and
+// `BOOKING_BREAKDOWN_LABELS` are declared beside `BookingBreakdownSchema` in
+// `@cfs/core`; the hand-written copy that used to sit in
+// `manager/src/utils/fulfillmentStage.ts` had already drifted, saying "Out"
+// where the declaration says **"Checked Out"**, and nothing asserted either
+// string.
+//
+// ⚠️ `"booked"` is NOT one of them. It is DERIVED — reserved + prepped +
+// out-unless-sale — so an eighth column for it would double-count three of the
+// seven.
+const bucketKeys = u.BOOKING_BREAKDOWN_KEYS;
+const bucketLabels = u.BOOKING_BREAKDOWN_LABELS;
+
+// ── The rows ────────────────────────────────────────────────────────────────
+//
+// ⭐ **`dest.items` is rendered DIRECTLY — no `groupByDestination`, no
+// `buildPackingList`.** Those two exist to select which lines a customer-facing
+// list admits for one leg and to flatten them; both questions are the packing
+// list’s. Here every line the fold put on the sheet is a row, in the fold’s own
+// depth-first document order, with its `group` dividers still in place as
+// banners. That is what makes this the screen on paper: the screen renders the
+// same array.
+//
+// ⚠️ A `service` or `surcharge` line has no booking and therefore no bucket
+// cells. It is still a row, because it is still on the order and the screen
+// shows it — an internal sheet that silently dropped lines would be answering a
+// different question than the one on screen.
+const sections = sheet.orders.flatMap(function (order) {
+  return order.destinations.map(function (dest) {
+    // A leg’s rows, addressable by their own `path`. Built per leg and never
+    // pooled: a `path` is a row identity WITHIN ONE DOCUMENT, so one map across
+    // two orders would collide rows that are not the same row.
+    const byPath = new Map();
+    dest.items.forEach(function (entry) {
+      byPath.set(entry.item.path.join(":"), entry.item);
+    });
+    return { order, dest, byPath };
+  });
+});
+
+/**
+ * What a NON-OWNER row says instead of a quantity.
+ *
+ * 🔴 **A row with no numbers and no explanation reads as missing data**, and on
+ * this document there are always some: an aggregate booking has one owner
+ * occurrence and every other occurrence renders blank. Measured on prod, 384
+ * legs carry a booking standing for 2+ lines, so a picker meets this on ordinary
+ * work — sees the same product twice, once with 56 and once with nothing, and
+ * has no way to tell whether the blank one was forgotten.
+ *
+ * ⭐ It names the owner’s PARENT rather than the owner itself. The owner is the
+ * same product by construction, so *"counted with Tent Tie Down"* on a Tent Tie
+ * Down row says nothing; *"counted under Pop Up Tent (White)"* tells a picker
+ * which kit to look in. `owner_path.at(-2)` is that parent, which is the same
+ * value the manager’s row uses for the same sentence.
+ *
+ * ⚠️ Resolved by PATH, never by uid. `item.uid` repeats inside one document —
+ * 18% of prod orders — so a uid lookup would find whichever occurrence came
+ * first. A path is the row identity.
+ */
+function countedUnder(section, entry) {
+  if (entry.owner_path === null) return "";
+  const parent = section.byPath.get(entry.owner_path.slice(0, -1).join(":"));
+  // No parent row means the owner hangs off the destination divider itself,
+  // which is not in `items` — so there is nothing to name and "above" is the
+  // honest answer. The rows are in document order, so it is also true.
+  return parent ? `counted under ${parent.name}` : "counted above";
+}
+
+// 🔴 **Every number on a row comes from `pickSheetLineBooking`, and it returns
+// null far more often than a reader expects.** A booking is aggregate per
+// `(order, product, destination)`, so several lines in one leg legitimately name
+// the same one — measured on prod at 384 legs where one booking stands for 2+
+// lines. The fold designates exactly ONE owner occurrence
+// (`PickSheetItem.owner_path`) and this helper answers only for it; every other
+// occurrence renders blank cells rather than restating somebody else’s units.
+//
+// The naive lookup — `dest.bookings.find(b => b.uid === row.uid_booking)` —
+// looks identical and is N× wrong. Do not write it.
+
+// ── The facts this document states ──────────────────────────────────────────
+
+// The direction, in the words a person uses. Three arms, not two: `null` is a
+// real and ordinary state here, unlike on the packing list where it is refused.
+const legLabel = sheet.leg === null
+  ? "Both directions"
+  : sheet.leg === "collection"
+  ? "Collection"
+  : "Delivery";
+
+// ⚠️ The customer name is GUARDED, and null is an ANSWER rather than missing
+// data. A destination-scoped sheet spans whatever is open at one place, and a
+// shared stage legitimately holds two productions at once — measured on prod at
+// `3100 W Fillmore St`, 17 orders across 12 organizations. Printing the first
+// one in the letterhead would put one customer’s name on another’s goods.
+//
+// ⭐ Read off `sheet.organizations`, the distinct set across every page rather
+// than off the page, so this cannot become "one customer" on a document that was
+// assembled correctly but happens to begin with one.
+const customerName = sheet.organizations.length === 1
+  ? sheet.organizations[0].name
+  : null;
+
+// Both banner gates follow the same principle — a divider naming the only member
+// of its level is noise — and each is computed from what its own level contains.
+const showOrderBanner = sheet.orders.length > 1;
+const showDestinationBanners = sections.length > 1;
+
+const allRows = sections.flatMap(function (section) {
+  return section.dest.items.map(function (entry) { return entry.item; });
+});
+
+// ⚠️ The Stock column is CONDITIONAL, for the reason the packing list and the
+// receipt make their own columns conditional: a headed column carrying one value
+// on every row reads as missing data rather than as inapplicable. `stock_method`
+// earns its place only when the page distinguishes — a serialized line is one a
+// picker checks an asset tag against, and a page of nothing but bulk lines holds
+// no such row to find.
+//
+// ⭐ The seven bucket columns are NOT conditional, deliberately and against that
+// same rule. They are the document’s SUBJECT: a page where every unit sits in
+// `reserved` is telling a picker that nothing has been prepped yet, and a
+// collapsing column set would make that page indistinguishable from one where
+// the buckets were never asked about. The Stock column is a property of a row;
+// these are the question.
+const hasSerialized = allRows.some(function (row) { return row.stock_method === "serialized"; });
+
+// Item Description, Type, [Stock], the seven buckets, Total.
+const itemColumnCount = 2 + (hasSerialized ? 1 : 0) + bucketKeys.length + 1;
+
+// The second alignment edge of the page: the #items column boundary NEAREST THE
+// HALF-WAY POINT, rounding left. Same derivation as the quote, the invoice, the
+// receipt and the packing list (see styles/base.css) — a fact about the shared
+// page grid rather than about any one family.
+const addressColumnCount = itemColumnCount - 1;
+const addressBoundary = Math.floor((itemColumnCount - 1) / 2);
+
+// The destinations table draws every leg on the sheet in one block, so its
+// collection side is on when ANY leg has something coming back. `orderHasRentals`
+// answers truthfully on a fulfillment-shaped line (`rental` is a
+// `FULFILLMENT_LINE_ITEM_TYPES` member); the two money helpers in the shared
+// sub-interface, `orderHasDiscount` and `orderHasTax`, would not — they select
+// through `isPreTaxItem`, which is false for a line with no `price`, and a
+// pick-sheet line carries a `FulfillmentItem`, which has none.
+const hasCollection = sections.some(function (section) {
+  return u.orderHasRentals(section.dest.items.map(function (entry) { return entry.item; }));
+});
+const deliverySpan = hasCollection ? addressBoundary : addressColumnCount;
+const returnSpan = addressColumnCount - addressBoundary;
+
+// ── What this template deliberately does NOT render ─────────────────────────
+//
+// • `PickSheetBooking.shortage` — units the allocator could not fill. Real, and
+//   a different document’s job: a shortage is resolved by re-allocating or
+//   substituting, which happens on the screen where those controls are. A number
+//   on paper that nobody can act on from the dock is noise.
+//
+// • `PickSheetBooking.stores` — where the units are shelved. This is the field
+//   most likely to be wanted next, and it is left out because a booking’s stores
+//   are a LIST and this grid has no room for one; a Location column belongs to a
+//   layout decision, not to a first version.
+//
+// • Any money. The fulfillment projection carries none by construction; the
+//   fulfillment projection is defined as carrying no price and no financial
+//   flags, and `it.money` is never called below.
+//
+// • A signature line. A hand-off signature is a real thing to want and it is a
+//   decision about the WORKFLOW — who signs, for what, and whether an unsigned
+//   sheet means anything — rather than a layout choice, so it is not invented
+//   here. `packing-list.eta` and `receipt.eta` decline it for the same reason.
+%>
+<div id="grid-wrapper" style="--block-3-fraction: calc(<%= addressBoundary %> / <%= addressColumnCount %>)">
+<%/* The letterhead takes a NAME, not an organization — a pick sheet carries a
+     SET of `{uid, name}`, so no expression the partial could evaluate is right
+     for every caller and each states how it got a name instead.
+
+     `billing_address` is an explicit null: a pick sheet is a movement document
+     and carries no billing address anywhere in its schema. Passing null says
+     that, where omitting the prop would read as an oversight. */%>
+<%~ await includeAsync("@partials/shared/letterhead.eta", {
+     title: "Pick Sheet",
+     customer_name: customerName,
+     billing_address: null,
+   }) %>
+
+<p id="scope">
+  <%/* `PickSheet.leg` is STAMPED on the document rather than re-derived at
+       render. On the packing list that is what makes it a record; here it is
+       what makes the sheet reproducible — a re-render after the goods went out
+       must say what it was drawn for, not what custody has since become. */%>
+  <strong><%= legLabel %></strong> —
+  <%/* Three arms, one per `PickSheetScope.kind`. `order` is the DEGENERATE scope
+       (api-cloudrun#821): the sheet is ONE order, so "everything at" reads as a
+       place and "all open work for" claims a roll-up this document is not. */%>
+  <%= sheet.scope.kind === "order"
+    ? "for"
+    : sheet.scope.kind === "organization"
+    ? "all open work for"
+    : "everything open at" %>
+  <strong><%= sheet.scope.name %></strong>
+  <%/* The gate IS printed here, unlike on the packing list, and the difference
+       is the audience. `crew` and `counter` deliberately OVERLAP rather than
+       partition — a leg we deliver and the customer returns is on both sheets —
+       so a picker holding one of them needs to know which slice they have, or
+       two sheets of the same place read as contradicting each other. On a
+       customer-facing document it would be an internal dispatch concept with no
+       meaning to the reader. */%>
+  <% if (sheet.gate !== "all") { %>
+  · <span class="gate"><%= sheet.gate === "crew" ? "Crew work" : "Will call / counter" %></span>
+  <% } %>
+</p>
+
+<table id="details">
+  <thead>
+    <tr>
+      <th scope="col">Printed:</th>
+      <th scope="col">Order<%= sheet.order_count === 1 ? "" : "s" %>:</th>
+      <th scope="col">Destinations:</th>
+      <th scope="col">Total Units:</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <%/* `it.now` is `chicagoNowIso()` and sits on the same footing as every
+           stored instant — unpinned it dated every quote rendered after 19:00
+           Chicago as tomorrow. A pick sheet is printed at the moment picking
+           starts, which is exactly when an evening boundary is crossed. */%>
+      <td><%= it.dates.formatChicagoDateTime(it.now) %></td>
+      <%/* The SCOPE counts, which by the refusal above are also the page counts.
+           The NUMBER when there is exactly one order: `showOrderBanner` is
+           `orders.length > 1`, so a single-order sheet emits no order banner and
+           would otherwise name its order nowhere. */%>
+      <td><%= sheet.order_count === 1 && sheet.orders[0]
+        ? `#${sheet.orders[0].number}`
+        : sheet.order_count %></td>
+      <td><%= sheet.destination_count %></td>
+      <td><%= sheet.quantity %></td>
+    </tr>
+  </tbody>
+</table>
+
+<%/* ONE destinations table for the whole sheet, drawn by the shared partial.
+     `dest.destination` IS a `DocDestination`, byte-identical to the one on its
+     own order, so these pass straight through rather than being reshaped.
+
+     ⚠️ A shared partial never NAMES a util namespace: `u` is handed in, and
+     `u.getDestinationsLegend` / `u.isSameAsDeliveryDates` are the same function
+     objects `it.orders` would have resolved to for an orders-source family. */%>
+<%~ await includeAsync("@partials/shared/destinations.eta", {
+     u,
+     destinations: sections.map(function (section) { return section.dest.destination; }),
+     addressColumnCount, hasCollection,
+     deliverySpan, returnSpan,
+   }) %>
+
+<!-- Items -->
+<section id="items">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col" class="wide">Item Description</th>
+        <th scope="col">Type</th>
+        <% if (hasSerialized) { %>
+        <th scope="col">Stock</th>
+        <% } %>
+        <% bucketKeys.forEach(function (key) { %>
+        <th scope="col" class="center bucket"><%= bucketLabels[key] %></th>
+        <% }) %>
+        <th scope="col" class="center">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%/* The banner spans this table exactly, from the same number the header is
+           built from and the alignment edge above is derived from — a banner that
+           disagreed with the header would take that edge with it. */%>
+      <% const bannerSpan = itemColumnCount; %>
+      <% let lastOrderUid; %>
+      <% sections.forEach(function (section) { %>
+        <% if (showOrderBanner && section.order.uid !== lastOrderUid) { %>
+          <% lastOrderUid = section.order.uid; %>
+        <%/* 🔴 The order banner is SAFETY, not decoration. A destination-scoped
+             sheet spans whatever is open at one place, and a shared stage holds
+             two productions at once — so a picker reading a mis-attributed row
+             hands one production's gear to another. The organization rides the
+             banner for the same reason, and only when the sheet actually spans
+             customers (otherwise the letterhead already said it once). */%>
+      <tr class="order-banner">
+        <td class="wide" colspan="<%= bannerSpan %>">
+          <strong>Order #<%= section.order.number %></strong><%= section.order.subject ? ` — ${section.order.subject}` : "" %><% if (customerName === null && section.order.organization.name) { %> · <%= section.order.organization.name %><% } %>
+        </td>
+      </tr>
+        <% } %>
+        <% if (showDestinationBanners) { %>
+      <tr class="destination-banner">
+        <td class="wide" colspan="<%= bannerSpan %>">
+          <%/* `PickSheetDestination.name` is the destination DIVIDER's name —
+               what the operator called this section on the order — and
+               `quantity` is that leg's total, read off the document rather than
+               summed from the rows. */%>
+          <%= section.dest.name %> — <%= section.dest.quantity %> units
+        </td>
+      </tr>
+        <% } %>
+        <% section.dest.items.forEach(function (entry) { %>
+          <% const item = entry.item; %>
+          <%/* A `group` divider is a BANNER, not a row: it has no booking, no
+               quantity and nothing to pick. Emitted in place rather than by
+               grouping the rows first — the fold already returns them in
+               depth-first document order, and re-grouping would be a second
+               ordering authority that can disagree with the first. */%>
+          <% if (item.type === "group") { %>
+      <tr class="group-banner">
+        <td class="wide" colspan="<%= bannerSpan %>"><%= item.name %></td>
+      </tr>
+          <% } else { %>
+          <%/* 🔴 `pickSheetLineBooking`, never a `find` on `uid_booking`. It
+               answers only for the occurrence the fold designated as the
+               booking's owner; every other occurrence of an aggregate booking
+               gets null and renders blank cells, which is what stops one
+               booking's units being stated N times. */%>
+          <% const booking = u.pickSheetLineBooking(section.dest, entry); %>
+      <tr>
+        <td>
+          <%= item.name %><%/* The blank-cells explanation, on the row that is
+               blank rather than in a legend at the foot of the page: a picker
+               reads one row at a time and a legend is on the wrong page by the
+               time it is needed. */%><% if (entry.owner_path !== null) { %><span class="counted-under"> · <%= countedUnder(section, entry) %></span><% } %>
+        </td>
+        <td class="capitalize"><%= item.type %></td>
+        <% if (hasSerialized) { %>
+        <td><%= item.stock_method === "serialized" ? "Serialized" : "" %></td>
+        <% } %>
+        <% bucketKeys.forEach(function (key) { %>
+        <%/* An empty cell rather than a `0`, and the difference is legibility at
+             arm's length: measured across every sampled booking, exactly ONE of
+             the seven buckets is non-zero on a given row, so printing the zeros
+             would put six noise digits beside every real one. */%>
+        <td class="center"><%= booking && booking.breakdown[key] ? booking.breakdown[key] : "" %></td>
+        <% }) %>
+        <%/* The row total is the BOOKING's `quantity`, not the sum of the cells
+             beside it — a second reading of the same fact, deliberately. The
+             breakdown is a current-state partition, so the two agree by
+             construction; where they do not, the stored booking is wrong and this
+             sheet is the surface that shows it. */%>
+        <td class="center"><%= booking ? booking.quantity : "" %></td>
+      </tr>
+          <% } %>
+        <% }) %>
+      <% }) %>
+      <%/* The document total, read off the sheet rather than summed from the
+           rows above. `PickSheet.quantity` is the units across every admitted
+           leg, computed once in the fold; re-deriving it here would be a second
+           authority, and the obvious per-line derivation through `uid_booking`
+           is the one that is N× wrong. */%>
+      <tr class="grand-total">
+        <td class="wide" colspan="<%= bannerSpan - 1 %>"><strong>Total Units</strong></td>
+        <td class="center"><strong><%= sheet.quantity %></strong></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<% if (sheet.missing_order_uids.length > 0 || sheet.notice) { %>
+<%/* 🔴 SURFACED, never dropped. `missing_order_uids` names orders the scope
+     admits whose fulfillment document could not be read — `bookings` and the
+     projection disagree, which is a finding
+     (`api-cloudrun/scripts/audit-fulfillment-projection.ts`) rather than a
+     display problem. The person holding this paper is the only one positioned to
+     notice that the goods in front of them are short.
+
+     `notice` is set only when the page was clipped, and by the refusal above a
+     clipped page never reaches here — it is printed anyway because a notice the
+     schema can set and the document never shows is a silent channel. */%>
+<section id="exceptions">
+  <% if (sheet.missing_order_uids.length > 0) { %>
+  <p>
+    <strong>Incomplete:</strong>
+    <%= sheet.missing_order_uids.length %>
+    order<%= sheet.missing_order_uids.length === 1 ? "" : "s" %>
+    in this scope could not be read and <%= sheet.missing_order_uids.length === 1 ? "is" : "are" %>
+    NOT listed above. Do not treat this sheet as the complete picture until that is resolved.
+  </p>
+  <% } %>
+  <% if (sheet.notice) { %>
+  <p><strong>Notice:</strong> <%= sheet.notice %></p>
+  <% } %>
+</section>
+<% } %>
+</div>

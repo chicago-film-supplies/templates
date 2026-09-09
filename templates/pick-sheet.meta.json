@@ -1,0 +1,22 @@
+{
+  "display_name": "Pick Sheet",
+  "collection_source": "pick-sheets",
+  "collection_target": "packing_lists",
+  "surfaces": [
+    "fulfillment"
+  ],
+  "depends_on": {
+    "components": [
+      "base"
+    ]
+  },
+  "fixtures": [],
+  "render": {
+    "margin_top": 0.5,
+    "margin_bottom": 0.62,
+    "margin_left": 0.5,
+    "margin_right": 0.5,
+    "filename": "Pick Sheet - <%= it.doc.scope.name %>",
+    "footer": "partials/shared/footer.eta"
+  }
+}
