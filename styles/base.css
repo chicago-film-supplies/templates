@@ -349,13 +349,13 @@ th.center, td.center {
    dates stacked. `em` so it tracks whatever root a family sets — the quote is 9px
    and the statement 10px, and a px here would be a second opinion about scale.
 
-   ⚠️ It must not widen the column. `col.date` is 7.5rem and sized for the date
-   line (`Wed 12/22/26`, 60.6px); the time at this size is well inside that, so
-   the two-line cell costs height rather than width — which is the whole reason
-   the time is on its own line. Anything that puts it back on the date's line
-   widens `--label-col` and re-grids every family. See the partial's docblock. */
+   ⚠️ It must not widen the column, and it is now at the DATE's size — measured
+   `12:00 AM` is 41.4px against `col.date`'s 67.5rem-derived 67.5px, so the full
+   size still fits with room and the two-line cell costs height rather than
+   width. That is the whole reason the time is on its own line; anything that
+   puts it back on the date's line widens `--label-col` and re-grids every
+   family. See the partial's docblock. */
 #destinations .time {
-  font-size: 0.9em;
   color: #555;
 }
 

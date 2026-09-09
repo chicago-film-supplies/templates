@@ -106,9 +106,20 @@ const bucketLabels = u.BOOKING_BREAKDOWN_LABELS;
 // same array.
 //
 // ⚠️ A `service` or `surcharge` line has no booking and therefore no bucket
-// cells. It is still a row, because it is still on the order and the screen
-// shows it — an internal sheet that silently dropped lines would be answering a
-// different question than the one on screen.
+// cells. `surcharge` is still a row on that basis. `service` is NOT: a service
+// is labour, not a thing in the warehouse, so there is nothing for a picker to
+// find, count or check off and the row is answering a different document’s
+// question. This reverses the earlier reading — that the sheet should mirror the
+// screen line-for-line — for the SERVICE case only, deliberately and on the
+// owner’s instruction; the surcharge half of that argument still stands.
+//
+// ⚠️ Dropping a line can EMPTY A GROUP, and a banner with no rows under it reads
+// as missing stock rather than as an absent section. So a `group` divider
+// survives only when an admitted row still descends from it, tested on `path`
+// (`[...parent path, own uid]`), which is the row identity and the only correct
+// expression of the hierarchy — `path` prefix, never adjacency in the array.
+// Measured on `multi-order-destination`: two `Delivery` groups hold one service
+// each and nothing else, so both banners go with them.
 const sections = sheet.orders.flatMap(function (order) {
   return order.destinations.map(function (dest) {
     // A leg’s rows, addressable by their own `path`. Built per leg and never
@@ -118,7 +129,26 @@ const sections = sheet.orders.flatMap(function (order) {
     dest.items.forEach(function (entry) {
       byPath.set(entry.item.path.join(":"), entry.item);
     });
-    return { order, dest, byPath };
+    // ⚠️ `byPath` is built from the FULL leg, before the service filter, and
+    // that is load-bearing: it resolves `owner_path` for the counted-under
+    // label, so filtering it would turn a legitimate lookup into a blank.
+    // What is filtered is what gets RENDERED, which is a different question.
+    const admitted = dest.items.filter(function (entry) {
+      return entry.item.type !== "service";
+    });
+    const liveGroups = new Set();
+    admitted.forEach(function (entry) {
+      if (entry.item.type === "group") return;
+      const path = entry.item.path;
+      for (let i = 1; i < path.length; i++) {
+        liveGroups.add(path.slice(0, i).join(":"));
+      }
+    });
+    const rows = admitted.filter(function (entry) {
+      return entry.item.type !== "group" ||
+        liveGroups.has(entry.item.path.join(":"));
+    });
+    return { order, dest, byPath, rows };
   });
 });
 
@@ -195,7 +225,7 @@ const showOrderBanner = sheet.orders.length > 1;
 const showDestinationBanners = sections.length > 1;
 
 const allRows = sections.flatMap(function (section) {
-  return section.dest.items.map(function (entry) { return entry.item; });
+  return section.rows.map(function (entry) { return entry.item; });
 });
 
 // ⚠️ The Stock column is CONDITIONAL, for the reason the packing list and the
@@ -389,7 +419,7 @@ const returnSpan = addressColumnCount - addressBoundary;
         </td>
       </tr>
         <% } %>
-        <% section.dest.items.forEach(function (entry) { %>
+        <% section.rows.forEach(function (entry) { %>
           <% const item = entry.item; %>
           <%/* A `group` divider is a BANNER, not a row: it has no booking, no
                quantity and nothing to pick. Emitted in place rather than by

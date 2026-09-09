@@ -80,9 +80,15 @@ html {
   padding-left: 1rem;
 }
 
+/* ⚠️ FLUSH LEFT, not indented, and the weight is what carries the hierarchy
+   instead. A group banner used to sit at `padding-left: 2rem` — further right
+   than the rows it heads, which start at 0 — so the one line naming a section
+   was the one line not aligned with it. Aligning it to its first child and
+   making it bold reads as a heading; the indent read as a stray. */
 #items tr.group-banner > td {
-  padding-left: 2rem;
+  padding-left: 0;
   font-style: italic;
+  font-weight: bold;
 }
 
 /* The first order banner needs no rule above it — the table header is already
