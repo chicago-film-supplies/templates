@@ -9,16 +9,20 @@
        customer_name    the customer's name, ALREADY COMPOSED, or null
        billing_address  the customer's billing address, or null
 
-     🔴 **It takes a NAME, not an `organization`, and the reason is that this is
-     the one surface both org populations reach.** An order and an invoice carry
-     a frozen `DocumentOrganizationSnapshot` whose `path` is the chain the name
-     composes from; a movement session carries `{uid, name}` and NO chain, because
-     it is folded per render from the orders it spans. So there is no single
-     expression this partial could evaluate that is right for both — composing
-     here would throw on a receipt, and reading `.name` here would keep the
-     templates repo on the field this campaign is removing. Each caller states
-     how it got a name instead, which is also what makes the two cases legible at
-     the call site. See `api-cloudrun/.claude/plans/org-name-is-derived.md`.
+     🔴 **It takes a NAME, not an `organization`, and the reason CHANGED with
+     core#93 — the old one is no longer true.** It used to be that a movement
+     session carried `{uid, name}` and NO chain, so composing here would throw on
+     a receipt. Every org-bearing source now carries a chain, so that argument is
+     void.
+
+     What survives is narrower and still decides it: the two populations spell
+     the chain under DIFFERENT KEYS. An order and an invoice carry a frozen
+     `DocumentOrganizationSnapshot` at `organization.path`; a pick sheet and a
+     movement session carry `organization.organization_path`. So there is still
+     no single expression this partial could evaluate that is right for both, and
+     each caller composes with `it.organizations.composeOrgName` before handing
+     the result over — which is also what keeps the two cases legible at the call
+     site.
 
      ⚠️ `customer_name` may be NULL, and null is an ANSWER rather than missing
      data. `POST /returns` deliberately accepts bookings from different orders —
