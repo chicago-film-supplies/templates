@@ -409,7 +409,7 @@
         "custom-d832e2c1-724b-46d5-8393-fdb3c56a23c8"
       ],
       "inclusion_type": null,
-      "zero_priced": true,
+      "zero_priced": false,
       "crms_id": null
     },
     {
@@ -454,7 +454,7 @@
         "Ep1uiJRVTLCF9DfiNJNB"
       ],
       "inclusion_type": null,
-      "zero_priced": true,
+      "zero_priced": false,
       "crms_id": 656,
       "coa_revenue": 4000
     },

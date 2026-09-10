@@ -276,6 +276,26 @@
 			}
 		}
 	],
+	"query_by_items": [
+		"MaglinerGeminiJr0001",
+		"FoldingTable6ft00001",
+		"CompedSandbagSet0001",
+		"DeliverySetupRemove1"
+	],
+	"query_by_contacts": [],
+	"query_by_dates": [
+		"2026-07-09",
+		"2026-07-12"
+	],
+	"bookings_breakdown": {
+		"quoted": 16,
+		"reserved": 0,
+		"prepped": 0,
+		"out": 0,
+		"returned": 0,
+		"lost": 0,
+		"damaged": 0
+	},
 	"totals": {
 		"discount_amount_cents": 10300,
 		"subtotal_cents": 61300,
