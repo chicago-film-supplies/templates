@@ -179,7 +179,8 @@
       "xero_id": "12aeb68b-d76d-4c46-9c27-92082c9b1d60",
       "xero_tracking_option_id": "693879f2-c73d-4936-a47c-5abe53f0526e",
       "crms_opportunity_id": 63,
-      "crms_id": 209
+      "crms_id": 209,
+      "zero_priced": null
     },
     {
       "uid": "6ccb1633-1ced-44c4-ae04-534f0fe7ed98",

@@ -209,7 +209,8 @@
       "xero_id": "3e180b21-225e-452c-ab3b-e42de2c54687",
       "xero_tracking_option_id": "73cdcdd6-fed9-44b3-9438-8e344e2434da",
       "crms_opportunity_id": 475,
-      "crms_id": 123
+      "crms_id": 123,
+      "zero_priced": false
     },
     {
       "uid": "Wnj0LODXW6zCYRmnJoxQ",
@@ -259,7 +260,8 @@
       "xero_id": "64a79c7c-db51-49ba-a988-a44dfe5b216d",
       "xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
       "crms_opportunity_id": 475,
-      "crms_id": 138
+      "crms_id": 138,
+      "zero_priced": false
     }
   ],
   "totals": {

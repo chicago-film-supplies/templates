@@ -196,7 +196,8 @@
       "xero_id": "3f670cfc-09da-421c-82d7-305ca4512b2c",
       "xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
       "crms_opportunity_id": 609,
-      "crms_id": 139
+      "crms_id": 139,
+      "zero_priced": false
     },
     {
       "uid": "3kzv0sanOljc25psMVkU",
@@ -234,7 +235,8 @@
       "xero_id": "9e140072-d913-4478-a0a9-616c16f90b05",
       "xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
       "crms_opportunity_id": 609,
-      "crms_id": 473
+      "crms_id": 473,
+      "zero_priced": true
     },
     {
       "uid": "Wnj0LODXW6zCYRmnJoxQ",
@@ -272,7 +274,8 @@
       "xero_id": "64a79c7c-db51-49ba-a988-a44dfe5b216d",
       "xero_tracking_option_id": "396179f5-d2d2-46cc-9ff3-69a8785febe0",
       "crms_opportunity_id": 609,
-      "crms_id": 138
+      "crms_id": 138,
+      "zero_priced": true
     }
   ],
   "totals": {
