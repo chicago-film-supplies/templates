@@ -117,12 +117,22 @@ const componentDepth = (item) =>
 
 // ── Declared param: hide_zero_priced_components (default false) ─────────────
 //
-// ⚠️ **The predicate is `base_cents === 0`, NOT `zero_priced`.** An invoice line
-// has no `zero_priced` field at all — `projectOrderItemToInvoiceItem` does not
-// carry it — so the order’s flag is simply absent here and testing for it would
-// make this param a silent no-op. Checking the stored amount is the same call
-// core already makes: `@cfs/core/utils/invoices` does its own zero-priced work
-// "on the stored amounts, never inferred from `zero_priced`".
+// ⭐ **The predicate is `zero_priced === true`, as of 2026-09-10**, which is what
+// `quote.eta` has always done — the two families now ask the same question.
+//
+// ⚠️ **It was `price.base_cents === 0` until then, and that was a PROXY forced by
+// the corpus rather than a choice.** An invoice line genuinely had no
+// `zero_priced` field: the schema lacked the key and
+// `projectOrderItemToInvoiceItem` did not carry it, so testing for it would have
+// made this param a silent no-op. Stage two of `manager#421` backfilled every
+// invoice and made the projection emit, so the real flag is now readable here.
+//
+// ⭐ **Measured before the switch, over all 1,040 prod invoices: the proxy hid
+// 3,557 rows and the flag hides 3,556.** Invariant (1) ties `zero_priced ===
+// true` to `base_cents === 0`, so `true` is a strict SUBSET of the proxy and the
+// change can only ever make a hidden row VISIBLE — never the reverse. Exactly
+// one row moves (invoice #2411, draft): a component charged at $0.00 that is not
+// a zero-priced component, which the proxy was hiding wrongly.
 //
 // Only a COMPONENT is eligible (`componentDepth > 0`). A top-level zero-priced
 // line is something the customer was given at no charge, and hiding that would
@@ -141,7 +151,7 @@ const hiddenPaths = new Set();
 const rolledUp = new Map();
 if (hideZeroPricedComponents) {
   const byPath = new Map(lineItems.map(i => [pathKey(i), i]));
-  const eligible = lineItems.filter(i => i.price.base_cents === 0 && componentDepth(i) > 0);
+  const eligible = lineItems.filter(i => i.zero_priced === true && componentDepth(i) > 0);
   const eligibleKeys = new Set(eligible.map(pathKey));
   eligible.forEach(hidden => {
     // Walk up to the nearest ancestor that is a line item AND still visible, so

@@ -173,7 +173,8 @@
         "VQim9zNSP2k4gdhBEdnX"
       ],
       "coa_revenue": 4200,
-      "taxed_as": null
+      "taxed_as": null,
+      "zero_priced": null
     },
     {
       "uid": "N8brmUmmSzHs523aJAMd",
@@ -223,7 +224,8 @@
         "N8brmUmmSzHs523aJAMd"
       ],
       "coa_revenue": 4200,
-      "taxed_as": null
+      "taxed_as": null,
+      "zero_priced": true
     }
   ],
   "totals": {

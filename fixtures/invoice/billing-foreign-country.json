@@ -209,7 +209,8 @@
       "xero_id": "95bdf0be-f6ac-48b7-8811-849f2de8e86e",
       "xero_tracking_option_id": "6e52d128-5355-420b-9335-3e3be99a298a",
       "crms_opportunity_id": 492,
-      "crms_id": 29
+      "crms_id": 29,
+      "zero_priced": false
     },
     {
       "uid": "9Mh47G21XUYW71ehVx7p",
@@ -255,7 +256,8 @@
       "xero_id": "e276df2c-1efc-473c-952b-3d5e8b14d844",
       "xero_tracking_option_id": "6e52d128-5355-420b-9335-3e3be99a298a",
       "crms_opportunity_id": 492,
-      "crms_id": 61
+      "crms_id": 61,
+      "zero_priced": true
     },
     {
       "uid": "lMxUI8nQ7ZqMd4cWqmq0",
@@ -301,7 +303,8 @@
       "xero_id": "66f0ae1d-6db3-4785-a5a7-4aa485aa0aa1",
       "xero_tracking_option_id": "6e52d128-5355-420b-9335-3e3be99a298a",
       "crms_opportunity_id": 492,
-      "crms_id": 62
+      "crms_id": 62,
+      "zero_priced": true
     },
     {
       "uid": "6EyuQGHOw00w7GPhmgVn",
@@ -347,7 +350,8 @@
       "xero_id": "70adb415-87c5-483c-a5ad-7e0f94fc70b3",
       "xero_tracking_option_id": "6e52d128-5355-420b-9335-3e3be99a298a",
       "crms_opportunity_id": 492,
-      "crms_id": 49
+      "crms_id": 49,
+      "zero_priced": true
     }
   ],
   "totals": {
