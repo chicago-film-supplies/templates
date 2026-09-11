@@ -98,12 +98,7 @@ const {
         <% const rowSubtotalCents = (item.price.subtotal_discounted_cents ?? item.price.subtotal_cents) + (rolled ? rolled.subtotal : 0); %>
         <% const rowTotalCents = item.price.total_cents + (rolled ? rolled.total : 0); %>
         <tr>
-          <td style="padding-left: <%= componentDepth(item) %>em">
-            <%= item.name %>
-            <% if (item.description) { %>
-            <br><%= item.description %>
-            <% } %>
-          </td>
+          <td style="padding-left: <%= componentDepth(item) %>em"><%= item.name %></td>
           <td class="capitalize"><% if (DISAMBIGUATED_ITEM_TYPES.has(item.type)) { %><%= item.type %><% } %></td>
           <td><%= numberCell(item.quantity) %></td>
           <% if (hasRentals) { %>
@@ -111,7 +106,12 @@ const {
                    auto-derives weeks at >= 5 chargeable days and days below it,
                    and singularizes, so a 10-day rental reads `2 weeks` here and
                    in the manager alike. It THROWS on <= 0, which the truthiness
-                   guard in front of it already excludes. */%><%= item.type === "rental" && item.price.chargeable_days ? it.dates.formatChargeDays(item.price.chargeable_days).periodLabel : '' %></td>
+                   guard in front of it already excludes.
+
+                   A `fixed`-formula rental still carries a `chargeable_days`
+                   count (core sets it from the booking regardless of formula),
+                   but the price does not scale with it — so this checks
+                   `formula` FIRST and never reaches the days formatter for one. */%><%= item.type !== "rental" ? '' : item.price.formula === "fixed" ? "Fixed" : item.price.chargeable_days ? it.dates.formatChargeDays(item.price.chargeable_days).periodLabel : '' %></td>
           <% } %>
           <td><%= moneyCellOn(item.price.base_cents, rowTaxCents) %></td>
           <% if (hasDiscount) { %>
@@ -151,6 +151,13 @@ const {
           <% } %>
           <td class="total"><%= moneyCell(rowTotalCents) %></td>
         </tr>
+        <% if (item.description) { %>
+        <tr>
+          <td class="wide" colspan="<%= bannerSpan %>" style="padding-left: <%= componentDepth(item) %>em">
+            <%= item.description %>
+          </td>
+        </tr>
+        <% } %>
         <% } %>
       <% }) %>
     </tbody>
