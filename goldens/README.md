@@ -56,17 +56,36 @@ Goldens change only by a **deliberate re-bless** — after an intentional visual
 change, or after a Gotenberg/Chromium upgrade that legitimately shifts
 rendering. Regenerate from the api-cloudrun repo:
 
+🔴 **Gotenberg is internal-only and no human is an invoker on it**, so this needs an
+**impersonated `golden-diff-ci` token**. ⚠️ `GOTENBERG_BEARER` is optional and fails
+**silently** — omit it and the run sends no auth at all and every fixture fails with a
+bare `403`. 🔴 **The run still exits 0 and prints `Dry-run complete`**, so check the
+per-fixture lines rather than the exit status.
+
 ```bash
-# dry-run (shows which goldens would change + pixel delta), against dev Gotenberg:
 cd ../api-cloudrun
-GOTENBERG_URL_DEV=<gotenberg-url> deno run \
+GOTENBERG_URL_DEV=https://gotenberg-dev-l5hxfebzwq-uc.a.run.app
+BEARER="$(gcloud auth print-identity-token \
+  --impersonate-service-account=golden-diff-ci@cfs-dev-3100.iam.gserviceaccount.com \
+  --audiences="$GOTENBERG_URL_DEV")"
+
+# dry-run (shows which goldens would change + pixel delta), against dev Gotenberg:
+GOTENBERG_URL_DEV="$GOTENBERG_URL_DEV" GOTENBERG_BEARER="$BEARER" deno run \
   --allow-env --allow-net --allow-read --allow-write \
   scripts/rebless-goldens.ts --branch=main --env=dev
 
-# write them:
-GOTENBERG_URL_DEV=<gotenberg-url> deno run -A scripts/rebless-goldens.ts \
-  --branch=main --env=dev --write
+# write them — BOTH namespaces, one per run:
+GOTENBERG_URL_DEV="$GOTENBERG_URL_DEV" GOTENBERG_BEARER="$BEARER" deno run -A \
+  scripts/rebless-goldens.ts --branch=main --env=dev --write
+GOTENBERG_URL_DEV="$GOTENBERG_URL_DEV" GOTENBERG_BEARER="$BEARER" deno run -A \
+  scripts/rebless-goldens.ts --branch=sandbox --env=dev --write
 ```
+
+🔴 **`--env=prod` cannot work and is not the answer to a 403** — prod Gotenberg grants
+`run.invoker` to the prod API runtime only, so the impersonated token mints fine and the
+service still refuses. Bless **both** namespaces through `--env=dev`, as above; that is
+measured-safe because CI never talks to Gotenberg (it POSTs to the API, which reaches
+Gotenberg as its own identity). ⚠️ The cross-branch drift check only runs under `--write`.
 
 Then commit the updated PNGs in the same PR as the visual change. The script
 reads templates from this repo (`TEMPLATES_REPO_DIR`, default `../templates`),
