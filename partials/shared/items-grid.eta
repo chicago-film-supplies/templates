@@ -107,7 +107,11 @@ const {
           <td class="capitalize"><% if (DISAMBIGUATED_ITEM_TYPES.has(item.type)) { %><%= item.type %><% } %></td>
           <td><%= numberCell(item.quantity) %></td>
           <% if (hasRentals) { %>
-          <td><%= item.type === "rental" && item.price.chargeable_days ? item.price.chargeable_days + ' days' : '' %></td>
+          <td><%/* The unit is core's call, not this file's: `formatChargeDays`
+                   auto-derives weeks at >= 5 chargeable days and days below it,
+                   and singularizes, so a 10-day rental reads `2 weeks` here and
+                   in the manager alike. It THROWS on <= 0, which the truthiness
+                   guard in front of it already excludes. */%><%= item.type === "rental" && item.price.chargeable_days ? it.dates.formatChargeDays(item.price.chargeable_days).periodLabel : '' %></td>
           <% } %>
           <td><%= moneyCellOn(item.price.base_cents, rowTaxCents) %></td>
           <% if (hasDiscount) { %>
