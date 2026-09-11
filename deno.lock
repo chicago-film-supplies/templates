@@ -2,29 +2,25 @@
   "version": "5",
   "specifiers": {
     "jsr:@bgub/eta@^4.6.0": "4.6.0",
-    "jsr:@cfs/core@10.0.0-beta.408": "10.0.0-beta.408",
+    "jsr:@cfs/core@10.0.0-beta.409": "10.0.0-beta.409",
     "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/internal@^1.0.12": "1.0.14",
     "jsr:@std/semver@^1.0.8": "1.0.8",
     "npm:@date-fns/tz@^1.4.1": "1.5.0",
     "npm:@date-fns/tz@^1.5.0": "1.5.0",
-    "npm:currency.js@^2.0.4": "2.0.4",
     "npm:date-fns@^4.1.0": "4.4.0",
     "npm:date-fns@^4.4.0": "4.4.0",
-    "npm:lodash-es@^4.17.21": "4.18.1",
     "npm:zod@^4.5.4": "4.5.4"
   },
   "jsr": {
     "@bgub/eta@4.6.0": {
       "integrity": "fe872004cd6c64ca25c7e71fd80bbbad7d8d552cefd31828bddddb7db0f79eb1"
     },
-    "@cfs/core@10.0.0-beta.408": {
-      "integrity": "7fb7a274cd62de0e1ec284d5658d736304fab0b84492f1a2921beaedc8f0f3a3",
+    "@cfs/core@10.0.0-beta.409": {
+      "integrity": "4d5b6553638ace4f1b1025cd715ffceb481b493b3f60bac67efa5210b619127e",
       "dependencies": [
         "npm:@date-fns/tz@^1.4.1",
-        "npm:currency.js",
         "npm:date-fns@^4.1.0",
-        "npm:lodash-es",
         "npm:zod"
       ]
     },
@@ -45,14 +41,8 @@
     "@date-fns/tz@1.5.0": {
       "integrity": "sha512-lwYN/vDPeNRULcepoE/LO2Pgx+7/RV+S9ARfbc9lr2DtGkOD7pAiruHvbR1RX3Qyf6ja47EWJDMsNK5vK08DJg=="
     },
-    "currency.js@2.0.4": {
-      "integrity": "sha512-6/OplJYgJ0RUlli74d93HJ/OsKVBi8lB1+Z6eJYS1YZzBuIp4qKKHpJ7ad+GvTlWmLR/hLJOWTykN5Nm8NJ7+w=="
-    },
     "date-fns@4.4.0": {
       "integrity": "sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w=="
-    },
-    "lodash-es@4.18.1": {
-      "integrity": "sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A=="
     },
     "zod@4.5.4": {
       "integrity": "sha512-sC95tT5iHHH9gtpj6A81kh+NEaRAUFN+qlUPDUbRfOMvNf5QCBqsb3WgvnpVtK5Y+4UfA6KqufotuTvMGiTlsA=="
@@ -61,7 +51,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@bgub/eta@^4.6.0",
-      "jsr:@cfs/core@10.0.0-beta.408",
+      "jsr:@cfs/core@10.0.0-beta.409",
       "jsr:@std/assert@^1.0.19",
       "jsr:@std/semver@^1.0.8",
       "npm:@date-fns/tz@^1.5.0",
