@@ -154,11 +154,6 @@ jobs:
           fail=0
           for gp in ${{ steps.changed.outputs.git_paths }}; do
             echo "::group::golden-diff: $gp"
-            # head_branch lets the API persist the verdict onto the matching draft
-            # version for the manager's approve-to-merge review (6.16).
-            payload=$(jq -nc \
-              --arg gp "$gp" --arg sha "$HEAD_SHA" --arg b "$BASE_REF" --arg hb "$HEAD_REF" \
-              '{git_path:$gp, sha:$sha, branch:$b, head_branch:$hb}')
 
             # Retry-with-backoff to absorb Gotenberg cold start (B6). Only a
             # `renderer-unavailable` verdict (or transport error) is retried;
@@ -178,6 +173,24 @@ jobs:
             attempts=5
             verdict=""; body=""
             for attempt in $(seq 1 $attempts); do
+              # Carry the previous attempt's per-fixture results forward when it
+              # was a Gotenberg cold start (Uploadcare cost investigation,
+              # 2026-09-11) — so a fixture that already rendered+uploaded
+              # successfully is reused rather than re-rendered and re-uploaded
+              # on every retry. Falls back to `[]` when there is no previous
+              # attempt, or its body wasn't parseable JSON (an HTTP-error body).
+              carry_forward="[]"
+              if [ "$attempt" -gt 1 ] && [ "$verdict" = "renderer-unavailable" ] && [ -n "$body" ]; then
+                extracted=$(printf '%s' "$body" | jq -c '.results // []' 2>/dev/null) || extracted=""
+                [ -n "$extracted" ] && carry_forward="$extracted"
+              fi
+              # head_branch lets the API persist the verdict onto the matching
+              # draft version for the manager's approve-to-merge review (6.16).
+              payload=$(jq -nc \
+                --arg gp "$gp" --arg sha "$HEAD_SHA" --arg b "$BASE_REF" --arg hb "$HEAD_REF" \
+                --argjson cf "$carry_forward" \
+                '{git_path:$gp, sha:$sha, branch:$b, head_branch:$hb, carry_forward:$cf}')
+
               resp=$(curl -sS -m 180 -w '\n%{http_code}' \
                 -H "Authorization: Bearer $ID_TOKEN" \
                 -H "Content-Type: application/json" \
