@@ -32,7 +32,7 @@
     "margin_bottom": 0.62,
     "margin_left": 0.5,
     "margin_right": 0.5,
-    "filename": "Statement - <%= it.organizations.composeOrgName(it.doc.organization_path, { delimiter: ' - ' }) %> - <%= it.doc.to_date.slice(0, 10) %>",
+    "filename": "Statement - <%= it.now.slice(0, 10) %><%= it.version == null ? '' : ' ' + it.version %>",
     "footer": "partials/shared/footer.eta"
   }
 }
