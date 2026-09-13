@@ -321,6 +321,8 @@
 		"total_cents": 56004,
 		"replacement_total_cents": 422000
 	},
+	"invoices": [],
+	"query_by_invoices": [],
 	"created_at": {
 		"_seconds": 1781784840,
 		"_nanoseconds": 0
