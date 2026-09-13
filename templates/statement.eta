@@ -266,8 +266,15 @@ const accountsText = subAccountCount > 0
      the leaf’s own field is null on exactly the customers most likely to ask for
      a statement. It may still be null when nothing in the chain records one, and
      the partial guards every line of it. */%>
+<%/* The statement's GLOBAL number (api-cloudrun#976), titled like `Quote #N` and
+     `Invoice #N`. 🔴 It arrives in `it.version`, and for THIS family that is not
+     the per-organization version: a statement is a fold with no version of its
+     own, so api-cloudrun's `saveStatement` reserves the number before the render
+     and passes it in the context's existing `version` slot. `null` only in an
+     ad-hoc preview, which renders with no version — the title then drops the
+     number rather than printing `#null`. */%>
 <%~ await includeAsync("@partials/shared/letterhead.eta", {
-     title: "Statement",
+     title: it.version == null ? "Statement" : `Statement #${it.version}`,
      customer_name: it.organizations.composeOrgName(statement.organization_path),
      billing_address: statement.billing_address,
    }) %>
