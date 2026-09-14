@@ -452,6 +452,45 @@ th.center, td.center {
   border-bottom: 1px solid #121212;
 }
 
+/* A destination SECTION inside the items grid (items-grid.eta, opt-in via
+   `destinationDetail`) — the OrderDetail shape: name, dates, charged, then the
+   two endpoints. New selectors only, so no family sheet rule changes winner.
+   A rule above the name row marks each destination as a section break; a light
+   rule under the endpoints separates it from the lines it introduces. The
+   colspan break rule above already keeps each row of the section with the next. */
+#items tr.destination-name td {
+  border-top: 1px solid #121212;
+  padding-top: 6px;
+  font-size: 1.1em;
+}
+
+#items tr.destination-dates td,
+#items tr.destination-charged td {
+  padding: 0;
+}
+
+#items tr.destination-dates svg,
+#items tr.destination-charged svg {
+  vertical-align: -0.1em;
+  margin: 0 0.3em;
+}
+
+#items .destination-days {
+  color: #555;
+  margin-left: 0.3em;
+}
+
+#items tr.destination-endpoints td {
+  width: auto;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #ccc;
+}
+
+#items .destination-instructions {
+  color: #555;
+  font-style: italic;
+}
+
 #items th,
 #items td {
   padding: 4px 0;

@@ -14,6 +14,17 @@
        DISAMBIGUATED_ITEM_TYPES        which `type` values the Type column says
        showDestinationBanners          suppressed at a single destination
        showOrderBanner                 suppressed at a single source order
+       destinationDetail     OPT-IN (default off): draw each destination
+                             divider as a full section — name, active
+                             window, charge window, and both endpoints with
+                             address, contact and instructions — the way the
+                             manager OrderDetail items table does
+                             (manager 73f625c). Off, the arm below is the
+                             plain name banner, unchanged.
+       destinations          the document destination pairs, joined to a
+                             divider by `uid` (core `assignDestinationPairUids`)
+       u                     the family util namespace (legend, same-dates)
+       hasCollection         whether a collection leg exists at all
 
      ⚠️ **Hierarchy-agnostic on purpose.** `componentDepth` already filters
      divider uids out of the path, so this partial is indifferent to HOW MANY
@@ -36,6 +47,7 @@ const {
   rolledUp, componentDepth, numberCell, moneyCell, moneyCellOn,
   itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
   showDestinationBanners, showOrderBanner,
+  destinationDetail = false, destinations = [], u, hasCollection = false,
 } = it;
 %>
 <section id="items">
@@ -82,7 +94,87 @@ const {
         </tr>
         <% } %>
         <% } else if (item.type === "destination") { %>
-        <% if (showDestinationBanners) { %>
+        <% const dest = destinationDetail ? destinations.find(p => p.uid === item.uid) : undefined; %>
+        <% if (dest) { %>
+        <%/* A SECOND COPY of the display rules in partials/shared/destinations.eta,
+             deliberately: that table still serves the invoice, the pick sheet and
+             the packing list, and this arm is opt-in so none of them move. Keep
+             the two in step until they are reconciled into one.
+
+             Every boundary is nullable, so each piece reads its own guard. The
+             arrow, end date and duration are rental furniture and fall away with
+             the collection leg, and the charged pair only shows when it differs
+             from the active window.
+
+             The endpoint split sits on the same column boundary the quote uses
+             for its second alignment edge: the description column plus the
+             boundary nearest half-way through the rest, floor((n-1)/2). */%>
+        <%
+          const d = dest.dates || {};
+          const legend = u.getDestinationsLegend([dest]);
+          const startLabel = legend.start || "Delivery";
+          const endLabel = legend.end || "Pickup";
+          const hasActiveWindow = Boolean(d.delivery_start && d.collection_start);
+          const showCharged = hasCollection && Boolean(d.charge_start && d.charge_end) &&
+            !u.isSameAsDeliveryDates(d);
+          const deliverySpan = hasCollection ? 1 + Math.floor((columnCount - 1) / 2) : columnCount;
+          const returnSpan = columnCount - deliverySpan;
+          const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
+          const addrLines = (ep) => {
+            if (!ep || !ep.address) return [];
+            const a = ep.address;
+            return [
+              [a.street, a.street2].filter(Boolean).join(", "),
+              [a.city, a.region, a.postcode].filter(Boolean).join(", "),
+              (a.country_name && a.country_name !== "United States") ? a.country_name : null,
+            ].filter(Boolean);
+          };
+          const contactLine = (ep) => {
+            if (!ep || !ep.contact) return "";
+            const phone = ep.contact.phones && ep.contact.phones.length > 0 ? ep.contact.phones[0] : null;
+            return [ep.contact.name, phone].filter(Boolean).join(" · ");
+          };
+          const endpoints = hasCollection
+            ? [[startLabel, dest.delivery, deliverySpan], [endLabel, dest.collection, returnSpan]]
+            : [[startLabel, dest.delivery, deliverySpan]];
+        %>
+        <tr class="destination-name">
+          <td class="wide" colspan="<%= columnCount %>">
+            <strong><%= item.name %></strong>
+          </td>
+        </tr>
+        <tr class="destination-dates">
+          <td class="wide" colspan="<%= columnCount %>">
+            <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
+            <% if (hasCollection) { %>
+            <% if (hasActiveWindow) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
+            <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
+            <% if (d.days_active != null) { %><span class="destination-days">· <%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
+            <% } %>
+          </td>
+        </tr>
+        <% if (showCharged) { %>
+        <tr class="destination-charged">
+          <td class="wide" colspan="<%= columnCount %>">
+            <span class="bold">Charged:</span>
+            <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %>
+            <%~ it.icons.svg("arrow-right", { size: 9 }) %>
+            <%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
+            <% if (d.days_charged != null) { %><span class="destination-days">· <%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
+          </td>
+        </tr>
+        <% } %>
+        <tr class="destination-endpoints">
+          <% endpoints.forEach(([label, ep, span]) => { %>
+          <td colspan="<%= span %>">
+            <span class="bold"><%= label %></span>
+            <% addrLines(ep).forEach(line => { %><br><%= line %><% }) %>
+            <% if (contactLine(ep)) { %><br><%= contactLine(ep) %><% } %>
+            <% if (ep && ep.instructions) { %><br><span class="destination-instructions"><%= ep.instructions %></span><% } %>
+          </td>
+          <% }) %>
+        </tr>
+        <% } else if (showDestinationBanners) { %>
         <tr>
           <td class="wide" colspan="<%= bannerSpan %>">
             <%= item.name %>
