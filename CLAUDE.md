@@ -642,7 +642,10 @@ content is the same, not by construction.** `resyncSandbox` force-pushes
 trees stay in step for free while sandbox is a mirror, and diverge the moment
 anything is authored on `sandbox` alone (which this repo forbids anyway; see
 *Environments*). Re-bless either tree from
-`api-cloudrun/scripts/rebless-goldens.ts --branch=<main|sandbox>`.
+`api-cloudrun/scripts/rebless-goldens.ts --branch=<main|sandbox>` — ⚠️ **which needs an
+impersonated `golden-diff-ci` bearer token and `--env=dev` for BOTH namespaces.** The full
+invocation is in `goldens/README.md` § *Regenerating*; do not reconstruct it from this line,
+because `GOTENBERG_BEARER` is optional in the script and omitting it fails on a bare 403.
 
 This supersedes the old "goldens are DEFERRED, not missing" note, which said
 `goldens/` held zero PNGs and that `visual-diff` *cannot* fail. That was true
