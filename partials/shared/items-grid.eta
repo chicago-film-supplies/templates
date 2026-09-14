@@ -96,60 +96,83 @@ const {
         <% } else if (item.type === "destination") { %>
         <% const dest = destinationDetail ? destinations.find(p => p.uid === item.uid) : undefined; %>
         <% if (dest) { %>
-        <%/* A SECOND COPY of the display rules in partials/shared/destinations.eta,
+        <%/* The OrderDetail destination divider, as a PDF: one section of up to
+             four full-width lines, directly above the lines delivered there.
+
+               1  [name] address  ->  [name] address     the arrow half only when
+                                                         the collection differs
+               2  contact - phone; instructions          same shape, omitted when
+                                                         both legs are empty
+               3  start  ->  end  (clock) duration       rental furniture: the
+                                                         arrow, end and duration
+                                                         fall away with no
+                                                         collection leg
+               4  Charged: start  ->  end  (clock) days  only when the charge
+                                                         window differs
+
+             "Differs" compares the RENDERED text, not the stored objects, so a
+             pair whose addresses carry the same values under different key order
+             still reads as one place (core#87 measured that trap at 6.5%).
+
+             A SECOND COPY of the date rules in partials/shared/destinations.eta,
              deliberately: that table still serves the invoice, the pick sheet and
-             the packing list, and this arm is opt-in so none of them move. Keep
-             the two in step until they are reconciled into one.
-
-             Every boundary is nullable, so each piece reads its own guard. The
-             arrow, end date and duration are rental furniture and fall away with
-             the collection leg, and the charged pair only shows when it differs
-             from the active window.
-
-             The endpoint split sits on the same column boundary the quote uses
-             for its second alignment edge: the description column plus the
-             boundary nearest half-way through the rest, floor((n-1)/2). */%>
+             the packing list. Keep the two in step until they are reconciled. */%>
         <%
           const d = dest.dates || {};
-          const legend = u.getDestinationsLegend([dest]);
-          const startLabel = legend.start || "Delivery";
-          const endLabel = legend.end || "Pickup";
           const hasActiveWindow = Boolean(d.delivery_start && d.collection_start);
           const showCharged = hasCollection && Boolean(d.charge_start && d.charge_end) &&
             !u.isSameAsDeliveryDates(d);
-          const deliverySpan = hasCollection ? 1 + Math.floor((columnCount - 1) / 2) : columnCount;
-          const returnSpan = columnCount - deliverySpan;
           const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
-          const addrLines = (ep) => {
-            if (!ep || !ep.address) return [];
+          const addressText = (ep) => {
+            if (!ep || !ep.address) return "";
             const a = ep.address;
             return [
-              [a.street, a.street2].filter(Boolean).join(", "),
-              [a.city, a.region, a.postcode].filter(Boolean).join(", "),
+              a.street, a.street2, a.city,
+              [a.region, a.postcode].filter(Boolean).join(" "),
               (a.country_name && a.country_name !== "United States") ? a.country_name : null,
-            ].filter(Boolean);
+            ].filter(Boolean).join(", ");
           };
-          const contactLine = (ep) => {
-            if (!ep || !ep.contact) return "";
-            const phone = ep.contact.phones && ep.contact.phones.length > 0 ? ep.contact.phones[0] : null;
-            return [ep.contact.name, phone].filter(Boolean).join(" · ");
+          const placeName = (ep) => (ep && ep.address && ep.address.name) || "";
+          const contactText = (ep) => {
+            if (!ep) return "";
+            const c = ep.contact;
+            const phone = c && c.phones && c.phones.length > 0 ? c.phones[0] : null;
+            const who = c ? [c.name, phone].filter(Boolean).join(" - ") : "";
+            return [who, ep.instructions].filter(Boolean).join("; ");
           };
-          const endpoints = hasCollection
-            ? [[startLabel, dest.delivery, deliverySpan], [endLabel, dest.collection, returnSpan]]
-            : [[startLabel, dest.delivery, deliverySpan]];
+          const placeKey = (ep) => placeName(ep) + "|" + addressText(ep);
+          const showReturnPlace = hasCollection && placeKey(dest.collection) !== "|" &&
+            placeKey(dest.collection) !== placeKey(dest.delivery);
+          const showReturnContact = hasCollection && contactText(dest.collection) !== "" &&
+            contactText(dest.collection) !== contactText(dest.delivery);
+          const hasContactLine = contactText(dest.delivery) !== "" || showReturnContact;
+          const arrow = () => it.icons.svg("arrow-right", { size: 9 });
+          const clock = () => it.icons.svg("clock", { size: 9 });
         %>
-        <tr class="destination-name">
+        <tr class="destination-place">
           <td class="wide" colspan="<%= columnCount %>">
-            <strong><%= item.name %></strong>
+            <% if (placeName(dest.delivery)) { %><strong><%= placeName(dest.delivery) %></strong> <% } %><%= addressText(dest.delivery) %>
+            <% if (showReturnPlace) { %>
+            <%~ arrow() %>
+            <% if (placeName(dest.collection)) { %><strong><%= placeName(dest.collection) %></strong> <% } %><%= addressText(dest.collection) %>
+            <% } %>
           </td>
         </tr>
+        <% if (hasContactLine) { %>
+        <tr class="destination-contact">
+          <td class="wide" colspan="<%= columnCount %>">
+            <%= contactText(dest.delivery) %>
+            <% if (showReturnContact) { %><%~ arrow() %><%= contactText(dest.collection) %><% } %>
+          </td>
+        </tr>
+        <% } %>
         <tr class="destination-dates">
           <td class="wide" colspan="<%= columnCount %>">
             <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
             <% if (hasCollection) { %>
-            <% if (hasActiveWindow) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
+            <% if (hasActiveWindow) { %><%~ arrow() %><% } %>
             <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
-            <% if (d.days_active != null) { %><span class="destination-days">· <%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
+            <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
             <% } %>
           </td>
         </tr>
@@ -157,23 +180,11 @@ const {
         <tr class="destination-charged">
           <td class="wide" colspan="<%= columnCount %>">
             <span class="bold">Charged:</span>
-            <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %>
-            <%~ it.icons.svg("arrow-right", { size: 9 }) %>
-            <%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
-            <% if (d.days_charged != null) { %><span class="destination-days">· <%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
+            <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><%~ arrow() %><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
+            <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
           </td>
         </tr>
         <% } %>
-        <tr class="destination-endpoints">
-          <% endpoints.forEach(([label, ep, span]) => { %>
-          <td colspan="<%= span %>">
-            <span class="bold"><%= label %></span>
-            <% addrLines(ep).forEach(line => { %><br><%= line %><% }) %>
-            <% if (contactLine(ep)) { %><br><%= contactLine(ep) %><% } %>
-            <% if (ep && ep.instructions) { %><br><span class="destination-instructions"><%= ep.instructions %></span><% } %>
-          </td>
-          <% }) %>
-        </tr>
         <% } else if (showDestinationBanners) { %>
         <tr>
           <td class="wide" colspan="<%= bannerSpan %>">
