@@ -458,15 +458,20 @@ th.center, td.center {
    A rule above the first line marks each destination as a section break and a
    light rule under the last separates it from the lines it introduces. The
    colspan break rule above already keeps each line with the next. */
-#items tr.destination-place td {
-  border-top: 1px solid #121212;
-  padding-top: 6px;
-}
-
+/* EVERY line of the section carries the same padding, so the gaps between
+   them are equal. The first line used to set only `padding-top`, which left it
+   inheriting the grid's `#items td { padding: 4px 0 }` bottom while the lines
+   under it were zeroed: one 4px gap under the address and none elsewhere. */
+#items tr.destination-place td,
 #items tr.destination-contact td,
 #items tr.destination-dates td,
 #items tr.destination-charged td {
-  padding: 0;
+  padding: 1px 0;
+}
+
+#items tr.destination-place td {
+  border-top: 1px solid #121212;
+  padding-top: 6px;
 }
 
 #items tr.destination-place svg,
