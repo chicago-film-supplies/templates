@@ -142,6 +142,7 @@
       "name": "5G Hotspot (Unlimited)",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 7500,
         "replacement_cents": 40000,

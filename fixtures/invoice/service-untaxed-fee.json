@@ -152,6 +152,7 @@
       "name": "Card Fee",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
       "price": {
         "base_cents": 1400,
         "chargeable_days": null,
@@ -192,6 +193,7 @@
       "name": "Trash Removal",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
       "price": {
         "base_cents": 35000,
         "chargeable_days": null,

@@ -132,6 +132,7 @@
       "name": "Trash Removal",
       "description": "3434 N Central Ave",
       "quantity": 1,
+      "uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
       "price": {
         "base_cents": 35000,
         "replacement_cents": 0,

@@ -151,6 +151,7 @@
       "name": "Replacement: 5G Hotspot (Unlimited)",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "Y1kxMxz7xC899ncCIMQH",
       "price": {
         "base_cents": 39900,
         "chargeable_days": null,

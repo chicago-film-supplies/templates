@@ -108,6 +108,7 @@
       "name": "Open Water - 16oz Aluminum Bottle (24 Case)",
       "description": "",
       "quantity": 10,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 3900,
         "replacement_cents": 0,
@@ -153,6 +154,7 @@
       "name": "Bottled Water ( /bottle )",
       "description": "",
       "quantity": 240,
+      "uid_tax_class": "hbm3i1kSAeo3qsi1Qzto",
       "price": {
         "base_cents": 0,
         "replacement_cents": 0,

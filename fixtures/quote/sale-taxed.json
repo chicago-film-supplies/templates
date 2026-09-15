@@ -132,6 +132,7 @@
       "name": "Open Water - 16oz Aluminum Bottle (24 Case)",
       "description": "",
       "quantity": 10,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 3900,
         "replacement_cents": 0,

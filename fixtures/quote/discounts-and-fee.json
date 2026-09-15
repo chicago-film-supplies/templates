@@ -127,6 +127,7 @@
 			],
 			"inclusion_type": null,
 			"zero_priced": null,
+			"uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
 			"price": {
 				"base_cents": 3000,
 				"chargeable_days": 3,
@@ -175,6 +176,7 @@
 			],
 			"inclusion_type": null,
 			"zero_priced": null,
+			"uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
 			"price": {
 				"base_cents": 1200,
 				"chargeable_days": 7,
@@ -212,6 +214,7 @@
 			],
 			"inclusion_type": null,
 			"zero_priced": null,
+			"uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
 			"price": {
 				"base_cents": 2500,
 				"chargeable_days": 3,
@@ -241,6 +244,7 @@
 			],
 			"inclusion_type": null,
 			"zero_priced": null,
+			"uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
 			"price": {
 				"base_cents": 27500,
 				"chargeable_days": 1,
@@ -264,6 +268,7 @@
 			],
 			"inclusion_type": null,
 			"zero_priced": null,
+			"uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
 			"price": {
 				"base_cents": 0,
 				"base_percent": 2.9,
