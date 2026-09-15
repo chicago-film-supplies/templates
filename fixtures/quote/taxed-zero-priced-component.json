@@ -145,8 +145,7 @@
       ],
       "inclusion_type": null,
       "zero_priced": null,
-      "coa_revenue": 4200,
-      "taxed_as": null
+      "coa_revenue": 4200
     },
     {
       "uid": "N8brmUmmSzHs523aJAMd",
@@ -199,8 +198,7 @@
       ],
       "inclusion_type": "mandatory",
       "zero_priced": true,
-      "coa_revenue": 4200,
-      "taxed_as": null
+      "coa_revenue": 4200
     }
   ],
   "totals": {
