@@ -1,0 +1,70 @@
+<%/* One destination header, drawn directly above the items table for that
+     destination:  [ dates | start endpoint | end endpoint ]
+
+     EXPLORATION (alternative to the inline destination sections of #343). The
+     quote pairs each destination with its own items table instead of
+     interleaving destination rows into one grid; see quote.eta, where the
+     items are split by destination.
+
+     Props:
+       u              the family util namespace (legend, same-dates)
+       dest           the destination pair
+       hasCollection  whether a collection leg exists at all
+
+     The columns sit on the page edges: dates end at --label-col (where the
+     item description column ends), the end endpoint opens on --dest-block-3
+     (where #totals opens). */%>
+<%
+const { u, dest, hasCollection } = it;
+const d = dest.dates || {};
+const legend = u.getDestinationsLegend([dest]);
+const startLabel = legend.start || "Delivery";
+const endLabel = legend.end || "Pickup";
+const showCharged = hasCollection && Boolean(d.charge_start && d.charge_end) &&
+  !u.isSameAsDeliveryDates(d);
+const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
+const lines = (ep) => {
+  if (!ep) return [];
+  const a = ep.address || {};
+  const c = ep.contact;
+  const phone = c && c.phones && c.phones.length > 0 ? c.phones[0] : null;
+  return [
+    a.name,
+    [a.street, a.street2].filter(Boolean).join(", "),
+    [a.city, [a.region, a.postcode].filter(Boolean).join(" ")].filter(Boolean).join(", "),
+    (a.country_name && a.country_name !== "United States") ? a.country_name : null,
+    c ? [c.name, phone].filter(Boolean).join(" · ") : null,
+    ep.instructions,
+  ].filter(Boolean);
+};
+const arrow = () => it.icons.svg("arrow-right", { size: 9 });
+const clock = () => it.icons.svg("clock", { size: 9 });
+%>
+<section class="destination-block<% if (!hasCollection) { %> one-leg<% } %>">
+  <div class="dates">
+    <div class="label">Dates</div>
+    <div>
+      <% if (showCharged) { %><span class="bold">Active:</span> <% } %>
+      <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
+      <% if (hasCollection && d.collection_start) { %><span class="inline-icon"><%~ arrow() %></span><%= stamp(d.collection_start) %><% } %>
+      <% if (hasCollection && d.days_active != null) { %><span class="days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
+    </div>
+    <% if (showCharged) { %>
+    <div>
+      <span class="bold">Charged:</span>
+      <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-icon"><%~ arrow() %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
+      <% if (d.days_charged != null) { %><span class="days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
+    </div>
+    <% } %>
+  </div>
+  <div class="endpoint start">
+    <div class="label"><%= startLabel %></div>
+    <% lines(dest.delivery).forEach(line => { %><div><%= line %></div><% }) %>
+  </div>
+  <% if (hasCollection) { %>
+  <div class="endpoint end">
+    <div class="label"><%= endLabel %></div>
+    <% lines(dest.collection).forEach(line => { %><div><%= line %></div><% }) %>
+  </div>
+  <% } %>
+</section>

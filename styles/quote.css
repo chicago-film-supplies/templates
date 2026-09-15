@@ -96,3 +96,79 @@ html {
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
+
+/* ── EXPLORATION: destination block paired with its own items table ────────
+   See partials/quote/destination-block.eta. */
+
+.destination-block {
+  grid-column: 1 / -1;
+  display: grid;
+  /* Dates end where the item description column ends; the end endpoint opens
+     on the same edge #totals does. `--dest-block-3` carries a percentage, and
+     this block spans the whole page grid, so it resolves to the same edge. */
+  grid-template-columns:
+    var(--label-col)
+    calc(var(--dest-block-3) - var(--label-col))
+    1fr;
+  border-top: 0.5px solid #121212;
+  padding-top: 4px;
+  /* Sit on the items table below rather than a full page-grid row gap away. */
+  margin-bottom: -0.5rem;
+  break-after: avoid;
+  break-inside: avoid;
+}
+
+.destination-block.one-leg {
+  grid-template-columns: var(--label-col) 1fr;
+}
+
+.destination-block > div {
+  padding-right: 1em;
+}
+
+.destination-block .label {
+  font-weight: bold;
+}
+
+.destination-block .inline-icon svg,
+.destination-block .days svg {
+  vertical-align: middle;
+  margin-top: -1em;
+  margin-bottom: -1em;
+}
+
+.destination-block .inline-icon svg {
+  margin-left: 0.4em;
+  margin-right: 0.4em;
+}
+
+.destination-block .days {
+  color: #555;
+  margin-left: 0.4em;
+  white-space: nowrap;
+}
+
+.destination-block .days svg {
+  margin-right: 0.25em;
+}
+
+/* Text at .75rem across the destination blocks and the items tables. */
+.destination-block,
+#items th,
+#items td {
+  font-size: 0.75rem;
+}
+
+/* Half-pixel rules. Same selectors as the 1px rules in base.css, so these win
+   by source order. */
+thead th {
+  border-bottom-width: 0.5px;
+}
+
+#items tr:last-child td {
+  border-bottom-width: 0.5px;
+}
+
+hr {
+  border-top-width: 0.5px;
+}
