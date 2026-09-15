@@ -96,3 +96,104 @@ html {
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
+
+/* ── EXPLORATION: destination block paired with its own items table ────────
+   See partials/quote/destination-block.eta. */
+
+.destination-block {
+  grid-column: 1 / -1;
+  display: grid;
+  /* Dates end where the item description column ends; the end endpoint opens
+     on the same edge #totals does. `--dest-block-3` carries a percentage, and
+     this block spans the whole page grid, so it resolves to the same edge. */
+  grid-template-columns:
+    var(--label-col)
+    calc(var(--dest-block-3) - var(--label-col))
+    1fr;
+  box-shadow: inset 0 0.5px 0 #121212;
+  padding-top: 4px;
+  /* Sit on the items table below rather than a full page-grid row gap away. */
+  margin-bottom: -0.5rem;
+  break-after: avoid;
+  break-inside: avoid;
+}
+
+.destination-block.one-leg {
+  grid-template-columns: var(--label-col) 1fr;
+}
+
+.destination-block > div {
+  padding-right: 1em;
+}
+
+.destination-block .label {
+  font-weight: bold;
+  font-size: 0.5625rem;
+}
+
+.destination-block .inline-icon svg,
+.destination-block .days svg {
+  vertical-align: middle;
+  margin-top: -1em;
+  margin-bottom: -1em;
+}
+
+.destination-block .inline-icon svg {
+  margin-left: 0.4em;
+  margin-right: 0.4em;
+}
+
+.destination-block .days {
+  color: #555;
+  margin-left: 0.4em;
+  white-space: nowrap;
+}
+
+.destination-block .days svg {
+  margin-right: 0.25em;
+}
+
+/* TABLE TEXT at .75rem, HEADERS at 75% of that (.5625rem).
+   Both in `rem`, not `em`: base.css sets `th, td { font-size: 1rem }`, which
+   resets every cell to the root, so a th cannot inherit a size from its table.
+   The header is a sibling of the td, not a child, so `.75em` on it would be 75%
+   of the TABLE font, not of the td. The destination block labels (Dates,
+   Delivery, Pickup) are that block's headers and take the same size. */
+.destination-block,
+#items td {
+  font-size: 0.75rem;
+}
+
+#items th {
+  font-size: 0.5625rem;
+}
+
+/* HALF-PIXEL RULES ARE DRAWN AS INSET SHADOWS, NOT BORDERS. Chromium snaps any
+   non-zero border width below one device pixel UP to one, and a PDF is laid
+   out at one device pixel per CSS px: measured, `0.5px` and `0.25px` borders
+   both print as 1-unit rectangles, identical to `1px`. An inset box-shadow is
+   not snapped and prints as a 0.5-unit vector band. It also takes no layout
+   space, so removing the border moves nothing by the border width.
+   Same selectors as the 1px rules in base.css, so these win by source order. */
+thead th {
+  border-bottom: 0;
+  box-shadow: inset 0 -0.5px 0 #121212;
+}
+
+/* base.css clears the header rule on #details at higher specificity; clear the
+   shadow the same way. */
+#details thead th {
+  box-shadow: none;
+}
+
+#items tr:last-child td {
+  border-bottom: 0;
+  box-shadow: inset 0 -0.5px 0 #121212;
+}
+
+hr {
+  border-top: 0;
+  height: 0;
+  box-shadow: 0 0.5px 0 #121212;
+}
+

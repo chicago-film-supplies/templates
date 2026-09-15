@@ -1,4 +1,4 @@
-<%/* draft draft/quote/dc19c835 */%>
+<%/* draft draft/quote/cf43e01c */%>
 <%
 const order = it.doc;
 const { destinations, items, totals } = order;
@@ -495,25 +495,64 @@ const replacementLine = (item) => {
      under it reads as missing data, where an absent one reads as inapplicable.
      `hasDeliverableItems` also covers a quote with no shown lines at all, where
      #items is likewise suppressed. */%>
-<% if (hasDeliverableItems) { %>
-<%~ await includeAsync("@partials/shared/destinations.eta", {
-     u: it.orders, destinations, addressColumnCount, hasCollection,
-     deliverySpan, returnSpan,
-   }) %>
-<% } %>
+<%/* EXPLORATION: each destination is paired with its OWN items table.
 
+       [ dates | start endpoint | end endpoint ]   destination 1
+       [ items for destination 1              ]
+       [ dates | start endpoint | end endpoint ]   destination 2
+       [ items for destination 2              ]
+       [ totals ]
+
+     Items are split by POSITION: a destination divider opens a section and
+     every row after it belongs there until the next one. `renderedItems` has
+     already dropped dividers with no surviving line under them, so a section
+     is never empty of dividers-only. The destination divider itself is not
+     drawn, the header block replaces it. Rows before any destination divider
+     (an order with no divider at all) fall into a section for the first
+     destination pair.
+
+     A replacement-only quote has nothing delivered, so it keeps the single
+     grid with no destination headers. */%>
+<%
+const destinationSections = [];
+{
+  let current = null;
+  renderedItems.forEach(item => {
+    if (item.type === "destination") {
+      current = { dest: destinations.find(p => p.uid === item.uid), items: [] };
+      destinationSections.push(current);
+      return;
+    }
+    if (!current) {
+      current = { dest: destinations[0], items: [] };
+      destinationSections.push(current);
+    }
+    current.items.push(item);
+  });
+}
+const gridProps = {
+  columnCount: itemColumnCount, hasRentals, hasDiscount, hasTax,
+  rolledUp, componentDepth, numberCell, moneyCell, moneyCellOn,
+  itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
+  showDestinationBanners: false,
+  showOrderBanner: true,
+};
+%>
 <!-- Items -->
 <%/* `shownLineItems`, not `lineItems`: an order whose only non-divider entry is
      a transaction fee has nothing to put in this grid, and an empty table with
      a header row reads as a rendering fault. */%>
-<% if (shownLineItems.length > 0) { %>
-<%~ await includeAsync("@partials/shared/items-grid.eta", {
-     renderedItems, columnCount: itemColumnCount, hasRentals, hasDiscount, hasTax,
-     rolledUp, componentDepth, numberCell, moneyCell, moneyCellOn,
-     itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
-     showDestinationBanners: destinations.length > 1,
-     showOrderBanner: true,
+<% if (shownLineItems.length > 0 && hasDeliverableItems) { %>
+<% for (const section of destinationSections) { %>
+<% if (section.dest) { %>
+<%~ await includeAsync("@partials/quote/destination-block.eta", {
+     u: it.orders, dest: section.dest, hasCollection,
    }) %>
+<% } %>
+<%~ await includeAsync("@partials/shared/items-grid.eta", { ...gridProps, renderedItems: section.items }) %>
+<% } %>
+<% } else if (shownLineItems.length > 0) { %>
+<%~ await includeAsync("@partials/shared/items-grid.eta", { ...gridProps, renderedItems }) %>
 <% } %>
 
 <section id="information">
