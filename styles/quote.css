@@ -110,7 +110,7 @@ html {
     var(--label-col)
     calc(var(--dest-block-3) - var(--label-col))
     1fr;
-  border-top: 0.5px solid #121212;
+  box-shadow: inset 0 0.5px 0 #121212;
   padding-top: 4px;
   /* Sit on the items table below rather than a full page-grid row gap away. */
   margin-bottom: -0.5rem;
@@ -128,6 +128,7 @@ html {
 
 .destination-block .label {
   font-weight: bold;
+  font-size: 0.5625rem;
 }
 
 .destination-block .inline-icon svg,
@@ -152,23 +153,47 @@ html {
   margin-right: 0.25em;
 }
 
-/* Text at .75rem across the destination blocks and the items tables. */
+/* TABLE TEXT at .75rem, HEADERS at 75% of that (.5625rem).
+   Both in `rem`, not `em`: base.css sets `th, td { font-size: 1rem }`, which
+   resets every cell to the root, so a th cannot inherit a size from its table.
+   The header is a sibling of the td, not a child, so `.75em` on it would be 75%
+   of the TABLE font, not of the td. The destination block labels (Dates,
+   Delivery, Pickup) are that block's headers and take the same size. */
 .destination-block,
-#items th,
 #items td {
   font-size: 0.75rem;
 }
 
-/* Half-pixel rules. Same selectors as the 1px rules in base.css, so these win
-   by source order. */
+#items th {
+  font-size: 0.5625rem;
+}
+
+/* HALF-PIXEL RULES ARE DRAWN AS INSET SHADOWS, NOT BORDERS. Chromium snaps any
+   non-zero border width below one device pixel UP to one, and a PDF is laid
+   out at one device pixel per CSS px: measured, `0.5px` and `0.25px` borders
+   both print as 1-unit rectangles, identical to `1px`. An inset box-shadow is
+   not snapped and prints as a 0.5-unit vector band. It also takes no layout
+   space, so removing the border moves nothing by the border width.
+   Same selectors as the 1px rules in base.css, so these win by source order. */
 thead th {
-  border-bottom-width: 0.5px;
+  border-bottom: 0;
+  box-shadow: inset 0 -0.5px 0 #121212;
+}
+
+/* base.css clears the header rule on #details at higher specificity; clear the
+   shadow the same way. */
+#details thead th {
+  box-shadow: none;
 }
 
 #items tr:last-child td {
-  border-bottom-width: 0.5px;
+  border-bottom: 0;
+  box-shadow: inset 0 -0.5px 0 #121212;
 }
 
 hr {
-  border-top-width: 0.5px;
+  border-top: 0;
+  height: 0;
+  box-shadow: 0 0.5px 0 #121212;
 }
+
