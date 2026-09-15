@@ -1,70 +1,182 @@
-<%/* One destination header, drawn directly above the items table for that
-     destination:  [ dates | start endpoint | end endpoint ]
+<%/* One destination, drawn directly above the items table for that
+     destination.
 
      EXPLORATION (alternative to the inline destination sections of #343). The
      quote pairs each destination with its own items table instead of
      interleaving destination rows into one grid; see quote.eta, where the
      items are split by destination.
 
-     Props:
-       u              the family util namespace (legend, same-dates)
-       dest           the destination pair
-       hasCollection  whether a collection leg exists at all
+     The markup is partials/shared/destinations.eta for ONE destination, so it
+     keeps the column structure of main exactly and reuses its #destinations
+     rules in base.css: [start] [arrow] [end] [duration] summing to
+     --label-col, then the two address blocks as colspans split on the same
+     boundary #totals opens on. The only change is a clock icon on the two
+     duration cells. A second copy of that partial, deliberately, while this is
+     an exploration: the invoice, pick sheet and packing list still use the
+     shared one.
 
-     The columns sit on the page edges: dates end at --label-col (where the
-     item description column ends), the end endpoint opens on --dest-block-3
-     (where #totals opens). */%>
+     Props:
+       u                   the family util namespace (legend, same-dates)
+       dest                the destination pair
+       addressColumnCount  how many equal sub-columns the address area splits into
+       hasCollection       whether anything is coming back at all
+       deliverySpan        sub-columns the delivery block spans
+       returnSpan          sub-columns the return block spans */%>
 <%
-const { u, dest, hasCollection } = it;
-const d = dest.dates || {};
-const legend = u.getDestinationsLegend([dest]);
-const startLabel = legend.start || "Delivery";
-const endLabel = legend.end || "Pickup";
-const showCharged = hasCollection && Boolean(d.charge_start && d.charge_end) &&
-  !u.isSameAsDeliveryDates(d);
-const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
-const lines = (ep) => {
-  if (!ep) return [];
-  const a = ep.address || {};
-  const c = ep.contact;
-  const phone = c && c.phones && c.phones.length > 0 ? c.phones[0] : null;
-  return [
-    a.name,
-    [a.street, a.street2].filter(Boolean).join(", "),
-    [a.city, [a.region, a.postcode].filter(Boolean).join(" ")].filter(Boolean).join(", "),
-    (a.country_name && a.country_name !== "United States") ? a.country_name : null,
-    c ? [c.name, phone].filter(Boolean).join(" · ") : null,
-    ep.instructions,
-  ].filter(Boolean);
-};
-const arrow = () => it.icons.svg("arrow-right", { size: 9 });
+const { u, dest, addressColumnCount, hasCollection, deliverySpan, returnSpan } = it;
 const clock = () => it.icons.svg("clock", { size: 9 });
 %>
-<section class="destination-block<% if (!hasCollection) { %> one-leg<% } %>">
-  <div class="dates">
-    <div class="label">Dates</div>
-    <div>
-      <% if (showCharged) { %><span class="bold">Active:</span> <% } %>
-      <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
-      <% if (hasCollection && d.collection_start) { %><span class="inline-icon"><%~ arrow() %></span><%= stamp(d.collection_start) %><% } %>
-      <% if (hasCollection && d.days_active != null) { %><span class="days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
-    </div>
-    <% if (showCharged) { %>
-    <div>
-      <span class="bold">Charged:</span>
-      <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-icon"><%~ arrow() %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
-      <% if (d.days_charged != null) { %><span class="days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
-    </div>
+<table id="destinations">
+  <colgroup>
+    <col class="date">
+    <col class="arrow">
+    <col class="date">
+    <col class="days">
+    <%/* One <col> per address SUB-column, all auto and therefore all equal —
+         the blocks are colspans over them. See styles/quote.css. */%>
+    <% for (let i = 0; i < addressColumnCount; i++) { %>
+    <col class="address">
     <% } %>
-  </div>
-  <div class="endpoint start">
-    <div class="label"><%= startLabel %></div>
-    <% lines(dest.delivery).forEach(line => { %><div><%= line %></div><% }) %>
-  </div>
-  <% if (hasCollection) { %>
-  <div class="endpoint end">
-    <div class="label"><%= endLabel %></div>
-    <% lines(dest.collection).forEach(line => { %><div><%= line %></div><% }) %>
-  </div>
-  <% } %>
-</section>
+  </colgroup>
+    <%
+    const d = dest.dates || {};
+    const legend = u.getDestinationsLegend([dest]);
+    const startLabel = legend.start || "Delivery";
+    const endLabel = legend.end || "Pickup";
+    // Every date boundary on a destination is nullable, so each cell below is
+    // gated on the values it actually reads rather than on the destination
+    // existing (#25). `d` is that gate, computed once — re-dereferencing
+    // `dest.dates.*` at the call site is what made the guard and the read
+    // disagree.
+    const hasActiveWindow = Boolean(d.delivery_start && d.collection_start);
+    const hasChargeWindow = Boolean(d.charge_start && d.charge_end);
+    // A charge WINDOW is a span, and a span needs an end. With no rental line
+    // the end date and the duration are both suppressed below, which would
+    // leave "Dates Charged:" labelling a lone start date — the same
+    // implied-window-that-does-not-exist the arrow and end date were split up to
+    // avoid. So the whole charged pair falls away with the collection leg.
+    const showCharged = hasCollection && hasChargeWindow &&
+      !u.isSameAsDeliveryDates(d);
+    // Address lines (no contact — contact rides its own column).
+    const addrLines = (ep) => {
+      if (!ep || !ep.address) return [];
+      const a = ep.address;
+      return [
+        [a.street, a.street2].filter(Boolean).join(', '),
+        [a.city, a.region, a.postcode].filter(Boolean).join(', '),
+        (a.country_name && a.country_name !== "United States") ? a.country_name : null,
+      ].filter(Boolean);
+    };
+    const contactLine = (ep) => {
+      if (!ep || !ep.contact) return "";
+      const phone = ep.contact.phones && ep.contact.phones.length > 0 ? ep.contact.phones[0] : null;
+      return [ep.contact.name, phone].filter(Boolean).join(' · ');
+    };
+    %>
+  <thead>
+    <tr>
+    <th scope="col" colspan="4">Dates: </th>
+    <%/* `deliverySpan` is the WHOLE address area when there is no collection
+         leg, so block 2 takes the width block 3 would have had rather than
+         leaving a bare headless half. */%>
+    <th scope="col" colspan="<%= deliverySpan %>"><%= startLabel %></th>
+    <% if (hasCollection) { %>
+    <th scope="col" colspan="<%= returnSpan %>"><%= endLabel %></th>
+    <% } %>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <%/* Spanned, not omitted: the address cells that follow are positional, so
+         dropping three date cells would slide block 2 left into the dates
+         block. The four <col>s keep their widths either way. */%>
+    <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
+      <% if (d.delivery_start) { %>
+      <%= it.dates.formatChicagoWeekdayDate(d.delivery_start) %><br>
+      <span class="time"><%= it.dates.formatChicagoTime(d.delivery_start) %></span>
+      <% } %>
+    </td>
+    <%/* ARROW, END DATE AND DURATION ARE ALL RENTAL FURNITURE, and they now
+         stand or fall together. A sale-only order is handed over and never comes
+         back, so it has no end of anything — the old hyphenated range printed
+         `Tue 8/11/26 - Tue 8/11/26`, a window one day wide that does not exist.
+         The arrow and the end date already said so; the DURATION did not, and a
+         period label with no span behind it is the same claim in another form.
+         Inside the block the three keep their own guards, which is the point of
+         splitting them. The arrow needs `hasActiveWindow` — it is the only one
+         that draws the span BETWEEN two ends, so it needs both. The dates each
+         read their own boundary: every boundary is nullable, and one guard over
+         the whole range used to hide a start date we had whenever the end was
+         missing. */%>
+    <% if (hasCollection) { %>
+    <td class="arrow">
+      <% if (hasActiveWindow) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
+    </td>
+    <td class="date">
+      <% if (d.collection_start) { %>
+      <%= it.dates.formatChicagoWeekdayDate(d.collection_start) %><br>
+      <span class="time"><%= it.dates.formatChicagoTime(d.collection_start) %></span>
+      <% } %>
+    </td>
+    <td>
+      <% if (d.days_active != null) { %>
+      <span class="days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span>
+      <% } %>
+    </td>
+    <% } %>
+    <td class="address" colspan="<%= deliverySpan %>">
+      <% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
+    </td>
+    <% if (hasCollection) { %>
+    <td class="address" colspan="<%= returnSpan %>">
+      <% addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %>
+    </td>
+    <% } %>
+    </tr>
+    <tr>
+      <td colspan="4">
+      <!-- Charge window — only when it differs from delivery/collection -->
+      <% if (showCharged) { %>
+      <span class="bold">Dates Charged: </span>
+      <% } %>
+      </td>
+      <td class="address" colspan="<%= deliverySpan %>"><%= contactLine(dest.delivery) %></td>
+      <% if (hasCollection) { %>
+      <td class="address" colspan="<%= returnSpan %>"><%= contactLine(dest.collection) %></td>
+      <% } %>
+    </tr>
+    <tr>
+      <%/* Split across the same four columns as the active window above, so the
+           two ranges read as one stacked pair rather than as two layouts — and
+           collapsed by the same `hasCollection` shape, for the same reason.
+           `showCharged` already carries that condition, so these cells stay
+           empty rather than absent; the SPAN has to match row 1 either way or
+           the instructions columns slide. */%>
+      <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
+      <% if (showCharged) { %>
+      <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %>
+      <% } %>
+      </td>
+      <% if (hasCollection) { %>
+      <td class="arrow">
+      <% if (showCharged) { %><%~ it.icons.svg("arrow-right", { size: 9 }) %><% } %>
+      </td>
+      <td class="date">
+      <% if (showCharged) { %>
+      <%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
+      <% } %>
+      </td>
+      <td>
+        <!-- Charge window — only when it differs from delivery/collection -->
+        <% if (showCharged && d.days_charged != null) { %>
+        <span class="days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span>
+        <% } %>
+      </td>
+      <% } %>
+      <td class="address" colspan="<%= deliverySpan %>"><%= dest.delivery?.instructions ?? "" %></td>
+      <% if (hasCollection) { %>
+      <td class="address" colspan="<%= returnSpan %>"><%= dest.collection?.instructions ?? "" %></td>
+      <% } %>
+    </tr>
+  </tbody>
+</table>

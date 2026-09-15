@@ -100,72 +100,33 @@ html {
 /* ── EXPLORATION: destination block paired with its own items table ────────
    See partials/quote/destination-block.eta. */
 
-.destination-block {
-  grid-column: 1 / -1;
-  display: grid;
-  /* Dates end where the item description column ends; the end endpoint opens
-     on the same edge #totals does. `--dest-block-3` carries a percentage, and
-     this block spans the whole page grid, so it resolves to the same edge. */
-  grid-template-columns:
-    var(--label-col)
-    calc(var(--dest-block-3) - var(--label-col))
-    1fr;
-  box-shadow: inset 0 0.5px 0 #121212;
-  padding-top: 4px;
-  /* Sit on the items table below rather than a full page-grid row gap away. */
-  margin-bottom: -0.5rem;
-  break-after: avoid;
-  break-inside: avoid;
-}
-
-.destination-block.one-leg {
-  grid-template-columns: var(--label-col) 1fr;
-}
-
-.destination-block > div {
-  padding-right: 1em;
-}
-
-.destination-block .label {
-  font-weight: bold;
-  font-size: 0.5625rem;
-}
-
-.destination-block .inline-icon svg,
-.destination-block .days svg {
+/* The destination tables reuse main's #destinations rules in base.css
+   unchanged. Only the clock on the duration cells is new. The icon is centred
+   on the text by the font (`middle`), and its negative block margins stop it
+   making the line taller than a line without one. */
+#destinations .days svg {
   vertical-align: middle;
   margin-top: -1em;
   margin-bottom: -1em;
-}
-
-.destination-block .inline-icon svg {
-  margin-left: 0.4em;
-  margin-right: 0.4em;
-}
-
-.destination-block .days {
-  color: #555;
-  margin-left: 0.4em;
-  white-space: nowrap;
-}
-
-.destination-block .days svg {
   margin-right: 0.25em;
 }
 
-/* TABLE TEXT at .75rem, HEADERS at 75% of that (.5625rem).
-   Both in `rem`, not `em`: base.css sets `th, td { font-size: 1rem }`, which
-   resets every cell to the root, so a th cannot inherit a size from its table.
-   The header is a sibling of the td, not a child, so `.75em` on it would be 75%
-   of the TABLE font, not of the td. The destination block labels (Dates,
-   Delivery, Pickup) are that block's headers and take the same size. */
-.destination-block,
+/* ALL TABLE TEXT at .75rem, headers included, and NOTHING BOLD in the
+   destination tables or the items tables. `rem`, because base.css sets
+   `th, td { font-size: 1rem }`, which resets every cell to the root. The
+   `.bold` rule covers the "Dates Charged:" label. Group headings in the items
+   grid are `<strong>` and keep their weight. */
+#destinations th,
+#destinations td,
+#items th,
 #items td {
   font-size: 0.75rem;
 }
 
+#destinations th,
+#destinations .bold,
 #items th {
-  font-size: 0.5625rem;
+  font-weight: normal;
 }
 
 /* HALF-PIXEL RULES ARE DRAWN AS INSET SHADOWS, NOT BORDERS. Chromium snaps any

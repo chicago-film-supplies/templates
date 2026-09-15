@@ -546,7 +546,8 @@ const gridProps = {
 <% for (const section of destinationSections) { %>
 <% if (section.dest) { %>
 <%~ await includeAsync("@partials/quote/destination-block.eta", {
-     u: it.orders, dest: section.dest, hasCollection,
+     u: it.orders, dest: section.dest, addressColumnCount, hasCollection,
+     deliverySpan, returnSpan,
    }) %>
 <% } %>
 <%~ await includeAsync("@partials/shared/items-grid.eta", { ...gridProps, renderedItems: section.items }) %>
