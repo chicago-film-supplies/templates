@@ -133,6 +133,7 @@
       "name": "Pop Up Garbage Can",
       "description": "",
       "quantity": 10,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 6000,
@@ -179,6 +180,7 @@
       "name": "Butt Bucket (Small)",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 4000,
@@ -225,6 +227,7 @@
       "name": "Broom & Dustpan",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 3000,
@@ -271,6 +274,7 @@
       "name": "Indoor/Outdoor Pushbroom (24\")",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 3000,
@@ -317,6 +321,7 @@
       "name": "Trash Grabber",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 6000,
@@ -373,6 +378,7 @@
       "name": "Locations Toolkit",
       "description": "Include crowbar, bolt cutters...",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 0,
@@ -418,6 +424,7 @@
       "name": "Rolling Set Kit",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 0,
@@ -464,6 +471,7 @@
       "name": "2\" Gaff Tape (White)",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 2600,
         "replacement_cents": 0,
@@ -511,6 +519,7 @@
       "name": "Safety Stripe Adhesive Marking Tape (2\" x 54')",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 1044,
         "replacement_cents": 0,
@@ -558,6 +567,7 @@
       "name": "Blue Painters Tape (1.88\") - 3M",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 800,
         "replacement_cents": 0,
@@ -605,6 +615,7 @@
       "name": "Caution Tape (3\" x 1000')",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 1200,
         "replacement_cents": 0,
@@ -652,6 +663,7 @@
       "name": "Flagging Tape (1\" x 600')",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 1200,
         "replacement_cents": 0,
@@ -699,6 +711,7 @@
       "name": "Paper Towel Roll",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 400,
         "replacement_cents": 0,
@@ -746,6 +759,7 @@
       "name": "Toilet Paper Roll",
       "description": "",
       "quantity": 9,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 300,
         "replacement_cents": 0,
@@ -793,6 +807,7 @@
       "name": "Toilet Scrubber",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 600,
         "replacement_cents": 0,
@@ -840,6 +855,7 @@
       "name": "Plunger",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 800,
         "replacement_cents": 0,
@@ -887,6 +903,7 @@
       "name": "Glass Cleaning Wipes",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 400,
         "replacement_cents": 0,
@@ -934,6 +951,7 @@
       "name": "Nitrile Gloves (150 Pack)",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 1800,
         "replacement_cents": 0,
@@ -981,6 +999,7 @@
       "name": "Febreze Air Freshener",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 700,
         "replacement_cents": 0,
@@ -1028,6 +1047,7 @@
       "name": "Resolve Carpet Cleaner",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 1000,
         "replacement_cents": 0,
@@ -1075,6 +1095,7 @@
       "name": "Hand Soap",
       "description": "",
       "quantity": 6,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 400,
         "replacement_cents": 0,
@@ -1122,6 +1143,7 @@
       "name": "25' Extension Cord",
       "description": "",
       "quantity": 3,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 5000,
@@ -1169,6 +1191,7 @@
       "name": "Garden Stakes (6 Pack)",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 1200,
         "replacement_cents": 0,
@@ -1216,6 +1239,7 @@
       "name": "Dewalt Work Light",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 5000,
         "replacement_cents": 25000,
@@ -1262,6 +1286,7 @@
       "name": "Dewalt Battery Charger (4 Port)",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 30000,
@@ -1309,6 +1334,7 @@
       "name": "Milk Crate (12x12)",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 1200,
@@ -1356,6 +1382,7 @@
       "name": "Dewalt Battery (9Ah)",
       "description": "",
       "quantity": 8,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 20000,
@@ -1403,6 +1430,7 @@
       "name": "Dewalt Leaf Blower",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 3000,
         "replacement_cents": 30000,
@@ -1449,6 +1477,7 @@
       "name": "Dewalt Battery (9Ah)",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 20000,
@@ -1496,6 +1525,7 @@
       "name": "Dewalt Dust Buster",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1500,
         "replacement_cents": 10000,
@@ -1542,6 +1572,7 @@
       "name": "Dewalt Battery (9Ah)",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 20000,
@@ -1589,6 +1620,7 @@
       "name": "Zendex Go Jacks",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 7500,
         "replacement_cents": 200000,
@@ -1635,6 +1667,7 @@
       "name": "Bluetti AC200L Battery",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 10000,
         "replacement_cents": 120000,
@@ -1681,6 +1714,7 @@
       "name": "2200 Watt Generator (Honda EU2200i/EB2200i)",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 10000,
         "replacement_cents": 140000,
@@ -1727,6 +1761,7 @@
       "name": "5 Gallon Gas Can, Red",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 10000,
@@ -1773,6 +1808,7 @@
       "name": "Power Strip",
       "description": "",
       "quantity": 5,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 200,
         "replacement_cents": 1000,
@@ -1819,6 +1855,7 @@
       "name": "Cube Tap",
       "description": "",
       "quantity": 10,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 200,
         "replacement_cents": 800,
@@ -1865,6 +1902,7 @@
       "name": "100' Extension Cord",
       "description": "",
       "quantity": 3,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 11000,
@@ -1911,6 +1949,7 @@
       "name": "50' Extension Cord",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 7500,
@@ -1957,6 +1996,7 @@
       "name": "Long Milk Crate (18x12)",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 1200,
@@ -2004,6 +2044,7 @@
       "name": "Ratchet Strap",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 3600,
@@ -2050,6 +2091,7 @@
       "name": "E Track D Ring",
       "description": "",
       "quantity": 6,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 200,
         "replacement_cents": 699,
@@ -2096,6 +2138,7 @@
       "name": "Spade Shovel",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 200,
         "replacement_cents": 3000,
@@ -2142,6 +2185,7 @@
       "name": "Bungee (4 Pack)",
       "description": "",
       "quantity": 5,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 3200,
@@ -2188,6 +2232,7 @@
       "name": "A Clamp (#2)",
       "description": "",
       "quantity": 30,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 100,
         "replacement_cents": 200,
@@ -2234,6 +2279,7 @@
       "name": "Chains, Locks, Lockboxes Kit",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1500,
         "replacement_cents": 0,
@@ -2279,6 +2325,7 @@
       "name": "Golf Umbrella",
       "description": "",
       "quantity": 60,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 200,
         "replacement_cents": 1000,
@@ -2325,6 +2372,7 @@
       "name": "Traction Aids",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1000,
         "replacement_cents": 10000,
@@ -2371,6 +2419,7 @@
       "name": "Keeper - 36\" Adjustable Bungee",
       "description": "",
       "quantity": 20,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 800,
         "replacement_cents": 0,
@@ -2427,6 +2476,7 @@
       "name": "Stop/Slow Paddle Sign",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 6000,
@@ -2473,6 +2523,7 @@
       "name": "A Frame Sign (Small)",
       "description": "",
       "quantity": 9,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 6000,
@@ -2519,6 +2570,7 @@
       "name": "18\" Traffic Cone",
       "description": "",
       "quantity": 80,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 200,
         "replacement_cents": 1600,
@@ -2565,6 +2617,7 @@
       "name": "A:B:C Fire Extinguisher",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1000,
         "replacement_cents": 8000,
@@ -2611,6 +2664,7 @@
       "name": "Walking Sign Kit",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 2500,
         "replacement_cents": 10000,
@@ -2657,6 +2711,7 @@
       "name": "Driving Sign Kit",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 2500,
         "replacement_cents": 4000,
@@ -2703,6 +2758,7 @@
       "name": "Safety Vest (Duffel Bag of 50)",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 2500,
         "replacement_cents": 0,
@@ -2749,6 +2805,7 @@
       "name": "Safety Vest (ANSI II)",
       "description": "",
       "quantity": 100,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 900,
@@ -2796,6 +2853,7 @@
       "name": "Duffel Bag for Safety Vests",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 6500,
@@ -2843,6 +2901,7 @@
       "name": "Floor Pyramid Sign - Caution",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1000,
         "replacement_cents": 9000,
@@ -2889,6 +2948,7 @@
       "name": "Floor Tent Storage Tube",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 8700,
@@ -2946,6 +3006,7 @@
       "name": "10' x 10' Pop Up Tent (Black)",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 6000,
         "replacement_cents": 50000,
@@ -2992,6 +3053,7 @@
       "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
       "description": "",
       "quantity": 16,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 3000,
@@ -3039,6 +3101,7 @@
       "name": "Tent Canopy Rain Gutter",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 3000,
@@ -3086,6 +3149,7 @@
       "name": "Tent Door (Black)",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 10000,
@@ -3133,6 +3197,7 @@
       "name": "Long Milk Crate (18x12)",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 1200,
@@ -3180,6 +3245,7 @@
       "name": "20lb Shot Bag",
       "description": "",
       "quantity": 32,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 9000,
@@ -3227,6 +3293,7 @@
       "name": "Tent Side (Black)",
       "description": "",
       "quantity": 12,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 3000,
@@ -3284,6 +3351,7 @@
       "name": "14\" Fan",
       "description": "",
       "quantity": 6,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1000,
         "replacement_cents": 6000,
@@ -3340,6 +3408,7 @@
       "name": "Furniture Pad",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 2000,
@@ -3386,6 +3455,7 @@
       "name": "3 ' x 5' Floor Mat",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 3000,
@@ -3432,6 +3502,7 @@
       "name": "3' x 10' Floor Mat",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1000,
         "replacement_cents": 7000,
@@ -3488,6 +3559,7 @@
       "name": "E-Z Access 2' Folding Ramp",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 3000,
         "replacement_cents": 30000,
@@ -3534,6 +3606,7 @@
       "name": "Magliner Gemini Jr",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 3000,
         "replacement_cents": 70000,
@@ -3580,6 +3653,7 @@
       "name": "Metro Rack (18\" x 36\")",
       "description": "",
       "quantity": 3,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1500,
         "replacement_cents": 54000,
@@ -3636,6 +3710,7 @@
       "name": "36\" Zip Ties (Pack of 50)",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 3500,
         "replacement_cents": 0,
@@ -3682,6 +3757,7 @@
       "name": "55 Gallon Heavy Duty Garbage Bags",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 2000,
         "replacement_cents": 0,
@@ -3738,6 +3814,7 @@
       "name": "Makeup Mirror (18\" White)",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 3000,
         "replacement_cents": 35000,
@@ -3798,6 +3875,7 @@
       "name": "Six Bank Charger",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1000,
         "replacement_cents": 50000,

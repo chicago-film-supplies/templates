@@ -132,6 +132,7 @@
       "name": "Dewalt Work Light",
       "description": "",
       "quantity": 7,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 5000,
         "replacement_cents": 25000,
@@ -178,6 +179,7 @@
       "name": "Dewalt Battery Charger (4 Port)",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 30000,
@@ -225,6 +227,7 @@
       "name": "Dewalt Battery (9Ah)",
       "description": "",
       "quantity": 14,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 20000,

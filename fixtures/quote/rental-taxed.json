@@ -142,6 +142,7 @@
       "name": "4' Folding Table (Adjustable Height)",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 500,
         "replacement_cents": 6000,
