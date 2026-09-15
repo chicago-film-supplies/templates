@@ -466,8 +466,47 @@ th.center, td.center {
   padding: 4px 0;
 }
 
-#items tr.destination-section + tr td {
-  border-top: 1px solid #ccc;
+/* THE HEADER ROW HAS TWO HOMES — see partials/shared/items-grid.eta. As a
+   <thead> it is styled by the `thead th` rule above; repeated inside <tbody>,
+   one per destination, it needs the same rule under it and must not be left as
+   the last row on a page with its lines opening the next one — the same argument
+   the banner `break-after` rule above makes, which cannot reach this row because
+   it has no colspan.
+
+   A grey rule under the section used to separate it from the first line beneath
+   it (`tr.destination-section + tr td`). The header row now sits there and draws
+   the black rule it always drew, so the grey one had nothing left to separate. */
+#items tr.column-headers th {
+  border-bottom: 1px solid #121212;
+}
+
+#items tr.column-headers {
+  break-after: avoid;
+}
+
+/* `table-layout: fixed` sizes a table from its FIRST ROW, and in the destination
+   shape that row is one colspan cell — Blink splits such a cell evenly across
+   the columns it spans, so the description column would lose `--label-col` and
+   every table on the page would stop sharing an edge with it. The <colgroup>
+   states the widths instead, which under fixed layout outrank any row: the same
+   two facts `#items thead th:not(:first-child)` states for the headed shape,
+   moved somewhere the kind of the first row cannot change them. */
+#items col {
+  width: auto;
+}
+
+#items col:first-child {
+  width: var(--label-col);
+}
+
+/* ⚠️ AND THE SECTION CELL MUST CARRY NO WIDTH, or the <colgroup> above buys
+   nothing. A column whose <col> says `auto` takes its width from the FIRST ROW
+   instead — which here is this cell, and `td:first-child, .wide` would hand all
+   eight columns `--label-col` to share. Measured: the description column came
+   out at 690px against its 216, and every other table on the page kept the edge
+   it was supposed to be sharing with. */
+#items tr.destination-section td {
+  width: auto;
 }
 
 /* The columns are sized by their widest line, so start and end line up down
