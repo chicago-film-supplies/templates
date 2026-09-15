@@ -73,18 +73,10 @@ const clock = () => it.icons.svg("clock", { size: 9 });
       return [ep.contact.name, phone].filter(Boolean).join(' · ');
     };
     %>
-  <thead>
-    <tr>
-    <th scope="col" colspan="4">Dates: </th>
-    <%/* `deliverySpan` is the WHOLE address area when there is no collection
-         leg, so block 2 takes the width block 3 would have had rather than
-         leaving a bare headless half. */%>
-    <th scope="col" colspan="<%= deliverySpan %>"><%= startLabel %></th>
-    <% if (hasCollection) { %>
-    <th scope="col" colspan="<%= returnSpan %>"><%= endLabel %></th>
-    <% } %>
-    </tr>
-  </thead>
+  <%/* NO HEADING ROW (Dates / Delivery / Pickup), unlike the shared table.
+       The <colgroup> above still sizes every column under `table-layout:
+       fixed`, so the columns keep their widths without a header row to size
+       them. */%>
   <tbody>
     <tr>
     <%/* Spanned, not omitted: the address cells that follow are positional, so
