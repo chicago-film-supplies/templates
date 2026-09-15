@@ -50,27 +50,59 @@ const {
   destinationDetail = false, destinations = [], u, hasCollection = false,
 } = it;
 %>
+<%/* THE HEADER ROW HAS TWO HOMES, and which one is a fact about
+     `destinationDetail` alone.
+
+     OFF — every family but the quote — it is the table’s one <thead>, and the
+     rendered markup is what it has always been, so no other family’s golden
+     moves.
+
+     ON, each destination section is followed by its OWN header row, so the
+     section reads as the heading of the lines under it rather than as a row
+     inside a table that was already headed above it. Two consequences, neither
+     optional:
+
+     - Those header rows live in <tbody>, NOT in a second <thead>. Only the first
+       table-header-group is a header group — the rest render as row groups — and
+       the first one REPEATS at the top of every printed page, so a <thead> here
+       would reprint destination 1’s address block above destination 2’s lines.
+     - `table-layout: fixed` sizes a table from its FIRST ROW, which is now the
+       destination section’s single colspan cell — Blink would split that evenly
+       across every column and the grid would lose `--label-col`. The <colgroup>
+       states the widths instead, so sizing no longer depends on which KIND of row
+       happens to come first. It is emitted only in this shape: the headed table
+       is sized by its header row exactly as before.
+
+     Built as a string because it is emitted from two places and a second copy of
+     the conditional columns is a second thing to keep in step with `columnCount`. */%>
+<%
+const headerRow = '<tr class="column-headers">' + [
+  '<th scope="col" class="wide">Item Description</th>',
+  '<th scope="col">Type</th>',
+  '<th scope="col">Qty</th>',
+  hasRentals ? '<th scope="col">Duration</th>' : '',
+  '<th scope="col">Unit Price</th>',
+  hasDiscount ? '<th scope="col">Discount</th>' : '',
+  '<th scope="col">Subtotal</th>',
+  hasTax ? '<th scope="col">Tax</th>' : '',
+  '<th scope="col" class="total">Total</th>',
+].filter(Boolean).join("\n        ") + '</tr>';
+
+// TRUE until something has been headed. A destination section emits the header
+// under itself; anything reaching a line, a group banner or a destination that
+// resolves to no section pays for it first, so a grid whose rows do not open
+// with a destination is still headed exactly once.
+let headerPending = destinationDetail;
+%>
 <section id="items">
   <table>
+    <% if (destinationDetail) { %>
+    <colgroup><% for (let i = 0; i < columnCount; i++) { %><col><% } %></colgroup>
+    <% } else { %>
     <thead>
-      <tr>
-        <th scope="col" class="wide">Item Description</th>
-        <th scope="col">Type</th>
-        <th scope="col">Qty</th>
-        <% if (hasRentals) { %>
-        <th scope="col">Duration</th>
-        <% } %>
-        <th scope="col">Unit Price</th>
-        <% if (hasDiscount) { %>
-        <th scope="col">Discount</th>
-        <% } %>
-        <th scope="col">Subtotal</th>
-        <% if (hasTax) { %>
-        <th scope="col">Tax</th>
-        <% } %>
-        <th scope="col" class="total">Total</th>
-      </tr>
+      <%~ headerRow %>
     </thead>
+    <% } %>
     <tbody>
       <%/* The banner spans this table exactly. It is `itemColumnCount` rather
            than a second copy of the arithmetic: the alignment edge of the page
@@ -79,6 +111,10 @@ const {
            banner row spanned one column short of its own table. */%>
       <% const bannerSpan = columnCount; %>
       <% renderedItems.forEach(item => { %>
+        <% const dest = (destinationDetail && item.type === "destination") ? destinations.find(p => p.uid === item.uid) : undefined; %>
+        <% if (headerPending && !dest) { %>
+        <%~ headerRow %>
+        <% headerPending = false; } %>
         <% if (item.type === "group") { %>
         <tr>
           <td class="wide" colspan="<%= bannerSpan %>">
@@ -94,7 +130,6 @@ const {
         </tr>
         <% } %>
         <% } else if (item.type === "destination") { %>
-        <% const dest = destinationDetail ? destinations.find(p => p.uid === item.uid) : undefined; %>
         <% if (dest) { %>
         <%/* The OrderDetail destination divider, as a PDF: ONE row holding a
              three-column grid, directly above the lines delivered there.
@@ -215,6 +250,11 @@ const {
             <% } %>
           </td>
         </tr>
+        <%/* The column headers belong to the section above them: the lines a
+             destination introduces are headed under that destination, not under
+             a header row printed once at the top of a table that spans several. */%>
+        <%~ headerRow %>
+        <% headerPending = false; %>
         <% } else if (showDestinationBanners) { %>
         <tr>
           <td class="wide" colspan="<%= bannerSpan %>">
