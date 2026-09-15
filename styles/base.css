@@ -503,6 +503,12 @@ th.center, td.center {
   line-height: 0;
 }
 
+/* The arrow INSIDE a date line, for the one-column shape. */
+#items .destination-grid .inline-arrow svg {
+  vertical-align: -0.1em;
+  margin: 0 0.4em;
+}
+
 #items .destination-days {
   color: #555;
   margin-left: 0.4em;

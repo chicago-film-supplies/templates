@@ -121,6 +121,12 @@ const {
              6.5%). With no collection leg there is no right column and no arrow:
              a sale is handed over and never comes back.
 
+             ONE COLUMN when the right side would hold nothing but dates, i.e. the
+             collection happens at the same place, with the same contact and
+             instructions: a column of blanks beside a centred arrow says less
+             than the dates do inline. Then each date line reads start, arrow,
+             end on its own, and there is no separate arrow.
+
              A SECOND COPY of the date rules in partials/shared/destinations.eta,
              deliberately: that table still serves the invoice, the pick sheet and
              the packing list. Keep the two in step until they are reconciled. */%>
@@ -155,31 +161,29 @@ const {
           const hasContactLine = contactText(dest.delivery) !== "" || returnContact !== "";
           const hasInstructionsLine = instructionsText(dest.delivery) !== "" || returnInstructions !== "";
           const lineCount = 2 + (hasContactLine ? 1 : 0) + (hasInstructionsLine ? 1 : 0) + (showCharged ? 1 : 0);
+          const split = hasCollection && (returnPlace !== "" || returnContact !== "" || returnInstructions !== "");
           const clock = () => it.icons.svg("clock", { size: 9 });
         %>
         <tr class="destination-section">
           <td class="wide" colspan="<%= columnCount %>">
-            <div class="destination-grid<% if (!hasCollection) { %> one-leg<% } %>">
+            <% if (split) { %>
+            <div class="destination-grid">
               <div class="start"><%= placeText(dest.delivery) %></div>
-              <% if (hasCollection) { %>
               <div class="arrow" style="grid-row: 1 / span <%= lineCount %>"><%~ it.icons.svg("arrow-right", { size: 9 }) %></div>
               <div class="end"><%= returnPlace %></div>
-              <% } %>
               <% if (hasContactLine) { %>
               <div class="start"><%= contactText(dest.delivery) %></div>
-              <% if (hasCollection) { %><div class="end"><%= returnContact %></div><% } %>
+              <div class="end"><%= returnContact %></div>
               <% } %>
               <% if (hasInstructionsLine) { %>
               <div class="start"><%= instructionsText(dest.delivery) %></div>
-              <% if (hasCollection) { %><div class="end"><%= returnInstructions %></div><% } %>
+              <div class="end"><%= returnInstructions %></div>
               <% } %>
               <div class="start"><% if (showCharged) { %><span class="bold">Active:</span> <% } %><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %></div>
-              <% if (hasCollection) { %>
               <div class="end">
                 <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
                 <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
               </div>
-              <% } %>
               <% if (showCharged) { %>
               <div class="start"><span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %></div>
               <div class="end">
@@ -188,6 +192,27 @@ const {
               </div>
               <% } %>
             </div>
+            <% } else { %>
+            <div class="destination-grid one-leg">
+              <div><%= placeText(dest.delivery) %></div>
+              <% if (hasContactLine) { %><div><%= contactText(dest.delivery) %></div><% } %>
+              <% if (hasInstructionsLine) { %><div><%= instructionsText(dest.delivery) %></div><% } %>
+              <div>
+                <% if (showCharged) { %><span class="bold">Active:</span> <% } %><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
+                <% if (hasCollection) { %>
+                <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %>
+                <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
+                <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
+                <% } %>
+              </div>
+              <% if (showCharged) { %>
+              <div>
+                <span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
+                <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
+              </div>
+              <% } %>
+            </div>
+            <% } %>
           </td>
         </tr>
         <% } else if (showDestinationBanners) { %>
