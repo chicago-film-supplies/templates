@@ -542,12 +542,17 @@ const gridProps = {
 <%/* `shownLineItems`, not `lineItems`: an order whose only non-divider entry is
      a transaction fee has nothing to put in this grid, and an empty table with
      a header row reads as a rendering fault. */%>
+<%/* ONLY THE FIRST destination block draws a rule above itself. Every later one
+     already has one directly above it: the rule under the last row of the
+     PREVIOUS items table. Two rules a row-gap apart read as a double line, so
+     the top rule is a fact about the FIRST block rather than about a block. */%>
+<% let destBlockIndex = 0; %>
 <% if (shownLineItems.length > 0 && hasDeliverableItems) { %>
 <% for (const section of destinationSections) { %>
 <% if (section.dest) { %>
 <%~ await includeAsync("@partials/quote/destination-block.eta", {
      u: it.orders, dest: section.dest, addressColumnCount, hasCollection,
-     deliverySpan, returnSpan,
+     deliverySpan, returnSpan, topRule: destBlockIndex++ === 0,
    }) %>
 <% } %>
 <%~ await includeAsync("@partials/shared/items-grid.eta", { ...gridProps, renderedItems: section.items }) %>

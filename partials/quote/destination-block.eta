@@ -21,12 +21,14 @@
        addressColumnCount  how many equal sub-columns the address area splits into
        hasCollection       whether anything is coming back at all
        deliverySpan        sub-columns the delivery block spans
-       returnSpan          sub-columns the return block spans */%>
+       returnSpan          sub-columns the return block spans
+       topRule             draw a rule above this block (the first one only —
+                           see the call site) */%>
 <%
-const { u, dest, addressColumnCount, hasCollection, deliverySpan, returnSpan } = it;
+const { u, dest, addressColumnCount, hasCollection, deliverySpan, returnSpan, topRule } = it;
 const clock = () => it.icons.svg("clock", { size: 9 });
 %>
-<table id="destinations">
+<table id="destinations"<% if (topRule) { %> class="top-rule"<% } %>>
   <colgroup>
     <col class="date">
     <col class="arrow">
