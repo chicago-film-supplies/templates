@@ -3,7 +3,8 @@
   "collection_source": "pick-sheets",
   "collection_target": "packing_lists",
   "surfaces": [
-    "fulfillment"
+    "fulfillment",
+    "organization"
   ],
   "depends_on": {
     "components": [

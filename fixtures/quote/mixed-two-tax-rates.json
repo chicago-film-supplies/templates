@@ -132,6 +132,7 @@
       "name": "3' x 10' Floor Mat",
       "description": "",
       "quantity": 40,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1000,
         "replacement_cents": 7000,
@@ -178,6 +179,7 @@
       "name": "Magliner Gemini Jr w/ Basket",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 6000,
         "replacement_cents": 0,
@@ -225,6 +227,7 @@
       "name": "Magliner Gemini Jr",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 70000,
@@ -273,6 +276,7 @@
       "name": "38\" x 22\" Vinyl Basket",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 40000,
@@ -321,6 +325,7 @@
       "name": "3 ' x 5' Floor Mat",
       "description": "",
       "quantity": 40,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 3000,
@@ -367,6 +372,7 @@
       "name": "Magliner Gemini Jr w/ Basket",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 6000,
         "replacement_cents": 0,
@@ -414,6 +420,7 @@
       "name": "Carpet Mask (36\" x 200')",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 8000,
         "replacement_cents": 0,
@@ -460,6 +467,7 @@
       "name": "Carpet Mask Applicator",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 3000,
         "replacement_cents": 20000,
@@ -506,6 +514,7 @@
       "name": "Corrugated Roll (48\" x 250')",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 13500,
         "replacement_cents": 0,
@@ -552,6 +561,7 @@
       "name": "Blue Painters Tape (1.88\") - 3M",
       "description": "",
       "quantity": 6,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 800,
         "replacement_cents": 0,
@@ -598,6 +608,7 @@
       "name": "E-Z Access 2' Folding Ramp",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 3000,
         "replacement_cents": 30000,
@@ -644,6 +655,7 @@
       "name": "E-Z Access 4' Folding Ramp",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 6000,
         "replacement_cents": 30000,
@@ -690,6 +702,7 @@
       "name": "Layout Board (4' x 6')",
       "description": "",
       "quantity": 20,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 1000,
         "replacement_cents": 0,
@@ -736,6 +749,7 @@
       "name": "Blue Painters Tape (1.88\") - 3M",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
         "base_cents": 800,
         "replacement_cents": 0,
@@ -783,6 +797,7 @@
       "name": "Layout Cart",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 10000,
         "replacement_cents": 160000,
@@ -843,6 +858,7 @@
       "name": "Replacement: 3' x 10' Floor Mat",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "Y1kxMxz7xC899ncCIMQH",
       "price": {
         "base_cents": 7000,
         "replacement_cents": 0,
@@ -899,6 +915,7 @@
       "name": "Delivery/Setup/Removal",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
       "price": {
         "base_cents": 25000,
         "replacement_cents": 0,
@@ -930,6 +947,7 @@
       "name": "Distance Charge",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
       "price": {
         "base_cents": 25000,
         "replacement_cents": 0,

@@ -132,6 +132,7 @@
       "name": "6' Folding Table",
       "description": "",
       "quantity": 10,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
         "replacement_cents": 8000,
@@ -174,6 +175,7 @@
       "name": "Folding Chair",
       "description": "",
       "quantity": 40,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 200,
         "replacement_cents": 1600,
@@ -226,6 +228,7 @@
       "name": "10' x 10' Pop Up Tent (White)",
       "description": "",
       "quantity": 10,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 6000,
         "replacement_cents": 50000,
@@ -268,6 +271,7 @@
       "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
       "description": "",
       "quantity": 40,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 3000,
@@ -307,6 +311,7 @@
       "name": "20lb Shot Bag",
       "description": "",
       "quantity": 40,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "replacement_cents": 9000,
@@ -356,6 +361,7 @@
       "name": "Card Fee",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
       "price": {
         "base_cents": 1200,
         "replacement_cents": null,

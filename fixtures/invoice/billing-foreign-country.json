@@ -172,6 +172,7 @@
       "name": "Walkie Talkie",
       "description": "",
       "quantity": 11,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 1000,
         "chargeable_days": 6,
@@ -218,6 +219,7 @@
       "name": "Spare Battery w/ Belt Clip",
       "description": "",
       "quantity": 11,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "chargeable_days": 6,
@@ -265,6 +267,7 @@
       "name": "Six Bank Charger",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "chargeable_days": 6,
@@ -312,6 +315,7 @@
       "name": "Walkie Case (Small)",
       "description": "",
       "quantity": 2,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "chargeable_days": 6,

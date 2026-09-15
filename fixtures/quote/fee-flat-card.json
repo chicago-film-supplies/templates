@@ -131,6 +131,7 @@
       "name": "Driving Sign Kit",
       "description": "4x Crew Parking Signs",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 2500,
         "replacement_cents": 100000,
@@ -181,6 +182,7 @@
       "name": "Walking Sign Kit",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 2500,
         "replacement_cents": 10000,
@@ -237,6 +239,7 @@
       "name": "Card Fee",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
       "price": {
         "base_cents": 115,
         "replacement_cents": null,

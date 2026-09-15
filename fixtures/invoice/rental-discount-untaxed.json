@@ -163,6 +163,7 @@
       "name": "10' x 10' Pop Up Tent (White)",
       "description": "",
       "quantity": 1,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 6000,
         "chargeable_days": 4,
@@ -205,6 +206,7 @@
       "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "chargeable_days": 4,
@@ -244,6 +246,7 @@
       "name": "20lb Shot Bag",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 0,
         "chargeable_days": 4,

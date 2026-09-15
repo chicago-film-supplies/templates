@@ -133,6 +133,7 @@
       "name": "Replacement: Surveillance Kit",
       "description": "",
       "quantity": 4,
+      "uid_tax_class": "Y1kxMxz7xC899ncCIMQH",
       "price": {
         "base_cents": 13500,
         "replacement_cents": 0,
