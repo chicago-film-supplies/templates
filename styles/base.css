@@ -503,10 +503,24 @@ th.center, td.center {
   line-height: 0;
 }
 
-/* The arrow INSIDE a date line, for the one-column shape. */
+/* INLINE ICONS ARE CENTRED BY THE FONT, NOT BY A NUMBER. They used to sit at a
+   fixed `vertical-align: -0.1em`, which only looks centred for one font's
+   metrics: with the preview machine's system font it did, and with the PDF
+   renderer's font (Open Sans-like) the clock and arrow rode about a point above
+   the digits beside them (Quote 1021, 2026-09-15; reproduced locally by forcing
+   Open Sans at 5x). `middle` centres the glyph on the x-height of whatever font
+   renders, and the negative block margins collapse the icon's margin box so it
+   can never make its line taller than a line without one. */
+#items .destination-grid .inline-arrow svg,
+#items .destination-days svg {
+  vertical-align: middle;
+  margin-top: -1em;
+  margin-bottom: -1em;
+}
+
 #items .destination-grid .inline-arrow svg {
-  vertical-align: -0.1em;
-  margin: 0 0.4em;
+  margin-left: 0.4em;
+  margin-right: 0.4em;
 }
 
 #items .destination-days {
@@ -515,8 +529,7 @@ th.center, td.center {
 }
 
 #items .destination-days svg {
-  vertical-align: -0.1em;
-  margin: 0 0.25em 0 0;
+  margin-right: 0.25em;
 }
 
 #items th,
