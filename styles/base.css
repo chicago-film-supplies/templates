@@ -453,49 +453,54 @@ th.center, td.center {
 }
 
 /* A destination SECTION inside the items grid (items-grid.eta, opt-in via
-   `destinationDetail`), the OrderDetail divider as a PDF: place, contact,
-   dates, charged. New selectors only, so no family sheet rule changes winner.
-   A rule above the first line marks each destination as a section break and a
-   light rule under the last separates it from the lines it introduces. The
-   colspan break rule above already keeps each line with the next. */
-/* EVERY line of the section carries the same padding, so the gaps between
-   them are equal. The first line used to set only `padding-top`, which left it
-   inheriting the grid's `#items td { padding: 4px 0 }` bottom while the lines
-   under it were zeroed: one 4px gap under the address and none elsewhere. */
-#items tr.destination-place td,
-#items tr.destination-contact td,
-#items tr.destination-dates td,
-#items tr.destination-charged td {
-  padding: 1px 0;
-}
+   `destinationDetail`): one colspan row holding a three-column grid, delivery
+   side | one arrow | collection side. New selectors only, so no family sheet
+   rule changes winner.
 
-/* EQUIDISTANT RULES. Every #items cell carries 4px above and below its text, so
-   a rule sits 4px from the text on both sides only if the section lines that
-   touch a rule carry 4px on that side too. The first line takes 4px above its
-   black rule (the header text, or the previous item, sits 4px above it); the
-   LAST line, dates or charged, takes 4px below, above the grey rule that the
-   following row draws. */
-#items tr.destination-place td {
+   EQUIDISTANT RULES. Every #items cell carries 4px above and below its text, and
+   this row does too, so the black rule above the section and the grey rule the
+   following row draws under it each sit 4px from the text on both sides. The
+   colspan break rule above keeps the section with the first line it introduces. */
+#items tr.destination-section td {
   border-top: 1px solid #121212;
-  padding-top: 4px;
+  padding: 4px 0;
 }
 
-#items tr.destination-dates:not(:has(+ tr.destination-charged)) td,
-#items tr.destination-charged td {
-  padding-bottom: 4px;
-}
-
-#items tr.destination-place svg,
-#items tr.destination-contact svg,
-#items tr.destination-dates svg,
-#items tr.destination-charged svg {
-  vertical-align: -0.1em;
-  margin: 0 0.4em;
-}
-
-#items tr.destination-dates + tr:not(.destination-charged) td,
-#items tr.destination-charged + tr td {
+#items tr.destination-section + tr td {
   border-top: 1px solid #ccc;
+}
+
+/* The columns are sized by their widest line, so start and end line up down
+   the section. `fit-content` caps each side short of half the page so two long
+   addresses wrap rather than push the grid past the margin. Lines are spaced by
+   `row-gap` alone: one number, so the gaps are equal by construction. */
+#items .destination-grid {
+  display: grid;
+  grid-template-columns: fit-content(46%) 2.4em fit-content(46%);
+  justify-content: start;
+  row-gap: 2px;
+}
+
+#items .destination-grid.one-leg {
+  grid-template-columns: fit-content(100%);
+}
+
+#items .destination-grid .start {
+  grid-column: 1;
+}
+
+#items .destination-grid .end {
+  grid-column: 3;
+}
+
+/* ONE arrow for the whole section, spanning every line (the template sets the
+   span) and centred on it both ways. */
+#items .destination-grid .arrow {
+  grid-column: 2;
+  grid-row-start: 1;
+  align-self: center;
+  justify-self: center;
+  line-height: 0;
 }
 
 #items .destination-days {
@@ -504,6 +509,7 @@ th.center, td.center {
 }
 
 #items .destination-days svg {
+  vertical-align: -0.1em;
   margin: 0 0.25em 0 0;
 }
 
