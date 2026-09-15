@@ -469,9 +469,20 @@ th.center, td.center {
   padding: 1px 0;
 }
 
+/* EQUIDISTANT RULES. Every #items cell carries 4px above and below its text, so
+   a rule sits 4px from the text on both sides only if the section lines that
+   touch a rule carry 4px on that side too. The first line takes 4px above its
+   black rule (the header text, or the previous item, sits 4px above it); the
+   LAST line, dates or charged, takes 4px below, above the grey rule that the
+   following row draws. */
 #items tr.destination-place td {
   border-top: 1px solid #121212;
-  padding-top: 6px;
+  padding-top: 4px;
+}
+
+#items tr.destination-dates:not(:has(+ tr.destination-charged)) td,
+#items tr.destination-charged td {
+  padding-bottom: 4px;
 }
 
 #items tr.destination-place svg,
