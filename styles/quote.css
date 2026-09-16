@@ -215,22 +215,6 @@ html {
   border-bottom: 1px solid #eee;
 }
 
-/* SEVERAL #items TABLES, ONE CLOSING RULE. This family draws one dates/
-   destinations table per leg with that leg's grid under it (quote.eta), so the
-   page carries several #items tables where every other family carries one.
-   `#items tr:last-child td` in `styles/base.css` closes each of them with a
-   black rule, and a rule under every block reads as several documents stacked —
-   what closes the grid is the LAST table, and the boundary between two legs is
-   the next table's own header rule.
-
-   `:has(~ #items)` states exactly that: an items table with another items table
-   after it. Scoped here rather than in the shared sheet because no other family
-   emits a second one — and it beats the base rule on specificity by carrying a
-   second id, so the order the two sheets are overlaid in does not decide it. */
-#items:has(~ #items) tr:last-child td {
-  border-bottom: 0;
-}
-
 /* NO RULE UNDER THE DATES/DESTINATIONS HEADER — the items grid keeps its own.
 
    `thead th` in `styles/base.css` gives every header row a rule under it, which

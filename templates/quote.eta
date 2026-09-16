@@ -571,14 +571,12 @@ const detailsTrailSpan = addressColumnCount - addressBoundary;
      no collection — so it falls through to ONE plain headed grid, exactly as
      before. `hasDeliverableItems` is that gate, as it was for the old table.
 
-     ⚠️ SEVERAL #items TABLES, SO SEVERAL CLOSING RULES. `#items tr:last-child
-     td` in `styles/base.css` draws one under the last row of each of them, and
-     only the last table on the page should close the grid — `styles/quote.css`
-     clears the others with `#items:has(~ #items)`. Measured over six fixtures: a
-     SINGLE-destination quote renders the same DOM as the version this replaces
-     — the only differences in the whole document are that inert stylesheet rule
-     and a moved HTML comment — so `multi-dest` is the one golden that moves,
-     and a diff anywhere else is a regression rather than this change. */%>
+     EVERY LEG CLOSES WITH ITS OWN RULE. `#items tr:last-child td` in
+     `styles/base.css` draws one under the last row of each items table, so each
+     destination and its lines read as a finished block. The blank row that
+     separates two legs sits BELOW that rule — see `#items:has(+ #destinations)`
+     in styles/quote.css, which hangs it off the end of the leg above so a page
+     break between legs never prints it at the top of the next page. */%>
 <%
 const legs = [];
 renderedItems.forEach((item) => {
