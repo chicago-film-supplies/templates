@@ -1,0 +1,113 @@
+<%/* THE QUOTE'S DATES/DESTINATIONS TABLE — one per leg, directly above the lines
+     going there (quote.eta). A copy of partials/shared/destinations.eta with ONE
+     structural difference, which is the reason it exists at all:
+
+     THE DATES BLOCK IS WIDER BY `dateExtraCols` WHOLE COLUMNS OF THE GRID, so the
+     active window prints its times on the SAME line as its dates:
+
+       Dates:                                              Delivery
+       Mon 4/6/26 9:00 AM -> Fri 4/10/26 3:00 PM  1 week   2455 Willow Way
+
+     The shared table stacks each time under its date, and says why: at its width
+     an inline time does not fit, and widening a cell there moves `--label-col`,
+     the edge seven families share. This table widens by SPANNING instead. Its
+     four date <col>s still sum to `--label-col`, so that edge is untouched; the
+     extra width is borrowed from the first `dateExtraCols` ADDRESS sub-columns,
+     which mirror items-grid columns one-for-one. Every boundary this table draws
+     is still a boundary of the items grid beneath it — the dates just end one
+     column further right, and the delivery block starts there.
+
+     Only the delivery block gives up width. The return block still opens on
+     `--dest-block-3`, the edge #totals and #information share, so nothing below
+     this table moves.
+
+     It is QUOTE-OWNED rather than a prop on the shared partial on purpose: the
+     invoice, the pick sheet and the packing list render the shared table, and a
+     draft of THIS family can preview this file immediately, where a change to the
+     base component reaches a quote draft only after it merges.
+
+     The rules it keeps from the shared table, unchanged in meaning:
+       - Every date boundary is nullable, so each piece is gated on what it reads.
+       - The arrow, end date and duration are rental furniture: a sale is handed
+         over and never comes back, so without a collection leg they are absent.
+       - The charge window stays dates-only and appears only when it differs from
+         the active one. It is a billing period counted in days.
+       - Dates go through `it.dates.formatChicago*`; the zone is named nowhere.
+
+     Addresses are set as they would be on an envelope: street and unit on one
+     line, then the locality with its single comma between city and region. */%>
+<%
+const { u, destinations, addressColumnCount, hasCollection, deliverySpan, returnSpan, dateExtraCols } = it;
+const dateSpan = 4 + dateExtraCols;
+const startSpan = deliverySpan - dateExtraCols;
+const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
+const addrLines = (ep) => {
+  if (!ep || !ep.address) return [];
+  const a = ep.address;
+  const locality = [a.city, [a.region, a.postcode].filter(Boolean).join(" ")].filter(Boolean).join(", ");
+  return [
+    [a.street, a.street2].filter(Boolean).join(" "),
+    locality,
+    (a.country_name && a.country_name !== "United States") ? a.country_name : null,
+  ].filter(Boolean);
+};
+const contactLine = (ep) => {
+  if (!ep || !ep.contact) return "";
+  const phone = ep.contact.phones && ep.contact.phones.length > 0 ? ep.contact.phones[0] : null;
+  return [ep.contact.name, phone].filter(Boolean).join(" · ");
+};
+%>
+<table id="destinations">
+  <colgroup>
+    <col class="date">
+    <col class="arrow">
+    <col class="date">
+    <col class="days">
+    <% for (let i = 0; i < addressColumnCount; i++) { %>
+    <col class="address">
+    <% } %>
+  </colgroup>
+<% destinations.forEach(function(dest) { %>
+  <%
+  const d = dest.dates || {};
+  const legend = u.getDestinationsLegend([dest]);
+  const startLabel = legend.start || "Delivery";
+  const endLabel = legend.end || "Pickup";
+  const hasActiveWindow = Boolean(d.delivery_start && d.collection_start);
+  const hasChargeWindow = Boolean(d.charge_start && d.charge_end);
+  const showCharged = hasCollection && hasChargeWindow && !u.isSameAsDeliveryDates(d);
+  %>
+  <thead>
+    <tr>
+      <th scope="col" colspan="<%= dateSpan %>">Dates: </th>
+      <th scope="col" colspan="<%= startSpan %>"><%= startLabel %></th>
+      <% if (hasCollection) { %>
+      <th scope="col" colspan="<%= returnSpan %>"><%= endLabel %></th>
+      <% } %>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="dates" colspan="<%= dateSpan %>"><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %><% if (hasCollection) { %><% if (hasActiveWindow) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %><% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %><% if (d.days_active != null) { %><span class="days"><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %><% } %></td>
+      <td class="address" colspan="<%= startSpan %>"><% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></td>
+      <% if (hasCollection) { %>
+      <td class="address" colspan="<%= returnSpan %>"><% addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></td>
+      <% } %>
+    </tr>
+    <tr>
+      <td colspan="<%= dateSpan %>"><% if (showCharged) { %><span class="bold">Dates Charged: </span><% } %></td>
+      <td class="address" colspan="<%= startSpan %>"><%= contactLine(dest.delivery) %></td>
+      <% if (hasCollection) { %>
+      <td class="address" colspan="<%= returnSpan %>"><%= contactLine(dest.collection) %></td>
+      <% } %>
+    </tr>
+    <tr>
+      <td class="dates" colspan="<%= dateSpan %>"><% if (showCharged) { %><%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %><% if (d.days_charged != null) { %><span class="days"><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %><% } %></td>
+      <td class="address" colspan="<%= startSpan %>"><%= dest.delivery?.instructions ?? "" %></td>
+      <% if (hasCollection) { %>
+      <td class="address" colspan="<%= returnSpan %>"><%= dest.collection?.instructions ?? "" %></td>
+      <% } %>
+    </tr>
+  </tbody>
+<% }) %>
+</table>

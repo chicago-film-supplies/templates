@@ -143,6 +143,15 @@ const addressColumnCount = itemColumnCount - 1;
 const hasCollection = hasRentals;
 const deliverySpan = hasCollection ? addressBoundary : addressColumnCount;
 const returnSpan = addressColumnCount - addressBoundary;
+// THE DATES BLOCK BORROWS ONE COLUMN OF THE GRID from the delivery address, so
+// the active window can print its times on the same line as its dates. One,
+// not two, and measured rather than guessed: printed to PDF, the longest active
+// string in the set (long-multi-group, 9 columns, 5.8 weeks) stays on one line
+// with room to spare, and so does every other fixture tried at 8 and 9 columns.
+// It never starves the delivery block: a collection leg means a rental, which
+// means a Duration column, so the grid is at least 7 wide and the delivery span
+// is at least 3 before this takes one. See partials/quote/destinations.eta.
+const dateExtraCols = 1;
 // NON-ZERO, not "present". `replacement_cents` is a field on EVERY priced line
 // — schema-required whenever `stock_method !== "none"` — so a sale, a service
 // and a `replacement` twin all carry it, and all carry it at 0 because none of
@@ -433,34 +442,37 @@ const replacementLine = (item) => {
      billing_address: order.organization.billing_address,
    }) %>
 
+<%/* FOUR FIELDS, EACH LABELLED BY ITS OWN ROW-SCOPED <th> — the same change as
+     PR 372, which carries it alone so it can merge ahead of this one. Keep the
+     two identical; whichever lands second merges cleanly because they are.
+
+       Date:   January 15, 2026    Subject:    Sample text
+       Order:  1042                Reference:  PO-4471
+
+     An empty cell, not an absent one: under `table-layout: fixed` a short row
+     leaves a real trailing gap rather than being absorbed. */%>
 <table id="details">
-  <thead>
-    <tr>
-      <th scope="col">Date:</th>
-      <th scope="col">Subject:</th>
-    </tr>
-  </thead>
+  <colgroup>
+    <col class="label">
+    <col>
+    <col class="label">
+    <col>
+  </colgroup>
   <tbody>
     <tr>
+      <th scope="row">Date:</th>
       <td><%= it.dates.formatChicagoDate(it.now) %></td>
-      <%/* An empty cell, not an absent one: under `table-layout: fixed` a short
-           row leaves a real trailing gap rather than being absorbed. */%>
+      <th scope="row">Subject:</th>
       <% if (order.subject) { %>
       <td><%= order.subject %></td>
       <% } else { %>
       <td></td>
       <% } %>
     </tr>
-  </tbody>
-  <thead>
     <tr>
-      <th scope="col">Order:</th>
-      <th scope="col">Reference:</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
+      <th scope="row">Order:</th>
       <td><%= order.number %></td>
+      <th scope="row">Reference:</th>
       <% if (order.reference) { %>
       <td><%= order.reference %></td>
       <% } else { %>
@@ -558,9 +570,9 @@ const legged = hasDeliverableItems && legs.some((leg) => leg.uid);
 <% for (const leg of legs) { %>
 <% const pair = leg.uid ? destinations.find((p) => p.uid === leg.uid) : undefined; %>
 <% if (pair) { %>
-<%~ await includeAsync("@partials/shared/destinations.eta", {
+<%~ await includeAsync("@partials/quote/destinations.eta", {
      u: it.orders, destinations: [pair], addressColumnCount, hasCollection,
-     deliverySpan, returnSpan,
+     deliverySpan, returnSpan, dateExtraCols,
    }) %>
 <% } %>
 <% if (leg.items.length > 0) { %>

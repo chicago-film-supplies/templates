@@ -28,6 +28,29 @@ html {
   width: 100%;
 }
 
+/* #details as a label/value block — identical to PR 372; see the note there. The
+   label columns are a length so that 6rem + 18rem keeps Subject/Reference on
+   `--label-col`. */
+#details col.label {
+  width: 6rem;
+}
+
+#details col.label + col {
+  width: calc(var(--label-col) - 6rem);
+}
+
+/* The active window on ONE line (partials/quote/destinations.eta). The arrow is
+   inside a run of text here, so it centres on the x-height like every other
+   inline icon; the collapsed block margins stop it making the line taller. */
+#destinations td.dates .inline-arrow svg {
+  vertical-align: middle;
+  margin: -1em 0.4em;
+}
+
+#destinations td.dates .days {
+  margin-left: 0.8em;
+}
+
 /* The quote-only half of a rule whose shared half now lives in
    `styles/base.css`. Split rather than left whole so the shared sheet
    carries no selector for markup only this family emits. */
