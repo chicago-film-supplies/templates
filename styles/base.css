@@ -251,49 +251,9 @@ table {
   table-layout: fixed;
 }
 
-/* EVERY RULE ON THE PAGE IS A HALF-PIXEL BOX SHADOW, NOT A BORDER, and that is
-   a capability difference rather than a preference.
-
-   Chromium ROUNDS A SUB-PIXEL BORDER UP: `border-bottom: 0.5px` paints the same
-   solid device pixel `1px` does, so a border cannot express a hairline at all.
-   A box shadow can.
-
-   🔴 BUT THE WEIGHT IS CARRIED BY THE COLOUR, NOT BY THE 0.5px, and getting that
-   backwards is why the first version of this rule shipped looking unchanged.
-   In the PDF — which is the only output that matters — Skia snaps the shadow to
-   its own device grid of 0.24pt (0.32 CSS px) and then paints it SOLID. Measured
-   on `rental-taxed` at 600dpi, where 1 CSS px is 6.25 device px:
-
-     border-bottom: 1px solid #121212        6.25 dev px, ink 18
-     inset 0 -0.5px 0 #121212                4 dev px (0.64 CSS px), ink 18
-     inset 0 -0.5px 0 rgba(18,18,18,.5)      4 dev px (0.64 CSS px), ink 136
-
-   So the geometry alone buys about a third of the thickness and NONE of the
-   lightness. ⚠️ A Chromium SCREENSHOT disagrees and will talk you out of this:
-   there the screen rasteriser antialiases the 0.5px into a half-ink row (136),
-   so the solid-black PDF looks correct in every preview PNG and in
-   `deno task preview`. Verify a weight change by printing to PDF and sampling
-   it — `gs -sDEVICE=pnggray -r600` — never by looking at a screenshot.
-
-   Half of #121212 over white is #888888; it is spelt as an alpha of the page's
-   own black so that it stays HALF THE INK if that black ever moves.
-
-   ⚠️ A SHADOW TAKES NO LAYOUT SPACE, which a border does. Every rule converted
-   here gives its row back 1px, so everything below it moves up and EVERY golden
-   in EVERY family moves. That is the change rather than a regression — but it
-   also means a converted rule cannot be compared against an unconverted one, so
-   the sweep is all-or-nothing per document.
-
-   `inset`, and the offset carries the EDGE: `0 -0.5px` is a bottom rule,
-   `0 0.5px` a top one, `-0.5px 0` a right one. Without `inset` the shadow falls
-   OUTSIDE the box, which on a collapsed table puts it under the next row.
-
-   ⚠️ `hr` above keeps its border deliberately. It is a zero-height element, so
-   a shadow would have no box to cast from and would paint nothing at all — and
-   no template in this repo emits an <hr>, so nothing would report that. */
 thead th {
   margin-bottom: 2px;
-  box-shadow: inset 0 -0.5px 0 rgba(18, 18, 18, 0.5);
+  border-bottom: 1px solid #121212;
 }
 
 /* #details is the exception: it is a two-column label/value block, not a grid,
@@ -304,7 +264,7 @@ thead th {
    separates a header row from the rows it heads, which is a job #details has
    no equivalent of. */
 #details thead th {
-  box-shadow: none;
+  border-bottom: 0;
 }
 
 /* Clear the <thead> border above — `thead + tbody`, not a bare `tbody`, because
@@ -471,7 +431,7 @@ th.center, td.center {
 }
 
 #destinations h2 {
-  box-shadow: inset 0 -0.5px 0 rgba(18, 18, 18, 0.5);
+  border-bottom: 1px solid #121212;
 }
 
 #destinations p {
@@ -489,7 +449,7 @@ th.center, td.center {
 }
 
 #items tr:last-child td {
-  box-shadow: inset 0 -0.5px 0 rgba(18, 18, 18, 0.5);
+  border-bottom: 1px solid #121212;
 }
 
 /* A destination SECTION inside the items grid (items-grid.eta, opt-in via
@@ -528,7 +488,7 @@ th.center, td.center {
    it (`tr.destination-section + tr td`). The header row now sits there and draws
    the black rule it always drew, so the grey one had nothing left to separate. */
 #items tr.column-headers th {
-  box-shadow: inset 0 -0.5px 0 rgba(18, 18, 18, 0.5);
+  border-bottom: 1px solid #121212;
 }
 
 #items tr.column-headers {

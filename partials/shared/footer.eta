@@ -54,12 +54,8 @@
     padding: .25em 0;
     width: 100%;
   }
-  /* Half-pixel box shadows, not borders — see the note on `thead th` in
-     `styles/base.css`: Chromium rounds a sub-pixel border up to a solid device
-     pixel, so a border cannot draw a hairline. Restated here rather than
-     inherited, because this frame is its own isolated document. */
   #fein, #pages {
-    box-shadow: inset 0 -0.5px 0 #eee;
+    border-bottom: 1px solid #eee;
   }
   #pages, #contacts {
     justify-self: end;
@@ -67,7 +63,7 @@
   }
   #email {
     padding-right: 1em;
-    box-shadow: inset -0.5px 0 0 #eee;
+    border-right: 1px solid #eee;
   }
   #phone {
     padding-left: 1em;
