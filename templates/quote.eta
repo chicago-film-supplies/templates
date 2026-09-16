@@ -1,4 +1,4 @@
-<%/* draft draft/quote/dc19c835 */%>
+<%/* draft draft/quote/0a06db46 */%>
 <%
 const order = it.doc;
 const { destinations, items, totals } = order;
