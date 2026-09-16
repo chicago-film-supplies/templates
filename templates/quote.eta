@@ -465,40 +465,58 @@ const replacementLine = (item) => {
      reference, and a column header claims to head a series. `scope="row"` says
      what is actually true, and it halves the block from four lines to two.
 
-     The label cells keep their `<col>` widths: `table-layout: fixed` sizes a
-     table from its first row, and a fixed width on the label columns is what
-     keeps the Subject/Reference pair opening on `--label-col` — the same edge
-     the items grid gives its description column. See styles/quote.css.
+     THE SUBJECT/REFERENCE PAIR OPENS ON THE START ADDRESS EDGE, and it gets
+     there by sharing that table column grid rather than by a width. The
+     colgroup is the description column split 6rem / the rest, then one column
+     per items-grid column — the same n-1 equal columns #destinations divides
+     its address area into — and the pairs SPAN to their edges with the numbers
+     that place the start address: the date pair over the columns the dates
+     borrow, the subject pair from there to the page edge. So the two move
+     together by construction, on the Type edge when the dates are a single
+     stamp and the Qty edge when they carry a range. Measured in print: +0.0pt
+     from the start address at 6, 7, 8 and 9 columns.
+
+     A width could not do it: the edge is `--label-col` plus some item columns,
+     and Blink ignores a table column width that mixes a length with a
+     percentage. See styles/quote.css.
+
+     The Subject VALUE therefore opens on the NEXT items column edge, one column
+     after its label (49-79pt, by column count), where the Date value opens 6rem
+     after its own: the description column has no edge to put it on.
 
      An empty cell, not an absent one: under `table-layout: fixed` a short row
      leaves a real trailing gap rather than being absorbed. */%>
+<%
+// Spans over the shared column grid. The date pair covers the description
+// column plus the columns the dates borrow; the subject pair covers the rest
+// of the start address area up to the page edge; the trailing cell fills to
+// the right margin, so the table stays rectangular.
+const detailsDateSpan = 1 + dateExtraCols;
+const detailsSubjectSpan = addressBoundary - dateExtraCols - 1;
+const detailsTrailSpan = addressColumnCount - addressBoundary;
+%>
 <table id="details">
   <colgroup>
     <col class="label">
     <col>
-    <col class="label">
-    <col>
+    <% for (let i = 0; i < addressColumnCount; i++) { %>
+    <col class="grid">
+    <% } %>
   </colgroup>
   <tbody>
     <tr>
       <th scope="row">Date:</th>
-      <td><%= it.dates.formatChicagoDate(it.now) %></td>
+      <td colspan="<%= detailsDateSpan %>"><%= it.dates.formatChicagoDate(it.now) %></td>
       <th scope="row">Subject:</th>
-      <% if (order.subject) { %>
-      <td><%= order.subject %></td>
-      <% } else { %>
-      <td></td>
-      <% } %>
+      <td colspan="<%= detailsSubjectSpan %>"><% if (order.subject) { %><%= order.subject %><% } %></td>
+      <td colspan="<%= detailsTrailSpan %>"></td>
     </tr>
     <tr>
       <th scope="row">Order:</th>
-      <td><%= order.number %></td>
+      <td colspan="<%= detailsDateSpan %>"><%= order.number %></td>
       <th scope="row">Reference:</th>
-      <% if (order.reference) { %>
-      <td><%= order.reference %></td>
-      <% } else { %>
-      <td></td>
-      <% } %>
+      <td colspan="<%= detailsSubjectSpan %>"><% if (order.reference) { %><%= order.reference %><% } %></td>
+      <td colspan="<%= detailsTrailSpan %>"></td>
     </tr>
   </tbody>
 </table>

@@ -133,6 +133,19 @@ html {
   margin-bottom: var(--items-row);
 }
 
+/* #details SPANS THE FULL GRID in this family, so its columns are the items
+   grid columns and the Subject/Reference pair can open on the start address
+   edge by colspan (quote.eta). The shared sheet puts #details in grid column 1
+   only, which ends at `--dest-block-3`; the value cells still stop there,
+   because the pair spans exactly up to that boundary and a trailing empty cell
+   takes the rest. The 6rem / rest split of the description column above is
+   unchanged, and the item columns need no width: under `table-layout: fixed`
+   the auto columns share what is left of the table equally, and what is left is
+   exactly n-1 item columns. */
+#details {
+  grid-column: 1 / -1;
+}
+
 /* The quote-only half of a rule whose shared half now lives in
    `styles/base.css`. Split rather than left whole so the shared sheet
    carries no selector for markup only this family emits. */
