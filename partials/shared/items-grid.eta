@@ -134,13 +134,17 @@ let headerPending = destinationDetail;
         <%/* The destination divider as a LABELLED TABLE, directly above the lines
              going there:
 
-               Delivery   | Old Mill Armory
-                          | 860 Juniper Ct, Chicago, IL 60609
+               Delivery:  | Old Mill Armory          Pickup: | Highland Rail Depot
+                          | 860 Juniper Ct…                  | 2455 Willow Way…
                           | Avery Larkin, the site contact
-               Pickup     | Highland Rail Depot
-                          | 2455 Willow Way, Chicago, IL 61526
                Active:    | Mon 4/6/26 9:00 AM -> Fri 4/10/26 3:00 PM (1 week)
                Charged:   | Mon 4/6/26 -> Sat 4/11/26 (1 week)
+
+             EVERY LABEL ENDS IN A COLON, and the markup adds it rather than the
+             strings carrying it: the legend values come from core, which serves
+             surfaces that punctuate differently, and a label that reads Pickup
+             in one place and Pickup: in another is two conventions. One `:` in
+             the <th> is the whole rule.
 
              EVERY ROW IS LABELLED BY A ROW-SCOPED <th>, and every label sits in
              the same column, so the leg labels and the date labels share one
@@ -216,7 +220,7 @@ let headerPending = destinationDetail;
           // delivery, and Delivery: is what the reader acts on.
           const inStoreBoth = Boolean(dest.customer_collecting && dest.customer_returning);
           const legRows = sameLeg
-            ? [{ label: inStoreBoth ? "In Store:" : "Delivery:", ep: dest.delivery }]
+            ? [{ label: inStoreBoth ? "In Store" : "Delivery", ep: dest.delivery }]
             : [{ label: legend.start, ep: dest.delivery }, { label: legend.end, ep: dest.collection }];
           const clock = () => it.icons.svg("clock", { size: 9 });
         %>
@@ -239,7 +243,7 @@ let headerPending = destinationDetail;
                      three, so the table stays rectangular either way. */%>
                 <tr>
                   <% legRows.forEach(function (leg) { %>
-                  <th scope="row"><%= leg.label %></th>
+                  <th scope="row"><%= leg.label %>:</th>
                   <%/* ONE LINE, and it has to be. The name is a LINE of its own —
                        a venue name and an address are two facts, and run together
                        they read as one string that wraps wherever the column
@@ -251,7 +255,7 @@ let headerPending = destinationDetail;
                   <% }) %>
                 </tr>
                 <tr class="date-row">
-                  <th scope="row"><% if (showCharged) { %>Active:<% } else { %>Dates:<% } %></th>
+                  <th scope="row"><% if (showCharged) { %>Active<% } else { %>Dates<% } %>:</th>
                   <td colspan="3">
                     <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
                     <% if (hasCollection) { %>
@@ -264,6 +268,8 @@ let headerPending = destinationDetail;
                 <% if (showCharged) { %>
                 <tr>
                   <th scope="row">Charged:</th>
+                  <%/* The one label whose colon is IN the string, because there
+                       is no branch to put it outside of. Same convention. */%>
                   <td colspan="3">
                     <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
                     <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
