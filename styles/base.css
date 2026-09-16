@@ -544,8 +544,14 @@ th.center, td.center {
    however many lines wrap beside it. The padding overrides `#items th, #items
    td` further down, whose 4px belongs to a row of the GRID rather than to a
    line inside one row of it. */
+/* ⚠️ `width: auto` IS THE WHOLE RULE WORKING. `th:first-child, td:first-child,
+   .wide` up the sheet hands every first cell `--label-col`, and the label cell
+   of every row here is a first child — so without this the label column came
+   out 216px wide and the addresses started at the items description edge. The
+   same trap `#items tr.destination-section td` already documents one cell up. */
 #items .destination-detail th,
 #items .destination-detail td {
+  width: auto;
   padding: 0 0 2px;
   text-align: left;
   vertical-align: baseline;

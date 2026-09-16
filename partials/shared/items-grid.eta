@@ -221,16 +221,14 @@ let headerPending = destinationDetail;
                 <% legRows.forEach(function (leg) { %>
                 <tr>
                   <th scope="row"><%= leg.label %></th>
-                  <td>
-                    <%/* The name is a LINE of its own, not a prefix on the
-                         street: a venue name and an address are two facts, and
-                         run together they read as one long string that wraps
-                         wherever the column happens to end. */%>
-                    <% if (placeName(leg.ep)) { %><%= placeName(leg.ep) %><br><% } %>
-                    <%= addressText(leg.ep) %>
-                    <% if (contactText(leg.ep)) { %><br><%= contactText(leg.ep) %><% } %>
-                    <% if (instructionsText(leg.ep)) { %><br><%= instructionsText(leg.ep) %><% } %>
-                  </td>
+                  <%/* ONE LINE, and it has to be. The name is a LINE of its own —
+                       a venue name and an address are two facts, and run together
+                       they read as one string that wraps wherever the column
+                       happens to end — but every newline INSIDE this cell is
+                       whitespace in the output, and a trailing run of it can wrap
+                       to an empty line box that reads as a blank line under the
+                       leg. The line is long; the alternative is invisible. */%>
+                  <td><% if (placeName(leg.ep)) { %><%= placeName(leg.ep) %><br><% } %><%= addressText(leg.ep) %><% if (contactText(leg.ep)) { %><br><%= contactText(leg.ep) %><% } %><% if (instructionsText(leg.ep)) { %><br><%= instructionsText(leg.ep) %><% } %></td>
                 </tr>
                 <% }) %>
                 <tr class="date-row">
