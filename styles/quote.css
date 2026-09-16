@@ -92,9 +92,14 @@ html {
   break-after: avoid;
 }
 
+/* Half-pixel box shadows, not borders — the rule and its reasoning live on
+   `thead th` in `styles/base.css`: Chromium rounds a sub-pixel border up to a
+   solid device pixel, so a hairline is only reachable through a shadow. Both
+   edges in one declaration: a second `box-shadow` property would REPLACE the
+   first, where two border properties sat side by side. A shadow takes no layout
+   space, so every row in this table loses the 2px its two borders occupied. */
 #replacement-costs th, #replacement-costs td {
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
+  box-shadow: inset 0 0.5px 0 #eee, inset 0 -0.5px 0 #eee;
 }
 
 /* SEVERAL #items TABLES, ONE CLOSING RULE. This family draws one dates/
@@ -110,5 +115,12 @@ html {
    emits a second one — and it beats the base rule on specificity by carrying a
    second id, so the order the two sheets are overlaid in does not decide it. */
 #items:has(~ #items) tr:last-child td {
+  /* BOTH, deliberately, and it is an ORDERING fix rather than belt and braces.
+     The base rule this clears is a border on one side of the base component PR
+     that converts it to `box-shadow: inset 0 -0.5px 0` and a shadow on the
+     other, and the two PRs can land in either order. Clearing only one of them
+     leaves a closing rule under every leg for however long the other side is
+     ahead — a wrong-looking document on main, not a red check. */
   border-bottom: 0;
+  box-shadow: none;
 }
