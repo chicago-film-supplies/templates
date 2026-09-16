@@ -593,6 +593,26 @@ th.center, td.center {
   padding-right: 1.6em;
 }
 
+/* ON THE FIRST LINE'S BASELINE, which is a different job from the arrow between
+   two dates and therefore a different rule.
+
+   `.inline-arrow` centres its glyph on the x-height (`vertical-align: middle`),
+   because inside a run of text that is what reads as level — see the note on
+   `#items .destination-days svg`. This arrow has a cell to itself and relates
+   two blocks by their FIRST line, so x-height centring left it hanging below
+   that line: measured at 600dpi on `multi-dest`, the label ink ended at row
+   1264 (its baseline, no descenders) and the arrow ink ran to 1271 — 7 device
+   px, about 1 CSS px, of droop. `baseline` puts the glyph box bottom on the
+   line the cell aligns to, which is the first line of both blocks beside it.
+
+   The collapsed margins stay: they stop a 9px glyph making its line taller than
+   a line without one, which is a height question rather than an alignment one. */
+#items .destination-detail td.arrow svg {
+  vertical-align: baseline;
+  margin-top: -1em;
+  margin-bottom: -1em;
+}
+
 /* THE PLACE AND THE WHEN ARE TWO FACTS, so the dates open a block of their own:
    the same blank row that separates one destination from the next. Both cells
    of the row carry it, because a table row is as tall as its tallest cell and

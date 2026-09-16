@@ -251,7 +251,12 @@ let headerPending = destinationDetail;
                 <tr>
                   <th scope="row"><%= sectionLabel %>:</th>
                   <% legEps.forEach(function (ep, i) { %>
-                  <% if (i > 0) { %><td class="arrow"><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span></td><% } %>
+                  <%/* NOT an `.inline-arrow`: that class is for an arrow inside a
+                       run of text, where centring on the x-height is what reads
+                       as level. This one has a cell to itself, beside a block
+                       whose first line is what it relates — so it sits on that
+                       line's BASELINE. See styles/base.css. */%>
+                  <% if (i > 0) { %><td class="arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></td><% } %>
                   <%/* ONE LINE, and it has to be. The name is a LINE of its own —
                        a venue name and an address are two facts, and run together
                        they read as one string that wraps wherever the column
