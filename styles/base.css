@@ -486,7 +486,19 @@ th.center, td.center {
   --items-row: calc(1.2em + 8px);
 }
 
-#items tr.destination-section td {
+/* ⚠️ `> td`, THE SECTION CELL ITSELF, not every cell inside it. The section
+   holds a nested <table> (items-grid.eta), so a descendant selector also hands
+   `padding-top: var(--items-row)` to every cell of THAT table — and only its
+   <td>s, never its <th>s, which pushed each address block a line below the
+   label naming it while the label stayed put. It also outranks
+   `#items .destination-detail td` on specificity (0,1,1,2 against 0,1,1,1), so
+   the rule that was supposed to own those cells silently lost.
+
+   Measured in the PDF, which is where it showed: the label sat at yMin 164.17
+   and its first content line at 178.42 — 14.25pt, exactly `--items-row` at the
+   9px root. ON SCREEN THE TWO LOOKED ALIGNED, so a preview PNG said the layout
+   was fine; print is the medium that settles this one. */
+#items tr.destination-section > td {
   padding: var(--items-row) 0 4px;
 }
 
@@ -529,7 +541,7 @@ th.center, td.center {
    eight columns `--label-col` to share. Measured: the description column came
    out at 690px against its 216, and every other table on the page kept the edge
    it was supposed to be sharing with. */
-#items tr.destination-section td {
+#items tr.destination-section > td {
   width: auto;
 }
 
@@ -556,7 +568,7 @@ th.center, td.center {
    .wide` up the sheet hands every first cell `--label-col`, and the label cell
    of every row here is a first child — so without this the label column came
    out 216px wide and the addresses started at the items description edge. The
-   same trap `#items tr.destination-section td` already documents one cell up. */
+   same trap `#items tr.destination-section > td` already documents one cell up. */
 #items .destination-detail th,
 #items .destination-detail td {
   width: auto;
