@@ -73,7 +73,7 @@ html {
    solid device pixel, so a hairline is only reachable through a shadow. It also
    takes no layout space, which is why this heading moves up 1px. */
 #aging h2 {
-  box-shadow: inset 0 -0.5px 0 #121212;
+  box-shadow: inset 0 -0.5px 0 rgba(18, 18, 18, 0.5);
 }
 
 /* Same rule, same reason, as `#details thead th` and `#items thead th` in
