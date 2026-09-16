@@ -251,9 +251,32 @@ table {
   table-layout: fixed;
 }
 
+/* EVERY RULE ON THE PAGE IS A HALF-PIXEL BOX SHADOW, NOT A BORDER, and that is
+   a capability difference rather than a preference.
+
+   Chromium ROUNDS A SUB-PIXEL BORDER UP: `border-bottom: 0.5px` paints the same
+   solid device pixel `1px` does, so a border cannot express a hairline at all.
+   A box shadow is rasterised instead of snapped — measured at the 9px root on
+   `rental-taxed`, the 1px border painted one row of #121212 (sampled 18,18,18)
+   and `inset 0 -0.5px 0 #121212` paints one row at 136,136,136: the same line at
+   roughly half the ink.
+
+   ⚠️ A SHADOW TAKES NO LAYOUT SPACE, which a border does. Every rule converted
+   here gives its row back 1px, so everything below it moves up and EVERY golden
+   in EVERY family moves. That is the change rather than a regression — but it
+   also means a converted rule cannot be compared against an unconverted one, so
+   the sweep is all-or-nothing per document.
+
+   `inset`, and the offset carries the EDGE: `0 -0.5px` is a bottom rule,
+   `0 0.5px` a top one, `-0.5px 0` a right one. Without `inset` the shadow falls
+   OUTSIDE the box, which on a collapsed table puts it under the next row.
+
+   ⚠️ `hr` above keeps its border deliberately. It is a zero-height element, so
+   a shadow would have no box to cast from and would paint nothing at all — and
+   no template in this repo emits an <hr>, so nothing would report that. */
 thead th {
   margin-bottom: 2px;
-  border-bottom: 1px solid #121212;
+  box-shadow: inset 0 -0.5px 0 #121212;
 }
 
 /* #details is the exception: it is a two-column label/value block, not a grid,
@@ -264,7 +287,7 @@ thead th {
    separates a header row from the rows it heads, which is a job #details has
    no equivalent of. */
 #details thead th {
-  border-bottom: 0;
+  box-shadow: none;
 }
 
 /* Clear the <thead> border above — `thead + tbody`, not a bare `tbody`, because
@@ -431,7 +454,7 @@ th.center, td.center {
 }
 
 #destinations h2 {
-  border-bottom: 1px solid #121212;
+  box-shadow: inset 0 -0.5px 0 #121212;
 }
 
 #destinations p {
@@ -449,7 +472,7 @@ th.center, td.center {
 }
 
 #items tr:last-child td {
-  border-bottom: 1px solid #121212;
+  box-shadow: inset 0 -0.5px 0 #121212;
 }
 
 /* A destination SECTION inside the items grid (items-grid.eta, opt-in via
@@ -488,7 +511,7 @@ th.center, td.center {
    it (`tr.destination-section + tr td`). The header row now sits there and draws
    the black rule it always drew, so the grey one had nothing left to separate. */
 #items tr.column-headers th {
-  border-bottom: 1px solid #121212;
+  box-shadow: inset 0 -0.5px 0 #121212;
 }
 
 #items tr.column-headers {
