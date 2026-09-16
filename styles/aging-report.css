@@ -118,7 +118,7 @@ html {
    a Blink behaviour nothing here tests. */
 #open-invoices h2,
 #exceptions h2 {
-  box-shadow: inset 0 -0.5px 0 #121212;
+  box-shadow: inset 0 -0.5px 0 rgba(18, 18, 18, 0.5);
 }
 
 /* The empty-book report's one line of prose. It sits where #items would have and
