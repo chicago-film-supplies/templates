@@ -605,12 +605,19 @@ th.center, td.center {
    px, about 1 CSS px, of droop. `baseline` puts the glyph box bottom on the
    line the cell aligns to, which is the first line of both blocks beside it.
 
-   The collapsed margins stay: they stop a 9px glyph making its line taller than
-   a line without one, which is a height question rather than an alignment one. */
+   ⚠️ AND `margin: 0`, WHICH IS PART OF THE ALIGNMENT RATHER THAN A RESET. The
+   collapsed `-1em` margins that `.inline-arrow` carries are invisible under
+   `middle`, which centres the margin box and so cancels a symmetric pair — but
+   `baseline` aligns the BOTTOM MARGIN EDGE, and a negative bottom margin puts
+   that edge an em above the glyph, pushing the glyph an em DOWN. Measured at
+   600dpi on `multi-dest` against a baseline of row 1264: with the margins kept,
+   the arrow ink ran 1271-1300, entirely below the line; with `margin: 0` it
+   runs 1215-1253, sitting on the line the way a glyph does. The margins were
+   there to stop a 9px icon making its line taller than a line without one, and
+   this cell has no such job — its row is sized by the address block beside it. */
 #items .destination-detail td.arrow svg {
   vertical-align: baseline;
-  margin-top: -1em;
-  margin-bottom: -1em;
+  margin: 0;
 }
 
 /* THE PLACE AND THE WHEN ARE TWO FACTS, so the dates open a block of their own:
