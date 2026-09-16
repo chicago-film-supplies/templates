@@ -50,12 +50,39 @@ html {
   width: 100%;
 }
 
-/* The active window on ONE line (partials/quote/destinations.eta). The arrow is
-   inside a run of text here, so it centres on the x-height like every other
-   inline icon; the collapsed block margins stop it making the line taller. */
-#destinations td.dates .inline-arrow svg {
-  vertical-align: middle;
-  margin: -1em 0.4em;
+/* THE ARROW AND THE CLOCK SIT ON THE BASELINE AT CAP HEIGHT — both halves, and
+   each half on its own is wrong.
+
+   Measured in print at 600dpi on `multi-dest`, against the ink of `AM` on the
+   same line (baseline 0, caps up to -39 device px, cap centre -19.5):
+
+     middle, 9px (what this was)     arrow -34..+3   droops 3px BELOW the line
+     baseline, 9px                   clock -54..-2   on the line, but 15px ABOVE
+                                     arrow -47..-9   the caps; both centres 8.5
+                                                     px higher than the text
+     baseline, 0.7em (this rule)     clock -42..-6   inside the cap band
+                                     arrow -37..-11
+
+   The glyph box is what `vertical-align` places, and a 9px box on a 9px font is
+   taller than the capitals it sits beside — those measure 0.69em — so a baseline
+   alone puts the icon on the line and still makes it ride high. Sizing the box
+   in em to the cap height keeps it level with the letters and makes it track
+   the document root if that ever moves, which a pixel size would not.
+
+   `margin` is horizontal only. The collapsed `-1em` block margins other inline
+   icons carry would be read by `baseline` as the edge to align, and push the
+   glyph down by an em (the same trap as the arrow cell in items-grid.eta).
+   Neither icon changes the line height: `Charged:` below sits at the same y,
+   335.17pt, with and without them. */
+#destinations td.dates svg {
+  width: 0.7em;
+  height: 0.7em;
+  vertical-align: baseline;
+  margin: 0 0.4em;
+}
+
+#destinations td.dates .days svg {
+  margin: 0 0.25em 0 0;
 }
 
 #destinations td.dates .days {
