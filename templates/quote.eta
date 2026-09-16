@@ -92,38 +92,7 @@ const hasTax = it.orders.orderHasTax(lineItems);
 // boundary rather than at an arbitrary percentage.
 const itemColumnCount = 6 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasTax ? 1 : 0);
 
-// WHICH boundary: the one NEAREST THE HALF-WAY POINT, rounding left.
-//
-// #items gives its description column `--label-col` and splits the remainder
-// equally between the other n-1 columns, so its interior boundaries sit at
-// `--label-col + m x (remainder / (n-1))` for m = 1..n-2. Choosing
-// `m = floor((n-1)/2)` picks the one closest to the middle of that remainder,
-// which is what keeps the two #destinations address blocks close to equal:
-//
-//     n=6  m=2  ->  202 / 302      n=8  m=3  ->  216 / 288
-//     n=7  m=3  ->  252 / 252      n=9  m=4  ->  252 / 252
-//
-// The exact halves at 7 and 9 are structural, not luck: n odd means n-1 is
-// even, so a boundary lands exactly on the middle. For even n there is none,
-// and the two straddling boundaries are equally far off — a genuine tie, broken
-// LEFT so the totals block gets the wider half. It needs it: "Subtotal after
-// Discount:" is the longest label on the page.
-//
-// ONE rule, deliberately, rather than a column-count breakpoint. "4th-from-last
-// above 8 columns, 3rd-from-last below" produces these exact numbers too (it
-// works out to the 3rd from last at 6 and 7, the 4th at 8 and 9) — but it
-// states a threshold the layout does not have, and the next person to add a
-// conditional column has to rediscover which side of it the new count falls on.
-// Nearest-to-half re-derives itself.
-const addressBoundary = Math.floor((itemColumnCount - 1) / 2);
-
-// #destinations divides its address area into the SAME n-1 equal columns and
-// spans them, so block 3 opens on `--dest-block-3` by construction rather than
-// by a width that has to be kept in step with one.
-//
-// Spans rather than two sized <col>s because a sized <col> cannot express this:
-// Blink silently ignores a table column width that mixes a percentage with a
-// length, which is what `--dest-block-3 - --label-col` is. See styles/quote.css.
+// The address area is the n-1 item columns right of the description column.
 const addressColumnCount = itemColumnCount - 1;
 
 // A COLLECTION LEG EXISTS ONLY IF SOMETHING IS COMING BACK.
@@ -132,26 +101,69 @@ const addressColumnCount = itemColumnCount - 1;
 // keeps it — so a quote with no rental line has no return address, no contact,
 // no end date and no duration. Printing those columns headed and empty reads as
 // missing data; printing the range shape implies a window the order does not
-// have, which is the same argument the arrow and the end date already made for
-// themselves. This extends it to the two things it had not reached: the
-// duration cell and the whole return address block.
-//
-// When it is off, block 2 takes the ENTIRE address area rather than leaving the
-// right half bare. The page grid is untouched: `--block-3-fraction` tracks an
-// #items column boundary and is a fact about the items grid, not about this
-// table, so #totals, #details and #information keep the edge they share.
+// have.
 const hasCollection = hasRentals;
+
+// HOW MANY GRID COLUMNS THE DATES BLOCK BORROWS beyond the `--label-col` it
+// always has, and the collection leg is what decides it.
+//
+// With one, the active window prints start, arrow, end and duration on ONE
+// line, which does not fit in `--label-col`, so the block borrows a column.
+// Measured in print: the longest active string in the set (long-multi-group,
+// 9 columns, 5.8 weeks) stays on one line with room to spare.
+//
+// Without one there is a single stamp, which fits inside `--label-col` with
+// most of it to spare. Borrowing anyway pushed the start address a column
+// right of where it needed to be; borrowing nothing opens it on the Type
+// column edge, the same edge Subject and Reference sit on. Measured on
+// sale-taxed and service-untaxed: start address and Subject both at 189.7pt.
+// See partials/quote/destinations.eta.
+const dateExtraCols = hasCollection ? 1 : 0;
+
+// WHICH boundary splits the address area: the one that makes the START and END
+// address blocks as close to equal as possible, rounding left.
+//
+// #items gives its description column `--label-col` and splits the remainder
+// equally between the other n-1 columns. The dates take `dateExtraCols` of
+// those, so the start block spans `boundary - dateExtraCols` and the end block
+// `(n-1) - boundary`, and equal means `boundary = (n - 1 + dateExtraCols) / 2`:
+//
+//     rentals, n=7   boundary 3  ->  start 2 / end 3
+//     rentals, n=8   boundary 4  ->  start 3 / end 3    (the common quote)
+//     rentals, n=9   boundary 4  ->  start 3 / end 4
+//
+// Measured across the 36 most recent prod orders: 28 of the 30 rental quotes
+// are 8 columns wide, and the nearest-to-half rule this replaced split those
+// 2 / 4, the start address half the width of the end one.
+//
+// The tie at 7 and 9 is broken LEFT, and deliberately. Moving right there only
+// flips which block is a column short, and this boundary is also the page edge
+// #totals opens on, so the left choice keeps totals the wider half wherever
+// equality is not on offer. At 9 columns that is exactly the discounted quote,
+// whose "Subtotal after Discount:" is the longest label on the page.
+//
+// IT IS THE PAGE EDGE. `--block-3-fraction` is emitted from it below, so
+// #totals, #information and #details move with the end address block and every
+// edge stays shared. On the 8-column rental quote that costs #totals a column,
+// and it still sets "Subtotal after Discount:" and its amount on one line with
+// room between them (rental-discount-exempt: label at 415.2pt, amount 556.4pt).
+//
+// ONE rule rather than a column-count breakpoint, so the next conditional
+// column re-derives its own split instead of rediscovering a threshold.
+const addressBoundary = Math.floor((addressColumnCount + dateExtraCols) / 2);
+
+// #destinations divides its address area into the SAME n-1 equal columns and
+// spans them, so the end block opens on `--dest-block-3` by construction rather
+// than by a width that has to be kept in step with one.
+//
+// Spans rather than two sized <col>s because a sized <col> cannot express this:
+// Blink silently ignores a table column width that mixes a percentage with a
+// length, which is what `--dest-block-3 - --label-col` is. See styles/quote.css.
+//
+// With no collection leg the start block takes the ENTIRE address area rather
+// than leaving the right half bare.
 const deliverySpan = hasCollection ? addressBoundary : addressColumnCount;
 const returnSpan = addressColumnCount - addressBoundary;
-// THE DATES BLOCK BORROWS ONE COLUMN OF THE GRID from the delivery address, so
-// the active window can print its times on the same line as its dates. One,
-// not two, and measured rather than guessed: printed to PDF, the longest active
-// string in the set (long-multi-group, 9 columns, 5.8 weeks) stays on one line
-// with room to spare, and so does every other fixture tried at 8 and 9 columns.
-// It never starves the delivery block: a collection leg means a rental, which
-// means a Duration column, so the grid is at least 7 wide and the delivery span
-// is at least 3 before this takes one. See partials/quote/destinations.eta.
-const dateExtraCols = 1;
 // NON-ZERO, not "present". `replacement_cents` is a field on EVERY priced line
 // — schema-required whenever `stock_method !== "none"` — so a sale, a service
 // and a `replacement` twin all carry it, and all carry it at 0 because none of
