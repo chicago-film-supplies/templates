@@ -584,12 +584,13 @@ th.center, td.center {
   padding-right: 1.2em;
 }
 
-/* The SECOND end of the movement, where the two differ: it needs air between it
-   and the block on its left. `td + td` names exactly the cell that has another
-   before it, so a collapsed row — one cell spanning both columns — is
-   untouched. */
-#items .destination-detail td + td {
-  padding-left: 2em;
+/* The ARROW CELL carries the gutter for both sides, so the space between the
+   two ends is stated once rather than as two paddings that have to stay equal.
+   It exists only when there are two ends, so a collapsed row — one cell
+   spanning all three columns — is untouched without a selector saying so. */
+#items .destination-detail td.arrow {
+  padding-left: 1.6em;
+  padding-right: 1.6em;
 }
 
 /* THE PLACE AND THE WHEN ARE TWO FACTS, so the dates open a block of their own:

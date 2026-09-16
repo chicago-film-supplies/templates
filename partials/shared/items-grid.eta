@@ -231,18 +231,27 @@ let headerPending = destinationDetail;
           <td class="wide" colspan="<%= columnCount %>">
             <table class="destination-detail">
               <tbody>
-                <%/* ONE LABEL, THEN THE ENDS: [Delivery:][where from][where to].
-                     The second cell appears only when the two ends differ; when
-                     they do not, the first spans both and the row reads as one
-                     place, which it is.
+                <%/* ONE LABEL, THEN THE ENDS:
+                     [Delivery:][where from][->][where to].
 
-                     The date rows span the same two content columns, so a date
-                     line reads whole rather than being cut at the boundary
-                     between the ends. Three columns either way, so the table
-                     stays rectangular. */%>
+                     The arrow and the second cell appear together, only when the
+                     two ends differ; when they do not, the first cell spans all
+                     three and the row reads as one place, which it is. An arrow
+                     pointing at nothing would be the same claim the spanning
+                     arrow used to make on a sale that never comes back.
+
+                     It sits on the first line of both cells because every cell
+                     in this table aligns on its BASELINE and the arrow shares
+                     that line box — no offset anyone has to maintain.
+
+                     The date rows span the three content columns, so a date line
+                     reads whole rather than being cut at a boundary between the
+                     ends. Four columns either way, so the table stays
+                     rectangular. */%>
                 <tr>
                   <th scope="row"><%= sectionLabel %>:</th>
-                  <% legEps.forEach(function (ep) { %>
+                  <% legEps.forEach(function (ep, i) { %>
+                  <% if (i > 0) { %><td class="arrow"><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span></td><% } %>
                   <%/* ONE LINE, and it has to be. The name is a LINE of its own —
                        a venue name and an address are two facts, and run together
                        they read as one string that wraps wherever the column
@@ -250,12 +259,12 @@ let headerPending = destinationDetail;
                        whitespace in the output, and a trailing run of it can wrap
                        to an empty line box that reads as a blank line under the
                        leg. The line is long; the alternative is invisible. */%>
-                  <td<% if (legEps.length === 1) { %> colspan="2"<% } %>><% if (placeName(ep)) { %><%= placeName(ep) %><br><% } %><%= addressText(ep) %><% if (contactText(ep)) { %><br><%= contactText(ep) %><% } %><% if (instructionsText(ep)) { %><br><%= instructionsText(ep) %><% } %></td>
+                  <td<% if (legEps.length === 1) { %> colspan="3"<% } %>><% if (placeName(ep)) { %><%= placeName(ep) %><br><% } %><%= addressText(ep) %><% if (contactText(ep)) { %><br><%= contactText(ep) %><% } %><% if (instructionsText(ep)) { %><br><%= instructionsText(ep) %><% } %></td>
                   <% }) %>
                 </tr>
                 <tr class="date-row">
                   <th scope="row"><% if (showCharged) { %>Active<% } else { %>Dates<% } %>:</th>
-                  <td colspan="2">
+                  <td colspan="3">
                     <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
                     <% if (hasCollection) { %>
                     <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %>
@@ -269,7 +278,7 @@ let headerPending = destinationDetail;
                   <th scope="row">Charged:</th>
                   <%/* The one label whose colon is IN the string, because there
                        is no branch to put it outside of. Same convention. */%>
-                  <td colspan="2">
+                  <td colspan="3">
                     <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
                     <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
                   </td>
