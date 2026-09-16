@@ -448,7 +448,12 @@ th.center, td.center {
   break-after: avoid;
 }
 
-#items tr:last-child td {
+/* ⚠️ DIRECT ROWS ONLY. The destination section holds a nested <table>
+   (items-grid.eta), and a bare `#items tr:last-child td` matches the last row
+   of THAT table too — drawing a closing rule in the middle of the grid, under
+   whichever date line came last in the section. The child combinators say what
+   this rule always meant: the last row of the items table itself. */
+#items > table > tbody > tr:last-child > td {
   border-bottom: 1px solid #121212;
 }
 
@@ -520,48 +525,47 @@ th.center, td.center {
   width: auto;
 }
 
-/* The columns are sized by their widest line, so start and end line up down
-   the section. `fit-content` caps each side short of half the page so two long
-   addresses wrap rather than push the grid past the margin. Lines are spaced by
-   `row-gap` alone: one number, so the gaps are equal by construction. */
-#items .destination-grid {
-  --dest-line-gap: 2px;
+/* The destination section is a TABLE of its own — a column of row-scoped labels
+   and a column of content (items-grid.eta).
 
-  display: grid;
-  grid-template-columns: fit-content(46%) 2.4em fit-content(46%);
-  justify-content: start;
-  row-gap: var(--dest-line-gap);
+   Both declarations are overrides of the sheet-wide `table` rule, and both are
+   load-bearing: inherited, this table would be `width: 100%` under
+   `table-layout: fixed`, which splits its two columns EVENLY across the page —
+   a label column half the width of the document. Auto layout instead sizes that
+   column to its widest label, which is what makes every label in the section
+   share one width by construction: the leg labels and the date labels cannot
+   drift apart, and no number states the width. */
+#items .destination-detail {
+  width: auto;
+  table-layout: auto;
 }
 
-/* THE PLACE AND THE WHEN ARE TWO FACTS, so the dates open a block of their own —
-   the same blank row that separates one destination from the next, less the gap
-   the grid already puts between every pair of lines. Both cells of the row carry
-   it: a grid row is as tall as its tallest item, so marking only the left one
-   would move the left line and leave the right where it was. */
-#items .destination-grid .date-line {
-  margin-top: calc(var(--items-row) - var(--dest-line-gap));
+/* BASELINE, not top: a label and the first line of its content sit on one line,
+   however many lines wrap beside it. The padding overrides `#items th, #items
+   td` further down, whose 4px belongs to a row of the GRID rather than to a
+   line inside one row of it. */
+#items .destination-detail th,
+#items .destination-detail td {
+  padding: 0 0 2px;
+  text-align: left;
+  vertical-align: baseline;
 }
 
-#items .destination-grid.one-leg {
-  grid-template-columns: fit-content(100%);
+/* The label column never wraps — In Store Return is a label, not a sentence —
+   so the content column takes every line break the section has. */
+#items .destination-detail th {
+  white-space: nowrap;
+  padding-right: 1.2em;
 }
 
-#items .destination-grid .start {
-  grid-column: 1;
-}
-
-#items .destination-grid .end {
-  grid-column: 3;
-}
-
-/* ONE arrow for the whole section, spanning every line (the template sets the
-   span) and centred on it both ways. */
-#items .destination-grid .arrow {
-  grid-column: 2;
-  grid-row-start: 1;
-  align-self: center;
-  justify-self: center;
-  line-height: 0;
+/* THE PLACE AND THE WHEN ARE TWO FACTS, so the dates open a block of their own:
+   the same blank row that separates one destination from the next. Both cells
+   of the row carry it, because a table row is as tall as its tallest cell and
+   marking only the label would move the label and leave the dates where they
+   were. */
+#items .destination-detail tr.date-row th,
+#items .destination-detail tr.date-row td {
+  padding-top: var(--items-row);
 }
 
 /* INLINE ICONS ARE CENTRED BY THE FONT, NOT BY A NUMBER. They used to sit at a
@@ -572,14 +576,14 @@ th.center, td.center {
    Open Sans at 5x). `middle` centres the glyph on the x-height of whatever font
    renders, and the negative block margins collapse the icon's margin box so it
    can never make its line taller than a line without one. */
-#items .destination-grid .inline-arrow svg,
+#items .destination-detail .inline-arrow svg,
 #items .destination-days svg {
   vertical-align: middle;
   margin-top: -1em;
   margin-bottom: -1em;
 }
 
-#items .destination-grid .inline-arrow svg {
+#items .destination-detail .inline-arrow svg {
   margin-left: 0.4em;
   margin-right: 0.4em;
 }

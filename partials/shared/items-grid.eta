@@ -131,36 +131,46 @@ let headerPending = destinationDetail;
         <% } %>
         <% } else if (item.type === "destination") { %>
         <% if (dest) { %>
-        <%/* The OrderDetail destination divider, as a PDF: ONE row holding a
-             three-column grid, directly above the lines delivered there.
+        <%/* The destination divider as a LABELLED TABLE, directly above the lines
+             going there:
 
-               delivery place           |       | collection place
-               delivery contact         |       | collection contact
-               delivery instructions    |  ->   | collection instructions
-               [Active:] start          |       | end (clock) duration
-               Charged: start           |       | end (clock) days
+               Delivery   | Old Mill Armory
+                          | 860 Juniper Ct, Chicago, IL 60609
+                          | Avery Larkin - (312) 555-0142
+               Pickup     | Highland Rail Depot
+                          | 2455 Willow Way, Chicago, IL 61526
+               Active:    | Mon 4/6/26 9:00 AM -> Fri 4/10/26 3:00 PM (1 week)
+               Charged:   | Mon 4/6/26 -> Sat 4/11/26 (1 week)
 
-             One arrow, vertically centred across every line, relates the whole
-             left column to the whole right column, so the start and end columns
-             line up down the section instead of each line drifting with the
-             length of its own left half.
+             EVERY ROW IS LABELLED BY A ROW-SCOPED <th>, and every label sits in
+             the same column, so the leg labels and the date labels share one
+             width BY CONSTRUCTION rather than by a number someone has to keep in
+             step. It is also what the markup means: each row says what its own
+             content is, which a grid of anonymous divs could not.
 
-             The contact and instructions lines are each omitted when both legs are
-             empty. Charged only shows when the charge window differs from the
-             active one, and then BOTH date lines carry a label, Active: and
-             Charged:, as the manager OrderDetail summary does; with one window
-             there is nothing to tell apart, so neither is labelled. A right-hand place or contact is left
-             blank when it matches the delivery side, compared as RENDERED text,
-             so a pair whose addresses carry the same values under a different
-             key order still reads as one place (core#87 measured that trap at
-             6.5%). With no collection leg there is no right column and no arrow:
-             a sale is handed over and never comes back.
+             The leg labels come from `u.getDestinationsLegend`, so they say what
+             actually happens rather than naming a column: Delivery or In Store
+             Pickup on the way out, Pickup or In Store Return on the way back.
 
-             ONE COLUMN when the right side would hold nothing but dates, i.e. the
-             collection happens at the same place, with the same contact and
-             instructions: a column of blanks beside a centred arrow says less
-             than the dates do inline. Then each date line reads start, arrow,
-             end on its own, and there is no separate arrow.
+             ONE ROW when the two legs are the SAME leg — same place, same
+             contact, same instructions, compared as RENDERED text so a pair
+             carrying identical values under a different key order still reads as
+             one place (core#87 measured that trap at 6.5%). Its label is the
+             DELIVERY side, because that is the leg the reader acts on first —
+             except when both ends are in store, where neither In Store Pickup nor
+             In Store Return is the whole truth and the row reads In Store. A
+             quote with no collection leg at all takes that same single row: a
+             sale is handed over and never comes back.
+
+             THE DATE LABEL SAYS WHETHER THERE IS ANYTHING TO TELL APART. With a
+             charge window that differs from the active one the rows are Active:
+             and Charged:, as the manager OrderDetail summary does; with one
+             window there is no distinction to draw, so the single row reads
+             Dates: rather than naming one the document does not make.
+
+             NO SPANNING ARROW any more. The legs are rows rather than columns, so
+             the only arrow left is the inline one between two dates, which sits
+             on their baseline because it shares their line box.
 
              A SECOND COPY of the date rules in partials/shared/destinations.eta,
              deliberately: that table still serves the invoice, the pick sheet and
@@ -179,7 +189,7 @@ let headerPending = destinationDetail;
               (a.country_name && a.country_name !== "United States") ? a.country_name : null,
             ].filter(Boolean).join(", ");
           };
-          const placeText = (ep) => [(ep && ep.address && ep.address.name) || "", addressText(ep)].filter(Boolean).join(" ");
+          const placeName = (ep) => (ep && ep.address && ep.address.name) || "";
           const contactText = (ep) => {
             const c = ep && ep.contact;
             if (!c) return "";
@@ -187,67 +197,64 @@ let headerPending = destinationDetail;
             return [c.name, phone].filter(Boolean).join(" - ");
           };
           const instructionsText = (ep) => (ep && ep.instructions) || "";
-          const returnPlace = hasCollection && placeText(dest.collection) !== placeText(dest.delivery)
-            ? placeText(dest.collection) : "";
-          const returnContact = hasCollection && contactText(dest.collection) !== contactText(dest.delivery)
-            ? contactText(dest.collection) : "";
-          const returnInstructions = hasCollection && instructionsText(dest.collection) !== instructionsText(dest.delivery)
-            ? instructionsText(dest.collection) : "";
-          const hasContactLine = contactText(dest.delivery) !== "" || returnContact !== "";
-          const hasInstructionsLine = instructionsText(dest.delivery) !== "" || returnInstructions !== "";
-          const lineCount = 2 + (hasContactLine ? 1 : 0) + (hasInstructionsLine ? 1 : 0) + (showCharged ? 1 : 0);
-          const split = hasCollection && (returnPlace !== "" || returnContact !== "" || returnInstructions !== "");
+          // ONE LEG OR TWO, decided on everything the leg SHOWS — name, address,
+          // contact and instructions — and on the rendered text of each, not on
+          // the objects. Two endpoints carrying the same values under a
+          // different key order are the same place to a reader (core#87
+          // measured that at 6.5%), and a second row repeating it is noise.
+          const legKey = (ep) => [placeName(ep), addressText(ep), contactText(ep), instructionsText(ep)].join("|");
+          const legend = u.getDestinationsLegend([dest]);
+          const sameLeg = !hasCollection || legKey(dest.collection) === legKey(dest.delivery);
+          // BOTH ENDS IN STORE is the one case neither legend value describes on
+          // its own: the goods are collected and returned over the same counter,
+          // so the collapsed row is In Store rather than In Store Pickup.
+          const inStoreBoth = Boolean(dest.customer_collecting && dest.customer_returning);
+          const legRows = sameLeg
+            ? [{ label: inStoreBoth ? "In Store" : legend.start, ep: dest.delivery }]
+            : [{ label: legend.start, ep: dest.delivery }, { label: legend.end, ep: dest.collection }];
           const clock = () => it.icons.svg("clock", { size: 9 });
         %>
         <tr class="destination-section">
           <td class="wide" colspan="<%= columnCount %>">
-            <% if (split) { %>
-            <div class="destination-grid">
-              <div class="start"><%= placeText(dest.delivery) %></div>
-              <div class="arrow" style="grid-row: 1 / span <%= lineCount %>"><%~ it.icons.svg("arrow-right", { size: 9 }) %></div>
-              <div class="end"><%= returnPlace %></div>
-              <% if (hasContactLine) { %>
-              <div class="start"><%= contactText(dest.delivery) %></div>
-              <div class="end"><%= returnContact %></div>
-              <% } %>
-              <% if (hasInstructionsLine) { %>
-              <div class="start"><%= instructionsText(dest.delivery) %></div>
-              <div class="end"><%= returnInstructions %></div>
-              <% } %>
-              <div class="start date-line"><% if (showCharged) { %><span class="bold">Active:</span> <% } %><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %></div>
-              <div class="end date-line">
-                <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
-                <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
-              </div>
-              <% if (showCharged) { %>
-              <div class="start"><span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %></div>
-              <div class="end">
-                <%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
-                <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
-              </div>
-              <% } %>
-            </div>
-            <% } else { %>
-            <div class="destination-grid one-leg">
-              <div><%= placeText(dest.delivery) %></div>
-              <% if (hasContactLine) { %><div><%= contactText(dest.delivery) %></div><% } %>
-              <% if (hasInstructionsLine) { %><div><%= instructionsText(dest.delivery) %></div><% } %>
-              <div class="date-line">
-                <% if (showCharged) { %><span class="bold">Active:</span> <% } %><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
-                <% if (hasCollection) { %>
-                <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %>
-                <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
-                <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
+            <table class="destination-detail">
+              <tbody>
+                <% legRows.forEach(function (leg) { %>
+                <tr>
+                  <th scope="row"><%= leg.label %></th>
+                  <td>
+                    <%/* The name is a LINE of its own, not a prefix on the
+                         street: a venue name and an address are two facts, and
+                         run together they read as one long string that wraps
+                         wherever the column happens to end. */%>
+                    <% if (placeName(leg.ep)) { %><%= placeName(leg.ep) %><br><% } %>
+                    <%= addressText(leg.ep) %>
+                    <% if (contactText(leg.ep)) { %><br><%= contactText(leg.ep) %><% } %>
+                    <% if (instructionsText(leg.ep)) { %><br><%= instructionsText(leg.ep) %><% } %>
+                  </td>
+                </tr>
+                <% }) %>
+                <tr class="date-row">
+                  <th scope="row"><% if (showCharged) { %>Active:<% } else { %>Dates:<% } %></th>
+                  <td>
+                    <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
+                    <% if (hasCollection) { %>
+                    <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %>
+                    <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
+                    <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
+                    <% } %>
+                  </td>
+                </tr>
+                <% if (showCharged) { %>
+                <tr>
+                  <th scope="row">Charged:</th>
+                  <td>
+                    <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
+                    <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
+                  </td>
+                </tr>
                 <% } %>
-              </div>
-              <% if (showCharged) { %>
-              <div>
-                <span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
-                <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
-              </div>
-              <% } %>
-            </div>
-            <% } %>
+              </tbody>
+            </table>
           </td>
         </tr>
         <%/* The column headers belong to the section above them: the lines a
