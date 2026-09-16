@@ -1,0 +1,289 @@
+{
+  "uid": "N73eyWFM5XCyDZrscfc5",
+  "number": 1042,
+  "status": "draft",
+  "organization": {
+    "uid": "upzbF2DCmuHCPcBZvu9e",
+    "path": [
+      {
+        "uid": "upzbF2DCmuHCPcBZvu9e",
+        "name": "Redbird Productions LLC",
+        "derived": false
+      }
+    ],
+    "crms_id": 585,
+    "jurisdiction_claim": null,
+    "tax_exempt": false,
+    "xero_id": "a7c0d67c-6f18-4ade-9107-e404e6b30f9c",
+    "billing_address": {
+      "city": "Chicago",
+      "country_name": "United States",
+      "full": "4647 Chestnut St, Chicago, Illinois 87131, United States",
+      "name": "",
+      "postcode": "66622",
+      "region": "IL",
+      "street": "4647 Chestnut St",
+      "street2": "",
+      "address_coordinates": null,
+      "user_coordinates": null
+    }
+  },
+  "destinations": [
+    {
+      "uid": "1cd9c467-0960-490b-8fbd-67c00d06c7ec",
+      "dates": {
+        "delivery_start": "2026-09-16T09:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1789567200,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-09-16T09:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1789567200,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-09-22T09:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1790085600,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-09-22T09:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1790085600,
+          "_nanoseconds": 0
+        },
+        "charge_start": "2026-09-16T09:00:00.000-05:00",
+        "charge_start_fs": {
+          "_seconds": 1789567200,
+          "_nanoseconds": 0
+        },
+        "charge_end": "2026-09-22T09:00:00.000-05:00",
+        "charge_end_fs": {
+          "_seconds": 1790085600,
+          "_nanoseconds": 0
+        },
+        "days_active": 5,
+        "days_charged": 5
+      },
+      "delivery": {
+        "uid": "WzLgPiuSfyMh0vpZq1XL",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "4449 Sycamore Pl, Chicago, Illinois 91988, United States",
+          "name": "Cedar Point Lodge",
+          "postcode": "67852",
+          "region": "IL",
+          "street": "4449 Sycamore Pl",
+          "street2": "",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": null,
+        "contact": {
+          "uid": "ncsJwOX1Z6hsm0ERYoiE",
+          "first_name": "Sage",
+          "middle_name": null,
+          "last_name": "Jensen",
+          "pronunciation": null,
+          "name": "Rowan Carmichael",
+          "phones": [
+            "(282) 555-0114"
+          ]
+        }
+      },
+      "collection": {
+        "uid": "k1Sd8IfeMtysS66pkVn5",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "4449 Sycamore Pl, Chicago, Illinois 91988, United States",
+          "name": "Cedar Point Lodge",
+          "postcode": "67852",
+          "region": "IL",
+          "street": "4449 Sycamore Pl",
+          "street2": "",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": null,
+        "contact": null
+      },
+      "customer_collecting": false,
+      "customer_returning": true
+    }
+  ],
+  "items": [
+    {
+      "uid": "1cd9c467-0960-490b-8fbd-67c00d06c7ec",
+      "type": "destination",
+      "name": "Cedar Point Lodge",
+      "path": [
+        "1cd9c467-0960-490b-8fbd-67c00d06c7ec"
+      ],
+      "description": ""
+    },
+    {
+      "type": "rental",
+      "uid": "vuSaTkSAP7mrZuE7tIQH",
+      "name": "12' Seamless Paper Roll (#72 Fossil Gray / Light Gray)",
+      "description": "",
+      "quantity": 1,
+      "path": [
+        "1cd9c467-0960-490b-8fbd-67c00d06c7ec",
+        "vuSaTkSAP7mrZuE7tIQH"
+      ],
+      "zero_priced": null,
+      "price": {
+        "base_cents": 4000,
+        "base_percent": null,
+        "replacement_cents": 8500,
+        "chargeable_days": 5,
+        "formula": "five_day_week",
+        "subtotal_cents": 4000,
+        "subtotal_discounted_cents": 4000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 600
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 4600
+      },
+      "stock_method": "bulk",
+      "order_number": 1042,
+      "uid_order": "N73eyWFM5XCyDZrscfc5",
+      "inclusion_type": null,
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    },
+    {
+      "uid": "a1cb7589-5b93-4e9e-94dd-fa6dbe4e67a4",
+      "type": "group",
+      "name": "Wardrobe",
+      "path": [
+        "1cd9c467-0960-490b-8fbd-67c00d06c7ec",
+        "a1cb7589-5b93-4e9e-94dd-fa6dbe4e67a4"
+      ],
+      "description": ""
+    },
+    {
+      "type": "rental",
+      "uid": "JXDGN5GLKuPMwmj7R6Ra",
+      "name": "Folding Rack",
+      "description": "",
+      "quantity": 2,
+      "path": [
+        "1cd9c467-0960-490b-8fbd-67c00d06c7ec",
+        "a1cb7589-5b93-4e9e-94dd-fa6dbe4e67a4",
+        "JXDGN5GLKuPMwmj7R6Ra"
+      ],
+      "zero_priced": null,
+      "price": {
+        "base_cents": 1500,
+        "base_percent": null,
+        "replacement_cents": 40000,
+        "chargeable_days": 5,
+        "formula": "five_day_week",
+        "subtotal_cents": 3000,
+        "subtotal_discounted_cents": 3000,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 450
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 3450
+      },
+      "stock_method": "bulk",
+      "order_number": 1042,
+      "uid_order": "N73eyWFM5XCyDZrscfc5",
+      "inclusion_type": null,
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    }
+  ],
+  "tax_exempt": false,
+  "uid_store": null,
+  "totals": {
+    "discount_amount_cents": 0,
+    "subtotal_cents": 7000,
+    "subtotal_discounted_cents": 7000,
+    "taxes": [
+      {
+        "uid": "VEW4Ivy7VNqgxFA5eJw6",
+        "name": "Chicago Rental Tax",
+        "rate": 15,
+        "type": "percent",
+        "amount_cents": 1050
+      }
+    ],
+    "transaction_fees": [],
+    "total_cents": 8050,
+    "replacement_total_cents": 101775
+  },
+  "invoices": [],
+  "query_by_invoices": [],
+  "query_by_items": [
+    "vuSaTkSAP7mrZuE7tIQH",
+    "JXDGN5GLKuPMwmj7R6Ra"
+  ],
+  "query_by_contacts": [
+    "ncsJwOX1Z6hsm0ERYoiE"
+  ],
+  "query_by_dates": [
+    "2026-09-16",
+    "2026-09-22"
+  ],
+  "bookings_breakdown": {
+    "quoted": 0,
+    "reserved": 0,
+    "prepped": 0,
+    "out": 0,
+    "returned": 0,
+    "lost": 0,
+    "damaged": 0
+  },
+  "crms_id": null,
+  "subject": "",
+  "reference": null,
+  "xero_id": null,
+  "uid_thread": "lXE4T80n3lalrf1EwJGi",
+  "version": 1,
+  "created_by": {
+    "uid": "KXj2LPztjhdB5Wf3qwaR",
+    "name": "Rowan Carmichael"
+  },
+  "created_at": {
+    "_seconds": 1789529060,
+    "_nanoseconds": 709000000
+  },
+  "updated_at": {
+    "_seconds": 1789529060,
+    "_nanoseconds": 709000000
+  }
+}
