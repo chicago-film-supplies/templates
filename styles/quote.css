@@ -250,3 +250,10 @@ html {
 #destinations thead th {
   border-bottom-color: #ccc;
 }
+
+/* The Charged group sits a row gap below the active window, not a blank row.
+   Two cell paddings is the gap between two rows of this table, so the stack in
+   the date cell keeps the same rhythm as the address rows beside it. */
+#destinations td.dates .charged-label {
+  margin-top: calc(2 * var(--cell-pad-y));
+}
