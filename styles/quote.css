@@ -133,6 +133,18 @@ html {
   margin-bottom: var(--items-row);
 }
 
+/* THE ITEMS TABLE RULES IN LIGHT GREY — the rule under the column headers and
+   the one closing the last row of each leg. Only the COLOUR changes: width and
+   style still come from `styles/base.css`, so a later change to those there is
+   not silently overridden here. `#items thead th` outranks the bare `thead th`
+   it recolours, and the closing-rule selector repeats the shared one exactly,
+   winning because this sheet overlays after it. Scoped to #items, so the
+   dates/destinations tables and #totals are untouched. */
+#items thead th,
+#items tr:last-child td {
+  border-bottom-color: #ccc;
+}
+
 /* #details SPANS THE FULL GRID in this family, so its columns are the items
    grid columns and the Subject/Reference pair can open on the start address
    edge by colspan (quote.eta). The shared sheet puts #details in grid column 1
