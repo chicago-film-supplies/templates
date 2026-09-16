@@ -114,6 +114,22 @@ html {
    after it. Scoped here rather than in the shared sheet because no other family
    emits a second one — and it beats the base rule on specificity by carrying a
    second id, so the order the two sheets are overlaid in does not decide it. */
+/* NO RULE UNDER THE DATES/DESTINATIONS HEADER — the items grid keeps its own.
+
+   `thead th` in `styles/base.css` gives every header row a hairline under it,
+   which is right where a header heads a GRID of rows. This family now draws one
+   dates table per leg (quote.eta), so that rule repeated down the page under
+   three-cell header rows that head an address block rather than a grid, and the
+   page read as a stack of small tables.
+
+   Scoped to this sheet, not lifted into the shared one: the invoice, the pick
+   sheet and the packing list each render ONE #destinations table at the top of
+   the page, where the rule still separates a header from what it heads. The
+   repetition is what makes it wrong, and the repetition is this family's. */
+#destinations thead th {
+  box-shadow: none;
+}
+
 #items:has(~ #items) tr:last-child td {
   /* BOTH, deliberately, and it is an ORDERING fix rather than belt and braces.
      The base rule this clears is a border on one side of the base component PR
