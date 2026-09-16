@@ -189,14 +189,28 @@ let headerPending = destinationDetail;
           const showCharged = hasCollection && Boolean(d.charge_start && d.charge_end) &&
             !u.isSameAsDeliveryDates(d);
           const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
-          const addressText = (ep) => {
-            if (!ep || !ep.address) return "";
+          // AN ADDRESS IS LINES, not a sentence. It is set the way it would be
+          // written on an envelope — street and unit on one line, then the
+          // locality line, then a country only when there is one to state:
+          //
+          //   860 Juniper Ct Suite 190
+          //   Chicago, IL 60609
+          //
+          // The comma belongs between the city and the region, and nowhere else:
+          // a street and its unit are one line of an address, not two fields to
+          // be punctuated apart, and the region and the postcode are read as one
+          // token. The single comma-joined run this replaced put five commas in
+          // a row and wrapped wherever the column happened to end.
+          const addressLines = (ep) => {
+            if (!ep || !ep.address) return [];
             const a = ep.address;
+            const locality = [a.city, [a.region, a.postcode].filter(Boolean).join(" ")]
+              .filter(Boolean).join(", ");
             return [
-              a.street, a.street2, a.city,
-              [a.region, a.postcode].filter(Boolean).join(" "),
+              [a.street, a.street2].filter(Boolean).join(" "),
+              locality,
               (a.country_name && a.country_name !== "United States") ? a.country_name : null,
-            ].filter(Boolean).join(", ");
+            ].filter(Boolean);
           };
           const placeName = (ep) => (ep && ep.address && ep.address.name) || "";
           const contactText = (ep) => {
@@ -211,7 +225,7 @@ let headerPending = destinationDetail;
           // the objects. Two endpoints carrying the same values under a
           // different key order are the same place to a reader (core#87
           // measured that at 6.5%), and a second row repeating it is noise.
-          const legKey = (ep) => [placeName(ep), addressText(ep), contactText(ep), instructionsText(ep)].join("|");
+          const legKey = (ep) => [placeName(ep), addressLines(ep).join(" / "), contactText(ep), instructionsText(ep)].join("|");
           const sameLeg = !hasCollection || legKey(dest.collection) === legKey(dest.delivery);
           // ONE LABEL FOR THE MOVEMENT, never one per leg. It names what happens
           // rather than which column you are looking at: In Store: only when
@@ -264,7 +278,7 @@ let headerPending = destinationDetail;
                        whitespace in the output, and a trailing run of it can wrap
                        to an empty line box that reads as a blank line under the
                        leg. The line is long; the alternative is invisible. */%>
-                  <td<% if (legEps.length === 1) { %> colspan="3"<% } %>><% if (placeName(ep)) { %><%= placeName(ep) %><br><% } %><%= addressText(ep) %><% if (contactText(ep)) { %><br><%= contactText(ep) %><% } %><% if (instructionsText(ep)) { %><br><%= instructionsText(ep) %><% } %></td>
+                  <td<% if (legEps.length === 1) { %> colspan="3"<% } %>><% if (placeName(ep)) { %><%= placeName(ep) %><br><% } %><% addressLines(ep).forEach(function (line, n) { %><% if (n > 0) { %><br><% } %><%= line %><% }) %><% if (contactText(ep)) { %><br><%= contactText(ep) %><% } %><% if (instructionsText(ep)) { %><br><%= instructionsText(ep) %><% } %></td>
                   <% }) %>
                 </tr>
                 <tr class="date-row">
