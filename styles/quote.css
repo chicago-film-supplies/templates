@@ -20,6 +20,28 @@ html {
   font-size: 9px;
 }
 
+/* #details IS A LABEL/VALUE BLOCK IN THIS FAMILY, not a grid with headers: four
+   fields, each introduced by a row-scoped <th> (quote.eta). The other families
+   still emit the old two-thead shape, so these widths are scoped HERE rather
+   than added to `styles/base.css` — a `#details col` rule in the shared sheet
+   would size a colgroup those families do not have, and `#details thead th`
+   there still serves them.
+
+   The two label columns are a LENGTH, deliberately. `table-layout: fixed` gives
+   the table no say in what its content needs, and the point of the number is
+   the pair after it: 6rem + 18rem puts the Subject/Reference column on
+   `--label-col`, the edge the items grid gives its description column and the
+   one #details has always opened its second column on. Change one and change
+   the other, or the edge moves. `Reference:` is the longest label at ~5.1rem on
+   the 9px root, so 6rem clears it without wrapping. */
+#details col.label {
+  width: 6rem;
+}
+
+#details col.label + col {
+  width: calc(var(--label-col) - 6rem);
+}
+
 /* The quote-only half of a rule whose shared half now lives in
    `styles/base.css`. Split rather than left whole so the shared sheet
    carries no selector for markup only this family emits. */
