@@ -457,13 +457,24 @@ th.center, td.center {
    side | one arrow | collection side. New selectors only, so no family sheet
    rule changes winner.
 
-   EQUIDISTANT RULES. Every #items cell carries 4px above and below its text, and
-   this row does too, so the black rule above the section and the grey rule the
-   following row draws under it each sit 4px from the text on both sides. The
-   colspan break rule above keeps the section with the first line it introduces. */
+   SEPARATED BY SPACE, NOT BY A RULE. The section used to draw a black border
+   above itself; with one section per destination and its own header row beneath
+   it, the page carried a rule every few lines and read as several tables stacked.
+   A blank row's worth of air says the same thing and says it more quietly — and
+   the header row's own black rule still closes the section off underneath.
+
+   `--items-row` is that blank row AS A LENGTH: a line box (1.2em at the default
+   line-height) plus the 4px every cell in this grid carries top and bottom — the
+   19px row pitch measured on `multi-dest` at the 9px root. A calc rather than
+   that 19, so a family with a different root gets its own row height rather than
+   the quote's. The bottom stays at the ordinary 4px: the space belongs ABOVE the
+   section, between it and whatever the previous destination ended with. */
+#items {
+  --items-row: calc(1.2em + 8px);
+}
+
 #items tr.destination-section td {
-  border-top: 1px solid #121212;
-  padding: 4px 0;
+  padding: var(--items-row) 0 4px;
 }
 
 /* THE HEADER ROW HAS TWO HOMES — see partials/shared/items-grid.eta. As a
@@ -514,10 +525,21 @@ th.center, td.center {
    addresses wrap rather than push the grid past the margin. Lines are spaced by
    `row-gap` alone: one number, so the gaps are equal by construction. */
 #items .destination-grid {
+  --dest-line-gap: 2px;
+
   display: grid;
   grid-template-columns: fit-content(46%) 2.4em fit-content(46%);
   justify-content: start;
-  row-gap: 2px;
+  row-gap: var(--dest-line-gap);
+}
+
+/* THE PLACE AND THE WHEN ARE TWO FACTS, so the dates open a block of their own —
+   the same blank row that separates one destination from the next, less the gap
+   the grid already puts between every pair of lines. Both cells of the row carry
+   it: a grid row is as tall as its tallest item, so marking only the left one
+   would move the left line and leave the right where it was. */
+#items .destination-grid .date-line {
+  margin-top: calc(var(--items-row) - var(--dest-line-gap));
 }
 
 #items .destination-grid.one-leg {

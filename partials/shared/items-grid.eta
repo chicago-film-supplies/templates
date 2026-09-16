@@ -214,8 +214,8 @@ let headerPending = destinationDetail;
               <div class="start"><%= instructionsText(dest.delivery) %></div>
               <div class="end"><%= returnInstructions %></div>
               <% } %>
-              <div class="start"><% if (showCharged) { %><span class="bold">Active:</span> <% } %><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %></div>
-              <div class="end">
+              <div class="start date-line"><% if (showCharged) { %><span class="bold">Active:</span> <% } %><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %></div>
+              <div class="end date-line">
                 <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
                 <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
               </div>
@@ -232,7 +232,7 @@ let headerPending = destinationDetail;
               <div><%= placeText(dest.delivery) %></div>
               <% if (hasContactLine) { %><div><%= contactText(dest.delivery) %></div><% } %>
               <% if (hasInstructionsLine) { %><div><%= instructionsText(dest.delivery) %></div><% } %>
-              <div>
+              <div class="date-line">
                 <% if (showCharged) { %><span class="bold">Active:</span> <% } %><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
                 <% if (hasCollection) { %>
                 <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %>
