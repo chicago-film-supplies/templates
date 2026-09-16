@@ -104,9 +104,21 @@ html {
 
 /* Headed like #destinations' blocks are, so every section heading on the page
    reads as one family. */
+/* Half-pixel box shadows, not borders — the rule and its reasoning live on
+   `thead th` in `styles/base.css`: Chromium rounds a sub-pixel border up to a
+   solid device pixel, so a hairline is only reachable through a shadow, and a
+   shadow takes no layout space, so these headings move up 1px.
+
+   ⚠️ `#items tfoot` above deliberately KEEPS its border, and it is the one rule
+   on the page that should. It is 2px because the total is meant to read heavier
+   than the rows it closes — not a hairline anyone is trying to reach — and its
+   own note explains that the weight is painted on the row GROUP, which only
+   `border-collapse: collapse` supports; a box shadow on a <tfoot> is not
+   reliably painted at all. Converting it would flatten the hierarchy and bet on
+   a Blink behaviour nothing here tests. */
 #open-invoices h2,
 #exceptions h2 {
-  border-bottom: 1px solid #121212;
+  box-shadow: inset 0 -0.5px 0 #121212;
 }
 
 /* The empty-book report's one line of prose. It sits where #items would have and
