@@ -57,9 +57,15 @@ html {
 
    `border-top` on the cell rather than a margin: these are rows under
    `table-layout: fixed`, where a margin does not apply. */
+/* Half-pixel box shadows, not borders — the rule and its reasoning live on
+   `thead th` in `styles/base.css`: Chromium rounds a sub-pixel border up to a
+   solid device pixel, so a hairline is only reachable through a shadow. `inset`
+   with a POSITIVE y offset is a top rule, and it is painted on the cell for the
+   reason the note above already gives — these are rows under `table-layout:
+   fixed`. A shadow takes no layout space, so every banner here moves up 1px. */
 #items tr.order-banner > td {
   padding-top: 1.1rem;
-  border-top: 1px solid var(--rule, #999);
+  box-shadow: inset 0 0.5px 0 var(--rule, #999);
 }
 
 /* Three banner levels nest inside one table — order, destination, group — and
@@ -79,7 +85,7 @@ html {
    the boundary, and a second line there reads as a stray. */
 #items tbody > tr.order-banner:first-child > td {
   padding-top: 0;
-  border-top: none;
+  box-shadow: none;
 }
 
 /* The document total closes the table. It restates `PickSheet.quantity`, which
@@ -88,7 +94,7 @@ html {
    has been checked off. */
 #items tr.grand-total > td {
   padding-top: 0.8rem;
-  border-top: 1px solid var(--rule, #999);
+  box-shadow: inset 0 0.5px 0 var(--rule, #999);
 }
 
 /* The scope line — what this whole sheet is an answer to, printed once under
