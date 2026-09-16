@@ -218,8 +218,21 @@ let headerPending = destinationDetail;
           <td class="wide" colspan="<%= columnCount %>">
             <table class="destination-detail">
               <tbody>
-                <% legRows.forEach(function (leg) { %>
+                <%/* BOTH LEGS ON ONE ROW, each introduced by its own label:
+                     [Delivery][where] [Pickup][where]. The label column and the
+                     date labels below it are the same column, so those two share
+                     a width by construction; the second label column is sized by
+                     its own content, which is a legend value of much the same
+                     length.
+
+                     The date rows span the remaining three columns, so the dates
+                     read as one line rather than being cut at the leg boundary —
+                     they describe the whole movement, not either end of it.
+
+                     ONE LEG collapses to a single label and a cell spanning all
+                     three, so the table stays rectangular either way. */%>
                 <tr>
+                  <% legRows.forEach(function (leg) { %>
                   <th scope="row"><%= leg.label %></th>
                   <%/* ONE LINE, and it has to be. The name is a LINE of its own —
                        a venue name and an address are two facts, and run together
@@ -228,12 +241,12 @@ let headerPending = destinationDetail;
                        whitespace in the output, and a trailing run of it can wrap
                        to an empty line box that reads as a blank line under the
                        leg. The line is long; the alternative is invisible. */%>
-                  <td><% if (placeName(leg.ep)) { %><%= placeName(leg.ep) %><br><% } %><%= addressText(leg.ep) %><% if (contactText(leg.ep)) { %><br><%= contactText(leg.ep) %><% } %><% if (instructionsText(leg.ep)) { %><br><%= instructionsText(leg.ep) %><% } %></td>
+                  <td<% if (legRows.length === 1) { %> colspan="3"<% } %>><% if (placeName(leg.ep)) { %><%= placeName(leg.ep) %><br><% } %><%= addressText(leg.ep) %><% if (contactText(leg.ep)) { %><br><%= contactText(leg.ep) %><% } %><% if (instructionsText(leg.ep)) { %><br><%= instructionsText(leg.ep) %><% } %></td>
+                  <% }) %>
                 </tr>
-                <% }) %>
                 <tr class="date-row">
                   <th scope="row"><% if (showCharged) { %>Active:<% } else { %>Dates:<% } %></th>
-                  <td>
+                  <td colspan="3">
                     <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
                     <% if (hasCollection) { %>
                     <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %>
@@ -245,7 +258,7 @@ let headerPending = destinationDetail;
                 <% if (showCharged) { %>
                 <tr>
                   <th scope="row">Charged:</th>
-                  <td>
+                  <td colspan="3">
                     <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
                     <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
                   </td>

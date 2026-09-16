@@ -584,6 +584,14 @@ th.center, td.center {
   padding-right: 1.2em;
 }
 
+/* The SECOND label on a row, where both legs sit side by side: it needs air
+   between it and the address block on its left, which the first label does not
+   (that one opens at the page edge). `td + th` names exactly the label that has
+   something before it, so a collapsed one-leg row is untouched. */
+#items .destination-detail td + th {
+  padding-left: 2em;
+}
+
 /* THE PLACE AND THE WHEN ARE TWO FACTS, so the dates open a block of their own:
    the same blank row that separates one destination from the next. Both cells
    of the row carry it, because a table row is as tall as its tallest cell and
