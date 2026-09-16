@@ -98,7 +98,8 @@ const itemColumnCount = 6 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasT
 // equally between the other n-1 columns, so its interior boundaries sit at
 // `--label-col + m x (remainder / (n-1))` for m = 1..n-2. Choosing
 // `m = floor((n-1)/2)` picks the one closest to the middle of that remainder,
-// which is what keeps the two #destinations address blocks close to equal:
+// which is what keeps the delivery and return halves of each destination
+// section in the items grid close to equal:
 //
 //     n=6  m=2  ->  202 / 302      n=8  m=3  ->  216 / 288
 //     n=7  m=3  ->  252 / 252      n=9  m=4  ->  252 / 252
@@ -117,13 +118,9 @@ const itemColumnCount = 6 + (hasRentals ? 1 : 0) + (hasDiscount ? 1 : 0) + (hasT
 // Nearest-to-half re-derives itself.
 const addressBoundary = Math.floor((itemColumnCount - 1) / 2);
 
-// #destinations divides its address area into the SAME n-1 equal columns and
-// spans them, so block 3 opens on `--dest-block-3` by construction rather than
-// by a width that has to be kept in step with one.
-//
-// Spans rather than two sized <col>s because a sized <col> cannot express this:
-// Blink silently ignores a table column width that mixes a percentage with a
-// length, which is what `--dest-block-3 - --label-col` is. See styles/quote.css.
+// The n-1 columns right of the description column. Only `--block-3-fraction`
+// reads it now; the destination section in items-grid.eta derives the same
+// boundary from `columnCount` itself.
 const addressColumnCount = itemColumnCount - 1;
 
 // A COLLECTION LEG EXISTS ONLY IF SOMETHING IS COMING BACK.
@@ -136,13 +133,11 @@ const addressColumnCount = itemColumnCount - 1;
 // themselves. This extends it to the two things it had not reached: the
 // duration cell and the whole return address block.
 //
-// When it is off, block 2 takes the ENTIRE address area rather than leaving the
-// right half bare. The page grid is untouched: `--block-3-fraction` tracks an
-// #items column boundary and is a fact about the items grid, not about this
-// table, so #totals, #details and #information keep the edge they share.
+// When it is off, the delivery leg of each destination section takes the whole
+// row rather than leaving the right half bare. The page grid is untouched:
+// `--block-3-fraction` tracks an #items column boundary, so #totals, #details
+// and #information keep the edge they share.
 const hasCollection = hasRentals;
-const deliverySpan = hasCollection ? addressBoundary : addressColumnCount;
-const returnSpan = addressColumnCount - addressBoundary;
 // NON-ZERO, not "present". `replacement_cents` is a field on EVERY priced line
 // — schema-required whenever `stock_method !== "none"` — so a sale, a service
 // and a `replacement` twin all carry it, and all carry it at 0 because none of
@@ -470,37 +465,21 @@ const replacementLine = (item) => {
   </tbody>
 </table>
 
-<%/* Column widths live on the colgroup — see styles/quote.css. `table-layout:
-     fixed` sizes a table from its FIRST ROW, and this table has one
-     <thead>/<tbody> pair per destination, so a width on a body cell can never
-     take effect. */%>
-<%/* The dates block is FOUR columns, not two: [start] [→] [end] [duration].
-     Their widths still sum to `--label-col`, which is what keeps block 2 opening
-     on the shared alignment edge — see styles/quote.css. The four <col>s stay
-     declared at every shape; a cell that is not rendered is spanned over rather
-     than removed, so the block keeps its width and the edge cannot move. */%>
-<%/* THE WHOLE TABLE IS RENTAL/DELIVERY FURNITURE, and a replacement-only quote
-     has none of it.
+<%/* NO SEPARATE DATES/DESTINATIONS TABLE. Each destination is a section
+     inside the items grid instead (`destinationDetail`), the shape the manager
+     OrderDetail items table adopted in manager 73f625c: name, active window,
+     charge window, then both endpoints with address, contact and instructions,
+     directly above the lines delivered there.
 
-     A `replacement` charge recovers the cost of an item already lost or damaged
-     in the customer possession: we buy the replacement, they pay us back. There
-     is no delivery — not to an address and not over our counter — and nothing
-     is ever collected, so every row of this table would be describing a
-     movement that does not happen. It used to render the dates block alone at
-     `--label-col`, which stated a delivery date for goods that are not
-     delivered.
+     Gated on `hasDeliverableItems`, as the old table was: a replacement-only
+     quote describes no delivery and no collection, so it gets no destination
+     section, only the name banner when there is more than one.
 
-     Dropping the section outright rather than emptying it is the same call the
-     address blocks already made for themselves: a headed table with nothing
-     under it reads as missing data, where an absent one reads as inapplicable.
-     `hasDeliverableItems` also covers a quote with no shown lines at all, where
-     #items is likewise suppressed. */%>
-<% if (hasDeliverableItems) { %>
-<%~ await includeAsync("@partials/shared/destinations.eta", {
-     u: it.orders, destinations, addressColumnCount, hasCollection,
-     deliverySpan, returnSpan,
-   }) %>
-<% } %>
+     One closing rule, at the END of the grid. `#items tr:last-child td` draws
+     it and the table is still ONE table, so a destination boundary inside it is
+     air plus the next section's own header rule — not a second bottom border.
+     Splitting the grid into one <table> per destination would put that rule
+     under every block. */%>
 
 <!-- Items -->
 <%/* `shownLineItems`, not `lineItems`: an order whose only non-divider entry is
@@ -513,6 +492,7 @@ const replacementLine = (item) => {
      itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
      showDestinationBanners: destinations.length > 1,
      showOrderBanner: true,
+     destinationDetail: hasDeliverableItems, destinations, u: it.orders, hasCollection,
    }) %>
 <% } %>
 
