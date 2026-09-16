@@ -136,11 +136,18 @@ html {
 /* THE ITEMS TABLE RULES IN LIGHT GREY — the rule under the column headers and
    the one closing the last row of each leg. Only the COLOUR changes: width and
    style still come from `styles/base.css`, so a later change to those there is
-   not silently overridden here. `#items thead th` outranks the bare `thead th`
-   it recolours, and the closing-rule selector repeats the shared one exactly,
-   winning because this sheet overlays after it. Scoped to #items, so the
+   not silently overridden here.
+
+   ⚠️ THE HEADER RULE HAS TWO SELECTORS IN THE SHARED SHEET, and both need
+   naming. `thead th` draws it in principle, but the header row is also
+   `tr.column-headers`, and `#items tr.column-headers th` redraws it in black
+   with more specificity than `#items thead th` — measured in print, recolouring
+   only the latter left both header rules at ink 18 while the closing rules went
+   grey. The last two selectors repeat the shared ones exactly and win because
+   this sheet overlays after base.css. Scoped to #items, so the
    dates/destinations tables and #totals are untouched. */
 #items thead th,
+#items tr.column-headers th,
 #items tr:last-child td {
   border-bottom-color: #ccc;
 }
