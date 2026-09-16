@@ -51,6 +51,32 @@ html {
   margin-left: 0.8em;
 }
 
+/* ONE BLANK ITEMS ROW BETWEEN LEGS — hung off the END of the leg above, never
+   the START of the leg below, and that placement is the whole rule.
+
+   The space is meant to separate the last line of one destination from the next
+   destination, and it must not survive a page break as a blank line at the top
+   of the next page. A `margin-top` on the next #destinations cannot do that:
+   CSS says a margin adjoining an unforced break is truncated, but Chromium does
+   not truncate a GRID ITEM margin, and #destinations is one. Measured by pushing
+   leg 2 of `multi-dest` onto page 2: its `Dates:` label started at y=37.42pt with
+   a margin-top, against 23.17pt with no gap at all — the whole gap, printed as
+   blank at the head of the page.
+
+   Trailing space fails safe instead. When the break falls between the legs it is
+   left at the bottom of page 1, where blank is invisible, and page 2 starts on
+   the dates: measured at every spacer height from 530 to 560px, leg 2 opened at
+   exactly 23.17pt with this rule and without it. Mid-page it is the gap asked for
+   (+13.5pt on `multi-dest`).
+
+   `:has(+ #destinations)` names only an items table that another leg follows,
+   so the last leg and a single-destination quote are untouched, and the first
+   leg never gets space above it. `--items-row` is base.css's own length for one
+   blank row of this grid, defined on #items and therefore in scope here. */
+#items:has(+ #destinations) {
+  margin-bottom: var(--items-row);
+}
+
 /* The quote-only half of a rule whose shared half now lives in
    `styles/base.css`. Split rather than left whole so the shared sheet
    carries no selector for markup only this family emits. */
