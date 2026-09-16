@@ -1,4 +1,4 @@
-<%/* draft draft/quote/fc8fe4ee */%>
+<%/* draft draft/quote/8ce3cbab */%>
 <%
 const order = it.doc;
 const { destinations, items, totals } = order;
@@ -428,8 +428,7 @@ const replacementLine = (item) => {
      billing_address: order.organization.billing_address,
    }) %>
 
-<%/* FOUR FIELDS, EACH LABELLED BY ITS OWN ROW-SCOPED <th>, the same way the
-     destination section labels its rows:
+<%/* FOUR FIELDS, EACH LABELLED BY ITS OWN ROW-SCOPED <th>:
 
        Date:   January 15, 2026    Subject:    Sample text
        Order:  1042                Reference:  PO-4471
