@@ -471,9 +471,9 @@ const replacementLine = (item) => {
 </table>
 
 <%/* Column widths live on the colgroup — see styles/quote.css. `table-layout:
-     fixed` sizes a table from its FIRST ROW, and this table has one
-     <thead>/<tbody> pair per destination, so a width on a body cell can never
-     take effect. */%>
+     fixed` sizes a table from its FIRST ROW, so a width on a body cell can
+     never take effect. There is one of these tables PER DESTINATION now (see
+     the leg loop below), each with a single <thead>/<tbody> pair. */%>
 <%/* The dates block is FOUR columns, not two: [start] [→] [end] [duration].
      Their widths still sum to `--label-col`, which is what keeps block 2 opening
      on the shared alignment edge — see styles/quote.css. The four <col>s stay
@@ -495,25 +495,80 @@ const replacementLine = (item) => {
      under it reads as missing data, where an absent one reads as inapplicable.
      `hasDeliverableItems` also covers a quote with no shown lines at all, where
      #items is likewise suppressed. */%>
-<% if (hasDeliverableItems) { %>
-<%~ await includeAsync("@partials/shared/destinations.eta", {
-     u: it.orders, destinations, addressColumnCount, hasCollection,
-     deliverySpan, returnSpan,
-   }) %>
-<% } %>
+<%/* ONE DATES/DESTINATIONS TABLE PER LEG, each directly above the lines scoped
+     to it, rather than one table for every destination at the top of the page.
+
+     The table is the same `partials/shared/destinations.eta` the invoice and
+     the pick sheet render, handed ONE pair instead of all of them — so the
+     three blocks a reader already knows (the dates block at `--label-col`, the
+     delivery address, the collection address) keep their widths and the page
+     grid is untouched. `deliverySpan` and `returnSpan` are per-TABLE facts, not
+     per-document ones, so they carry over unchanged.
+
+     THE LEGS COME FROM THE ITEMS ARRAY, not from `destinations`. A destination
+     divider opens a leg and every row after it belongs to that leg until the
+     next divider — the same scoping `path` records — so the grid under a table
+     is exactly the stock going to the place that table names. Rows that arrive
+     before any divider open an unnamed leg rather than being dropped.
+
+     The divider row STAYS in its leg, so the name banner still heads the lines
+     when there is more than one destination. The banner names the place; the
+     table above it carries the addresses, the contacts and the windows, which
+     the banner never did.
+
+     A replacement-only quote has no leg at all — it describes no delivery and
+     no collection — so it falls through to ONE plain headed grid, exactly as
+     before. `hasDeliverableItems` is that gate, as it was for the old table.
+
+     ⚠️ SEVERAL #items TABLES, SO SEVERAL CLOSING RULES. `#items tr:last-child
+     td` in `styles/base.css` draws one under the last row of each of them, and
+     only the last table on the page should close the grid — `styles/quote.css`
+     clears the others with `#items:has(~ #items)`. Measured over six fixtures: a
+     SINGLE-destination quote renders the same DOM as the version this replaces
+     — the only differences in the whole document are that inert stylesheet rule
+     and a moved HTML comment — so `multi-dest` is the one golden that moves,
+     and a diff anywhere else is a regression rather than this change. */%>
+<%
+const legs = [];
+renderedItems.forEach((item) => {
+  if (item.type === "destination") {
+    legs.push({ uid: item.uid, items: [item] });
+    return;
+  }
+  if (legs.length === 0) legs.push({ uid: null, items: [] });
+  legs[legs.length - 1].items.push(item);
+});
+// Built once, because the grid is included from two places below and a second
+// copy of this object is a second thing to keep in step with the column count.
+const itemsGridProps = (rows) => ({
+  renderedItems: rows, columnCount: itemColumnCount, hasRentals, hasDiscount, hasTax,
+  rolledUp, componentDepth, numberCell, moneyCell, moneyCellOn,
+  itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
+  showDestinationBanners: destinations.length > 1,
+  showOrderBanner: true,
+});
+const legged = hasDeliverableItems && legs.some((leg) => leg.uid);
+%>
 
 <!-- Items -->
 <%/* `shownLineItems`, not `lineItems`: an order whose only non-divider entry is
      a transaction fee has nothing to put in this grid, and an empty table with
      a header row reads as a rendering fault. */%>
-<% if (shownLineItems.length > 0) { %>
-<%~ await includeAsync("@partials/shared/items-grid.eta", {
-     renderedItems, columnCount: itemColumnCount, hasRentals, hasDiscount, hasTax,
-     rolledUp, componentDepth, numberCell, moneyCell, moneyCellOn,
-     itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
-     showDestinationBanners: destinations.length > 1,
-     showOrderBanner: true,
+<% if (shownLineItems.length > 0 && legged) { %>
+<% for (const leg of legs) { %>
+<% const pair = leg.uid ? destinations.find((p) => p.uid === leg.uid) : undefined; %>
+<% if (pair) { %>
+<%~ await includeAsync("@partials/shared/destinations.eta", {
+     u: it.orders, destinations: [pair], addressColumnCount, hasCollection,
+     deliverySpan, returnSpan,
    }) %>
+<% } %>
+<% if (leg.items.length > 0) { %>
+<%~ await includeAsync("@partials/shared/items-grid.eta", itemsGridProps(leg.items)) %>
+<% } %>
+<% } %>
+<% } else if (shownLineItems.length > 0) { %>
+<%~ await includeAsync("@partials/shared/items-grid.eta", itemsGridProps(renderedItems)) %>
 <% } %>
 
 <section id="information">
