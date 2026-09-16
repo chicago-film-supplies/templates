@@ -1,4 +1,4 @@
-<%/* draft draft/quote/0a06db46 */%>
+<%/* draft draft/quote/8ce3cbab */%>
 <%
 const order = it.doc;
 const { destinations, items, totals } = order;
@@ -442,12 +442,21 @@ const replacementLine = (item) => {
      billing_address: order.organization.billing_address,
    }) %>
 
-<%/* FOUR FIELDS, EACH LABELLED BY ITS OWN ROW-SCOPED <th> — the same change as
-     PR 372, which carries it alone so it can merge ahead of this one. Keep the
-     two identical; whichever lands second merges cleanly because they are.
+<%/* FOUR FIELDS, EACH LABELLED BY ITS OWN ROW-SCOPED <th>:
 
        Date:   January 15, 2026    Subject:    Sample text
        Order:  1042                Reference:  PO-4471
+
+     It used to be two <thead>/<tbody> pairs — a row of column headers above a
+     row of values, twice. That markup said these were COLUMNS of a grid, which
+     they never were: there is one date, one subject, one order number and one
+     reference, and a column header claims to head a series. `scope="row"` says
+     what is actually true, and it halves the block from four lines to two.
+
+     The label cells keep their `<col>` widths: `table-layout: fixed` sizes a
+     table from its first row, and a fixed width on the label columns is what
+     keeps the Subject/Reference pair opening on `--label-col` — the same edge
+     the items grid gives its description column. See styles/quote.css.
 
      An empty cell, not an absent one: under `table-layout: fixed` a short row
      leaves a real trailing gap rather than being absorbed. */%>
