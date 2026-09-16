@@ -152,15 +152,20 @@ let headerPending = destinationDetail;
              actually happens rather than naming a column: Delivery or In Store
              Pickup on the way out, Pickup or In Store Return on the way back.
 
-             ONE ROW when the two legs are the SAME leg — same place, same
+             ONE CELL when the two legs are the SAME leg — same place, same
              contact, same instructions, compared as RENDERED text so a pair
              carrying identical values under a different key order still reads as
-             one place (core#87 measured that trap at 6.5%). Its label is the
-             DELIVERY side, because that is the leg the reader acts on first —
-             except when both ends are in store, where neither In Store Pickup nor
-             In Store Return is the whole truth and the row reads In Store. A
-             quote with no collection leg at all takes that same single row: a
-             sale is handed over and never comes back.
+             one place (core#87 measured that trap at 6.5%). The end label goes
+             with the second cell: there is one place, so a second label naming
+             the way back would describe a journey the row is not showing.
+
+             The label that remains is NOT a legend value. In Store Pickup and
+             In Store Return each name ONE leg, and this row is both of them at
+             once, so it reads Delivery: or In Store: — In Store: only when BOTH
+             ends are in store, and Delivery: as soon as either end is not, since
+             a delivery to the place is the fact the reader acts on. A quote with
+             no collection leg at all takes the same single cell: a sale is
+             handed over and never comes back.
 
              THE DATE LABEL SAYS WHETHER THERE IS ANYTHING TO TELL APART. With a
              charge window that differs from the active one the rows are Active:
@@ -205,12 +210,13 @@ let headerPending = destinationDetail;
           const legKey = (ep) => [placeName(ep), addressText(ep), contactText(ep), instructionsText(ep)].join("|");
           const legend = u.getDestinationsLegend([dest]);
           const sameLeg = !hasCollection || legKey(dest.collection) === legKey(dest.delivery);
-          // BOTH ENDS IN STORE is the one case neither legend value describes on
-          // its own: the goods are collected and returned over the same counter,
-          // so the collapsed row is In Store rather than In Store Pickup.
+          // BOTH ENDS, not either: the collapsed cell is one place standing for
+          // the whole movement, so it reads In Store: only when nothing leaves
+          // the counter in either direction. One end off the counter makes it a
+          // delivery, and Delivery: is what the reader acts on.
           const inStoreBoth = Boolean(dest.customer_collecting && dest.customer_returning);
           const legRows = sameLeg
-            ? [{ label: inStoreBoth ? "In Store" : legend.start, ep: dest.delivery }]
+            ? [{ label: inStoreBoth ? "In Store:" : "Delivery:", ep: dest.delivery }]
             : [{ label: legend.start, ep: dest.delivery }, { label: legend.end, ep: dest.collection }];
           const clock = () => it.icons.svg("clock", { size: 9 });
         %>
