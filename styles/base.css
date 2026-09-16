@@ -584,11 +584,11 @@ th.center, td.center {
   padding-right: 1.2em;
 }
 
-/* The SECOND label on a row, where both legs sit side by side: it needs air
-   between it and the address block on its left, which the first label does not
-   (that one opens at the page edge). `td + th` names exactly the label that has
-   something before it, so a collapsed one-leg row is untouched. */
-#items .destination-detail td + th {
+/* The SECOND end of the movement, where the two differ: it needs air between it
+   and the block on its left. `td + td` names exactly the cell that has another
+   before it, so a collapsed row — one cell spanning both columns — is
+   untouched. */
+#items .destination-detail td + td {
   padding-left: 2em;
 }
 

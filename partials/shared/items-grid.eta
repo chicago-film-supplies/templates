@@ -212,38 +212,37 @@ let headerPending = destinationDetail;
           // different key order are the same place to a reader (core#87
           // measured that at 6.5%), and a second row repeating it is noise.
           const legKey = (ep) => [placeName(ep), addressText(ep), contactText(ep), instructionsText(ep)].join("|");
-          const legend = u.getDestinationsLegend([dest]);
           const sameLeg = !hasCollection || legKey(dest.collection) === legKey(dest.delivery);
-          // BOTH ENDS, not either: the collapsed cell is one place standing for
-          // the whole movement, so it reads In Store: only when nothing leaves
-          // the counter in either direction. One end off the counter makes it a
-          // delivery, and Delivery: is what the reader acts on.
+          // ONE LABEL FOR THE MOVEMENT, never one per leg. It names what happens
+          // rather than which column you are looking at: In Store: only when
+          // nothing leaves the counter in either direction, and Delivery: as
+          // soon as one end does. The second cell is the other end of the SAME
+          // movement, so labelling it again would say the row is two things.
+          //
+          // `getDestinationsLegend` is deliberately NOT read here: its values
+          // (In Store Pickup, Pickup, In Store Return) each name ONE leg, which
+          // is the shape this row stopped having.
           const inStoreBoth = Boolean(dest.customer_collecting && dest.customer_returning);
-          const legRows = sameLeg
-            ? [{ label: inStoreBoth ? "In Store" : "Delivery", ep: dest.delivery }]
-            : [{ label: legend.start, ep: dest.delivery }, { label: legend.end, ep: dest.collection }];
+          const sectionLabel = inStoreBoth ? "In Store" : "Delivery";
+          const legEps = sameLeg ? [dest.delivery] : [dest.delivery, dest.collection];
           const clock = () => it.icons.svg("clock", { size: 9 });
         %>
         <tr class="destination-section">
           <td class="wide" colspan="<%= columnCount %>">
             <table class="destination-detail">
               <tbody>
-                <%/* BOTH LEGS ON ONE ROW, each introduced by its own label:
-                     [Delivery][where] [Pickup][where]. The label column and the
-                     date labels below it are the same column, so those two share
-                     a width by construction; the second label column is sized by
-                     its own content, which is a legend value of much the same
-                     length.
+                <%/* ONE LABEL, THEN THE ENDS: [Delivery:][where from][where to].
+                     The second cell appears only when the two ends differ; when
+                     they do not, the first spans both and the row reads as one
+                     place, which it is.
 
-                     The date rows span the remaining three columns, so the dates
-                     read as one line rather than being cut at the leg boundary —
-                     they describe the whole movement, not either end of it.
-
-                     ONE LEG collapses to a single label and a cell spanning all
-                     three, so the table stays rectangular either way. */%>
+                     The date rows span the same two content columns, so a date
+                     line reads whole rather than being cut at the boundary
+                     between the ends. Three columns either way, so the table
+                     stays rectangular. */%>
                 <tr>
-                  <% legRows.forEach(function (leg) { %>
-                  <th scope="row"><%= leg.label %>:</th>
+                  <th scope="row"><%= sectionLabel %>:</th>
+                  <% legEps.forEach(function (ep) { %>
                   <%/* ONE LINE, and it has to be. The name is a LINE of its own —
                        a venue name and an address are two facts, and run together
                        they read as one string that wraps wherever the column
@@ -251,12 +250,12 @@ let headerPending = destinationDetail;
                        whitespace in the output, and a trailing run of it can wrap
                        to an empty line box that reads as a blank line under the
                        leg. The line is long; the alternative is invisible. */%>
-                  <td<% if (legRows.length === 1) { %> colspan="3"<% } %>><% if (placeName(leg.ep)) { %><%= placeName(leg.ep) %><br><% } %><%= addressText(leg.ep) %><% if (contactText(leg.ep)) { %><br><%= contactText(leg.ep) %><% } %><% if (instructionsText(leg.ep)) { %><br><%= instructionsText(leg.ep) %><% } %></td>
+                  <td<% if (legEps.length === 1) { %> colspan="2"<% } %>><% if (placeName(ep)) { %><%= placeName(ep) %><br><% } %><%= addressText(ep) %><% if (contactText(ep)) { %><br><%= contactText(ep) %><% } %><% if (instructionsText(ep)) { %><br><%= instructionsText(ep) %><% } %></td>
                   <% }) %>
                 </tr>
                 <tr class="date-row">
                   <th scope="row"><% if (showCharged) { %>Active<% } else { %>Dates<% } %>:</th>
-                  <td colspan="3">
+                  <td colspan="2">
                     <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
                     <% if (hasCollection) { %>
                     <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %>
@@ -270,7 +269,7 @@ let headerPending = destinationDetail;
                   <th scope="row">Charged:</th>
                   <%/* The one label whose colon is IN the string, because there
                        is no branch to put it outside of. Same convention. */%>
-                  <td colspan="3">
+                  <td colspan="2">
                     <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
                     <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
                   </td>
