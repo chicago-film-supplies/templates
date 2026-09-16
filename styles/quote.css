@@ -234,18 +234,19 @@ html {
   border-bottom: 1px solid #eee;
 }
 
-/* NO RULE UNDER THE DATES/DESTINATIONS HEADER — the items grid keeps its own.
+/* THE DATES/DESTINATIONS HEADER RULE, IN THE ITEMS TABLE GREY.
 
-   `thead th` in `styles/base.css` gives every header row a rule under it, which
-   is right where a header heads a GRID of rows. This family draws one dates
-   table per leg (quote.eta), so that rule repeated down the page under
-   three-cell header rows that head an address block rather than a grid, and the
-   page read as a stack of small tables.
+   `thead th` in `styles/base.css` draws a black rule under every header row. It
+   was removed here once, when the rules on this page were black and one dates
+   table per leg (quote.eta) stacked a heavy line every few rows. With every
+   items-table rule now light grey, the header rule reads as the same quiet
+   separator, so it is back — recoloured rather than restated, so its width and
+   style still come from the shared sheet.
 
-   Scoped to this sheet, not lifted into the shared one: the invoice, the pick
-   sheet and the packing list each render ONE #destinations table at the top of
-   the page, where the rule still separates a header from what it heads. The
-   repetition is what makes it wrong, and the repetition is this family's. */
+   Kept in step with the items rules above deliberately: two greys for two
+   kinds of header on one page would read as a distinction the page does not
+   make. `#destinations thead th` outranks the bare `thead th` it recolours.
+   Scoped to this sheet; the other families keep the shared black rule. */
 #destinations thead th {
-  border-bottom: 0;
+  border-bottom-color: #ccc;
 }
