@@ -452,8 +452,16 @@ th.center, td.center {
    (items-grid.eta), and a bare `#items tr:last-child td` matches the last row
    of THAT table too — drawing a closing rule in the middle of the grid, under
    whichever date line came last in the section. The child combinators say what
-   this rule always meant: the last row of the items table itself. */
-#items > table > tbody > tr:last-child > td {
+   this rule always meant: the last row of the items table itself.
+
+   ⚠️ BOTH ROW GROUPS, because `tr:last-child` never meant `tbody`. The aging
+   report closes its grid with a <tfoot> (see `#items tfoot` in
+   `styles/aging-report.css`), and `tr:last-child` matched the last row of EVERY
+   row group — so a tbody-only rewrite silently dropped the rule under its Total
+   row. Measured on PR 367: 3 of its 4 fixtures moved while every other family
+   matched, which is exactly the shape of a rule that only one family emits. */
+#items > table > tbody > tr:last-child > td,
+#items > table > tfoot > tr:last-child > td {
   border-bottom: 1px solid #121212;
 }
 
