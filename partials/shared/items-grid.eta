@@ -167,8 +167,15 @@ let headerPending = destinationDetail;
              the packing list. Keep the two in step until they are reconciled. */%>
         <%
           const d = dest.dates || {};
-          const showCharged = hasCollection && Boolean(d.charge_start && d.charge_end) &&
+          // One charged line per window (one window is the single range it always
+          // was), plus a total line when there are two or more. The total is in
+          // BILLABLE days, Σ max(days, 5), so it agrees with the money.
+          const windows = d.charge_windows || [];
+          const showCharged = hasCollection && windows.length > 0 &&
             !u.isSameAsDeliveryDates(d);
+          // A 0-day window is valid, and `formatChargeDays` throws on 0.
+          const chargePeriod = (n) => n > 0 ? it.dates.formatChargeDays(n).periodLabel : "0 days";
+          const chargedLineCount = showCharged ? windows.length + (windows.length > 1 ? 1 : 0) : 0;
           const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
           const addressText = (ep) => {
             if (!ep || !ep.address) return "";
@@ -195,7 +202,7 @@ let headerPending = destinationDetail;
             ? instructionsText(dest.collection) : "";
           const hasContactLine = contactText(dest.delivery) !== "" || returnContact !== "";
           const hasInstructionsLine = instructionsText(dest.delivery) !== "" || returnInstructions !== "";
-          const lineCount = 2 + (hasContactLine ? 1 : 0) + (hasInstructionsLine ? 1 : 0) + (showCharged ? 1 : 0);
+          const lineCount = 2 + (hasContactLine ? 1 : 0) + (hasInstructionsLine ? 1 : 0) + chargedLineCount;
           const split = hasCollection && (returnPlace !== "" || returnContact !== "" || returnInstructions !== "");
           const clock = () => it.icons.svg("clock", { size: 9 });
         %>
@@ -220,11 +227,17 @@ let headerPending = destinationDetail;
                 <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
               </div>
               <% if (showCharged) { %>
-              <div class="start"><span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %></div>
+              <% windows.forEach((w, wi) => { %>
+              <div class="start"><% if (wi === 0) { %><span class="bold">Charged:</span> <% } %><%= it.dates.formatChicagoWeekdayDate(w.start) %></div>
               <div class="end">
-                <%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
-                <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
+                <%= it.dates.formatChicagoWeekdayDate(w.end) %>
+                <span class="destination-days"><%~ clock() %><%= chargePeriod(w.days) %></span>
               </div>
+              <% }) %>
+              <% if (windows.length > 1) { %>
+              <div class="start"><span class="bold">Total charged</span></div>
+              <div class="end"><span class="destination-days"><%~ clock() %><%= chargePeriod(it.dates.billableDays(windows.map((w) => w.days))) %></span></div>
+              <% } %>
               <% } %>
             </div>
             <% } else { %>
@@ -241,10 +254,15 @@ let headerPending = destinationDetail;
                 <% } %>
               </div>
               <% if (showCharged) { %>
+              <% windows.forEach((w, wi) => { %>
               <div>
-                <span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
-                <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
+                <% if (wi === 0) { %><span class="bold">Charged:</span> <% } %><%= it.dates.formatChicagoWeekdayDate(w.start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(w.end) %>
+                <span class="destination-days"><%~ clock() %><%= chargePeriod(w.days) %></span>
               </div>
+              <% }) %>
+              <% if (windows.length > 1) { %>
+              <div><span class="bold">Total charged</span><span class="destination-days"><%~ clock() %><%= chargePeriod(it.dates.billableDays(windows.map((w) => w.days))) %></span></div>
+              <% } %>
               <% } %>
             </div>
             <% } %>
