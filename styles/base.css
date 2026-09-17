@@ -477,6 +477,13 @@ th.center, td.center {
   padding: var(--items-row) 0 4px;
 }
 
+/* A destination that FOLLOWS another destination's lines opens two blank rows
+   below them, not one, so the legs read as separate blocks. The first section
+   in the grid has nothing above it to separate from and keeps the one row. */
+#items tbody tr.destination-section:not(:first-child) td {
+  padding-top: calc(2 * var(--items-row));
+}
+
 /* THE HEADER ROW HAS TWO HOMES — see partials/shared/items-grid.eta. As a
    <thead> it is styled by the `thead th` rule above; repeated inside <tbody>,
    one per destination, it needs the same rule under it and must not be left as
