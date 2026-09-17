@@ -73,7 +73,12 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
     // `dest.dates.*` at the call site is what made the guard and the read
     // disagree.
     const hasActiveWindow = Boolean(d.delivery_start && d.collection_start);
-    const hasChargeWindow = Boolean(d.charge_start && d.charge_end);
+    // The charge period is the pair's `charge_windows` (always at least one on a
+    // stored pair). One window renders exactly as the single charge range always
+    // did; two or more list one row per window, each with its own days, and a
+    // total of Σ days beneath them.
+    const windows = d.charge_windows || [];
+    const hasChargeWindow = windows.length > 0;
     // A charge WINDOW is a span, and a span needs an end. With no rental line
     // the end date and the duration are both suppressed below, which would
     // leave "Dates Charged:" labelling a lone start date — the same
@@ -178,7 +183,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
            the instructions columns slide. */%>
       <td class="date"<% if (!hasCollection) { %> colspan="4"<% } %>>
       <% if (showCharged) { %>
-      <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %>
+      <%= it.dates.formatChicagoWeekdayDate(windows[0].start) %>
       <% } %>
       </td>
       <% if (hasCollection) { %>
@@ -187,13 +192,13 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
       </td>
       <td class="date">
       <% if (showCharged) { %>
-      <%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
+      <%= it.dates.formatChicagoWeekdayDate(windows[0].end) %>
       <% } %>
       </td>
       <td>
         <!-- Charge window — only when it differs from delivery/collection -->
-        <% if (showCharged && d.days_charged != null) { %>
-        <%= it.dates.formatChargeDays(d.days_charged).periodLabel %>
+        <% if (showCharged) { %>
+        <%= it.dates.formatChargeDays(windows[0].days).periodLabel %>
         <% } %>
       </td>
       <% } %>
@@ -202,6 +207,27 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
       <td class="address" colspan="<%= returnSpan %>"><%= dest.collection?.instructions ?? "" %></td>
       <% } %>
     </tr>
+<%/* Windows after the first, then the total. `showCharged` implies
+     `hasCollection`, so every row here has the four date cells and both
+     address blocks, left empty to keep the columns aligned. */%>
+<% if (showCharged && windows.length > 1) { %>
+<% windows.slice(1).forEach((w) => { %>
+    <tr>
+      <td class="date"><%= it.dates.formatChicagoWeekdayDate(w.start) %></td>
+      <td class="arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></td>
+      <td class="date"><%= it.dates.formatChicagoWeekdayDate(w.end) %></td>
+      <td><%= it.dates.formatChargeDays(w.days).periodLabel %></td>
+      <td class="address" colspan="<%= deliverySpan %>"></td>
+      <td class="address" colspan="<%= returnSpan %>"></td>
+    </tr>
+<% }) %>
+    <tr>
+      <td colspan="3"><span class="bold">Total Charged: </span></td>
+      <td><%= it.dates.formatChargeDays(it.dates.chargedDays(d)).periodLabel %></td>
+      <td class="address" colspan="<%= deliverySpan %>"></td>
+      <td class="address" colspan="<%= returnSpan %>"></td>
+    </tr>
+<% } %>
   </tbody>
 <% }) %>
 </table>
