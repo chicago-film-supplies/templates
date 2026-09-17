@@ -477,6 +477,13 @@ th.center, td.center {
   padding: var(--items-row) 0 4px;
 }
 
+/* A destination that FOLLOWS another destination's lines opens two blank rows
+   below them, not one, so the legs read as separate blocks. The first section
+   in the grid has nothing above it to separate from and keeps the one row. */
+#items tbody tr.destination-section:not(:first-child) td {
+  padding-top: calc(2 * var(--items-row));
+}
+
 /* THE HEADER ROW HAS TWO HOMES — see partials/shared/items-grid.eta. As a
    <thead> it is styled by the `thead th` rule above; repeated inside <tbody>,
    one per destination, it needs the same rule under it and must not be left as
@@ -533,19 +540,18 @@ th.center, td.center {
   /* FIXED, not max-content: sized to the longest label, In Store Pickup:, so the
      values open on the same edge in every destination section on the page. */
   --dest-label-col: 10rem;
+  /* The air either side of the place arrow. Wider than the 0.4em the date arrows
+     take, because this one separates two whole address blocks rather than two
+     dates on one line. The arrow column is the icon plus one of these a side. */
+  --dest-arrow-gap: 1.2em;
 
   display: grid;
-  grid-template-columns: var(--dest-label-col) fit-content(50%) calc(9px + 0.8em) 1fr;
+  grid-template-columns:
+    var(--dest-label-col)
+    fit-content(50%)
+    calc(9px + 2 * var(--dest-arrow-gap))
+    1fr;
   row-gap: var(--dest-line-gap);
-}
-
-/* THE PLACE AND THE WHEN ARE TWO FACTS, so the dates open a block of their own —
-   the same blank row that separates one destination from the next, less the gap
-   the grid already puts between every pair of lines. Both cells of the row carry
-   it: a grid row is as tall as its tallest item, so marking only one would move
-   that line and leave the other where it was. */
-#items .destination-grid .date-line {
-  margin-top: calc(var(--items-row) - var(--dest-line-gap));
 }
 
 /* No collection leg: no end column. */
@@ -594,12 +600,17 @@ th.center, td.center {
    end places sit 0.4em from it as the start and end dates do. The column is as
    wide as the arrow, so on the lines below it is the gap between the sides.
 
-   ⚠️ A FIXED width (the 9px icon plus its two 0.4em margins), not
+   ⚠️ A FIXED width (the 9px icon plus its two `--dest-arrow-gap` margins), not
    `max-content`: the date lines span this column, and Blink hands a spanning
    item's leftover width to a `max-content` track before a `fit-content` one,
    so the arrow column grew and opened a gap after the arrow on some sections. */
 #items .destination-grid .arrow {
   grid-column: 3;
+}
+
+#items .destination-grid .arrow .inline-arrow svg {
+  margin-left: var(--dest-arrow-gap);
+  margin-right: var(--dest-arrow-gap);
 }
 
 #items .destination-days {

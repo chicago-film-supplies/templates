@@ -134,7 +134,8 @@ let headerPending = destinationDetail;
         <%/* The OrderDetail destination divider, as a PDF: ONE row holding a
              three-column grid, directly above the lines delivered there.
 
-               Delivery:  place - address ->   collection place - address (only if the sides differ)
+               Delivery:  place name      ->   collection place name (only if the sides differ)
+                          address              collection address
                           contact - phone         collection contact - phone
                           instructions            collection instructions
                Active:    start -> end (clock) duration
@@ -175,7 +176,10 @@ let headerPending = destinationDetail;
               (a.country_name && a.country_name !== "United States") ? a.country_name : null,
             ].filter(Boolean).join(", ");
           };
-          const placeText = (ep) => [(ep && ep.address && ep.address.name) || "", addressText(ep)].filter(Boolean).join(" - ");
+          // The place NAME and its ADDRESS are two lines. `placeText` joins them
+          // only to compare the two sides; `placeLines` is what prints.
+          const placeLines = (ep) => [(ep && ep.address && ep.address.name) || "", addressText(ep)].filter(Boolean);
+          const placeText = (ep) => placeLines(ep).join("\n");
           const contactText = (ep) => {
             const c = ep && ep.contact;
             if (!c) return "";
@@ -204,10 +208,10 @@ let headerPending = destinationDetail;
           <td class="wide" colspan="<%= columnCount %>">
             <div class="destination-grid<% if (!hasCollection) { %> one-leg<% } %>">
               <div class="label bold"><%= legLabel %>:</div>
-              <div class="start"><%= placeText(dest.delivery) %></div>
+              <div class="start"><% placeLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></div>
               <% if (showReturn) { %>
               <div class="arrow"><span class="inline-arrow"><%~ arrow() %></span></div>
-              <div class="end"><%= placeText(dest.collection) %></div>
+              <div class="end"><% placeLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></div>
               <% } %>
               <% if (hasContactLine) { %>
               <div class="label"></div>
@@ -219,8 +223,8 @@ let headerPending = destinationDetail;
               <div class="start"><%= instructionsText(dest.delivery) %></div>
               <% if (showReturn) { %><div class="end"><%= returnInstructions %></div><% } %>
               <% } %>
-              <div class="label bold date-line"><% if (showCharged) { %>Active:<% } else { %>Dates:<% } %></div>
-              <div class="span date-line">
+              <div class="label bold"><% if (showCharged) { %>Active:<% } else { %>Dates:<% } %></div>
+              <div class="span">
                 <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
                 <% if (hasCollection) { %>
                 <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ arrow() %></span><% } %>
