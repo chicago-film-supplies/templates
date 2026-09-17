@@ -93,6 +93,10 @@ const headerRow = '<tr class="column-headers">' + [
 // resolves to no section pays for it first, so a grid whose rows do not open
 // with a destination is still headed exactly once.
 let headerPending = destinationDetail;
+
+// The previous destination section as RENDERED TEXT, so a consecutive repeat of
+// the same movement prints its dates alone. Null until the first section.
+let prevDestKey = null;
 %>
 <section id="items">
   <table>
@@ -136,6 +140,9 @@ let headerPending = destinationDetail;
 
                Delivery:  place name      ->   collection place name (only if the sides differ)
                           address              collection address
+
+             A destination REPEATING the one before it prints the date lines
+             alone — both sides have to match for that.
                           contact - phone         collection contact - phone
                           instructions            collection instructions
                Active:    start -> end (clock) duration
@@ -207,10 +214,23 @@ let headerPending = destinationDetail;
           const hasInstructionsLine = instructionsText(dest.delivery) !== "" || returnInstructions !== "";
           const arrow = () => it.icons.svg("arrow-right", { size: 9 });
           const clock = () => it.icons.svg("clock", { size: 9 });
+          // A DESTINATION THAT REPEATS THE ONE BEFORE IT SHOWS ITS DATES ONLY.
+          // An order can split one venue across several legs that differ only by
+          // when, and reprinting the address, the contact and the instructions
+          // each time says nothing the reader did not just read. BOTH sides have
+          // to match, so a leg coming back to a different place still prints in
+          // full. Compared as rendered text, like showReturn above.
+          const destKey = [
+            placeText(dest.delivery), contactText(dest.delivery), instructionsText(dest.delivery),
+            placeText(dest.collection), contactText(dest.collection), instructionsText(dest.collection),
+          ].join("|");
+          const sameAsPrev = destKey === prevDestKey;
+          prevDestKey = destKey;
         %>
         <tr class="destination-section">
           <td class="wide" colspan="<%= columnCount %>">
             <div class="destination-grid<% if (!hasCollection) { %> one-leg<% } %>">
+              <% if (!sameAsPrev) { %>
               <div class="label bold"><%= legLabel %>:</div>
               <div class="start"><% placeLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></div>
               <% if (showReturn) { %>
@@ -226,6 +246,7 @@ let headerPending = destinationDetail;
               <div class="label"></div>
               <div class="start"><%= instructionsText(dest.delivery) %></div>
               <% if (showReturn) { %><div class="end"><%= returnInstructions %></div><% } %>
+              <% } %>
               <% } %>
               <div class="label bold"><% if (showCharged) { %>Active:<% } else { %>Dates:<% } %></div>
               <div class="span">
