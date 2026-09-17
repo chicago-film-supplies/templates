@@ -88,17 +88,19 @@ const contactLine = (ep) => {
   </thead>
   <tbody>
     <tr>
-      <%/* ONE DATE CELL SPANNING THE THREE ADDRESS ROWS, holding the active
-           window only. The charge window is NOT stacked in here: it is its own
-           row below, labelled inline, so the heading stays a plain Dates: and
-           the page never has to explain what an Active window is. */%>
-      <td class="dates" colspan="<%= dateSpan %>" rowspan="3"><div><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %><% if (hasCollection) { %><% if (hasActiveWindow) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %><% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %><% if (d.days_active != null) { %><span class="days"><%~ it.icons.svg("clock", { size: 9 }) %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %><% } %></div></td>
+      <%/* THE DATES COLUMN RUNS BESIDE THE ADDRESS ROWS: the active window
+           beside the address, and the charge window, labelled inline, in ONE
+           cell spanning the contact and instructions rows. The heading stays a
+           plain Dates:, so the page never has to explain an Active window. When
+           the windows match that cell is empty. */%>
+      <td class="dates" colspan="<%= dateSpan %>"><div><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %><% if (hasCollection) { %><% if (hasActiveWindow) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %><% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %><% if (d.days_active != null) { %><span class="days"><%~ it.icons.svg("clock", { size: 9 }) %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %><% } %></div></td>
       <td class="address" colspan="<%= startSpan %>"><% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></td>
       <% if (hasCollection) { %>
       <td class="address" colspan="<%= returnSpan %>"><% addrLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></td>
       <% } %>
     </tr>
     <tr>
+      <td class="dates" colspan="<%= dateSpan %>" rowspan="2"><% if (showCharged) { %><span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %><% if (d.days_charged != null) { %><span class="days"><%~ it.icons.svg("clock", { size: 9 }) %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %><% } %></td>
       <td class="address" colspan="<%= startSpan %>"><%= contactLine(dest.delivery) %></td>
       <% if (hasCollection) { %>
       <td class="address" colspan="<%= returnSpan %>"><%= contactLine(dest.collection) %></td>
@@ -110,18 +112,6 @@ const contactLine = (ep) => {
       <td class="address" colspan="<%= returnSpan %>"><%= dest.collection?.instructions ?? "" %></td>
       <% } %>
     </tr>
-    <%/* THE CHARGE WINDOW IS ITS OWN ROW, after the address rows, and only when
-         it differs from the active window. Label and dates share one line. The
-         empty address cells keep the row on the same column grid. */%>
-    <% if (showCharged) { %>
-    <tr class="charged">
-      <td class="dates" colspan="<%= dateSpan %>"><span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %><% if (d.days_charged != null) { %><span class="days"><%~ it.icons.svg("clock", { size: 9 }) %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %></td>
-      <td class="address" colspan="<%= startSpan %>"></td>
-      <% if (hasCollection) { %>
-      <td class="address" colspan="<%= returnSpan %>"></td>
-      <% } %>
-    </tr>
-    <% } %>
   </tbody>
 <% }) %>
 </table>
