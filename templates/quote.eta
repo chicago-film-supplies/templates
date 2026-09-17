@@ -549,8 +549,8 @@ const detailsTrailSpan = addressColumnCount - addressBoundary;
 <%/* ONE DATES/DESTINATIONS TABLE PER LEG, each directly above the lines scoped
      to it, rather than one table for every destination at the top of the page.
 
-     The table is the same `partials/shared/destinations.eta` the invoice and
-     the pick sheet render, handed ONE pair instead of all of them — so the
+     The table is `partials/quote/destinations.eta`, the quote-owned copy of
+     the shared table the invoice and the pick sheet render, handed ONE pair — so the
      three blocks a reader already knows (the dates block at `--label-col`, the
      delivery address, the collection address) keep their widths and the page
      grid is untouched. `deliverySpan` and `returnSpan` are per-TABLE facts, not
