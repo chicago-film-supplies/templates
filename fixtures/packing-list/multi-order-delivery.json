@@ -73,7 +73,14 @@
                 "_nanoseconds": 0
               },
               "days_active": 60,
-              "days_charged": 59
+              "days_charged": 59,
+              "charge_windows": [
+                {
+                  "start": "2026-07-30T09:00:00.000-05:00",
+                  "end": "2026-10-22T15:00:00.000-05:00",
+                  "days": 59
+                }
+              ]
             },
             "delivery": {
               "uid": "vTn8CTAwwJHEJZLBzsOw",
@@ -336,7 +343,14 @@
                 "_nanoseconds": 0
               },
               "days_active": 19,
-              "days_charged": 19
+              "days_charged": 19,
+              "charge_windows": [
+                {
+                  "start": "2026-08-31T09:00:00.000-05:00",
+                  "end": "2026-09-25T15:00:00.000-05:00",
+                  "days": 19
+                }
+              ]
             },
             "delivery": {
               "uid": "IomudCeD1TEzkkbJxfbY",
@@ -1687,7 +1701,14 @@
                 "_nanoseconds": 0
               },
               "days_active": 37,
-              "days_charged": 37
+              "days_charged": 37,
+              "charge_windows": [
+                {
+                  "start": "2026-09-01T09:00:00.000-05:00",
+                  "end": "2026-10-23T15:00:00.000-05:00",
+                  "days": 37
+                }
+              ]
             },
             "delivery": {
               "uid": "vTn8CTAwwJHEJZLBzsOw",
