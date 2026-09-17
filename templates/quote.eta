@@ -49,7 +49,7 @@ const dividerUids = new Set(items.filter(isDivider).map(i => i.uid));
 //
 // Consequence worth knowing: the Total column no longer sums to
 // `totals.total_cents` — it sums to `subtotal_discounted + tax`, and the totals
-// block adds the fee on top. That is the ordinary shape of a quote.
+// block adds the fee on top. That is the ordinary shape of a quote
 const isDocumentFee = (i) => i.type === "transaction_fee";
 const shownLineItems = lineItems.filter(i => !isDocumentFee(i));
 
