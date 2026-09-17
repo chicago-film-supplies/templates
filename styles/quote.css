@@ -38,8 +38,26 @@ html {
   width: 6rem;
 }
 
-#details col.label + col {
+#details col:nth-child(2) {
   width: calc(var(--label-col) - 6rem);
+}
+
+/* ⚠️ THE COLGROUP ONLY OWNS THE WIDTHS IF THE CELLS CLAIM NONE. Under
+   `table-layout: fixed` a column with no `<col>` width takes the width of its
+   FIRST-ROW cell, and every cell here inherits `th, td { width: 6rem }` from the
+   shared sheet — so the fourth column got 6rem, the four summed short of the
+   table, and Chromium spread the remainder over ALL of them, pushing the
+   Subject/Reference column right. Measured in print against the items grid Type
+   column edge: +17.6pt at 7 and 9 columns and +3.5pt at 8. Clearing the cell
+   widths leaves the fourth column to take exactly the remainder: +0.0pt at 7, 8
+   and 9.
+
+   The rule this replaced, `col.label + col`, matched the FOURTH column as well
+   as the second. That made the sum land near the table width at 8 columns, so
+   the misalignment looked fixed on the commonest quote and was not. */
+#details th,
+#details td {
+  width: auto;
 }
 
 /* The quote-only half of a rule whose shared half now lives in
