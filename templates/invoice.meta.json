@@ -61,6 +61,11 @@
       "params": {
         "hide_zero_priced_components": true
       }
+    },
+    {
+      "slug": "multi-charge-window",
+      "label": "Three charge windows on one pair",
+      "description": "SYNTHETIC, and deliberately so: measured 2026-09-17, prod holds no destination pair with 2+ charge windows, so nothing can be captured. Do not delete it as unreal. It is the only fixture on any family that renders the 2+ window branch of `partials/shared/destinations.eta` and the billable-days rule (core#114). Built from `rental-discount-taxed` (prod invoice 1902, already sanitized) with its one 19-day window split into [3, 4, 2] days inside the same 4/22–5/16 possession. Expect one Dates Charged row per window with its own day count, then Total Charged `3 weeks`: billable days are Σ max(d, 5) = 15, NOT the 9 days actually charged. Both rental lines store chargeable_days 15, so the Duration column reads `3 weeks` and agrees with the money: 2 × $6.00 × 15/5 = $36.00, 11% tax $3.96, total $39.96. The 100%-discounted shot bag bills $12.00 before discount. If Total Charged and the line Duration ever disagree, or the total shows 9 days, the partial has drifted from the pricer. Legacy `days_charged` is set to 9 and `charge_start`/`charge_end` to the envelope; the partials must not read them (templates#376)."
     }
   ],
   "render": {
