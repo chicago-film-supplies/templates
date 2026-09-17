@@ -187,7 +187,11 @@ let headerPending = destinationDetail;
             return [c.name, phone].filter(Boolean).join(" - ");
           };
           const instructionsText = (ep) => (ep && ep.instructions) || "";
-          const legLabel = u.getDestinationsLegend([dest]).start || "Delivery";
+          // In Store, not the legend value In Store Pickup: this label names the
+          // movement, and the Pickup half is the leg — which the places either
+          // side of the arrow already say.
+          const legLabel = (u.getDestinationsLegend([dest]).start || "Delivery")
+            .replace("In Store Pickup", "In Store");
           // The collection side (arrow, place, contact, instructions) only when it
           // differs from the delivery side in ANY of the three, compared as
           // RENDERED text so the same address under a different key order still
