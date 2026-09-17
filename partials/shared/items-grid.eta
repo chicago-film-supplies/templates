@@ -195,8 +195,9 @@ let headerPending = destinationDetail;
           <td class="wide" colspan="<%= columnCount %>">
             <div class="destination-grid<% if (!hasCollection) { %> one-leg<% } %>">
               <div class="label bold"><%= legLabel %>:</div>
-              <div class="start"><%= placeText(dest.delivery) %><% if (hasCollection) { %><span class="inline-arrow trail"><%~ arrow() %></span><% } %></div>
+              <div class="start"><%= placeText(dest.delivery) %></div>
               <% if (hasCollection) { %>
+              <div class="arrow"><span class="inline-arrow"><%~ arrow() %></span></div>
               <div class="end"><%= placeText(dest.collection) %></div>
               <% } %>
               <% if (hasContactLine) { %>

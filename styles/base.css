@@ -530,12 +530,11 @@ th.center, td.center {
   --dest-line-gap: 2px;
   /* FIXED, not max-content: sized to the longest label, In Store Pickup:, so the
      values open on the same edge in every destination section on the page. */
-  --dest-label-col: 8.5rem;
+  --dest-label-col: 10rem;
 
   display: grid;
-  grid-template-columns: var(--dest-label-col) fit-content(42%) fit-content(42%);
+  grid-template-columns: var(--dest-label-col) fit-content(42%) max-content fit-content(42%);
   justify-content: start;
-  column-gap: 2em;
   row-gap: var(--dest-line-gap);
 }
 
@@ -562,7 +561,7 @@ th.center, td.center {
 }
 
 #items .destination-grid .end {
-  grid-column: 3;
+  grid-column: 4;
 }
 
 #items .destination-grid .span {
@@ -589,9 +588,12 @@ th.center, td.center {
   margin-right: 0.4em;
 }
 
-/* The arrow that CLOSES the start place has the column gap after it already. */
-#items .destination-grid .inline-arrow.trail svg {
-  margin-right: 0;
+/* THE PLACE ARROW HAS ITS OWN COLUMN, spaced exactly like the date arrows: the
+   same `.inline-arrow` margins either side and no column gap, so the start and
+   end places sit 0.4em from it as the start and end dates do. The column is as
+   wide as the arrow, so on the lines below it is the gap between the sides. */
+#items .destination-grid .arrow {
+  grid-column: 3;
 }
 
 #items .destination-days {
