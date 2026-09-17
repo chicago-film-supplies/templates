@@ -152,6 +152,30 @@ html {
   border-bottom-color: #ccc;
 }
 
+/* NO VERTICAL PADDING BETWEEN ITEM LINES — between, and nowhere else.
+
+   `#items th, #items td` in `styles/base.css` gives every item cell 4px above
+   and below, so consecutive lines sat 8px apart. Zeroing the top of every row
+   but the first and the bottom of every row but the last removes exactly that,
+   and leaves the two paddings that keep text off the rules: below the column
+   header rule, and above the closing rule. Neither restates the 4px, so a change
+   to it in the shared sheet still reaches both.
+
+   Measured in print on `multi-dest`: the row pitch went from 14.25pt to 8.25pt,
+   one line of text; the last row still sits 17.58pt above the closing rule,
+   exactly where it did.
+
+   ⚠️ The blank row between legs is `--items-row` from the shared sheet, which
+   still assumes the padded pitch (1.2em + 8px), so that gap is now a little
+   more than one of these tighter rows. */
+#items tbody tr:not(:first-child) td {
+  padding-top: 0;
+}
+
+#items tbody tr:not(:last-child) td {
+  padding-bottom: 0;
+}
+
 /* #details SPANS THE FULL GRID in this family, so its columns are the items
    grid columns and the Subject/Reference pair can open on the start address
    edge by colspan (quote.eta). The shared sheet puts #details in grid column 1
