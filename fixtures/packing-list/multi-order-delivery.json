@@ -62,18 +62,7 @@
                 "_seconds": 1792785600,
                 "_nanoseconds": 0
               },
-              "charge_start": "2026-07-30T09:00:00.000-05:00",
-              "charge_start_fs": {
-                "_seconds": 1785420000,
-                "_nanoseconds": 0
-              },
-              "charge_end": "2026-10-22T15:00:00.000-05:00",
-              "charge_end_fs": {
-                "_seconds": 1792699200,
-                "_nanoseconds": 0
-              },
               "days_active": 60,
-              "days_charged": 59,
               "charge_windows": [
                 {
                   "start": "2026-07-30T09:00:00.000-05:00",
@@ -332,18 +321,7 @@
                 "_seconds": 1790366400,
                 "_nanoseconds": 0
               },
-              "charge_start": "2026-08-31T09:00:00.000-05:00",
-              "charge_start_fs": {
-                "_seconds": 1788184800,
-                "_nanoseconds": 0
-              },
-              "charge_end": "2026-09-25T15:00:00.000-05:00",
-              "charge_end_fs": {
-                "_seconds": 1790366400,
-                "_nanoseconds": 0
-              },
               "days_active": 19,
-              "days_charged": 19,
               "charge_windows": [
                 {
                   "start": "2026-08-31T09:00:00.000-05:00",
@@ -1690,18 +1668,7 @@
                 "_seconds": 1792785600,
                 "_nanoseconds": 0
               },
-              "charge_start": "2026-09-01T09:00:00.000-05:00",
-              "charge_start_fs": {
-                "_seconds": 1788271200,
-                "_nanoseconds": 0
-              },
-              "charge_end": "2026-10-23T15:00:00.000-05:00",
-              "charge_end_fs": {
-                "_seconds": 1792785600,
-                "_nanoseconds": 0
-              },
               "days_active": 37,
-              "days_charged": 37,
               "charge_windows": [
                 {
                   "start": "2026-09-01T09:00:00.000-05:00",

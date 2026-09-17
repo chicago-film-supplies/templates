@@ -72,18 +72,7 @@
           "_seconds": 1681682400,
           "_nanoseconds": 0
         },
-        "charge_start": "2023-04-13T09:00:00.000-05:00",
-        "charge_start_fs": {
-          "_seconds": 1681394400,
-          "_nanoseconds": 0
-        },
-        "charge_end": "2023-04-16T17:00:00.000-05:00",
-        "charge_end_fs": {
-          "_seconds": 1681682400,
-          "_nanoseconds": 0
-        },
         "days_active": 2,
-        "days_charged": 2,
         "charge_windows": [
           {
             "start": "2023-04-13T09:00:00.000-05:00",
