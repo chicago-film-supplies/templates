@@ -134,41 +134,37 @@ let headerPending = destinationDetail;
         <%/* The OrderDetail destination divider, as a PDF: ONE row holding a
              three-column grid, directly above the lines delivered there.
 
-               delivery place           |       | collection place
-               delivery contact         |       | collection contact
-               delivery instructions    |  ->   | collection instructions
-               [Active:] start          |       | end (clock) duration
-               Charged: start           |       | end (clock) days
+               Delivery:  place - address ->   collection place - address
+                          contact - phone         collection contact - phone
+                          instructions            collection instructions
+               Active:    start -> end (clock) duration
+               Charged:   start -> end (clock) days
 
-             One arrow, vertically centred across every line, relates the whole
-             left column to the whole right column, so the start and end columns
-             line up down the section instead of each line drifting with the
-             length of its own left half.
+             The LABEL column names the movement (`getDestinationsLegend`:
+             Delivery or In Store Pickup) on the place line, and names the window
+             on each date line. The date lines span both address columns, so a
+             window reads start, arrow, end on one line.
 
-             The contact and instructions lines are each omitted when both legs are
-             empty. Charged only shows when the charge window differs from the
-             active one, and then BOTH date lines carry a label, Active: and
-             Charged:, as the manager OrderDetail summary does; with one window
-             there is nothing to tell apart, so neither is labelled. A right-hand place or contact is left
-             blank when it matches the delivery side, compared as RENDERED text,
-             so a pair whose addresses carry the same values under a different
-             key order still reads as one place (core#87 measured that trap at
-             6.5%). With no collection leg there is no right column and no arrow:
-             a sale is handed over and never comes back.
+             The window label is Dates: when there is one window and Active: when
+             a Charged: window follows, so the two are only told apart when there
+             are two. One Charged: line per charge window, and a Total charged
+             line when there are several; the total is in BILLABLE days,
+             Σ max(days, 5), so it agrees with the money.
 
-             ONE COLUMN when the right side would hold nothing but dates, i.e. the
-             collection happens at the same place, with the same contact and
-             instructions: a column of blanks beside a centred arrow says less
-             than the dates do inline. Then each date line reads start, arrow,
-             end on its own, and there is no separate arrow.
+             The contact and instructions lines are each omitted when both legs
+             are empty. With no collection leg there is no right column and no
+             arrow: a sale is handed over and never comes back.
 
              A SECOND COPY of the date rules in partials/shared/destinations.eta,
              deliberately: that table still serves the invoice, the pick sheet and
              the packing list. Keep the two in step until they are reconciled. */%>
         <%
           const d = dest.dates || {};
-          const showCharged = hasCollection && Boolean(d.charge_start && d.charge_end) &&
+          const windows = d.charge_windows || [];
+          const showCharged = hasCollection && windows.length > 0 &&
             !u.isSameAsDeliveryDates(d);
+          // A 0-day window is valid, and `formatChargeDays` throws on 0.
+          const chargePeriod = (n) => n > 0 ? it.dates.formatChargeDays(n).periodLabel : "0 days";
           const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
           const addressText = (ep) => {
             if (!ep || !ep.address) return "";
@@ -179,7 +175,7 @@ let headerPending = destinationDetail;
               (a.country_name && a.country_name !== "United States") ? a.country_name : null,
             ].filter(Boolean).join(", ");
           };
-          const placeText = (ep) => [(ep && ep.address && ep.address.name) || "", addressText(ep)].filter(Boolean).join(" ");
+          const placeText = (ep) => [(ep && ep.address && ep.address.name) || "", addressText(ep)].filter(Boolean).join(" - ");
           const contactText = (ep) => {
             const c = ep && ep.contact;
             if (!c) return "";
@@ -187,67 +183,56 @@ let headerPending = destinationDetail;
             return [c.name, phone].filter(Boolean).join(" - ");
           };
           const instructionsText = (ep) => (ep && ep.instructions) || "";
-          const returnPlace = hasCollection && placeText(dest.collection) !== placeText(dest.delivery)
-            ? placeText(dest.collection) : "";
-          const returnContact = hasCollection && contactText(dest.collection) !== contactText(dest.delivery)
-            ? contactText(dest.collection) : "";
-          const returnInstructions = hasCollection && instructionsText(dest.collection) !== instructionsText(dest.delivery)
-            ? instructionsText(dest.collection) : "";
+          const legLabel = u.getDestinationsLegend([dest]).start || "Delivery";
+          const returnContact = hasCollection ? contactText(dest.collection) : "";
+          const returnInstructions = hasCollection ? instructionsText(dest.collection) : "";
           const hasContactLine = contactText(dest.delivery) !== "" || returnContact !== "";
           const hasInstructionsLine = instructionsText(dest.delivery) !== "" || returnInstructions !== "";
-          const lineCount = 2 + (hasContactLine ? 1 : 0) + (hasInstructionsLine ? 1 : 0) + (showCharged ? 1 : 0);
-          const split = hasCollection && (returnPlace !== "" || returnContact !== "" || returnInstructions !== "");
+          const arrow = () => it.icons.svg("arrow-right", { size: 9 });
           const clock = () => it.icons.svg("clock", { size: 9 });
         %>
         <tr class="destination-section">
           <td class="wide" colspan="<%= columnCount %>">
-            <% if (split) { %>
-            <div class="destination-grid">
+            <div class="destination-grid<% if (!hasCollection) { %> one-leg<% } %>">
+              <div class="label bold"><%= legLabel %>:</div>
               <div class="start"><%= placeText(dest.delivery) %></div>
-              <div class="arrow" style="grid-row: 1 / span <%= lineCount %>"><%~ it.icons.svg("arrow-right", { size: 9 }) %></div>
-              <div class="end"><%= returnPlace %></div>
+              <% if (hasCollection) { %>
+              <div class="arrow"><span class="inline-arrow"><%~ arrow() %></span></div>
+              <div class="end"><%= placeText(dest.collection) %></div>
+              <% } %>
               <% if (hasContactLine) { %>
+              <div class="label"></div>
               <div class="start"><%= contactText(dest.delivery) %></div>
-              <div class="end"><%= returnContact %></div>
+              <% if (hasCollection) { %><div class="end"><%= returnContact %></div><% } %>
               <% } %>
               <% if (hasInstructionsLine) { %>
+              <div class="label"></div>
               <div class="start"><%= instructionsText(dest.delivery) %></div>
-              <div class="end"><%= returnInstructions %></div>
+              <% if (hasCollection) { %><div class="end"><%= returnInstructions %></div><% } %>
               <% } %>
-              <div class="start date-line"><% if (showCharged) { %><span class="bold">Active:</span> <% } %><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %></div>
-              <div class="end date-line">
-                <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
-                <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
-              </div>
-              <% if (showCharged) { %>
-              <div class="start"><span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %></div>
-              <div class="end">
-                <%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
-                <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
-              </div>
-              <% } %>
-            </div>
-            <% } else { %>
-            <div class="destination-grid one-leg">
-              <div><%= placeText(dest.delivery) %></div>
-              <% if (hasContactLine) { %><div><%= contactText(dest.delivery) %></div><% } %>
-              <% if (hasInstructionsLine) { %><div><%= instructionsText(dest.delivery) %></div><% } %>
-              <div class="date-line">
-                <% if (showCharged) { %><span class="bold">Active:</span> <% } %><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
+              <div class="label bold date-line"><% if (showCharged) { %>Active:<% } else { %>Dates:<% } %></div>
+              <div class="span date-line">
+                <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
                 <% if (hasCollection) { %>
-                <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %>
+                <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ arrow() %></span><% } %>
                 <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
                 <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
                 <% } %>
               </div>
               <% if (showCharged) { %>
-              <div>
-                <span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
-                <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
+              <% windows.forEach((w, wi) => { %>
+              <div class="label bold"><% if (wi === 0) { %>Charged:<% } %></div>
+              <div class="span">
+                <%= it.dates.formatChicagoWeekdayDate(w.start) %><span class="inline-arrow"><%~ arrow() %></span><%= it.dates.formatChicagoWeekdayDate(w.end) %>
+                <span class="destination-days"><%~ clock() %><%= chargePeriod(w.days) %></span>
               </div>
+              <% }) %>
+              <% if (windows.length > 1) { %>
+              <div class="label bold">Total charged:</div>
+              <div class="span"><span class="destination-days first"><%~ clock() %><%= chargePeriod(it.dates.billableDays(windows.map((w) => w.days))) %></span></div>
+              <% } %>
               <% } %>
             </div>
-            <% } %>
           </td>
         </tr>
         <%/* The column headers belong to the section above them: the lines a
