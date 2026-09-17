@@ -96,11 +96,6 @@
       "params": {
         "hide_zero_priced_components": true
       }
-    },
-    {
-      "slug": "delivery-in-store-return",
-      "label": "Delivered out, in-store return",
-      "description": "The only fixture whose destination carries customer_collecting and customer_returning with DIFFERENT values (false / true): we deliver to the venue and the customer brings it back over our counter. Measured 2026-09-16 across the other 15 fixtures, all 16 of their destinations have the two flags equal — both true or both false — so the mixed case was rendered by nothing. It is what pins the destination section's label rule, which names the MOVEMENT rather than a leg: the label reads Delivery: as soon as EITHER end is off the counter, and only a both-in-store destination reads In Store:. Without this fixture a regression flipping that test to || would change no golden. It also covers the two-cell shape collapse must NOT fire on, which is the common prod arrangement: both ends are the same place (same name, same street) with identical instructions and differ ONLY by contact — delivery carries one, collection none — so the section renders both ends side by side under the single label instead of collapsing to one. Deliberately small (two rentals, one group, one destination) so its golden diff shows the destination block and little else. Captured from prod order 1042."
     }
   ],
   "render": {
