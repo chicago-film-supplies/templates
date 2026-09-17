@@ -60,16 +60,6 @@ html {
   width: auto;
 }
 
-/* THE DESTINATION SECTION'S LABEL COLUMN IS #details' LABEL COLUMN, so Delivery:
-   and Active: open on the same edge as Date: and Order: above them, and the
-   address and date cells beside them line up with the Date and Subject values.
-   6rem is `#details col.label`'s width — the two are the same number on purpose;
-   change one and change the other. Set here rather than in the shared sheet
-   because it is an alignment with a QUOTE-only table. */
-#items .destination-grid {
-  --dest-label-col: 6rem;
-}
-
 /* The quote-only half of a rule whose shared half now lives in
    `styles/base.css`. Split rather than left whole so the shared sheet
    carries no selector for markup only this family emits. */
