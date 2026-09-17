@@ -134,7 +134,7 @@ let headerPending = destinationDetail;
         <%/* The OrderDetail destination divider, as a PDF: ONE row holding a
              three-column grid, directly above the lines delivered there.
 
-               Delivery:  place - address ->   collection place - address (only if different)
+               Delivery:  place - address ->   collection place - address (only if the sides differ)
                           contact - phone         collection contact - phone
                           instructions            collection instructions
                Active:    start -> end (clock) duration
@@ -184,12 +184,17 @@ let headerPending = destinationDetail;
           };
           const instructionsText = (ep) => (ep && ep.instructions) || "";
           const legLabel = u.getDestinationsLegend([dest]).start || "Delivery";
-          // The collection place and its arrow only when it differs from the
-          // delivery place, compared as RENDERED text so the same address under a
-          // different key order still reads as one place.
-          const showReturnPlace = hasCollection && placeText(dest.collection) !== placeText(dest.delivery);
-          const returnContact = hasCollection ? contactText(dest.collection) : "";
-          const returnInstructions = hasCollection ? instructionsText(dest.collection) : "";
+          // The collection side (arrow, place, contact, instructions) only when it
+          // differs from the delivery side in ANY of the three, compared as
+          // RENDERED text so the same address under a different key order still
+          // reads as one place. When all three match it would repeat the left.
+          const showReturn = hasCollection && (
+            placeText(dest.collection) !== placeText(dest.delivery) ||
+            contactText(dest.collection) !== contactText(dest.delivery) ||
+            instructionsText(dest.collection) !== instructionsText(dest.delivery)
+          );
+          const returnContact = showReturn ? contactText(dest.collection) : "";
+          const returnInstructions = showReturn ? instructionsText(dest.collection) : "";
           const hasContactLine = contactText(dest.delivery) !== "" || returnContact !== "";
           const hasInstructionsLine = instructionsText(dest.delivery) !== "" || returnInstructions !== "";
           const arrow = () => it.icons.svg("arrow-right", { size: 9 });
@@ -200,19 +205,19 @@ let headerPending = destinationDetail;
             <div class="destination-grid<% if (!hasCollection) { %> one-leg<% } %>">
               <div class="label bold"><%= legLabel %>:</div>
               <div class="start"><%= placeText(dest.delivery) %></div>
-              <% if (showReturnPlace) { %>
+              <% if (showReturn) { %>
               <div class="arrow"><span class="inline-arrow"><%~ arrow() %></span></div>
               <div class="end"><%= placeText(dest.collection) %></div>
               <% } %>
               <% if (hasContactLine) { %>
               <div class="label"></div>
               <div class="start"><%= contactText(dest.delivery) %></div>
-              <% if (hasCollection) { %><div class="end"><%= returnContact %></div><% } %>
+              <% if (showReturn) { %><div class="end"><%= returnContact %></div><% } %>
               <% } %>
               <% if (hasInstructionsLine) { %>
               <div class="label"></div>
               <div class="start"><%= instructionsText(dest.delivery) %></div>
-              <% if (hasCollection) { %><div class="end"><%= returnInstructions %></div><% } %>
+              <% if (showReturn) { %><div class="end"><%= returnInstructions %></div><% } %>
               <% } %>
               <div class="label bold date-line"><% if (showCharged) { %>Active:<% } else { %>Dates:<% } %></div>
               <div class="span date-line">
