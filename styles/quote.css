@@ -133,47 +133,28 @@ html {
   margin-bottom: var(--items-row);
 }
 
-/* THE ITEMS TABLE RULES IN LIGHT GREY — the rule under the column headers and
-   the one closing the last row of each leg. Only the COLOUR changes: width and
-   style still come from `styles/base.css`, so a later change to those there is
-   not silently overridden here.
-
-   ⚠️ THE HEADER RULE HAS TWO SELECTORS IN THE SHARED SHEET, and both need
-   naming. `thead th` draws it in principle, but the header row is also
-   `tr.column-headers`, and `#items tr.column-headers th` redraws it in black
-   with more specificity than `#items thead th` — measured in print, recolouring
-   only the latter left both header rules at ink 18 while the closing rules went
-   grey. The last two selectors repeat the shared ones exactly and win because
-   this sheet overlays after base.css. Scoped to #items, so the
-   dates/destinations tables and #totals are untouched. */
-#items thead th,
-#items tr.column-headers th,
-#items tr:last-child td {
-  border-bottom-color: #ccc;
-}
-
-/* NO VERTICAL PADDING BETWEEN ITEM LINES — between, and nowhere else.
+/* A HAIR OF VERTICAL PADDING BETWEEN ITEM LINES — between, and nowhere else.
 
    `#items th, #items td` in `styles/base.css` gives every item cell 4px above
-   and below, so consecutive lines sat 8px apart. Zeroing the top of every row
-   but the first and the bottom of every row but the last removes exactly that,
-   and leaves the two paddings that keep text off the rules: below the column
-   header rule, and above the closing rule. Neither restates the 4px, so a change
-   to it in the shared sheet still reaches both.
+   and below, so consecutive lines sat 8px apart. These two rules set the top of
+   every row but the first and the bottom of every row but the last, and leave
+   the two paddings that keep text off the rules: below the column header rule,
+   and above the closing rule. Neither of those restates the 4px, so a change to
+   it in the shared sheet still reaches both.
 
-   Measured in print on `multi-dest`: the row pitch went from 14.25pt to 8.25pt,
-   one line of text; the last row still sits 17.58pt above the closing rule,
-   exactly where it did.
+   For scale, measured in print on `multi-dest`: the row pitch is 14.25pt with
+   the shared 4px and 8.25pt with none here — the same pitch as the letterhead
+   bill-to lines, whose <div>s carry no padding at all.
 
    ⚠️ The blank row between legs is `--items-row` from the shared sheet, which
    still assumes the padded pitch (1.2em + 8px), so that gap is now a little
    more than one of these tighter rows. */
 #items tbody tr:not(:first-child) td {
-  padding-top: 0;
+  padding-top: 1.2px;
 }
 
 #items tbody tr:not(:last-child) td {
-  padding-bottom: 0;
+  padding-bottom: 1.2px;
 }
 
 /* #details SPANS THE FULL GRID in this family, so its columns are the items
@@ -194,7 +175,7 @@ html {
    carries no selector for markup only this family emits. */
 #replacement-costs th,
 #replacement-costs td {
-  padding: 4px 0;
+  padding: 2px 0;
 }
 
 /* The quote-only half of a rule whose shared half now lives in
@@ -258,21 +239,23 @@ html {
   border-bottom: 1px solid #eee;
 }
 
-/* THE DATES/DESTINATIONS HEADER RULE, IN THE ITEMS TABLE GREY.
+/* DATES/DESTINATIONS HEADINGS ARE UNDERLINED, NOT RULED.
 
-   `thead th` in `styles/base.css` draws a black rule under every header row. It
-   was removed here once, when the rules on this page were black and one dates
-   table per leg (quote.eta) stacked a heavy line every few rows. With every
-   items-table rule now light grey, the header rule reads as the same quiet
-   separator, so it is back — recoloured rather than restated, so its width and
-   style still come from the shared sheet.
+   `thead th` in `styles/base.css` draws a full-width rule under every header
+   row. Here the header row heads an address block rather than a grid, and this
+   family repeats it once per leg (quote.eta), so a rule across the whole row
+   reads as another table boundary between the items tables that already carry
+   their own. An underline marks each heading on its own text — Dates or Active,
+   the start place, the end place — and leaves the only full-width rules on the
+   page to the items tables.
 
-   Kept in step with the items rules above deliberately: two greys for two
-   kinds of header on one page would read as a distinction the page does not
-   make. `#destinations thead th` outranks the bare `thead th` it recolours.
-   Scoped to this sheet; the other families keep the shared black rule. */
+   `#destinations thead th` outranks the bare `thead th` whose border it removes.
+   Scoped to this sheet; the other families keep the shared rule. The Charged
+   label below is the other half of the Active heading and takes the same
+   underline, so the two windows are marked alike. */
 #destinations thead th {
-  border-bottom-color: #ccc;
+  border-bottom: 0;
+  text-decoration: underline;
 }
 
 /* The Charged group sits a row gap below the active window, not a blank row.
@@ -280,4 +263,5 @@ html {
    the date cell keeps the same rhythm as the address rows beside it. */
 #destinations td.dates .charged-label {
   margin-top: calc(2 * var(--cell-pad-y));
+  text-decoration: underline;
 }
