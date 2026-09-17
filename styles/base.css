@@ -539,15 +539,6 @@ th.center, td.center {
   row-gap: var(--dest-line-gap);
 }
 
-/* THE PLACE AND THE WHEN ARE TWO FACTS, so the dates open a block of their own —
-   the same blank row that separates one destination from the next, less the gap
-   the grid already puts between every pair of lines. Both cells of the row carry
-   it: a grid row is as tall as its tallest item, so marking only one would move
-   that line and leave the other where it was. */
-#items .destination-grid .date-line {
-  margin-top: calc(var(--items-row) - var(--dest-line-gap));
-}
-
 /* No collection leg: no end column. */
 #items .destination-grid.one-leg {
   grid-template-columns: var(--dest-label-col) 1fr;
