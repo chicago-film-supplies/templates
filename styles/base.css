@@ -549,7 +549,7 @@ th.center, td.center {
   grid-template-columns:
     var(--dest-label-col)
     fit-content(50%)
-    calc(9px + 2 * var(--dest-arrow-gap))
+    calc(1rem + 2 * var(--dest-arrow-gap))
     1fr;
   row-gap: var(--dest-line-gap);
 }
@@ -583,8 +583,16 @@ th.center, td.center {
    Open Sans at 5x). `middle` centres the glyph on the x-height of whatever font
    renders, and the negative block margins collapse the icon's margin box so it
    can never make its line taller than a line without one. */
+/* SIZED AND COLOURED HERE, not by the icon call: `1rem` follows whatever root a
+   family sets, where the 9px the template asks lucide for is that root's size
+   written down a second time — right on the quote and wrong on a 10px family.
+   The grey belongs to the GLYPH alone: the duration text beside it reads as a
+   date and takes the document colour. */
 #items .destination-grid .inline-arrow svg,
 #items .destination-days svg {
+  width: 1rem;
+  height: 1rem;
+  color: #555;
   vertical-align: middle;
   margin-top: -1em;
   margin-bottom: -1em;
@@ -600,7 +608,7 @@ th.center, td.center {
    end places sit 0.4em from it as the start and end dates do. The column is as
    wide as the arrow, so on the lines below it is the gap between the sides.
 
-   ⚠️ A FIXED width (the 9px icon plus its two `--dest-arrow-gap` margins), not
+   ⚠️ A FIXED width (the 1rem icon plus its two `--dest-arrow-gap` margins), not
    `max-content`: the date lines span this column, and Blink hands a spanning
    item's leftover width to a `max-content` track before a `fit-content` one,
    so the arrow column grew and opened a gap after the arrow on some sections. */
@@ -613,18 +621,14 @@ th.center, td.center {
   margin-right: var(--dest-arrow-gap);
 }
 
-#items .destination-days {
-  color: #555;
-  margin-left: 0.4em;
-}
-
+/* THE CLOCK IS SPACED LIKE THE ARROWS — 0.4em either side, carried by the glyph
+   rather than by the span around it, so the date before it and the duration
+   after it sit the same distance away as the two dates either side of an arrow.
+   The span itself adds nothing, which is also why the `.first` rule that used to
+   cancel its left margin is gone. */
 #items .destination-days svg {
-  margin-right: 0.25em;
-}
-
-/* The Total charged duration stands alone on its line. */
-#items .destination-days.first {
-  margin-left: 0;
+  margin-left: 0.4em;
+  margin-right: 0.4em;
 }
 
 #items th,
