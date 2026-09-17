@@ -168,7 +168,8 @@ let headerPending = destinationDetail;
         <%
           const d = dest.dates || {};
           // One charged line per window (one window is the single range it always
-          // was), plus a total line when there are two or more.
+          // was), plus a total line when there are two or more. The total is in
+          // BILLABLE days, Σ max(days, 5), so it agrees with the money.
           const windows = d.charge_windows || [];
           const showCharged = hasCollection && windows.length > 0 &&
             !u.isSameAsDeliveryDates(d);
@@ -235,7 +236,7 @@ let headerPending = destinationDetail;
               <% }) %>
               <% if (windows.length > 1) { %>
               <div class="start"><span class="bold">Total charged</span></div>
-              <div class="end"><span class="destination-days"><%~ clock() %><%= chargePeriod(it.dates.chargedDays(d)) %></span></div>
+              <div class="end"><span class="destination-days"><%~ clock() %><%= chargePeriod(it.dates.billableDays(windows.map((w) => w.days))) %></span></div>
               <% } %>
               <% } %>
             </div>
@@ -260,7 +261,7 @@ let headerPending = destinationDetail;
               </div>
               <% }) %>
               <% if (windows.length > 1) { %>
-              <div><span class="bold">Total charged</span><span class="destination-days"><%~ clock() %><%= chargePeriod(it.dates.chargedDays(d)) %></span></div>
+              <div><span class="bold">Total charged</span><span class="destination-days"><%~ clock() %><%= chargePeriod(it.dates.billableDays(windows.map((w) => w.days))) %></span></div>
               <% } %>
               <% } %>
             </div>

@@ -76,7 +76,9 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
     // The charge period is the pair's `charge_windows` (always at least one on a
     // stored pair). One window renders exactly as the single charge range always
     // did; two or more list one row per window, each with its own days, and a
-    // total of Σ days beneath them.
+    // total beneath them in BILLABLE days, Σ max(days, 5): every window carries
+    // the one-week minimum, so that is what the money is (owner, 2026-09-17).
+    // Σ days would print a total that disagrees with the price.
     const windows = d.charge_windows || [];
     const hasChargeWindow = windows.length > 0;
     // A 0-day window is valid (it still bills the one-week minimum), and
@@ -226,7 +228,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
 <% }) %>
     <tr>
       <td colspan="3"><span class="bold">Total Charged: </span></td>
-      <td><%= chargePeriod(it.dates.chargedDays(d)) %></td>
+      <td><%= chargePeriod(it.dates.billableDays(windows.map((w) => w.days))) %></td>
       <td class="address" colspan="<%= deliverySpan %>"></td>
       <td class="address" colspan="<%= returnSpan %>"></td>
     </tr>
