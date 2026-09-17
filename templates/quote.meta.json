@@ -95,7 +95,10 @@
     {
       "slug": "1041",
       "label": "1041 - Multi Dest Test",
-      "description": "multi destination"
+      "description": "multi destination",
+      "params": {
+        "hide_zero_priced_components": true
+      }
     }
   ],
   "render": {
