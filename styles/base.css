@@ -520,15 +520,20 @@ th.center, td.center {
   width: auto;
 }
 
-/* The columns are sized by their widest line, so start and end line up down
-   the section. `fit-content` caps each side short of half the page so two long
-   addresses wrap rather than push the grid past the margin. Lines are spaced by
-   `row-gap` alone: one number, so the gaps are equal by construction. */
+/* THREE COLUMNS: label | start side | end side. The label column has one fixed
+   width, so every value opens on one edge in every section. `fit-content` caps
+   each address side short of half the page so two long addresses wrap rather
+   than push the grid past the margin. The date lines SPAN both address columns
+   (`.span`), so a window reads on one line. Lines are spaced by `row-gap`
+   alone: one number, so the gaps are equal by construction. */
 #items .destination-grid {
   --dest-line-gap: 2px;
+  /* FIXED, not max-content: sized to the longest label, In Store Pickup:, so the
+     values open on the same edge in every destination section on the page. */
+  --dest-label-col: 10rem;
 
   display: grid;
-  grid-template-columns: fit-content(46%) 2.4em fit-content(46%);
+  grid-template-columns: var(--dest-label-col) fit-content(42%) calc(9px + 0.8em) fit-content(42%);
   justify-content: start;
   row-gap: var(--dest-line-gap);
 }
@@ -536,32 +541,31 @@ th.center, td.center {
 /* THE PLACE AND THE WHEN ARE TWO FACTS, so the dates open a block of their own —
    the same blank row that separates one destination from the next, less the gap
    the grid already puts between every pair of lines. Both cells of the row carry
-   it: a grid row is as tall as its tallest item, so marking only the left one
-   would move the left line and leave the right where it was. */
+   it: a grid row is as tall as its tallest item, so marking only one would move
+   that line and leave the other where it was. */
 #items .destination-grid .date-line {
   margin-top: calc(var(--items-row) - var(--dest-line-gap));
 }
 
+/* No collection leg: no end column. */
 #items .destination-grid.one-leg {
-  grid-template-columns: fit-content(100%);
+  grid-template-columns: var(--dest-label-col) fit-content(100%);
 }
 
-#items .destination-grid .start {
+#items .destination-grid .label {
   grid-column: 1;
 }
 
-#items .destination-grid .end {
-  grid-column: 3;
+#items .destination-grid .start {
+  grid-column: 2;
 }
 
-/* ONE arrow for the whole section, spanning every line (the template sets the
-   span) and centred on it both ways. */
-#items .destination-grid .arrow {
-  grid-column: 2;
-  grid-row-start: 1;
-  align-self: center;
-  justify-self: center;
-  line-height: 0;
+#items .destination-grid .end {
+  grid-column: 4;
+}
+
+#items .destination-grid .span {
+  grid-column: 2 / -1;
 }
 
 /* INLINE ICONS ARE CENTRED BY THE FONT, NOT BY A NUMBER. They used to sit at a
@@ -584,6 +588,19 @@ th.center, td.center {
   margin-right: 0.4em;
 }
 
+/* THE PLACE ARROW HAS ITS OWN COLUMN, spaced exactly like the date arrows: the
+   same `.inline-arrow` margins either side and no column gap, so the start and
+   end places sit 0.4em from it as the start and end dates do. The column is as
+   wide as the arrow, so on the lines below it is the gap between the sides.
+
+   ⚠️ A FIXED width (the 9px icon plus its two 0.4em margins), not
+   `max-content`: the date lines span this column, and Blink hands a spanning
+   item's leftover width to a `max-content` track before a `fit-content` one,
+   so the arrow column grew and opened a gap after the arrow on some sections. */
+#items .destination-grid .arrow {
+  grid-column: 3;
+}
+
 #items .destination-days {
   color: #555;
   margin-left: 0.4em;
@@ -591,6 +608,11 @@ th.center, td.center {
 
 #items .destination-days svg {
   margin-right: 0.25em;
+}
+
+/* The Total charged duration stands alone on its line. */
+#items .destination-days.first {
+  margin-left: 0;
 }
 
 #items th,
