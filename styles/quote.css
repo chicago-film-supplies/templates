@@ -68,43 +68,34 @@ html {
   width: 100%;
 }
 
-/* THE ARROW AND THE CLOCK SIT ON THE BASELINE AT CAP HEIGHT — both halves, and
-   each half on its own is wrong.
+/* THE ARROW AND THE CLOCK: 1rem, CENTRED ON THE X-HEIGHT, EVEN GAPS.
 
-   Measured in print at 600dpi on `multi-dest`, against the ink of `AM` on the
-   same line (baseline 0, caps up to -39 device px, cap centre -19.5):
+   One rule for both icons: the same size, the same `.5rem` either side, so the
+   arrow sits mid-way between the two dates and the clock the same distance
+   from the date before it and the duration after it.
 
-     middle, 9px (what this was)     arrow -34..+3   droops 3px BELOW the line
-     baseline, 9px                   clock -54..-2   on the line, but 15px ABOVE
-                                     arrow -47..-9   the caps; both centres 8.5
-                                                     px higher than the text
-     baseline, 0.7em (this rule)     clock -42..-6   inside the cap band
-                                     arrow -37..-11
+   ⚠️ `middle`, NOT `center`. Firefox accepts `vertical-align: center` and the
+   inspector shows it working; Chromium — which renders these PDFs — does not
+   (`CSS.supports("vertical-align", "center")` is false there) and DROPS the
+   declaration, leaving the icon on the baseline. Measured in Chromium print at
+   600dpi on `multi-dest`, against the ink of `AM` on the same line (baseline 0,
+   cap centre -19.5 device px):
 
-   The glyph box is what `vertical-align` places, and a 9px box on a 9px font is
-   taller than the capitals it sits beside — those measure 0.69em — so a baseline
-   alone puts the icon on the line and still makes it ride high. Sizing the box
-   in em to the cap height keeps it level with the letters and makes it track
-   the document root if that ever moves, which a pixel size would not.
+     1rem, middle (this rule)      arrow centre -15.5, clock -15.0   ~4px low
+     1rem, baseline (= `center`)   arrow centre -28.0, clock -26.5   ~8px high
 
-   `margin` is horizontal only. The collapsed `-1em` block margins other inline
-   icons carry would be read by `baseline` as the edge to align, and push the
-   glyph down by an em (the same trap as the arrow cell in items-grid.eta).
-   Neither icon changes the line height: `Charged:` below sits at the same y,
-   335.17pt, with and without them. */
+   A 1rem box is taller than the capitals beside it (those measure 0.69em), so
+   no setting fits it inside the cap band; `middle` centres it on the lowercase
+   letters, which are what the times and the duration read against.
+
+   Costs 0.75pt of line height: with no negative block margin the icon reaches
+   just below the text, so `Charged:` sits at 308.17pt instead of 307.42pt. The
+   active window still fits on one line in every fixture tried. */
 #destinations td.dates svg {
-  width: 0.7em;
-  height: 0.7em;
-  vertical-align: baseline;
-  margin: 0 0.4em;
-}
-
-#destinations td.dates .days svg {
-  margin: 0 0.25em 0 0;
-}
-
-#destinations td.dates .days {
-  margin-left: 0.8em;
+  width: 1rem;
+  height: 1rem;
+  vertical-align: middle;
+  margin: 0 .5rem;
 }
 
 /* ONE BLANK ITEMS ROW BETWEEN LEGS — hung off the END of the leg above, never
@@ -150,11 +141,11 @@ html {
    still assumes the padded pitch (1.2em + 8px), so that gap is now a little
    more than one of these tighter rows. */
 #items tbody tr:not(:first-child) td {
-  padding-top: 1.2px;
+  padding-top: 2px;
 }
 
 #items tbody tr:not(:last-child) td {
-  padding-bottom: 1.2px;
+  padding-bottom: 2px;
 }
 
 /* #details SPANS THE FULL GRID in this family, so its columns are the items
