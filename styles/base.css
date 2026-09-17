@@ -575,32 +575,41 @@ th.center, td.center {
   grid-column: 2 / -1;
 }
 
-/* INLINE ICONS ARE CENTRED BY THE FONT, NOT BY A NUMBER. They used to sit at a
-   fixed `vertical-align: -0.1em`, which only looks centred for one font's
-   metrics: with the preview machine's system font it did, and with the PDF
-   renderer's font (Open Sans-like) the clock and arrow rode about a point above
-   the digits beside them (Quote 1021, 2026-09-15; reproduced locally by forcing
-   Open Sans at 5x). `middle` centres the glyph on the x-height of whatever font
-   renders, and the negative block margins collapse the icon's margin box so it
-   can never make its line taller than a line without one. */
 /* SIZED AND COLOURED HERE, not by the icon call: `1rem` follows whatever root a
    family sets, where the 9px the template asks lucide for is that root's size
    written down a second time — right on the quote and wrong on a 10px family.
    The grey belongs to the GLYPH alone: the duration text beside it reads as a
    date and takes the document colour. */
 #items .destination-grid .inline-arrow svg,
-#items .destination-days svg {
+#items .destination-grid .inline-clock svg {
   width: 1rem;
   height: 1rem;
   color: #555;
-  vertical-align: middle;
-  margin-top: -1em;
-  margin-bottom: -1em;
+  display: block;
 }
 
-#items .destination-grid .inline-arrow svg {
-  margin-left: 0.4em;
-  margin-right: 0.4em;
+/* A DATE LINE IS A FLEX ROW, which is what actually centres the icons on it.
+
+   `vertical-align` cannot: every value of it is defined against a FONT metric.
+   `middle` centres the glyph on the x-height, so it sits about 0.1em below the
+   centre of the capitals and digits it reads against — that is the low look, and
+   it is not a bug in the number, it is the number meaning something else. A
+   hand-picked `-0.1em` fixes one font and breaks the next, which this file had
+   already learned once (Quote 1021, 2026-09-15).
+
+   As flex items the pieces are laid out by the BOX model instead: `align-items:
+   center` centres each icon on the row, whatever font renders and whatever size
+   the icon is, and one `gap` spaces every piece — date, arrow, date, clock,
+   duration — by the same amount, so the old per-icon left/right margins are
+   gone. `wrap` keeps a long window able to break rather than overrun its cell.
+
+   The icons are `display: block` inside their spans so no line box is built
+   around them; that is what used to need the negative block margins. */
+#items .destination-grid .span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em;
 }
 
 /* THE PLACE ARROW HAS ITS OWN COLUMN, spaced exactly like the date arrows: the
@@ -616,20 +625,18 @@ th.center, td.center {
   grid-column: 3;
 }
 
+/* The PLACE arrow is a grid item rather than part of a flex line, so it keeps
+   its own air and its own vertical centring — on the FIRST line of the place
+   beside it, not on the block, which is why this is a line-height trick rather
+   than `align-items`. */
 #items .destination-grid .arrow .inline-arrow svg {
-  margin-left: var(--dest-arrow-gap);
-  margin-right: var(--dest-arrow-gap);
+  display: inline-block;
+  vertical-align: middle;
+  margin: -1em var(--dest-arrow-gap);
 }
 
-/* THE CLOCK IS SPACED LIKE THE ARROWS — 0.4em either side, carried by the glyph
-   rather than by the span around it, so the date before it and the duration
-   after it sit the same distance away as the two dates either side of an arrow.
-   The span itself adds nothing, which is also why the `.first` rule that used to
-   cancel its left margin is gone. */
-#items .destination-days svg {
-  margin-left: 0.4em;
-  margin-right: 0.4em;
-}
+/* The clock and the duration are two flex items of the line above, spaced by its
+   `gap` like everything else on it — so neither carries a margin of its own. */
 
 #items th,
 #items td {
