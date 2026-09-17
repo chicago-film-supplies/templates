@@ -533,7 +533,7 @@ th.center, td.center {
   --dest-label-col: 10rem;
 
   display: grid;
-  grid-template-columns: var(--dest-label-col) fit-content(42%) max-content fit-content(42%);
+  grid-template-columns: var(--dest-label-col) fit-content(42%) calc(9px + 0.8em) fit-content(42%);
   justify-content: start;
   row-gap: var(--dest-line-gap);
 }
@@ -591,7 +591,12 @@ th.center, td.center {
 /* THE PLACE ARROW HAS ITS OWN COLUMN, spaced exactly like the date arrows: the
    same `.inline-arrow` margins either side and no column gap, so the start and
    end places sit 0.4em from it as the start and end dates do. The column is as
-   wide as the arrow, so on the lines below it is the gap between the sides. */
+   wide as the arrow, so on the lines below it is the gap between the sides.
+
+   ⚠️ A FIXED width (the 9px icon plus its two 0.4em margins), not
+   `max-content`: the date lines span this column, and Blink hands a spanning
+   item's leftover width to a `max-content` track before a `fit-content` one,
+   so the arrow column grew and opened a gap after the arrow on some sections. */
 #items .destination-grid .arrow {
   grid-column: 3;
 }
