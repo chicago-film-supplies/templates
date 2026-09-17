@@ -241,18 +241,9 @@ html {
    page to the items tables.
 
    `#destinations thead th` outranks the bare `thead th` whose border it removes.
-   Scoped to this sheet; the other families keep the shared rule. The Charged
-   label below is the other half of the Active heading and takes the same
-   underline, so the two windows are marked alike. */
+   Scoped to this sheet; the other families keep the shared rule. */
 #destinations thead th {
   border-bottom: 0;
   text-decoration: underline;
 }
 
-/* The Charged group sits a row gap below the active window, not a blank row.
-   Two cell paddings is the gap between two rows of this table, so the stack in
-   the date cell keeps the same rhythm as the address rows beside it. */
-#destinations td.dates .charged-label {
-  margin-top: calc(2 * var(--cell-pad-y));
-  text-decoration: underline;
-}
