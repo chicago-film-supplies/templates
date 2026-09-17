@@ -134,7 +134,7 @@ let headerPending = destinationDetail;
         <%/* The OrderDetail destination divider, as a PDF: ONE row holding a
              three-column grid, directly above the lines delivered there.
 
-               Delivery:  place - address ->   collection place - address
+               Delivery:  place - address ->   collection place - address (only if different)
                           contact - phone         collection contact - phone
                           instructions            collection instructions
                Active:    start -> end (clock) duration
@@ -184,6 +184,10 @@ let headerPending = destinationDetail;
           };
           const instructionsText = (ep) => (ep && ep.instructions) || "";
           const legLabel = u.getDestinationsLegend([dest]).start || "Delivery";
+          // The collection place and its arrow only when it differs from the
+          // delivery place, compared as RENDERED text so the same address under a
+          // different key order still reads as one place.
+          const showReturnPlace = hasCollection && placeText(dest.collection) !== placeText(dest.delivery);
           const returnContact = hasCollection ? contactText(dest.collection) : "";
           const returnInstructions = hasCollection ? instructionsText(dest.collection) : "";
           const hasContactLine = contactText(dest.delivery) !== "" || returnContact !== "";
@@ -196,7 +200,7 @@ let headerPending = destinationDetail;
             <div class="destination-grid<% if (!hasCollection) { %> one-leg<% } %>">
               <div class="label bold"><%= legLabel %>:</div>
               <div class="start"><%= placeText(dest.delivery) %></div>
-              <% if (hasCollection) { %>
+              <% if (showReturnPlace) { %>
               <div class="arrow"><span class="inline-arrow"><%~ arrow() %></span></div>
               <div class="end"><%= placeText(dest.collection) %></div>
               <% } %>
