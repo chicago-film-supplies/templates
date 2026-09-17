@@ -88,11 +88,11 @@ const contactLine = (ep) => {
   </thead>
   <tbody>
     <tr>
-      <%/* THE DATES COLUMN RUNS BESIDE THE ADDRESS ROWS: the active window
-           beside the address, and the charge window, labelled inline, in ONE
-           cell spanning the contact and instructions rows. The heading stays a
-           plain Dates:, so the page never has to explain an Active window. When
-           the windows match that cell is empty. */%>
+      <%/* THE DATES COLUMN RUNS BESIDE THE ADDRESS ROWS, one line per row: the
+           active window beside the address, the Charged: label beside the
+           contact, and the charge window beside the instructions. The heading
+           stays a plain Dates:, so the page never has to explain an Active
+           window. When the windows match both charge cells are empty. */%>
       <td class="dates" colspan="<%= dateSpan %>"><div><% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %><% if (hasCollection) { %><% if (hasActiveWindow) { %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><% } %><% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %><% if (d.days_active != null) { %><span class="days"><%~ it.icons.svg("clock", { size: 9 }) %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %><% } %></div></td>
       <td class="address" colspan="<%= startSpan %>"><% addrLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></td>
       <% if (hasCollection) { %>
@@ -100,13 +100,14 @@ const contactLine = (ep) => {
       <% } %>
     </tr>
     <tr>
-      <td class="dates" colspan="<%= dateSpan %>" rowspan="2"><% if (showCharged) { %><span class="bold">Charged:</span> <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %><% if (d.days_charged != null) { %><span class="days"><%~ it.icons.svg("clock", { size: 9 }) %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %><% } %></td>
+      <td class="dates bold" colspan="<%= dateSpan %>"><% if (showCharged) { %>Charged:<% } %></td>
       <td class="address" colspan="<%= startSpan %>"><%= contactLine(dest.delivery) %></td>
       <% if (hasCollection) { %>
       <td class="address" colspan="<%= returnSpan %>"><%= contactLine(dest.collection) %></td>
       <% } %>
     </tr>
     <tr>
+      <td class="dates" colspan="<%= dateSpan %>"><% if (showCharged) { %><%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %><% if (d.days_charged != null) { %><span class="days"><%~ it.icons.svg("clock", { size: 9 }) %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %><% } %></td>
       <td class="address" colspan="<%= startSpan %>"><%= dest.delivery?.instructions ?? "" %></td>
       <% if (hasCollection) { %>
       <td class="address" colspan="<%= returnSpan %>"><%= dest.collection?.instructions ?? "" %></td>
