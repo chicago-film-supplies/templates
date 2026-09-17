@@ -230,18 +230,37 @@ html {
   border-bottom: 1px solid #eee;
 }
 
-/* DATES/DESTINATIONS HEADINGS ARE NOT RULED.
+/* DATES/DESTINATIONS HEADINGS ARE UNDERLINED, NOT RULED.
 
    `thead th` in `styles/base.css` draws a full-width rule under every header
    row. Here the header row heads an address block rather than a grid, and this
    family repeats it once per leg (quote.eta), so a rule across the whole row
    reads as another table boundary between the items tables that already carry
-   their own. The headings are bold and need no further mark, which leaves the
-   only full-width rules on the page to the items tables.
+   their own. An underline marks each heading on its own text — Dates or Active,
+   the start place, the end place — and leaves the only full-width rules on the
+   page to the items tables.
 
    `#destinations thead th` outranks the bare `thead th` whose border it removes.
    Scoped to this sheet; the other families keep the shared rule. */
 #destinations thead th {
+  border-bottom: 0;
+  text-decoration: underline;
+  /* A rule ABOVE each destination heading, in the document text colour, opens
+     each leg; the items tables above no longer close with a black rule. */
+  border-top: 1px solid #121212;
+}
+
+/* ITEMS HEADER RULE IN THE REPLACEMENT-COSTS GREY. Both selectors, because
+   base.css draws the black rule from `thead th` AND `#items tr.column-headers th`. */
+#items thead th,
+#items tr.column-headers th {
+  border-bottom: 1px solid #eee;
+}
+
+/* NO CLOSING RULE ON AN ITEMS TABLE ANOTHER ONE FOLLOWS. Each leg is opened by
+   the rule above its destination heading instead; only the LAST items table
+   keeps base.css's rule, which closes the lines off above the totals. */
+#items:has(~ #items) tr:last-child td {
   border-bottom: 0;
 }
 
