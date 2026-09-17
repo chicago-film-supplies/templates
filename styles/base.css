@@ -589,9 +589,9 @@ th.center, td.center {
   margin-right: 0.4em;
 }
 
-/* The arrow that OPENS the end place has nothing before it to space from. */
-#items .destination-grid .inline-arrow.lead svg {
-  margin-left: 0;
+/* The arrow that CLOSES the start place has the column gap after it already. */
+#items .destination-grid .inline-arrow.trail svg {
+  margin-right: 0;
 }
 
 #items .destination-days {

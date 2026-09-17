@@ -134,7 +134,7 @@ let headerPending = destinationDetail;
         <%/* The OrderDetail destination divider, as a PDF: ONE row holding a
              three-column grid, directly above the lines delivered there.
 
-               Delivery:  place - address      -> collection place - address
+               Delivery:  place - address ->   collection place - address
                           contact - phone         collection contact - phone
                           instructions            collection instructions
                Active:    start -> end (clock) duration
@@ -195,9 +195,9 @@ let headerPending = destinationDetail;
           <td class="wide" colspan="<%= columnCount %>">
             <div class="destination-grid<% if (!hasCollection) { %> one-leg<% } %>">
               <div class="label bold"><%= legLabel %>:</div>
-              <div class="start"><%= placeText(dest.delivery) %></div>
+              <div class="start"><%= placeText(dest.delivery) %><% if (hasCollection) { %><span class="inline-arrow trail"><%~ arrow() %></span><% } %></div>
               <% if (hasCollection) { %>
-              <div class="end"><span class="inline-arrow lead"><%~ arrow() %></span><%= placeText(dest.collection) %></div>
+              <div class="end"><%= placeText(dest.collection) %></div>
               <% } %>
               <% if (hasContactLine) { %>
               <div class="label"></div>
