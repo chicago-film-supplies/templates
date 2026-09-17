@@ -540,9 +540,17 @@ th.center, td.center {
   /* FIXED, not max-content: sized to the longest label, In Store Pickup:, so the
      values open on the same edge in every destination section on the page. */
   --dest-label-col: 10rem;
+  /* The air either side of the place arrow. Wider than the 0.4em the date arrows
+     take, because this one separates two whole address blocks rather than two
+     dates on one line. The arrow column is the icon plus one of these a side. */
+  --dest-arrow-gap: 1.2em;
 
   display: grid;
-  grid-template-columns: var(--dest-label-col) fit-content(50%) calc(9px + 0.8em) 1fr;
+  grid-template-columns:
+    var(--dest-label-col)
+    fit-content(50%)
+    calc(9px + 2 * var(--dest-arrow-gap))
+    1fr;
   row-gap: var(--dest-line-gap);
 }
 
@@ -592,12 +600,17 @@ th.center, td.center {
    end places sit 0.4em from it as the start and end dates do. The column is as
    wide as the arrow, so on the lines below it is the gap between the sides.
 
-   ⚠️ A FIXED width (the 9px icon plus its two 0.4em margins), not
+   ⚠️ A FIXED width (the 9px icon plus its two `--dest-arrow-gap` margins), not
    `max-content`: the date lines span this column, and Blink hands a spanning
    item's leftover width to a `max-content` track before a `fit-content` one,
    so the arrow column grew and opened a gap after the arrow on some sections. */
 #items .destination-grid .arrow {
   grid-column: 3;
+}
+
+#items .destination-grid .arrow .inline-arrow svg {
+  margin-left: var(--dest-arrow-gap);
+  margin-right: var(--dest-arrow-gap);
 }
 
 #items .destination-days {
