@@ -79,6 +79,9 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
     // total of Σ days beneath them.
     const windows = d.charge_windows || [];
     const hasChargeWindow = windows.length > 0;
+    // A 0-day window is valid (it still bills the one-week minimum), and
+    // `formatChargeDays` throws on 0, so every window count goes through this.
+    const chargePeriod = (n) => n > 0 ? it.dates.formatChargeDays(n).periodLabel : "0 days";
     // A charge WINDOW is a span, and a span needs an end. With no rental line
     // the end date and the duration are both suppressed below, which would
     // leave "Dates Charged:" labelling a lone start date — the same
@@ -198,7 +201,7 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
       <td>
         <!-- Charge window — only when it differs from delivery/collection -->
         <% if (showCharged) { %>
-        <%= it.dates.formatChargeDays(windows[0].days).periodLabel %>
+        <%= chargePeriod(windows[0].days) %>
         <% } %>
       </td>
       <% } %>
@@ -216,14 +219,14 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
       <td class="date"><%= it.dates.formatChicagoWeekdayDate(w.start) %></td>
       <td class="arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></td>
       <td class="date"><%= it.dates.formatChicagoWeekdayDate(w.end) %></td>
-      <td><%= it.dates.formatChargeDays(w.days).periodLabel %></td>
+      <td><%= chargePeriod(w.days) %></td>
       <td class="address" colspan="<%= deliverySpan %>"></td>
       <td class="address" colspan="<%= returnSpan %>"></td>
     </tr>
 <% }) %>
     <tr>
       <td colspan="3"><span class="bold">Total Charged: </span></td>
-      <td><%= it.dates.formatChargeDays(it.dates.chargedDays(d)).periodLabel %></td>
+      <td><%= chargePeriod(it.dates.chargedDays(d)) %></td>
       <td class="address" colspan="<%= deliverySpan %>"></td>
       <td class="address" colspan="<%= returnSpan %>"></td>
     </tr>

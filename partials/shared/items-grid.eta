@@ -172,6 +172,8 @@ let headerPending = destinationDetail;
           const windows = d.charge_windows || [];
           const showCharged = hasCollection && windows.length > 0 &&
             !u.isSameAsDeliveryDates(d);
+          // A 0-day window is valid, and `formatChargeDays` throws on 0.
+          const chargePeriod = (n) => n > 0 ? it.dates.formatChargeDays(n).periodLabel : "0 days";
           const chargedLineCount = showCharged ? windows.length + (windows.length > 1 ? 1 : 0) : 0;
           const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
           const addressText = (ep) => {
@@ -228,12 +230,12 @@ let headerPending = destinationDetail;
               <div class="start"><% if (wi === 0) { %><span class="bold">Charged:</span> <% } %><%= it.dates.formatChicagoWeekdayDate(w.start) %></div>
               <div class="end">
                 <%= it.dates.formatChicagoWeekdayDate(w.end) %>
-                <span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(w.days).periodLabel %></span>
+                <span class="destination-days"><%~ clock() %><%= chargePeriod(w.days) %></span>
               </div>
               <% }) %>
               <% if (windows.length > 1) { %>
               <div class="start"><span class="bold">Total charged</span></div>
-              <div class="end"><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(it.dates.chargedDays(d)).periodLabel %></span></div>
+              <div class="end"><span class="destination-days"><%~ clock() %><%= chargePeriod(it.dates.chargedDays(d)) %></span></div>
               <% } %>
               <% } %>
             </div>
@@ -254,11 +256,11 @@ let headerPending = destinationDetail;
               <% windows.forEach((w, wi) => { %>
               <div>
                 <% if (wi === 0) { %><span class="bold">Charged:</span> <% } %><%= it.dates.formatChicagoWeekdayDate(w.start) %><span class="inline-arrow"><%~ it.icons.svg("arrow-right", { size: 9 }) %></span><%= it.dates.formatChicagoWeekdayDate(w.end) %>
-                <span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(w.days).periodLabel %></span>
+                <span class="destination-days"><%~ clock() %><%= chargePeriod(w.days) %></span>
               </div>
               <% }) %>
               <% if (windows.length > 1) { %>
-              <div><span class="bold">Total charged</span><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(it.dates.chargedDays(d)).periodLabel %></span></div>
+              <div><span class="bold">Total charged</span><span class="destination-days"><%~ clock() %><%= chargePeriod(it.dates.chargedDays(d)) %></span></div>
               <% } %>
               <% } %>
             </div>
