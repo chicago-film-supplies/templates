@@ -62,18 +62,7 @@
                 "_seconds": 1788186600,
                 "_nanoseconds": 0
               },
-              "charge_start": "2026-08-25T09:30:00.000-05:00",
-              "charge_start_fs": {
-                "_seconds": 1787668200,
-                "_nanoseconds": 0
-              },
-              "charge_end": "2026-08-31T09:30:00.000-05:00",
-              "charge_end_fs": {
-                "_seconds": 1788186600,
-                "_nanoseconds": 0
-              },
               "days_active": 5,
-              "days_charged": 5,
               "charge_windows": [
                 {
                   "start": "2026-08-25T09:30:00.000-05:00",
@@ -730,18 +719,7 @@
                 "_seconds": 1792785600,
                 "_nanoseconds": 0
               },
-              "charge_start": "2026-08-25T09:00:00.000-05:00",
-              "charge_start_fs": {
-                "_seconds": 1787666400,
-                "_nanoseconds": 0
-              },
-              "charge_end": "2026-10-23T15:00:00.000-05:00",
-              "charge_end_fs": {
-                "_seconds": 1792785600,
-                "_nanoseconds": 0
-              },
               "days_active": 43,
-              "days_charged": 42,
               "charge_windows": [
                 {
                   "start": "2026-08-25T09:00:00.000-05:00",

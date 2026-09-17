@@ -37,10 +37,7 @@
 				"delivery_end": "2026-04-06T09:00:00.000-05:00",
 				"collection_start": "2026-04-10T15:00:00.000-05:00",
 				"collection_end": "2026-04-10T15:00:00.000-05:00",
-				"charge_start": "2026-04-06T09:00:00.000-05:00",
-				"charge_end": "2026-04-10T15:00:00.000-05:00",
 				"days_active": 5,
-				"days_charged": 5,
 				"delivery_start_fs": {
 					"_seconds": 1775484000,
 					"_nanoseconds": 0
@@ -54,14 +51,6 @@
 					"_nanoseconds": 0
 				},
 				"collection_end_fs": {
-					"_seconds": 1775851200,
-					"_nanoseconds": 0
-				},
-				"charge_start_fs": {
-					"_seconds": 1775484000,
-					"_nanoseconds": 0
-				},
-				"charge_end_fs": {
 					"_seconds": 1775851200,
 					"_nanoseconds": 0
 				},
@@ -139,10 +128,7 @@
 				"delivery_end": "2026-04-07T07:00:00.000-05:00",
 				"collection_start": "2026-04-13T15:00:00.000-05:00",
 				"collection_end": "2026-04-13T15:00:00.000-05:00",
-				"charge_start": "2026-04-07T07:00:00.000-05:00",
-				"charge_end": "2026-04-11T15:00:00.000-05:00",
 				"days_active": 7,
-				"days_charged": 5,
 				"delivery_start_fs": {
 					"_seconds": 1775563200,
 					"_nanoseconds": 0
@@ -157,14 +143,6 @@
 				},
 				"collection_end_fs": {
 					"_seconds": 1776110400,
-					"_nanoseconds": 0
-				},
-				"charge_start_fs": {
-					"_seconds": 1775563200,
-					"_nanoseconds": 0
-				},
-				"charge_end_fs": {
-					"_seconds": 1775937600,
 					"_nanoseconds": 0
 				},
 				"charge_windows": [

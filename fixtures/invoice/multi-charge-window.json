@@ -86,8 +86,18 @@
         "charge_windows": [
           {
             "start": "2025-04-22T09:00:00.000-05:00",
-            "end": "2025-05-16T15:00:00.000-05:00",
-            "days": 19
+            "end": "2025-04-24T15:00:00.000-05:00",
+            "days": 3
+          },
+          {
+            "start": "2025-04-29T09:00:00.000-05:00",
+            "end": "2025-05-02T15:00:00.000-05:00",
+            "days": 4
+          },
+          {
+            "start": "2025-05-13T09:00:00.000-05:00",
+            "end": "2025-05-14T15:00:00.000-05:00",
+            "days": 2
           }
         ]
       },
@@ -171,10 +181,10 @@
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 600,
-        "chargeable_days": 19,
+        "chargeable_days": 15,
         "formula": "five_day_week",
-        "subtotal_cents": 4560,
-        "subtotal_discounted_cents": 4560,
+        "subtotal_cents": 3600,
+        "subtotal_discounted_cents": 3600,
         "discount": null,
         "taxes": [
           {
@@ -182,7 +192,7 @@
             "name": "Chicago Rental Tax",
             "rate": 11,
             "type": "percent",
-            "amount_cents": 502
+            "amount_cents": 396
           }
         ],
         "taxes_base": [
@@ -193,7 +203,7 @@
             "type": "percent"
           }
         ],
-        "total_cents": 5062
+        "total_cents": 3996
       },
       "path": [
         "UTIdgPY8upuqt46EINjR",
@@ -218,14 +228,14 @@
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
         "base_cents": 200,
-        "chargeable_days": null,
+        "chargeable_days": 15,
         "formula": "five_day_week",
-        "subtotal_cents": 400,
+        "subtotal_cents": 1200,
         "subtotal_discounted_cents": 0,
         "discount": {
           "rate": 100,
           "type": "percent",
-          "amount_cents": 400
+          "amount_cents": 1200
         },
         "taxes": [
           {
@@ -263,21 +273,21 @@
     }
   ],
   "totals": {
-    "subtotal_cents": 4960,
-    "subtotal_discounted_cents": 4560,
-    "discount_amount_cents": 400,
+    "subtotal_cents": 4800,
+    "subtotal_discounted_cents": 3600,
+    "discount_amount_cents": 1200,
     "taxes": [
       {
         "uid": "xmxiaT32ehsEnrgrKWW8",
         "name": "Chicago Rental Tax",
         "rate": 11,
         "type": "percent",
-        "amount_cents": 502
+        "amount_cents": 396
       }
     ],
     "transaction_fees": [],
-    "total_cents": 5062,
-    "amount_paid_cents": 5062,
+    "total_cents": 3996,
+    "amount_paid_cents": 3996,
     "amount_due_cents": 0
   },
   "xero_id": "87f8e341-55b3-495f-88f6-9f907cba980c",
