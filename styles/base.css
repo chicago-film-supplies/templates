@@ -520,12 +520,14 @@ th.center, td.center {
   width: auto;
 }
 
-/* THREE COLUMNS: label | start side | end side. The label column has one fixed
-   width, so every value opens on one edge in every section. `fit-content` caps
-   each address side short of half the page so two long addresses wrap rather
-   than push the grid past the margin. The date lines SPAN both address columns
-   (`.span`), so a window reads on one line. Lines are spaced by `row-gap`
-   alone: one number, so the gaps are equal by construction. */
+/* FOUR COLUMNS: label | start side | arrow | end side, across the FULL width of
+   the page. The label column has one fixed width, so every value opens on one
+   edge in every section. The start side is as wide as its longest line, capped
+   at half, so the arrow sits right after the delivery place; the end side is
+   `1fr` and takes everything left, so a long collection address uses the page
+   before it wraps. The date lines SPAN both sides (`.span`), so a window reads
+   on one line. Lines are spaced by `row-gap` alone: one number, so the gaps are
+   equal by construction. */
 #items .destination-grid {
   --dest-line-gap: 2px;
   /* FIXED, not max-content: sized to the longest label, In Store Pickup:, so the
@@ -533,8 +535,7 @@ th.center, td.center {
   --dest-label-col: 10rem;
 
   display: grid;
-  grid-template-columns: var(--dest-label-col) fit-content(42%) calc(9px + 0.8em) fit-content(42%);
-  justify-content: start;
+  grid-template-columns: var(--dest-label-col) fit-content(50%) calc(9px + 0.8em) 1fr;
   row-gap: var(--dest-line-gap);
 }
 
@@ -549,7 +550,7 @@ th.center, td.center {
 
 /* No collection leg: no end column. */
 #items .destination-grid.one-leg {
-  grid-template-columns: var(--dest-label-col) fit-content(100%);
+  grid-template-columns: var(--dest-label-col) 1fr;
 }
 
 #items .destination-grid .label {
