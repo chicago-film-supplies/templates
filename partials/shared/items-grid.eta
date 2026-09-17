@@ -254,7 +254,7 @@ let prevDestKey = null;
                 <% if (hasCollection) { %>
                 <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ arrow() %></span><% } %>
                 <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
-                <% if (d.days_active != null) { %><span class="inline-clock"><%~ clock() %></span><span class="destination-days"><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
+                <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
                 <% } %>
               </div>
               <% if (showCharged) { %>
@@ -262,12 +262,12 @@ let prevDestKey = null;
               <div class="label bold"><% if (wi === 0) { %>Charged:<% } %></div>
               <div class="span">
                 <%= it.dates.formatChicagoWeekdayDate(w.start) %><span class="inline-arrow"><%~ arrow() %></span><%= it.dates.formatChicagoWeekdayDate(w.end) %>
-                <span class="inline-clock"><%~ clock() %></span><span class="destination-days"><%= chargePeriod(w.days) %></span>
+                <span class="destination-days"><%~ clock() %><%= chargePeriod(w.days) %></span>
               </div>
               <% }) %>
               <% if (windows.length > 1) { %>
               <div class="label bold">Total charged:</div>
-              <div class="span"><span class="inline-clock"><%~ clock() %></span><span class="destination-days"><%= chargePeriod(it.dates.billableDays(windows.map((w) => w.days))) %></span></div>
+              <div class="span"><span class="destination-days first"><%~ clock() %><%= chargePeriod(it.dates.billableDays(windows.map((w) => w.days))) %></span></div>
               <% } %>
               <% } %>
             </div>

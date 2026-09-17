@@ -21,11 +21,11 @@ const { destinations, items, totals } = order;
 // boundary — the latest time in the set was 18:00 and `FROZEN_NOW` is midday —
 // so the golden gate compared this branch to itself and passed.
 // `evening-boundary` (prod order 872) exists to close exactly that hole: its
-// delivery is 19:00 CDT, which is 00:00 UTC to the second.
+// delivery is 19:00 CDT, which is 00:00 UTC to the second
 // Divider rows are structure, not stock. They are interleaved with the real
 // line items in one array, and `path` records BOTH kinds of ancestor — which is
 // why the indent below has to subtract them rather than assume how many there
-// are. One predicate, so the two views cannot drift apart.
+// are. One predicate, so the two views cannot drift apart
 const isDivider = (i) => i.type === "group" || i.type === "destination";
 const lineItems = items.filter(i => !isDivider(i));
 const dividerUids = new Set(items.filter(isDivider).map(i => i.uid));
