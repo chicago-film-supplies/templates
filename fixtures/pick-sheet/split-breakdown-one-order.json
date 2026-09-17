@@ -63,7 +63,14 @@
                 "_nanoseconds": 0
               },
               "days_active": 15,
-              "days_charged": 14
+              "days_charged": 14,
+              "charge_windows": [
+                {
+                  "start": "2026-08-30T09:00:00.000-05:00",
+                  "end": "2026-09-18T15:00:00.000-05:00",
+                  "days": 14
+                }
+              ]
             },
             "delivery": {
               "uid": "vTn8CTAwwJHEJZLBzsOw",
