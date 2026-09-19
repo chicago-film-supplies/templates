@@ -1,0 +1,907 @@
+{
+  "uid": "F8hZuO2inHmCuZ7qqKBJ",
+  "number": 1041,
+  "status": "draft",
+  "organization": {
+    "uid": "upzbF2DCmuHCPcBZvu9e",
+    "path": [
+      {
+        "uid": "upzbF2DCmuHCPcBZvu9e",
+        "name": "Redbird Productions LLC",
+        "derived": false
+      }
+    ],
+    "crms_id": 585,
+    "jurisdiction_claim": null,
+    "tax_exempt": false,
+    "xero_id": "a7c0d67c-6f18-4ade-9107-e404e6b30f9c",
+    "billing_address": {
+      "city": "Chicago",
+      "country_name": "United States",
+      "full": "4647 Chestnut St, Chicago, Illinois 87131, United States",
+      "name": "",
+      "postcode": "66622",
+      "region": "IL",
+      "street": "4647 Chestnut St",
+      "street2": "",
+      "address_coordinates": null,
+      "user_coordinates": null
+    }
+  },
+  "destinations": [
+    {
+      "uid": "e626037b-3bf6-434f-9eba-d96fc2f32590",
+      "dates": {
+        "delivery_start": "2026-09-16T09:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1789567200,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-09-16T09:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1789567200,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-09-29T09:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1790690400,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-09-29T09:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1790690400,
+          "_nanoseconds": 0
+        },
+        "days_active": 10,
+        "charge_windows": [
+          {
+            "start": "2026-09-16T09:00:00.000-05:00",
+            "end": "2026-09-24T09:00:00.000-05:00",
+            "days": 7
+          }
+        ]
+      },
+      "delivery": {
+        "uid": "Jok9IDiSDrpi9rsDJ1Ef",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "4449 Sycamore Pl, Chicago, Illinois 91988, United States",
+          "name": "Cedar Point Lodge",
+          "postcode": "67852",
+          "region": "IL",
+          "street": "4449 Sycamore Pl",
+          "street2": "",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": null,
+        "contact": {
+          "uid": "ncsJwOX1Z6hsm0ERYoiE",
+          "first_name": "Sage",
+          "middle_name": null,
+          "last_name": "Jensen",
+          "pronunciation": null,
+          "name": "Rowan Carmichael",
+          "phones": [
+            "(282) 555-0114"
+          ]
+        }
+      },
+      "collection": {
+        "uid": "LJJznmtzLRlDJPfUPxqH",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "2604 Juniper Ct, Chicago, Illinois 61247, United States",
+          "name": "Northgate Community Hall",
+          "postcode": "67749",
+          "region": "IL",
+          "street": "2604 Juniper Ct",
+          "street2": "",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": null,
+        "contact": {
+          "uid": "ncsJwOX1Z6hsm0ERYoiE",
+          "first_name": "Sage",
+          "middle_name": null,
+          "last_name": "Jensen",
+          "pronunciation": null,
+          "name": "Rowan Carmichael",
+          "phones": [
+            "(282) 555-0114"
+          ]
+        }
+      },
+      "customer_collecting": false,
+      "customer_returning": false
+    },
+    {
+      "uid": "ca031069-abde-4ba1-a376-5183e3e8a27b",
+      "dates": {
+        "delivery_start": "2026-09-16T09:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1789567200,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-09-16T09:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1789567200,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-09-30T09:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1790776800,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-09-30T09:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1790776800,
+          "_nanoseconds": 0
+        },
+        "days_active": 11,
+        "charge_windows": [
+          {
+            "start": "2026-09-16T09:00:00.000-05:00",
+            "end": "2026-09-24T09:00:00.000-05:00",
+            "days": 7
+          }
+        ]
+      },
+      "delivery": {
+        "uid": "4xietJyDKkhxvN7nxsCT",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "4449 Sycamore Pl, Chicago, Illinois 91988, United States",
+          "name": "Cedar Point Lodge",
+          "postcode": "67852",
+          "region": "IL",
+          "street": "4449 Sycamore Pl",
+          "street2": "",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": null,
+        "contact": {
+          "uid": "ncsJwOX1Z6hsm0ERYoiE",
+          "first_name": "Sage",
+          "middle_name": null,
+          "last_name": "Jensen",
+          "pronunciation": null,
+          "name": "Rowan Carmichael",
+          "phones": [
+            "(282) 555-0114"
+          ]
+        }
+      },
+      "collection": {
+        "uid": "BVnQTU2XnyCSa7p4SdfV",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "2604 Juniper Ct, Chicago, Illinois 61247, United States",
+          "name": "Northgate Community Hall",
+          "postcode": "67749",
+          "region": "IL",
+          "street": "2604 Juniper Ct",
+          "street2": "",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": null,
+        "contact": {
+          "uid": "ncsJwOX1Z6hsm0ERYoiE",
+          "first_name": "Sage",
+          "middle_name": null,
+          "last_name": "Jensen",
+          "pronunciation": null,
+          "name": "Rowan Carmichael",
+          "phones": [
+            "(282) 555-0114"
+          ]
+        }
+      },
+      "customer_collecting": false,
+      "customer_returning": false
+    },
+    {
+      "uid": "8db48c41-3f18-4fc8-8081-720fa76863ae",
+      "dates": {
+        "delivery_start": "2026-09-16T09:00:00.000-05:00",
+        "delivery_start_fs": {
+          "_seconds": 1789567200,
+          "_nanoseconds": 0
+        },
+        "delivery_end": "2026-09-16T09:00:00.000-05:00",
+        "delivery_end_fs": {
+          "_seconds": 1789567200,
+          "_nanoseconds": 0
+        },
+        "collection_start": "2026-09-29T09:00:00.000-05:00",
+        "collection_start_fs": {
+          "_seconds": 1790690400,
+          "_nanoseconds": 0
+        },
+        "collection_end": "2026-09-29T09:00:00.000-05:00",
+        "collection_end_fs": {
+          "_seconds": 1790690400,
+          "_nanoseconds": 0
+        },
+        "days_active": 10,
+        "charge_windows": [
+          {
+            "start": "2026-09-16T09:00:00.000-05:00",
+            "end": "2026-09-24T09:00:00.000-05:00",
+            "days": 7
+          }
+        ]
+      },
+      "delivery": {
+        "uid": "nRnkqCnJ8Hm2I0JGlkim",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "4995 Oak St, Chicago, Illinois 27021, United States",
+          "name": "Ironworks Loft Space",
+          "postcode": "65560",
+          "region": "IL",
+          "street": "4995 Oak St",
+          "street2": "",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": null,
+        "contact": {
+          "uid": "ncsJwOX1Z6hsm0ERYoiE",
+          "first_name": "Sage",
+          "middle_name": null,
+          "last_name": "Jensen",
+          "pronunciation": null,
+          "name": "Rowan Carmichael",
+          "phones": [
+            "(282) 555-0114"
+          ]
+        }
+      },
+      "collection": {
+        "uid": "OYlpcx6Ei97OtqKsXEk6",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "4995 Oak St, Chicago, Illinois 27021, United States",
+          "name": "Ironworks Loft Space",
+          "postcode": "65560",
+          "region": "IL",
+          "street": "4995 Oak St",
+          "street2": "",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
+        "instructions": null,
+        "contact": {
+          "uid": "ncsJwOX1Z6hsm0ERYoiE",
+          "first_name": "Sage",
+          "middle_name": null,
+          "last_name": "Jensen",
+          "pronunciation": null,
+          "name": "Rowan Carmichael",
+          "phones": [
+            "(282) 555-0114"
+          ]
+        }
+      },
+      "customer_collecting": false,
+      "customer_returning": false
+    }
+  ],
+  "items": [
+    {
+      "uid": "e626037b-3bf6-434f-9eba-d96fc2f32590",
+      "type": "destination",
+      "name": "Bayview Convention Center",
+      "path": [
+        "e626037b-3bf6-434f-9eba-d96fc2f32590"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "3c514692-2bd6-4339-a2f6-8d58c71dd084",
+      "type": "group",
+      "name": "Power, Lights & Tools",
+      "path": [
+        "e626037b-3bf6-434f-9eba-d96fc2f32590",
+        "3c514692-2bd6-4339-a2f6-8d58c71dd084"
+      ],
+      "description": ""
+    },
+    {
+      "type": "rental",
+      "uid": "yPWgHVeLvMbjDYiCqsVo",
+      "name": "Zendex Go Jacks",
+      "description": "",
+      "quantity": 1,
+      "path": [
+        "e626037b-3bf6-434f-9eba-d96fc2f32590",
+        "3c514692-2bd6-4339-a2f6-8d58c71dd084",
+        "yPWgHVeLvMbjDYiCqsVo"
+      ],
+      "zero_priced": null,
+      "price": {
+        "base_cents": 7500,
+        "base_percent": null,
+        "replacement_cents": 200000,
+        "chargeable_days": 7,
+        "formula": "five_day_week",
+        "subtotal_cents": 10500,
+        "subtotal_discounted_cents": 10500,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 1575
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 12075
+      },
+      "stock_method": "bulk",
+      "order_number": 1041,
+      "uid_order": "F8hZuO2inHmCuZ7qqKBJ",
+      "inclusion_type": null,
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    },
+    {
+      "uid": "ca031069-abde-4ba1-a376-5183e3e8a27b",
+      "type": "destination",
+      "name": "Bayview Convention Center",
+      "path": [
+        "ca031069-abde-4ba1-a376-5183e3e8a27b"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "d2f5f3af-ace6-49cc-9fdb-f37816cc3f9c",
+      "type": "group",
+      "name": "Tents",
+      "path": [
+        "ca031069-abde-4ba1-a376-5183e3e8a27b",
+        "d2f5f3af-ace6-49cc-9fdb-f37816cc3f9c"
+      ],
+      "description": ""
+    },
+    {
+      "type": "rental",
+      "uid": "J7svp77V0tLx6xBaKRBx",
+      "name": "10' x 10' Pop Up Tent (White)",
+      "description": "ea includes 3 sides, 1 door, 1 rain gutter, 4 rope ratchet tie downs and 4 20lb shot bags",
+      "quantity": 1,
+      "path": [
+        "ca031069-abde-4ba1-a376-5183e3e8a27b",
+        "d2f5f3af-ace6-49cc-9fdb-f37816cc3f9c",
+        "J7svp77V0tLx6xBaKRBx"
+      ],
+      "zero_priced": null,
+      "price": {
+        "base_cents": 6000,
+        "base_percent": null,
+        "replacement_cents": 50000,
+        "chargeable_days": 7,
+        "formula": "five_day_week",
+        "subtotal_cents": 8400,
+        "subtotal_discounted_cents": 8400,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 1260
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 9660
+      },
+      "stock_method": "bulk",
+      "order_number": 1041,
+      "uid_order": "F8hZuO2inHmCuZ7qqKBJ",
+      "inclusion_type": null,
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    },
+    {
+      "type": "rental",
+      "uid": "5H3Z7i8guIkuXOaYOVqb",
+      "name": "Tent Side (White)",
+      "description": "",
+      "quantity": 3,
+      "path": [
+        "ca031069-abde-4ba1-a376-5183e3e8a27b",
+        "d2f5f3af-ace6-49cc-9fdb-f37816cc3f9c",
+        "J7svp77V0tLx6xBaKRBx",
+        "5H3Z7i8guIkuXOaYOVqb"
+      ],
+      "zero_priced": true,
+      "price": {
+        "base_cents": 0,
+        "base_percent": null,
+        "replacement_cents": 0,
+        "chargeable_days": 7,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 1041,
+      "uid_order": "F8hZuO2inHmCuZ7qqKBJ",
+      "inclusion_type": "default",
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    },
+    {
+      "type": "rental",
+      "uid": "3kzv0sanOljc25psMVkU",
+      "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
+      "description": "",
+      "quantity": 4,
+      "path": [
+        "ca031069-abde-4ba1-a376-5183e3e8a27b",
+        "d2f5f3af-ace6-49cc-9fdb-f37816cc3f9c",
+        "J7svp77V0tLx6xBaKRBx",
+        "3kzv0sanOljc25psMVkU"
+      ],
+      "zero_priced": true,
+      "price": {
+        "base_cents": 0,
+        "base_percent": null,
+        "replacement_cents": 3000,
+        "chargeable_days": 7,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 1041,
+      "uid_order": "F8hZuO2inHmCuZ7qqKBJ",
+      "inclusion_type": "default",
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    },
+    {
+      "type": "rental",
+      "uid": "Wnj0LODXW6zCYRmnJoxQ",
+      "name": "20lb Shot Bag",
+      "description": "",
+      "quantity": 4,
+      "path": [
+        "ca031069-abde-4ba1-a376-5183e3e8a27b",
+        "d2f5f3af-ace6-49cc-9fdb-f37816cc3f9c",
+        "J7svp77V0tLx6xBaKRBx",
+        "Wnj0LODXW6zCYRmnJoxQ"
+      ],
+      "zero_priced": true,
+      "price": {
+        "base_cents": 0,
+        "base_percent": null,
+        "replacement_cents": 9000,
+        "chargeable_days": 7,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 1041,
+      "uid_order": "F8hZuO2inHmCuZ7qqKBJ",
+      "inclusion_type": "default",
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    },
+    {
+      "type": "rental",
+      "uid": "Ms2nlTfZZMoaR8yZwudF",
+      "name": "Long Milk Crate (18x12)",
+      "description": "",
+      "quantity": 1,
+      "path": [
+        "ca031069-abde-4ba1-a376-5183e3e8a27b",
+        "d2f5f3af-ace6-49cc-9fdb-f37816cc3f9c",
+        "J7svp77V0tLx6xBaKRBx",
+        "Ms2nlTfZZMoaR8yZwudF"
+      ],
+      "zero_priced": true,
+      "price": {
+        "base_cents": 0,
+        "base_percent": null,
+        "replacement_cents": 1200,
+        "chargeable_days": 7,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 1041,
+      "uid_order": "F8hZuO2inHmCuZ7qqKBJ",
+      "inclusion_type": "default",
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    },
+    {
+      "type": "rental",
+      "uid": "9jjGlzOiKG6ap3LpAGDA",
+      "name": "Tent Door (White)",
+      "description": "",
+      "quantity": 1,
+      "path": [
+        "ca031069-abde-4ba1-a376-5183e3e8a27b",
+        "d2f5f3af-ace6-49cc-9fdb-f37816cc3f9c",
+        "J7svp77V0tLx6xBaKRBx",
+        "9jjGlzOiKG6ap3LpAGDA"
+      ],
+      "zero_priced": true,
+      "price": {
+        "base_cents": 0,
+        "base_percent": null,
+        "replacement_cents": 10000,
+        "chargeable_days": 7,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 1041,
+      "uid_order": "F8hZuO2inHmCuZ7qqKBJ",
+      "inclusion_type": "default",
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    },
+    {
+      "type": "rental",
+      "uid": "HM7k3NDHG1GJ2uaykMKC",
+      "name": "Tent Canopy Rain Gutter",
+      "description": "",
+      "quantity": 1,
+      "path": [
+        "ca031069-abde-4ba1-a376-5183e3e8a27b",
+        "d2f5f3af-ace6-49cc-9fdb-f37816cc3f9c",
+        "J7svp77V0tLx6xBaKRBx",
+        "HM7k3NDHG1GJ2uaykMKC"
+      ],
+      "zero_priced": true,
+      "price": {
+        "base_cents": 0,
+        "base_percent": null,
+        "replacement_cents": 3000,
+        "chargeable_days": 7,
+        "formula": "five_day_week",
+        "subtotal_cents": 0,
+        "subtotal_discounted_cents": 0,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 0
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 0
+      },
+      "stock_method": "bulk",
+      "order_number": 1041,
+      "uid_order": "F8hZuO2inHmCuZ7qqKBJ",
+      "inclusion_type": "default",
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    },
+    {
+      "uid": "8db48c41-3f18-4fc8-8081-720fa76863ae",
+      "type": "destination",
+      "name": "Ironworks Loft Space",
+      "path": [
+        "8db48c41-3f18-4fc8-8081-720fa76863ae"
+      ],
+      "description": ""
+    },
+    {
+      "uid": "ba2ce098-9e3e-4608-af7e-fceffc322545",
+      "type": "group",
+      "name": "Tables & Chairs",
+      "path": [
+        "8db48c41-3f18-4fc8-8081-720fa76863ae",
+        "ba2ce098-9e3e-4608-af7e-fceffc322545"
+      ],
+      "description": ""
+    },
+    {
+      "type": "rental",
+      "uid": "urf6KT60uszcM0etGDMX",
+      "name": "Folding Chair",
+      "description": "",
+      "quantity": 10,
+      "path": [
+        "8db48c41-3f18-4fc8-8081-720fa76863ae",
+        "ba2ce098-9e3e-4608-af7e-fceffc322545",
+        "urf6KT60uszcM0etGDMX"
+      ],
+      "zero_priced": null,
+      "price": {
+        "base_cents": 200,
+        "base_percent": null,
+        "replacement_cents": 1600,
+        "chargeable_days": 7,
+        "formula": "five_day_week",
+        "subtotal_cents": 2800,
+        "subtotal_discounted_cents": 2800,
+        "discount": null,
+        "taxes": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent",
+            "amount_cents": 420
+          }
+        ],
+        "taxes_base": [
+          {
+            "uid": "VEW4Ivy7VNqgxFA5eJw6",
+            "name": "Chicago Rental Tax",
+            "rate": 15,
+            "type": "percent"
+          }
+        ],
+        "total_cents": 3220
+      },
+      "stock_method": "bulk",
+      "order_number": 1041,
+      "uid_order": "F8hZuO2inHmCuZ7qqKBJ",
+      "inclusion_type": null,
+      "coa_revenue": 4000,
+      "uid_tax_class": "GHDaH9QMXPydPtLwOcGY"
+    },
+    {
+      "uid": "c09d5ff0-a6c8-472c-a003-20e93ad3ffd1",
+      "type": "group",
+      "name": "Delivery",
+      "path": [
+        "8db48c41-3f18-4fc8-8081-720fa76863ae",
+        "c09d5ff0-a6c8-472c-a003-20e93ad3ffd1"
+      ],
+      "description": ""
+    },
+    {
+      "type": "service",
+      "uid": "F4ZiJl7ZzMChlRufw8RL",
+      "name": "Delivery/Setup/Removal",
+      "description": "",
+      "quantity": 2,
+      "path": [
+        "8db48c41-3f18-4fc8-8081-720fa76863ae",
+        "c09d5ff0-a6c8-472c-a003-20e93ad3ffd1",
+        "F4ZiJl7ZzMChlRufw8RL"
+      ],
+      "zero_priced": null,
+      "price": {
+        "base_cents": 25000,
+        "base_percent": null,
+        "replacement_cents": null,
+        "chargeable_days": null,
+        "formula": "fixed",
+        "subtotal_cents": 50000,
+        "subtotal_discounted_cents": 50000,
+        "discount": null,
+        "taxes": [],
+        "taxes_base": [],
+        "total_cents": 50000
+      },
+      "stock_method": "none",
+      "order_number": 1041,
+      "uid_order": "F8hZuO2inHmCuZ7qqKBJ",
+      "inclusion_type": null,
+      "coa_revenue": 4100,
+      "uid_tax_class": "F1VqGu0m6SbWMVLgLoV4"
+    }
+  ],
+  "tax_exempt": false,
+  "uid_store": null,
+  "totals": {
+    "discount_amount_cents": 0,
+    "subtotal_cents": 71700,
+    "subtotal_discounted_cents": 71700,
+    "taxes": [
+      {
+        "uid": "VEW4Ivy7VNqgxFA5eJw6",
+        "name": "Chicago Rental Tax",
+        "rate": 15,
+        "type": "percent",
+        "amount_cents": 3255
+      }
+    ],
+    "transaction_fees": [],
+    "total_cents": 74955,
+    "replacement_total_cents": 377430
+  },
+  "invoices": [],
+  "query_by_invoices": [],
+  "query_by_items": [
+    "yPWgHVeLvMbjDYiCqsVo",
+    "J7svp77V0tLx6xBaKRBx",
+    "5H3Z7i8guIkuXOaYOVqb",
+    "3kzv0sanOljc25psMVkU",
+    "Wnj0LODXW6zCYRmnJoxQ",
+    "Ms2nlTfZZMoaR8yZwudF",
+    "9jjGlzOiKG6ap3LpAGDA",
+    "HM7k3NDHG1GJ2uaykMKC",
+    "urf6KT60uszcM0etGDMX",
+    "F4ZiJl7ZzMChlRufw8RL"
+  ],
+  "query_by_contacts": [
+    "ncsJwOX1Z6hsm0ERYoiE",
+    "ncsJwOX1Z6hsm0ERYoiE",
+    "ncsJwOX1Z6hsm0ERYoiE",
+    "ncsJwOX1Z6hsm0ERYoiE",
+    "ncsJwOX1Z6hsm0ERYoiE",
+    "ncsJwOX1Z6hsm0ERYoiE"
+  ],
+  "query_by_dates": [
+    "2026-09-16",
+    "2026-09-29",
+    "2026-09-30"
+  ],
+  "bookings_breakdown": {
+    "quoted": 0,
+    "reserved": 0,
+    "prepped": 0,
+    "out": 0,
+    "returned": 0,
+    "lost": 0,
+    "damaged": 0
+  },
+  "crms_id": null,
+  "subject": "Sample subject.",
+  "reference": null,
+  "xero_id": null,
+  "uid_thread": "B7GJPHery2VdN8LOzLUi",
+  "version": 24,
+  "created_by": {
+    "uid": "KXj2LPztjhdB5Wf3qwaR",
+    "name": "Rowan Carmichael"
+  },
+  "updated_by": {
+    "uid": "KXj2LPztjhdB5Wf3qwaR",
+    "name": "Rowan Carmichael"
+  },
+  "created_at": {
+    "_seconds": 1789509147,
+    "_nanoseconds": 949000000
+  },
+  "updated_at": {
+    "_seconds": 1789671158,
+    "_nanoseconds": 166000000
+  }
+}
