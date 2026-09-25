@@ -26,6 +26,14 @@
       "slug": "nested-kit",
       "label": "Nested kit, zero-priced components shown",
       "description": "The COMPONENT INDENT, and the default half of the hide_zero_priced_components pair. Address `order:V3hl7IoFE51tElz7c4fr:all:both` (prod order 1012), captured 2026-09-25 after the zero_priced backfill, so its kit components carry real flags where `split-breakdown-one-order` (same order, captured 2026-09-09) carries null. Pipe &amp; Drape (2 Rooms) nests components three deep (kit > Pipes Case > 4' LED Light Bar > 4' T5 Power Cable), the only fixture reaching depth 3, so it is what shows a picker where a kit ends. Ten of its eleven components are zero_priced true; Short Director Chair is zero_priced false, the arm that must STAY when the param hides the rest. Its sibling `nested-kit-hidden` is the SAME capture at `true`, so the diff between the two goldens is the param's effect alone: re-capture both together or the pair stops being a control. Do NOT re-capture `split-breakdown-one-order` to pick up the flags. Its split and counted-under rows have since closed on this order, and they exist only in that older capture."
+    },
+    {
+      "slug": "nested-kit-hidden",
+      "label": "Nested kit, zero-priced components hidden",
+      "description": "The `hide_zero_priced_components: true` state, and the only fixture that renders it. It is the SAME capture as `nested-kit` (prod order 1012, 2026-09-25), so the two goldens differ only by the param. The ten zero_priced components of Pipe &amp; Drape (2 Rooms) are dropped, including the depth-2 and depth-3 ones. Short Director Chair (zero_priced false) stays, indented under the kit, which is the component the predicate must not catch. The kit row itself renders blank because its stock_method is none: with the param on, the page no longer carries the kit's units. That is the accepted cost of hiding, not a render bug, and the Total Units in #details still counts them. Re-capture together with `nested-kit` or not at all.",
+      "params": {
+        "hide_zero_priced_components": true
+      }
     }
   ],
   "render": {
