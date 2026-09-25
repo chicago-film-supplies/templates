@@ -100,7 +100,8 @@
       },
       "customer_collecting": true,
       "customer_returning": true,
-      "jurisdiction": "rantoul"
+      "jurisdiction": "rantoul",
+      "exchange": null
     }
   ],
   "items": [

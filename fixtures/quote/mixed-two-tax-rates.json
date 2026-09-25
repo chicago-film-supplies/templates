@@ -99,7 +99,8 @@
         "contact": null
       },
       "customer_collecting": false,
-      "customer_returning": false
+      "customer_returning": false,
+      "exchange": null
     }
   ],
   "items": [

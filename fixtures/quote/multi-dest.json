@@ -119,7 +119,8 @@
 				}
 			},
 			"customer_collecting": true,
-			"customer_returning": true
+			"customer_returning": true,
+			"exchange": null
 		},
 		{
 			"uid": "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
@@ -210,7 +211,8 @@
 				}
 			},
 			"customer_collecting": false,
-			"customer_returning": false
+			"customer_returning": false,
+			"exchange": null
 		}
 	],
 	"items": [
