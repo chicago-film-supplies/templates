@@ -448,6 +448,25 @@ th.center, td.center {
   break-after: avoid;
 }
 
+/* BANNER WEIGHT — one rule for every family, so a destination or a group reads
+   the same on a quote, an invoice, a pick sheet and a packing list. The class
+   names are the vocabulary: `destination-banner`, `group-banner`,
+   `order-banner`, emitted by partials/shared/items-grid.eta and by the families
+   that draw their own rows.
+
+   Bold, and never italic: italic in the items grid means an item DESCRIPTION,
+   so an italic banner reads as one.
+
+   ⚠️ The ORDER banner is deliberately left out. Its row carries a subject and,
+   on a cross-customer sheet, an organization after the order number, and only
+   the number is emphasised — each family wraps that part in <strong>. Spacing
+   and indents stay per family: an order banner on a multi-order sheet does
+   safety work a one-order document has no need for. */
+#items tr.destination-banner > td,
+#items tr.group-banner > td {
+  font-weight: bold;
+}
+
 #items tr:last-child td {
   border-bottom: 1px solid #121212;
 }
