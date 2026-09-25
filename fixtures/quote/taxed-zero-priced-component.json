@@ -63,19 +63,44 @@
         ]
       },
       "delivery": {
-        "uid": "1uCW4OqIMBUxP1nNkt9y",
-        "address": null,
+        "uid": "vTn8CTAwwJHEJZLBzsOw",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "3408 Cypress Ter, Chicago, IL, United States",
+          "name": "Prairie Exhibition Hall",
+          "postcode": "65115",
+          "region": "IL",
+          "street": "3408 Cypress Ter",
+          "street2": "",
+          "mapbox_id": "fIFgAr1awAGttukfGLKoJoNmLZ1jEXZnICQhSXafIXJhXx6hCvE5KKR8GVyfENO",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
         "instructions": null,
         "contact": null
       },
       "collection": {
-        "uid": "jebrCTkAxabWK4NKonTX",
-        "address": null,
+        "uid": "vTn8CTAwwJHEJZLBzsOw",
+        "address": {
+          "city": "Chicago",
+          "country_name": "United States",
+          "full": "7695 Spruce Ln, Chicago, IL, United States",
+          "name": "Sunset Park Arena",
+          "postcode": "68889",
+          "region": "IL",
+          "street": "7695 Spruce Ln",
+          "street2": "",
+          "mapbox_id": "fYMqNq2ivSGcskyrCYWhKhEzVI0fPZFoGGZmQXweHQQeVj0xYuO5ZVI9NFixJEX",
+          "address_coordinates": null,
+          "user_coordinates": null
+        },
         "instructions": null,
         "contact": null
       },
       "customer_collecting": true,
-      "customer_returning": true
+      "customer_returning": true,
+      "exchange": null
     }
   ],
   "items": [

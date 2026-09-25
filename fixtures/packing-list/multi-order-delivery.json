@@ -108,7 +108,8 @@
               "contact": null
             },
             "customer_collecting": true,
-            "customer_returning": true
+            "customer_returning": true,
+            "exchange": null
           },
           "due_at": "2026-07-30T09:00:00.000-05:00",
           "quantity": 51,
@@ -123,7 +124,7 @@
           },
           "bookings": [
             {
-              "uid": "dtccFoAX5waFiC9115ks:L4yEx8oVkk9Vfj8EG14n:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "dtccFoAX5waFiC9115ks:L4yEx8oVkk9Vfj8EG14n:d42416f2-908d-43c5-b155-1b92b09e0cb5",
               "uid_product": "L4yEx8oVkk9Vfj8EG14n",
               "name": "Safety Vest (ANSI II)",
               "type": "rental",
@@ -157,7 +158,7 @@
               ]
             },
             {
-              "uid": "dtccFoAX5waFiC9115ks:hSEZoPfyGEkRNmLpuFoX:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "dtccFoAX5waFiC9115ks:hSEZoPfyGEkRNmLpuFoX:d42416f2-908d-43c5-b155-1b92b09e0cb5",
               "uid_product": "hSEZoPfyGEkRNmLpuFoX",
               "name": "Duffel Bag for Safety Vests",
               "type": "rental",
@@ -220,7 +221,8 @@
                   "0BIQ73UMiHTtd8mo0yNk"
                 ],
                 "order_number": 970,
-                "uid_order": "dtccFoAX5waFiC9115ks"
+                "uid_order": "dtccFoAX5waFiC9115ks",
+                "zero_priced": false
               },
               "uid_booking": null,
               "owner_path": null
@@ -240,9 +242,10 @@
                   "L4yEx8oVkk9Vfj8EG14n"
                 ],
                 "order_number": 970,
-                "uid_order": "dtccFoAX5waFiC9115ks"
+                "uid_order": "dtccFoAX5waFiC9115ks",
+                "zero_priced": true
               },
-              "uid_booking": "dtccFoAX5waFiC9115ks:L4yEx8oVkk9Vfj8EG14n:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "dtccFoAX5waFiC9115ks:L4yEx8oVkk9Vfj8EG14n:d42416f2-908d-43c5-b155-1b92b09e0cb5",
               "owner_path": null
             },
             {
@@ -260,9 +263,10 @@
                   "hSEZoPfyGEkRNmLpuFoX"
                 ],
                 "order_number": 970,
-                "uid_order": "dtccFoAX5waFiC9115ks"
+                "uid_order": "dtccFoAX5waFiC9115ks",
+                "zero_priced": true
               },
-              "uid_booking": "dtccFoAX5waFiC9115ks:hSEZoPfyGEkRNmLpuFoX:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "dtccFoAX5waFiC9115ks:hSEZoPfyGEkRNmLpuFoX:d42416f2-908d-43c5-b155-1b92b09e0cb5",
               "owner_path": null
             }
           ]
@@ -387,7 +391,8 @@
               }
             },
             "customer_collecting": false,
-            "customer_returning": false
+            "customer_returning": false,
+            "exchange": null
           },
           "due_at": "2026-08-31T09:00:00.000-05:00",
           "quantity": 302,
@@ -402,7 +407,7 @@
           },
           "bookings": [
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:kETzgYqCmiCLZvjwBfpE:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:kETzgYqCmiCLZvjwBfpE:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "kETzgYqCmiCLZvjwBfpE",
               "name": "3 ' x 5' Floor Mat",
               "type": "rental",
@@ -421,7 +426,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:WU65HeTi4HHMMk6JLkly:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:WU65HeTi4HHMMk6JLkly:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "WU65HeTi4HHMMk6JLkly",
               "name": "Carpet Mask (36\" x 200')",
               "type": "sale",
@@ -440,7 +445,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:nXrZlo5kGVMSqjkSWWaz:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:nXrZlo5kGVMSqjkSWWaz:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "nXrZlo5kGVMSqjkSWWaz",
               "name": "Corrugated Roll (48\" x 250')",
               "type": "sale",
@@ -459,7 +464,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:eqOJlpjvKjSNxDrB3N8v:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:eqOJlpjvKjSNxDrB3N8v:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "eqOJlpjvKjSNxDrB3N8v",
               "name": "Layout Board (4' x 6')",
               "type": "sale",
@@ -478,7 +483,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:rYxQapfObjx5jhQbhZGw:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:rYxQapfObjx5jhQbhZGw:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "rYxQapfObjx5jhQbhZGw",
               "name": "Blue Painters Tape (1.88\") - 3M",
               "type": "sale",
@@ -497,7 +502,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:1cJUHUiX7JMdPfvLxhHf:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:1cJUHUiX7JMdPfvLxhHf:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "1cJUHUiX7JMdPfvLxhHf",
               "name": "Booties - Premium (40 Pack)",
               "type": "sale",
@@ -516,7 +521,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:U8WC4Js2oPaTdYpkvbcx:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:U8WC4Js2oPaTdYpkvbcx:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "U8WC4Js2oPaTdYpkvbcx",
               "name": "18\" Traffic Cone",
               "type": "rental",
@@ -535,7 +540,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "bRKsHMVgxtVQJ26FCRWH",
               "name": "A Frame Sign (Large)",
               "type": "rental",
@@ -554,7 +559,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:Wnj0LODXW6zCYRmnJoxQ:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:Wnj0LODXW6zCYRmnJoxQ:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "Wnj0LODXW6zCYRmnJoxQ",
               "name": "20lb Shot Bag",
               "type": "rental",
@@ -573,7 +578,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:Jmiobz6vcsUhDkAgNhBy:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:Jmiobz6vcsUhDkAgNhBy:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "Jmiobz6vcsUhDkAgNhBy",
               "name": "Pedestal Stop Sign",
               "type": "rental",
@@ -592,7 +597,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:peQWi2dcj86px8T6Mkj6:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:peQWi2dcj86px8T6Mkj6:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "peQWi2dcj86px8T6Mkj6",
               "name": "6' H x 1.75\" Square Post (White)",
               "type": "rental",
@@ -611,7 +616,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:meFdYSXLmSDVwf0XukWm:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:meFdYSXLmSDVwf0XukWm:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "meFdYSXLmSDVwf0XukWm",
               "name": "30lb Base (1.75\" Square Post)",
               "type": "rental",
@@ -630,7 +635,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "UFfujWpRyZZ6PeSqQQtE",
               "name": "4' - 7' Cone Pole",
               "type": "rental",
@@ -649,7 +654,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:kCysq2sl0TF4Ov1JQK2u:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:kCysq2sl0TF4Ov1JQK2u:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "kCysq2sl0TF4Ov1JQK2u",
               "name": "Pop Up Garbage Can",
               "type": "rental",
@@ -668,7 +673,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:aosey66Ih8tTaoWKQXmO:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:aosey66Ih8tTaoWKQXmO:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "aosey66Ih8tTaoWKQXmO",
               "name": "6' Folding Table",
               "type": "rental",
@@ -687,7 +692,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "NDEwEmpNVxMWWLNMYp5h",
               "name": "28\" Traffic Cone",
               "type": "rental",
@@ -706,7 +711,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:tBwBGKOWStjnoL05lT3S:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:tBwBGKOWStjnoL05lT3S:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "tBwBGKOWStjnoL05lT3S",
               "name": "44 Gallon Brute Garbage Can",
               "type": "rental",
@@ -725,7 +730,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:OYvggZa70ccCCbcQ8o1H:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:OYvggZa70ccCCbcQ8o1H:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "OYvggZa70ccCCbcQ8o1H",
               "name": "55 Gallon Heavy Duty Garbage Bags",
               "type": "sale",
@@ -744,7 +749,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:NySHJnsT5BXbAVxfJfnQ:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:NySHJnsT5BXbAVxfJfnQ:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "NySHJnsT5BXbAVxfJfnQ",
               "name": "Roll Up Fence (6.5' Section)",
               "type": "rental",
@@ -763,7 +768,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:oxcvKWbEEBEc6MqgKUAm:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:oxcvKWbEEBEc6MqgKUAm:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "oxcvKWbEEBEc6MqgKUAm",
               "name": "42\" Traffic Delineator",
               "type": "rental",
@@ -782,7 +787,7 @@
               "stores": []
             },
             {
-              "uid": "Unv8qfr4EnRYxhFPnBtE:xGiq9QsqXPiTS4YsQ5GZ:IomudCeD1TEzkkbJxfbY",
+              "uid": "Unv8qfr4EnRYxhFPnBtE:xGiq9QsqXPiTS4YsQ5GZ:d0429040-bb05-45d6-a638-f0499f76273d",
               "uid_product": "xGiq9QsqXPiTS4YsQ5GZ",
               "name": "Delineator Base (18lb)",
               "type": "rental",
@@ -830,9 +835,10 @@
                   "kETzgYqCmiCLZvjwBfpE"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:kETzgYqCmiCLZvjwBfpE:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:kETzgYqCmiCLZvjwBfpE:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -877,9 +883,10 @@
                   "kETzgYqCmiCLZvjwBfpE"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:kETzgYqCmiCLZvjwBfpE:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:kETzgYqCmiCLZvjwBfpE:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": [
                 "d0429040-bb05-45d6-a638-f0499f76273d",
                 "2de5c8c8-2e07-403d-aa02-5e3bb4edf7dc",
@@ -900,9 +907,10 @@
                   "WU65HeTi4HHMMk6JLkly"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:WU65HeTi4HHMMk6JLkly:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:WU65HeTi4HHMMk6JLkly:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -919,9 +927,10 @@
                   "nXrZlo5kGVMSqjkSWWaz"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:nXrZlo5kGVMSqjkSWWaz:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:nXrZlo5kGVMSqjkSWWaz:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -938,9 +947,10 @@
                   "eqOJlpjvKjSNxDrB3N8v"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:eqOJlpjvKjSNxDrB3N8v:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:eqOJlpjvKjSNxDrB3N8v:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -958,9 +968,10 @@
                   "rYxQapfObjx5jhQbhZGw"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:rYxQapfObjx5jhQbhZGw:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:rYxQapfObjx5jhQbhZGw:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -977,9 +988,10 @@
                   "1cJUHUiX7JMdPfvLxhHf"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:1cJUHUiX7JMdPfvLxhHf:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:1cJUHUiX7JMdPfvLxhHf:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1010,9 +1022,10 @@
                   "U8WC4Js2oPaTdYpkvbcx"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:U8WC4Js2oPaTdYpkvbcx:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:U8WC4Js2oPaTdYpkvbcx:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": [
                 "d0429040-bb05-45d6-a638-f0499f76273d",
                 "e8046154-2fec-4df5-8622-6cfb3ecf4897",
@@ -1033,9 +1046,10 @@
                   "bRKsHMVgxtVQJ26FCRWH"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1053,9 +1067,10 @@
                   "Wnj0LODXW6zCYRmnJoxQ"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:Wnj0LODXW6zCYRmnJoxQ:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:Wnj0LODXW6zCYRmnJoxQ:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1072,9 +1087,10 @@
                   "Jmiobz6vcsUhDkAgNhBy"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:Jmiobz6vcsUhDkAgNhBy:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:Jmiobz6vcsUhDkAgNhBy:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1092,9 +1108,10 @@
                   "peQWi2dcj86px8T6Mkj6"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": true
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:peQWi2dcj86px8T6Mkj6:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:peQWi2dcj86px8T6Mkj6:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1112,9 +1129,10 @@
                   "meFdYSXLmSDVwf0XukWm"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": true
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:meFdYSXLmSDVwf0XukWm:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:meFdYSXLmSDVwf0XukWm:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1131,9 +1149,10 @@
                   "UFfujWpRyZZ6PeSqQQtE"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": [
                 "d0429040-bb05-45d6-a638-f0499f76273d",
                 "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
@@ -1168,9 +1187,10 @@
                   "kCysq2sl0TF4Ov1JQK2u"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:kCysq2sl0TF4Ov1JQK2u:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:kCysq2sl0TF4Ov1JQK2u:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1201,9 +1221,10 @@
                   "aosey66Ih8tTaoWKQXmO"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:aosey66Ih8tTaoWKQXmO:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:aosey66Ih8tTaoWKQXmO:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1234,9 +1255,10 @@
                   "NDEwEmpNVxMWWLNMYp5h"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": [
                 "d0429040-bb05-45d6-a638-f0499f76273d",
                 "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
@@ -1257,9 +1279,10 @@
                   "UFfujWpRyZZ6PeSqQQtE"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": [
                 "d0429040-bb05-45d6-a638-f0499f76273d",
                 "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
@@ -1294,9 +1317,10 @@
                   "NDEwEmpNVxMWWLNMYp5h"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": [
                 "d0429040-bb05-45d6-a638-f0499f76273d",
                 "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
@@ -1317,9 +1341,10 @@
                   "UFfujWpRyZZ6PeSqQQtE"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": [
                 "d0429040-bb05-45d6-a638-f0499f76273d",
                 "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
@@ -1340,9 +1365,10 @@
                   "bRKsHMVgxtVQJ26FCRWH"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": [
                 "d0429040-bb05-45d6-a638-f0499f76273d",
                 "d2d4cbc2-5b99-45ad-8159-f525da57758d",
@@ -1377,9 +1403,10 @@
                   "bRKsHMVgxtVQJ26FCRWH"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:bRKsHMVgxtVQJ26FCRWH:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": [
                 "d0429040-bb05-45d6-a638-f0499f76273d",
                 "d2d4cbc2-5b99-45ad-8159-f525da57758d",
@@ -1400,9 +1427,10 @@
                   "tBwBGKOWStjnoL05lT3S"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:tBwBGKOWStjnoL05lT3S:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:tBwBGKOWStjnoL05lT3S:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1420,9 +1448,10 @@
                   "OYvggZa70ccCCbcQ8o1H"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:OYvggZa70ccCCbcQ8o1H:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:OYvggZa70ccCCbcQ8o1H:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1439,9 +1468,10 @@
                   "U8WC4Js2oPaTdYpkvbcx"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:U8WC4Js2oPaTdYpkvbcx:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:U8WC4Js2oPaTdYpkvbcx:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1458,9 +1488,10 @@
                   "UFfujWpRyZZ6PeSqQQtE"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": [
                 "d0429040-bb05-45d6-a638-f0499f76273d",
                 "f4fc2c9c-df05-4cdb-92b4-1c1f90b19aa9",
@@ -1481,9 +1512,10 @@
                   "NySHJnsT5BXbAVxfJfnQ"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NySHJnsT5BXbAVxfJfnQ:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NySHJnsT5BXbAVxfJfnQ:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1501,9 +1533,10 @@
                   "oxcvKWbEEBEc6MqgKUAm"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": true
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:oxcvKWbEEBEc6MqgKUAm:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:oxcvKWbEEBEc6MqgKUAm:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1522,9 +1555,10 @@
                   "xGiq9QsqXPiTS4YsQ5GZ"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": true
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:xGiq9QsqXPiTS4YsQ5GZ:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:xGiq9QsqXPiTS4YsQ5GZ:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1555,9 +1589,10 @@
                   "NDEwEmpNVxMWWLNMYp5h"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:NDEwEmpNVxMWWLNMYp5h:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1574,9 +1609,10 @@
                   "UFfujWpRyZZ6PeSqQQtE"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
-              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:IomudCeD1TEzkkbJxfbY",
+              "uid_booking": "Unv8qfr4EnRYxhFPnBtE:UFfujWpRyZZ6PeSqQQtE:d0429040-bb05-45d6-a638-f0499f76273d",
               "owner_path": null
             },
             {
@@ -1607,7 +1643,8 @@
                   "F4ZiJl7ZzMChlRufw8RL"
                 ],
                 "order_number": 1013,
-                "uid_order": "Unv8qfr4EnRYxhFPnBtE"
+                "uid_order": "Unv8qfr4EnRYxhFPnBtE",
+                "zero_priced": false
               },
               "uid_booking": null,
               "owner_path": null
@@ -1714,7 +1751,8 @@
               "contact": null
             },
             "customer_collecting": true,
-            "customer_returning": true
+            "customer_returning": true,
+            "exchange": null
           },
           "due_at": "2026-09-01T09:00:00.000-05:00",
           "quantity": 70,
@@ -1729,7 +1767,7 @@
           },
           "bookings": [
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:Vc6h3YvLOL9zmcpuDpXI:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:Vc6h3YvLOL9zmcpuDpXI:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "Vc6h3YvLOL9zmcpuDpXI",
               "name": "Metro Rack (18\" x 36\")",
               "type": "rental",
@@ -1748,7 +1786,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:vWBkilYWnhKTjJFdWmk7:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:vWBkilYWnhKTjJFdWmk7:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "vWBkilYWnhKTjJFdWmk7",
               "name": "Magliner Gemini Sr",
               "type": "rental",
@@ -1767,7 +1805,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:RZWp0RITeUIGSE9mIfTb:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:RZWp0RITeUIGSE9mIfTb:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "RZWp0RITeUIGSE9mIfTb",
               "name": "Driving Sign Kit",
               "type": "rental",
@@ -1786,7 +1824,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:FLbBeO0R62vRs4AWiw2l:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:FLbBeO0R62vRs4AWiw2l:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "FLbBeO0R62vRs4AWiw2l",
               "name": "Walking Sign Kit",
               "type": "rental",
@@ -1805,7 +1843,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:jC2BBRgZL5mXAfYAu9bf:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:jC2BBRgZL5mXAfYAu9bf:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "jC2BBRgZL5mXAfYAu9bf",
               "name": "Stop/Slow Paddle Sign",
               "type": "rental",
@@ -1824,7 +1862,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:kETzgYqCmiCLZvjwBfpE:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "kETzgYqCmiCLZvjwBfpE",
               "name": "3 ' x 5' Floor Mat",
               "type": "rental",
@@ -1843,7 +1881,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:kCysq2sl0TF4Ov1JQK2u:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:kCysq2sl0TF4Ov1JQK2u:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "kCysq2sl0TF4Ov1JQK2u",
               "name": "Pop Up Garbage Can",
               "type": "rental",
@@ -1862,7 +1900,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:urf6KT60uszcM0etGDMX:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:urf6KT60uszcM0etGDMX:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "urf6KT60uszcM0etGDMX",
               "name": "Folding Chair",
               "type": "rental",
@@ -1881,7 +1919,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:ZsN1H4wR7vgLQnIf8gzX:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "ZsN1H4wR7vgLQnIf8gzX",
               "name": "10' x 10' Pop Up Tent (Black)",
               "type": "rental",
@@ -1900,7 +1938,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:3kzv0sanOljc25psMVkU:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "3kzv0sanOljc25psMVkU",
               "name": "Tent Tie Down (Rope Ratchet & Carabiner)",
               "type": "rental",
@@ -1919,7 +1957,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:HM7k3NDHG1GJ2uaykMKC:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "HM7k3NDHG1GJ2uaykMKC",
               "name": "Tent Canopy Rain Gutter",
               "type": "rental",
@@ -1938,7 +1976,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:WaQhdQliUvS0LCx5OUTv:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "WaQhdQliUvS0LCx5OUTv",
               "name": "Tent Door (Black)",
               "type": "rental",
@@ -1957,7 +1995,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:Ms2nlTfZZMoaR8yZwudF:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "Ms2nlTfZZMoaR8yZwudF",
               "name": "Long Milk Crate (18x12)",
               "type": "rental",
@@ -1976,7 +2014,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:Wnj0LODXW6zCYRmnJoxQ:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:Wnj0LODXW6zCYRmnJoxQ:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "Wnj0LODXW6zCYRmnJoxQ",
               "name": "20lb Shot Bag",
               "type": "rental",
@@ -1995,7 +2033,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:p2YQ9RZY8djeejSK2i0d:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "p2YQ9RZY8djeejSK2i0d",
               "name": "Tent Side (Black)",
               "type": "rental",
@@ -2014,7 +2052,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:0LtFyxGYui7JjwRVQHxm:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:0LtFyxGYui7JjwRVQHxm:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "0LtFyxGYui7JjwRVQHxm",
               "name": "Dewalt Work Light",
               "type": "rental",
@@ -2033,7 +2071,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:eioftRapzd1n7lz2Y59z:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:eioftRapzd1n7lz2Y59z:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "eioftRapzd1n7lz2Y59z",
               "name": "Dewalt Battery Charger (4 Port)",
               "type": "rental",
@@ -2052,7 +2090,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:Xuq7Ij3moxPgtZuLC6fg:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:Xuq7Ij3moxPgtZuLC6fg:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "Xuq7Ij3moxPgtZuLC6fg",
               "name": "Milk Crate (12x12)",
               "type": "rental",
@@ -2071,7 +2109,7 @@
               "stores": []
             },
             {
-              "uid": "oSPiB2dMvZweGjaXQs4A:Dmaie3W1OoRGvo9BMDC7:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "oSPiB2dMvZweGjaXQs4A:Dmaie3W1OoRGvo9BMDC7:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "uid_product": "Dmaie3W1OoRGvo9BMDC7",
               "name": "Dewalt Battery (9Ah)",
               "type": "rental",
@@ -2119,9 +2157,10 @@
                   "Vc6h3YvLOL9zmcpuDpXI"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": null
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Vc6h3YvLOL9zmcpuDpXI:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Vc6h3YvLOL9zmcpuDpXI:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2138,9 +2177,10 @@
                   "vWBkilYWnhKTjJFdWmk7"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": null
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:vWBkilYWnhKTjJFdWmk7:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:vWBkilYWnhKTjJFdWmk7:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2171,9 +2211,10 @@
                   "RZWp0RITeUIGSE9mIfTb"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": null
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:RZWp0RITeUIGSE9mIfTb:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:RZWp0RITeUIGSE9mIfTb:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2190,9 +2231,10 @@
                   "FLbBeO0R62vRs4AWiw2l"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": null
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:FLbBeO0R62vRs4AWiw2l:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:FLbBeO0R62vRs4AWiw2l:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2209,9 +2251,10 @@
                   "jC2BBRgZL5mXAfYAu9bf"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": null
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:jC2BBRgZL5mXAfYAu9bf:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:jC2BBRgZL5mXAfYAu9bf:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2242,9 +2285,10 @@
                   "kETzgYqCmiCLZvjwBfpE"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": null
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:kETzgYqCmiCLZvjwBfpE:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2275,9 +2319,10 @@
                   "kCysq2sl0TF4Ov1JQK2u"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": null
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:kCysq2sl0TF4Ov1JQK2u:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:kCysq2sl0TF4Ov1JQK2u:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2308,9 +2353,10 @@
                   "urf6KT60uszcM0etGDMX"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": null
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:urf6KT60uszcM0etGDMX:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:urf6KT60uszcM0etGDMX:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2341,9 +2387,10 @@
                   "ZsN1H4wR7vgLQnIf8gzX"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": null
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:ZsN1H4wR7vgLQnIf8gzX:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:ZsN1H4wR7vgLQnIf8gzX:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2361,9 +2408,10 @@
                   "3kzv0sanOljc25psMVkU"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": true
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:3kzv0sanOljc25psMVkU:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:3kzv0sanOljc25psMVkU:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2381,9 +2429,10 @@
                   "HM7k3NDHG1GJ2uaykMKC"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": true
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:HM7k3NDHG1GJ2uaykMKC:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:HM7k3NDHG1GJ2uaykMKC:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2401,9 +2450,10 @@
                   "WaQhdQliUvS0LCx5OUTv"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": true
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:WaQhdQliUvS0LCx5OUTv:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:WaQhdQliUvS0LCx5OUTv:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2421,9 +2471,10 @@
                   "Ms2nlTfZZMoaR8yZwudF"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": true
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Ms2nlTfZZMoaR8yZwudF:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Ms2nlTfZZMoaR8yZwudF:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2441,9 +2492,10 @@
                   "Wnj0LODXW6zCYRmnJoxQ"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": true
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Wnj0LODXW6zCYRmnJoxQ:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Wnj0LODXW6zCYRmnJoxQ:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2461,9 +2513,10 @@
                   "p2YQ9RZY8djeejSK2i0d"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": true
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:p2YQ9RZY8djeejSK2i0d:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:p2YQ9RZY8djeejSK2i0d:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2494,9 +2547,10 @@
                   "0LtFyxGYui7JjwRVQHxm"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": null
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:0LtFyxGYui7JjwRVQHxm:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:0LtFyxGYui7JjwRVQHxm:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2514,9 +2568,10 @@
                   "eioftRapzd1n7lz2Y59z"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": true
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:eioftRapzd1n7lz2Y59z:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:eioftRapzd1n7lz2Y59z:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2534,9 +2589,10 @@
                   "Xuq7Ij3moxPgtZuLC6fg"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": true
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Xuq7Ij3moxPgtZuLC6fg:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Xuq7Ij3moxPgtZuLC6fg:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             },
             {
@@ -2554,9 +2610,10 @@
                   "Dmaie3W1OoRGvo9BMDC7"
                 ],
                 "order_number": 1014,
-                "uid_order": "oSPiB2dMvZweGjaXQs4A"
+                "uid_order": "oSPiB2dMvZweGjaXQs4A",
+                "zero_priced": true
               },
-              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Dmaie3W1OoRGvo9BMDC7:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "oSPiB2dMvZweGjaXQs4A:Dmaie3W1OoRGvo9BMDC7:8d296bdf-41aa-473d-bd06-a05876d78f80",
               "owner_path": null
             }
           ]

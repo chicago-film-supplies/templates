@@ -100,7 +100,8 @@
       },
       "customer_collecting": true,
       "customer_returning": true,
-      "jurisdiction": "frankfort"
+      "jurisdiction": "frankfort",
+      "exchange": null
     }
   ],
   "items": [
