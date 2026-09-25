@@ -30,5 +30,13 @@
     "margin_right": 0.5,
     "filename": "Pick Sheet - <%= it.doc.scope.name %>",
     "footer": "partials/shared/footer.eta"
-  }
+  },
+  "params": [
+    {
+      "key": "hide_zero_priced_components",
+      "type": "boolean",
+      "label": "Hide zero-priced components",
+      "default": false
+    }
+  ]
 }
