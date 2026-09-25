@@ -1,0 +1,1042 @@
+{
+  "scope": {
+    "kind": "order",
+    "uid": "V3hl7IoFE51tElz7c4fr",
+    "name": "Sample text for name.............................",
+    "uids": [
+      "V3hl7IoFE51tElz7c4fr"
+    ]
+  },
+  "gate": "all",
+  "leg": null,
+  "orders": [
+    {
+      "uid": "V3hl7IoFE51tElz7c4fr",
+      "number": 1012,
+      "status": "active",
+      "subject": "Sample..",
+      "organization": {
+        "uid": "FLCJtZVmE9llTGLb4sfE",
+        "organization_path": [
+          {
+            "uid": "Omyms3GkmyIreWjSuh2K",
+            "name": "Goldenrod Media Inc",
+            "derived": false
+          },
+          {
+            "uid": "YZWULbS5GVOh07Bt7aCo",
+            "name": "Ninth Street Media Group",
+            "derived": false
+          },
+          {
+            "uid": "FLCJtZVmE9llTGLb4sfE",
+            "name": "Lanternhouse Films LLC",
+            "derived": false
+          }
+        ]
+      },
+      "destinations": [
+        {
+          "uid": "b8036e25-5b04-4460-902b-20bc5b379b8d",
+          "name": "Prairie Exhibition Hall",
+          "destination": {
+            "uid": "b8036e25-5b04-4460-902b-20bc5b379b8d",
+            "dates": {
+              "delivery_start": "2026-08-30T09:00:00.000-05:00",
+              "delivery_start_fs": {
+                "_seconds": 1788098400,
+                "_nanoseconds": 0
+              },
+              "delivery_end": "2026-08-30T09:00:00.000-05:00",
+              "delivery_end_fs": {
+                "_seconds": 1788098400,
+                "_nanoseconds": 0
+              },
+              "collection_start": "2026-09-21T15:00:00.000-05:00",
+              "collection_start_fs": {
+                "_seconds": 1790020800,
+                "_nanoseconds": 0
+              },
+              "collection_end": "2026-09-21T15:00:00.000-05:00",
+              "collection_end_fs": {
+                "_seconds": 1790020800,
+                "_nanoseconds": 0
+              },
+              "days_active": 15,
+              "charge_windows": [
+                {
+                  "start": "2026-08-31T09:00:00.000-05:00",
+                  "end": "2026-09-18T15:00:00.000-05:00",
+                  "days": 14
+                }
+              ]
+            },
+            "delivery": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "2148 Magnolia Rd, Chicago, IL 95827",
+                "name": "Highland Rail Depot",
+                "postcode": "63536",
+                "region": "IL",
+                "street": "2148 Magnolia Rd",
+                "mapbox_id": "qGHpBp8ynNIiomixLLJpCnTqRK0iFSRoALZpQEhnATFmTo2wKxZ5MAT7XBnsDFL",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "collection": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "2148 Magnolia Rd, Chicago, IL 95827",
+                "name": "Highland Rail Depot",
+                "postcode": "63536",
+                "region": "IL",
+                "street": "2148 Magnolia Rd",
+                "mapbox_id": "qGHpBp8ynNIiomixLLJpCnTqRK0iFSRoALZpQEhnATFmTo2wKxZ5MAT7XBnsDFL",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": "",
+              "contact": null
+            },
+            "customer_collecting": true,
+            "customer_returning": true,
+            "jurisdiction": "rantoul",
+            "exchange": null
+          },
+          "due_at": "2026-08-30T09:00:00.000-05:00",
+          "quantity": 47,
+          "breakdown": {
+            "damaged": 0,
+            "lost": 0,
+            "out": 0,
+            "prepped": 0,
+            "quoted": 0,
+            "reserved": 33,
+            "returned": 14
+          },
+          "bookings": [
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:rs79zkY2jR4u4Qxz7m5J:b8036e25-5b04-4460-902b-20bc5b379b8d:114be0c40d87",
+              "uid_product": "rs79zkY2jR4u4Qxz7m5J",
+              "name": "Drapes Backpack",
+              "type": "rental",
+              "status": "active",
+              "quantity": 1,
+              "shortage": 1,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 1,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:xhQzPn5BK4RpFqGt5E0n:b8036e25-5b04-4460-902b-20bc5b379b8d:75bef305d3e5",
+              "uid_product": "xhQzPn5BK4RpFqGt5E0n",
+              "name": "Satin Blackout Drape (7' x 7')",
+              "type": "rental",
+              "status": "active",
+              "quantity": 7,
+              "shortage": 7,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 7,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:NuqYcaDMcLf1KzAV0Zes:b8036e25-5b04-4460-902b-20bc5b379b8d:114be0c40d87",
+              "uid_product": "NuqYcaDMcLf1KzAV0Zes",
+              "name": "Pipes Case",
+              "type": "rental",
+              "status": "active",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 1,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 1,
+                  "locations": [
+                    {
+                      "uid_location": "qps7yoTbCZdUehZLNNmU",
+                      "name": "TBD Storage Location",
+                      "quantity": 1,
+                      "default": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:2o1qO9KcNfURAvaP561z:b8036e25-5b04-4460-902b-20bc5b379b8d:7adbcda01199",
+              "uid_product": "2o1qO9KcNfURAvaP561z",
+              "name": "4' LED Light Bar",
+              "type": "rental",
+              "status": "active",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 1,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 1,
+                  "locations": [
+                    {
+                      "uid_location": "qps7yoTbCZdUehZLNNmU",
+                      "name": "TBD Storage Location",
+                      "quantity": 1,
+                      "default": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:pHoO6dCp4yXD9eF8XdBY:b8036e25-5b04-4460-902b-20bc5b379b8d:0695f1eefcdc",
+              "uid_product": "pHoO6dCp4yXD9eF8XdBY",
+              "name": "4' T5 Power Cable",
+              "type": "rental",
+              "status": "active",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 1,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 1,
+                  "locations": [
+                    {
+                      "uid_location": "qps7yoTbCZdUehZLNNmU",
+                      "name": "TBD Storage Location",
+                      "quantity": 1,
+                      "default": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:dPbWIZ86rFFPzN5pdPIO:b8036e25-5b04-4460-902b-20bc5b379b8d:0695f1eefcdc",
+              "uid_product": "dPbWIZ86rFFPzN5pdPIO",
+              "name": "4' T5 Interconnect Cable",
+              "type": "rental",
+              "status": "active",
+              "quantity": 1,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 1,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 1,
+                  "locations": [
+                    {
+                      "uid_location": "qps7yoTbCZdUehZLNNmU",
+                      "name": "TBD Storage Location",
+                      "quantity": 1,
+                      "default": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:fZfNhvAjk5pmW5fvxxcp:b8036e25-5b04-4460-902b-20bc5b379b8d:7adbcda01199",
+              "uid_product": "fZfNhvAjk5pmW5fvxxcp",
+              "name": "7' Upright",
+              "type": "rental",
+              "status": "active",
+              "quantity": 6,
+              "shortage": 3,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 6,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 3,
+                  "locations": [
+                    {
+                      "uid_location": "SqWA0BIibsME8l3djf45",
+                      "name": "Unknown Location - 7' Upright",
+                      "quantity": 3,
+                      "default": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:sFJ30x4TiQAosxxsDgpx:b8036e25-5b04-4460-902b-20bc5b379b8d:7adbcda01199",
+              "uid_product": "sFJ30x4TiQAosxxsDgpx",
+              "name": "Cross Bar (4'-7')",
+              "type": "rental",
+              "status": "active",
+              "quantity": 7,
+              "shortage": 7,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 7,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:ePJgrlQYm5AEoKUpVcYz:b8036e25-5b04-4460-902b-20bc5b379b8d:114be0c40d87",
+              "uid_product": "ePJgrlQYm5AEoKUpVcYz",
+              "name": "25' Extension Cord",
+              "type": "rental",
+              "status": "active",
+              "quantity": 1,
+              "shortage": 1,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 1,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:OF6HH7Hewyd8XJtMZfWF:b8036e25-5b04-4460-902b-20bc5b379b8d:114be0c40d87",
+              "uid_product": "OF6HH7Hewyd8XJtMZfWF",
+              "name": "Bases Case",
+              "type": "rental",
+              "status": "active",
+              "quantity": 1,
+              "shortage": 1,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 1,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:8EtxDI4RzsHHt8Kbg33w:b8036e25-5b04-4460-902b-20bc5b379b8d:23c53bede4e4",
+              "uid_product": "8EtxDI4RzsHHt8Kbg33w",
+              "name": "Cross Base",
+              "type": "rental",
+              "status": "active",
+              "quantity": 6,
+              "shortage": 6,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 6,
+                "returned": 0
+              },
+              "stores": []
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:9e05fDrFWdLxv1g6kO08:b8036e25-5b04-4460-902b-20bc5b379b8d",
+              "uid_product": "9e05fDrFWdLxv1g6kO08",
+              "name": "Makeup Mirror (18\" White)",
+              "type": "rental",
+              "status": "active",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 4
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 4,
+                  "locations": [
+                    {
+                      "uid_location": "qps7yoTbCZdUehZLNNmU",
+                      "name": "TBD Storage Location",
+                      "quantity": 4,
+                      "default": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:CaWTUrRVadAs6IJUjqzF:b8036e25-5b04-4460-902b-20bc5b379b8d",
+              "uid_product": "CaWTUrRVadAs6IJUjqzF",
+              "name": "4' Folding Table (Adjustable Height)",
+              "type": "rental",
+              "status": "active",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 4
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 4,
+                  "locations": [
+                    {
+                      "uid_location": "wgloEwVWGd0QsJ5kqQqg",
+                      "name": "Unknown Location - 4' Folding Table (Adjustable Height)",
+                      "quantity": 4,
+                      "default": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:YyBaHYXVZofngOqtw2Lk:b8036e25-5b04-4460-902b-20bc5b379b8d",
+              "uid_product": "YyBaHYXVZofngOqtw2Lk",
+              "name": "Tall Director Chair",
+              "type": "rental",
+              "status": "active",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 2
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 2,
+                  "locations": [
+                    {
+                      "uid_location": "Kk9Td8xy62aDPjmVvLrG",
+                      "name": "Unknown Location - Tall Director Chair",
+                      "quantity": 2,
+                      "default": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:tKNcDw2gsBp8UTCwQgXd:b8036e25-5b04-4460-902b-20bc5b379b8d",
+              "uid_product": "tKNcDw2gsBp8UTCwQgXd",
+              "name": "Short Director Chair",
+              "type": "rental",
+              "status": "active",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 2
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 2,
+                  "locations": [
+                    {
+                      "uid_location": "6SQF4pRBGYQa58ZM1c9K",
+                      "name": "Unknown Location - Short Director Chair",
+                      "quantity": 2,
+                      "default": false
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "uid": "V3hl7IoFE51tElz7c4fr:kETzgYqCmiCLZvjwBfpE:b8036e25-5b04-4460-902b-20bc5b379b8d",
+              "uid_product": "kETzgYqCmiCLZvjwBfpE",
+              "name": "3 ' x 5' Floor Mat",
+              "type": "rental",
+              "status": "active",
+              "quantity": 2,
+              "shortage": 0,
+              "breakdown": {
+                "damaged": 0,
+                "lost": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 2
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 2,
+                  "locations": [
+                    {
+                      "uid_location": "nTAEjCAE2bqyE2dBiK3R",
+                      "name": "Unknown Location - 3 ' x 5' Floor Mat",
+                      "quantity": 2,
+                      "default": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "item": {
+                "uid": "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                "type": "group",
+                "name": "Wardrobe",
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "jN6MZEMqwr9VWsNix8p4",
+                "name": "Pipe & Drape (2 Rooms)",
+                "description": "",
+                "quantity": 1,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4"
+                ],
+                "zero_priced": null,
+                "stock_method": "none",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "rs79zkY2jR4u4Qxz7m5J",
+                "name": "Drapes Backpack",
+                "description": "",
+                "quantity": 1,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "rs79zkY2jR4u4Qxz7m5J"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:rs79zkY2jR4u4Qxz7m5J:b8036e25-5b04-4460-902b-20bc5b379b8d:114be0c40d87",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "xhQzPn5BK4RpFqGt5E0n",
+                "name": "Satin Blackout Drape (7' x 7')",
+                "description": "",
+                "quantity": 7,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "rs79zkY2jR4u4Qxz7m5J",
+                  "xhQzPn5BK4RpFqGt5E0n"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:xhQzPn5BK4RpFqGt5E0n:b8036e25-5b04-4460-902b-20bc5b379b8d:75bef305d3e5",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "NuqYcaDMcLf1KzAV0Zes",
+                "name": "Pipes Case",
+                "description": "",
+                "quantity": 1,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "NuqYcaDMcLf1KzAV0Zes"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:NuqYcaDMcLf1KzAV0Zes:b8036e25-5b04-4460-902b-20bc5b379b8d:114be0c40d87",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "2o1qO9KcNfURAvaP561z",
+                "name": "4' LED Light Bar",
+                "description": "",
+                "quantity": 1,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "NuqYcaDMcLf1KzAV0Zes",
+                  "2o1qO9KcNfURAvaP561z"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:2o1qO9KcNfURAvaP561z:b8036e25-5b04-4460-902b-20bc5b379b8d:7adbcda01199",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "pHoO6dCp4yXD9eF8XdBY",
+                "name": "4' T5 Power Cable",
+                "description": "",
+                "quantity": 1,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "NuqYcaDMcLf1KzAV0Zes",
+                  "2o1qO9KcNfURAvaP561z",
+                  "pHoO6dCp4yXD9eF8XdBY"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:pHoO6dCp4yXD9eF8XdBY:b8036e25-5b04-4460-902b-20bc5b379b8d:0695f1eefcdc",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "dPbWIZ86rFFPzN5pdPIO",
+                "name": "4' T5 Interconnect Cable",
+                "description": "",
+                "quantity": 1,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "NuqYcaDMcLf1KzAV0Zes",
+                  "2o1qO9KcNfURAvaP561z",
+                  "dPbWIZ86rFFPzN5pdPIO"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:dPbWIZ86rFFPzN5pdPIO:b8036e25-5b04-4460-902b-20bc5b379b8d:0695f1eefcdc",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "fZfNhvAjk5pmW5fvxxcp",
+                "name": "7' Upright",
+                "description": "",
+                "quantity": 6,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "NuqYcaDMcLf1KzAV0Zes",
+                  "fZfNhvAjk5pmW5fvxxcp"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:fZfNhvAjk5pmW5fvxxcp:b8036e25-5b04-4460-902b-20bc5b379b8d:7adbcda01199",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "sFJ30x4TiQAosxxsDgpx",
+                "name": "Cross Bar (4'-7')",
+                "description": "",
+                "quantity": 7,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "NuqYcaDMcLf1KzAV0Zes",
+                  "sFJ30x4TiQAosxxsDgpx"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:sFJ30x4TiQAosxxsDgpx:b8036e25-5b04-4460-902b-20bc5b379b8d:7adbcda01199",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "ePJgrlQYm5AEoKUpVcYz",
+                "name": "25' Extension Cord",
+                "description": "",
+                "quantity": 1,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "ePJgrlQYm5AEoKUpVcYz"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:ePJgrlQYm5AEoKUpVcYz:b8036e25-5b04-4460-902b-20bc5b379b8d:114be0c40d87",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "OF6HH7Hewyd8XJtMZfWF",
+                "name": "Bases Case",
+                "description": "",
+                "quantity": 1,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "OF6HH7Hewyd8XJtMZfWF"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:OF6HH7Hewyd8XJtMZfWF:b8036e25-5b04-4460-902b-20bc5b379b8d:114be0c40d87",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "8EtxDI4RzsHHt8Kbg33w",
+                "name": "Cross Base",
+                "description": "",
+                "quantity": 6,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "OF6HH7Hewyd8XJtMZfWF",
+                  "8EtxDI4RzsHHt8Kbg33w"
+                ],
+                "zero_priced": true,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:8EtxDI4RzsHHt8Kbg33w:b8036e25-5b04-4460-902b-20bc5b379b8d:23c53bede4e4",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "tKNcDw2gsBp8UTCwQgXd",
+                "name": "Short Director Chair",
+                "description": "",
+                "quantity": 2,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "c7130c4b-d5bb-41a8-a436-c5d27fd52ef9",
+                  "jN6MZEMqwr9VWsNix8p4",
+                  "tKNcDw2gsBp8UTCwQgXd"
+                ],
+                "zero_priced": false,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "quantity_order": 0
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "49f728eb-bbaf-446a-88bb-eddece1480ae",
+                "type": "group",
+                "name": "Hair & Makeup",
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "49f728eb-bbaf-446a-88bb-eddece1480ae"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "9e05fDrFWdLxv1g6kO08",
+                "name": "Makeup Mirror (18\" White)",
+                "description": "",
+                "quantity": 3,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "49f728eb-bbaf-446a-88bb-eddece1480ae",
+                  "9e05fDrFWdLxv1g6kO08"
+                ],
+                "zero_priced": null,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "quantity_order": 4
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:9e05fDrFWdLxv1g6kO08:b8036e25-5b04-4460-902b-20bc5b379b8d",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "CaWTUrRVadAs6IJUjqzF",
+                "name": "4' Folding Table (Adjustable Height)",
+                "description": "",
+                "quantity": 2,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "49f728eb-bbaf-446a-88bb-eddece1480ae",
+                  "CaWTUrRVadAs6IJUjqzF"
+                ],
+                "zero_priced": null,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "quantity_order": 4
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:CaWTUrRVadAs6IJUjqzF:b8036e25-5b04-4460-902b-20bc5b379b8d",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "YyBaHYXVZofngOqtw2Lk",
+                "name": "Tall Director Chair",
+                "description": "",
+                "quantity": 1,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "49f728eb-bbaf-446a-88bb-eddece1480ae",
+                  "YyBaHYXVZofngOqtw2Lk"
+                ],
+                "zero_priced": null,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "quantity_order": 2
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:YyBaHYXVZofngOqtw2Lk:b8036e25-5b04-4460-902b-20bc5b379b8d",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "tKNcDw2gsBp8UTCwQgXd",
+                "name": "Short Director Chair",
+                "description": "",
+                "quantity": 1,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "49f728eb-bbaf-446a-88bb-eddece1480ae",
+                  "tKNcDw2gsBp8UTCwQgXd"
+                ],
+                "zero_priced": null,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "quantity_order": 2
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:tKNcDw2gsBp8UTCwQgXd:b8036e25-5b04-4460-902b-20bc5b379b8d",
+              "owner_path": null
+            },
+            {
+              "item": {
+                "uid": "65f728b0-3812-4399-a21f-08768847a2f9",
+                "type": "group",
+                "name": "Surface Protection",
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "65f728b0-3812-4399-a21f-08768847a2f9"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "kETzgYqCmiCLZvjwBfpE",
+                "name": "3 ' x 5' Floor Mat",
+                "description": "",
+                "quantity": 2,
+                "path": [
+                  "b8036e25-5b04-4460-902b-20bc5b379b8d",
+                  "65f728b0-3812-4399-a21f-08768847a2f9",
+                  "kETzgYqCmiCLZvjwBfpE"
+                ],
+                "zero_priced": null,
+                "stock_method": "bulk",
+                "order_number": 1012,
+                "uid_order": "V3hl7IoFE51tElz7c4fr"
+              },
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:kETzgYqCmiCLZvjwBfpE:b8036e25-5b04-4460-902b-20bc5b379b8d",
+              "owner_path": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "order_count": 1,
+  "destination_count": 1,
+  "quantity": 47,
+  "organizations": [
+    {
+      "uid": "FLCJtZVmE9llTGLb4sfE",
+      "organization_path": [
+        {
+          "uid": "Omyms3GkmyIreWjSuh2K",
+          "name": "Goldenrod Media Inc",
+          "derived": false
+        },
+        {
+          "uid": "YZWULbS5GVOh07Bt7aCo",
+          "name": "Ninth Street Media Group",
+          "derived": false
+        },
+        {
+          "uid": "FLCJtZVmE9llTGLb4sfE",
+          "name": "Lanternhouse Films LLC",
+          "derived": false
+        }
+      ]
+    }
+  ],
+  "missing_order_uids": [],
+  "next_cursor": null,
+  "notice": null
+}

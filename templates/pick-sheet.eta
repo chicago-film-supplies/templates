@@ -1,4 +1,4 @@
-<%/* draft draft/pick-sheet/e3434fc0 */%>
+<%/* draft draft/pick-sheet/14bdfbbe */%>
 <%
 // ── What this document IS, and what it is NOT ───────────────────────────────
 //
@@ -132,6 +132,27 @@ const bucketLabels = u.BOOKING_BREAKDOWN_LABELS;
 // expression of the hierarchy — `path` prefix, never adjacency in the array.
 // Measured on `multi-order-destination`: two `Delivery` groups hold one service
 // each and nothing else, so both banners go with them.
+//
+// ── Declared param: hide_zero_priced_components (default false) ─────────────
+//
+// A zero-priced component is included with its parent at no charge — it moves
+// with the kit, which is a picking fact as much as a billing one (the core
+// docblock on `FulfillmentItem.zero_priced`). With the param on, those rows are
+// dropped and the kit row stands for them. Same predicate as the quote and the
+// invoice (`zero_priced === true` on a COMPONENT), so one order hides the same
+// lines on all three documents.
+//
+// ⚠️ There is no roll-up. The quote moves a hidden row’s MONEY onto its parent;
+// a hidden row’s units are a different product and cannot be added to the kit’s,
+// so they simply leave the page. That is also why the sheet has no footer
+// total: a total under rows that no longer add up to it reads as a shortage.
+//
+// ⚠️ A hidden row that OWNS an aggregate booking is kept. Another occurrence of
+// the same product elsewhere on the leg renders blank and reads “counted under
+// …” on the strength of that owner, so hiding the owner would take the
+// booking’s only numbers off the page while its other rows claim they are here.
+const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
+
 const sections = sheet.orders.flatMap(function (order) {
   return order.destinations.map(function (dest) {
     // A leg’s rows, addressable by their own `path`. Built per leg and never
@@ -145,8 +166,36 @@ const sections = sheet.orders.flatMap(function (order) {
     // that is load-bearing: it resolves `owner_path` for the counted-under
     // label, so filtering it would turn a legitimate lookup into a blank.
     // What is filtered is what gets RENDERED, which is a different question.
-    const admitted = dest.items.filter(function (entry) {
+    const notService = dest.items.filter(function (entry) {
       return entry.item.type !== "service";
+    });
+    // How deep a line sits UNDER ANOTHER LINE ITEM — 0 top-level, 1 for a kit
+    // component. Counted as the ancestors that resolve to a real line in this
+    // leg, because a leg’s `items` carries its group dividers but not its
+    // destination divider, so a divider-uid set would miss one level.
+    const depthOf = function (item) {
+      let depth = 0;
+      for (let i = 1; i < item.path.length; i++) {
+        const ancestor = byPath.get(item.path.slice(0, i).join(":"));
+        if (ancestor && ancestor.type !== "group" && ancestor.type !== "destination") depth++;
+      }
+      return depth;
+    };
+    const hidden = new Set();
+    if (hideZeroPricedComponents) {
+      notService.forEach(function (entry) {
+        if (entry.item.zero_priced === true && depthOf(entry.item) > 0) {
+          hidden.add(entry.item.path.join(":"));
+        }
+      });
+      notService.forEach(function (entry) {
+        if (entry.owner_path === null) return;
+        if (hidden.has(entry.item.path.join(":"))) return;
+        hidden.delete(entry.owner_path.join(":"));
+      });
+    }
+    const admitted = notService.filter(function (entry) {
+      return !hidden.has(entry.item.path.join(":"));
     });
     const liveGroups = new Set();
     admitted.forEach(function (entry) {
@@ -160,7 +209,7 @@ const sections = sheet.orders.flatMap(function (order) {
       return entry.item.type !== "group" ||
         liveGroups.has(entry.item.path.join(":"));
     });
-    return { order, dest, byPath, rows };
+    return { order, dest, byPath, depthOf, rows };
   });
 });
 
@@ -450,7 +499,9 @@ const returnSpan = addressColumnCount - addressBoundary;
                booking's units being stated N times. */%>
           <% const booking = u.pickSheetLineBooking(section.dest, entry); %>
       <tr>
-        <td>
+        <%/* Indented by component depth, the same 1em per level the quote and
+             the invoice use, so a picker can see where a kit ends. */%>
+        <td style="padding-left: <%= section.depthOf(item) %>em">
           <%= item.name %><%/* The blank-cells explanation, on the row that is
                blank rather than in a legend at the foot of the page: a picker
                reads one row at a time and a legend is on the wrong page by the
@@ -477,15 +528,6 @@ const returnSpan = addressColumnCount - addressBoundary;
           <% } %>
         <% }) %>
       <% }) %>
-      <%/* The document total, read off the sheet rather than summed from the
-           rows above. `PickSheet.quantity` is the units across every admitted
-           leg, computed once in the fold; re-deriving it here would be a second
-           authority, and the obvious per-line derivation through `uid_booking`
-           is the one that is N× wrong. */%>
-      <tr class="grand-total">
-        <td class="wide" colspan="<%= bannerSpan - 1 %>"><strong>Total Units</strong></td>
-        <td class="center"><strong><%= sheet.quantity %></strong></td>
-      </tr>
     </tbody>
   </table>
 </section>
