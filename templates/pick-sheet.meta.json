@@ -30,7 +30,7 @@
     {
       "slug": "nested-kit-hidden",
       "label": "Nested kit, zero-priced components hidden",
-      "description": "The `hide_zero_priced_components: true` state, and the only fixture that renders it. It is the SAME capture as `nested-kit` (prod order 1012, 2026-09-25), so the two goldens differ only by the param. The ten zero_priced components of Pipe &amp; Drape (2 Rooms) are dropped, including the depth-2 and depth-3 ones. Short Director Chair (zero_priced false) stays, indented under the kit, which is the component the predicate must not catch. The kit row itself renders blank because its stock_method is none: with the param on, the page no longer carries the kit's units. That is the accepted cost of hiding, not a render bug, and the Total Units in #details still counts them. Re-capture together with `nested-kit` or not at all.",
+      "description": "The `hide_zero_priced_components: true` state, and the only fixture that renders it. It is the SAME capture as `nested-kit` (prod order 1012, 2026-09-25), so the two goldens differ only by the param. The ten zero_priced components of Pipe & Drape (2 Rooms) are dropped, including the depth-2 and depth-3 ones. Short Director Chair (zero_priced false) stays, indented under the kit, which is the component the predicate must not catch. The kit row itself renders blank because its stock_method is none: with the param on, the page no longer carries the kit's units. That is the accepted cost of hiding, not a render bug, and the Total Units in #details still counts them. Re-capture together with `nested-kit` or not at all.",
       "params": {
         "hide_zero_priced_components": true
       }
