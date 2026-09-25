@@ -64,15 +64,19 @@ html {
 
 /* Three banner levels nest inside one table — order, destination, group — and
    each has to read as subordinate to the one above at arm's length on a loading
-   dock, which is the one place this document is read. The indent is what carries
-   the hierarchy; base.css already supplies the weight. */
+   dock, which is the one place this document is read. The destination indent
+   carries that; base.css supplies the weight for both levels.
+
+   ⚠️ The GROUP banner sits flush left, as on the pick sheet. At 2rem it sat
+   further right than the rows it heads, which start at 0, so the one line
+   naming a section was the one line not aligned with it. And it is not italic:
+   italic in the items grid means an item description. */
 #items tr.destination-banner > td {
   padding-left: 1rem;
 }
 
 #items tr.group-banner > td {
-  padding-left: 2rem;
-  font-style: italic;
+  padding-left: 0;
 }
 
 /* The first order banner needs no rule above it — the table header is already
