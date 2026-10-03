@@ -97,9 +97,6 @@ const showOrderBanner = groups.length > 1;
 //   vocabulary: a customer who has read the Action cell does not also need the
 //   breakdown keys behind it.
 //
-// • `items[].serialized_details` — `null` on every stored movement. Asset tags
-//   and scan input are explicitly out of scope (manager#312).
-//
 // • `session.types` and `session.numbers` — rollups of what the grid already
 //   prints per row. Printing them again in #details would put the same facts on
 //   the page twice.
