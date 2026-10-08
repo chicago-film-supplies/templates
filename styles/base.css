@@ -453,59 +453,190 @@ th.center, td.center {
 }
 
 /* A destination SECTION inside the items grid (items-grid.eta, opt-in via
-   `destinationDetail`), the OrderDetail divider as a PDF: place, contact,
-   dates, charged. New selectors only, so no family sheet rule changes winner.
-   A rule above the first line marks each destination as a section break and a
-   light rule under the last separates it from the lines it introduces. The
-   colspan break rule above already keeps each line with the next. */
-/* EVERY line of the section carries the same padding, so the gaps between
-   them are equal. The first line used to set only `padding-top`, which left it
-   inheriting the grid's `#items td { padding: 4px 0 }` bottom while the lines
-   under it were zeroed: one 4px gap under the address and none elsewhere. */
-#items tr.destination-place td,
-#items tr.destination-contact td,
-#items tr.destination-dates td,
-#items tr.destination-charged td {
-  padding: 1px 0;
+   `destinationDetail`): one colspan row holding a three-column grid, delivery
+   side | one arrow | collection side. New selectors only, so no family sheet
+   rule changes winner.
+
+   SEPARATED BY SPACE, NOT BY A RULE. The section used to draw a black border
+   above itself; with one section per destination and its own header row beneath
+   it, the page carried a rule every few lines and read as several tables stacked.
+   A blank row's worth of air says the same thing and says it more quietly — and
+   the header row's own black rule still closes the section off underneath.
+
+   `--items-row` is that blank row AS A LENGTH: a line box (1.2em at the default
+   line-height) plus the 4px every cell in this grid carries top and bottom — the
+   19px row pitch measured on `multi-dest` at the 9px root. A calc rather than
+   that 19, so a family with a different root gets its own row height rather than
+   the quote's. The bottom stays at the ordinary 4px: the space belongs ABOVE the
+   section, between it and whatever the previous destination ended with. */
+#items {
+  --items-row: calc(1.2em + 8px);
 }
 
-/* EQUIDISTANT RULES. Every #items cell carries 4px above and below its text, so
-   a rule sits 4px from the text on both sides only if the section lines that
-   touch a rule carry 4px on that side too. The first line takes 4px above its
-   black rule (the header text, or the previous item, sits 4px above it); the
-   LAST line, dates or charged, takes 4px below, above the grey rule that the
-   following row draws. */
-#items tr.destination-place td {
-  border-top: 1px solid #121212;
-  padding-top: 4px;
+#items tr.destination-section td {
+  padding: var(--items-row) 0 4px;
 }
 
-#items tr.destination-dates:not(:has(+ tr.destination-charged)) td,
-#items tr.destination-charged td {
-  padding-bottom: 4px;
+/* A destination that FOLLOWS another destination's lines opens two blank rows
+   below them, not one, so the legs read as separate blocks. The first section
+   in the grid has nothing above it to separate from and keeps the one row. */
+#items tbody tr.destination-section:not(:first-child) td {
+  padding-top: calc(2 * var(--items-row));
 }
 
-#items tr.destination-place svg,
-#items tr.destination-contact svg,
-#items tr.destination-dates svg,
-#items tr.destination-charged svg {
-  vertical-align: -0.1em;
-  margin: 0 0.4em;
+/* THE HEADER ROW HAS TWO HOMES — see partials/shared/items-grid.eta. As a
+   <thead> it is styled by the `thead th` rule above; repeated inside <tbody>,
+   one per destination, it needs the same rule under it and must not be left as
+   the last row on a page with its lines opening the next one — the same argument
+   the banner `break-after` rule above makes, which cannot reach this row because
+   it has no colspan.
+
+   A grey rule under the section used to separate it from the first line beneath
+   it (`tr.destination-section + tr td`). The header row now sits there and draws
+   the black rule it always drew, so the grey one had nothing left to separate. */
+#items tr.column-headers th {
+  border-bottom: 1px solid #121212;
 }
 
-#items tr.destination-dates + tr:not(.destination-charged) td,
-#items tr.destination-charged + tr td {
-  border-top: 1px solid #ccc;
+#items tr.column-headers {
+  break-after: avoid;
 }
 
-#items .destination-days {
+/* `table-layout: fixed` sizes a table from its FIRST ROW, and in the destination
+   shape that row is one colspan cell — Blink splits such a cell evenly across
+   the columns it spans, so the description column would lose `--label-col` and
+   every table on the page would stop sharing an edge with it. The <colgroup>
+   states the widths instead, which under fixed layout outrank any row: the same
+   two facts `#items thead th:not(:first-child)` states for the headed shape,
+   moved somewhere the kind of the first row cannot change them. */
+#items col {
+  width: auto;
+}
+
+#items col:first-child {
+  width: var(--label-col);
+}
+
+/* ⚠️ AND THE SECTION CELL MUST CARRY NO WIDTH, or the <colgroup> above buys
+   nothing. A column whose <col> says `auto` takes its width from the FIRST ROW
+   instead — which here is this cell, and `td:first-child, .wide` would hand all
+   eight columns `--label-col` to share. Measured: the description column came
+   out at 690px against its 216, and every other table on the page kept the edge
+   it was supposed to be sharing with. */
+#items tr.destination-section td {
+  width: auto;
+}
+
+/* FOUR COLUMNS: label | start side | arrow | end side, across the FULL width of
+   the page. The label column has one fixed width, so every value opens on one
+   edge in every section. The start side is as wide as its longest line, capped
+   at half, so the arrow sits right after the delivery place; the end side is
+   `1fr` and takes everything left, so a long collection address uses the page
+   before it wraps. The date lines SPAN both sides (`.span`), so a window reads
+   on one line. Lines are spaced by `row-gap` alone: one number, so the gaps are
+   equal by construction. */
+#items .destination-grid {
+  --dest-line-gap: 2px;
+  /* FIXED, not max-content: sized to the longest label, In Store Pickup:, so the
+     values open on the same edge in every destination section on the page. */
+  --dest-label-col: 10rem;
+  /* The air either side of the place arrow. Wider than the 0.4em the date arrows
+     take, because this one separates two whole address blocks rather than two
+     dates on one line. The arrow column is the icon plus one of these a side. */
+  --dest-arrow-gap: 1.2em;
+
+  display: grid;
+  grid-template-columns:
+    var(--dest-label-col)
+    fit-content(50%)
+    calc(1rem + 2 * var(--dest-arrow-gap))
+    1fr;
+  row-gap: var(--dest-line-gap);
+}
+
+/* No collection leg: no end column. */
+#items .destination-grid.one-leg {
+  grid-template-columns: var(--dest-label-col) 1fr;
+}
+
+#items .destination-grid .label {
+  grid-column: 1;
+}
+
+#items .destination-grid .start {
+  grid-column: 2;
+}
+
+#items .destination-grid .end {
+  grid-column: 4;
+}
+
+#items .destination-grid .span {
+  grid-column: 2 / -1;
+}
+
+/* SIZED AND COLOURED HERE, not by the icon call: `1rem` follows whatever root a
+   family sets, where the 9px the template asks lucide for is that root's size
+   written down a second time — right on the quote and wrong on a 10px family.
+   The grey belongs to the GLYPH alone: the duration text beside it reads as a
+   date and takes the document colour. */
+#items .destination-grid .inline-arrow svg,
+#items .destination-grid .inline-clock svg {
+  width: 1rem;
+  height: 1rem;
   color: #555;
-  margin-left: 0.4em;
+  display: block;
 }
 
-#items .destination-days svg {
-  margin: 0 0.25em 0 0;
+/* A DATE LINE IS A FLEX ROW, which is what actually centres the icons on it.
+
+   `vertical-align` cannot: every value of it is defined against a FONT metric.
+   `middle` centres the glyph on the x-height, so it sits about 0.1em below the
+   centre of the capitals and digits it reads against — that is the low look, and
+   it is not a bug in the number, it is the number meaning something else. A
+   hand-picked `-0.1em` fixes one font and breaks the next, which this file had
+   already learned once (Quote 1021, 2026-09-15).
+
+   As flex items the pieces are laid out by the BOX model instead: `align-items:
+   center` centres each icon on the row, whatever font renders and whatever size
+   the icon is, and one `gap` spaces every piece — date, arrow, date, clock,
+   duration — by the same amount, so the old per-icon left/right margins are
+   gone. `wrap` keeps a long window able to break rather than overrun its cell.
+
+   The icons are `display: block` inside their spans so no line box is built
+   around them; that is what used to need the negative block margins. */
+#items .destination-grid .span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em;
 }
+
+/* THE PLACE ARROW HAS ITS OWN COLUMN, spaced exactly like the date arrows: the
+   same `.inline-arrow` margins either side and no column gap, so the start and
+   end places sit 0.4em from it as the start and end dates do. The column is as
+   wide as the arrow, so on the lines below it is the gap between the sides.
+
+   ⚠️ A FIXED width (the 1rem icon plus its two `--dest-arrow-gap` margins), not
+   `max-content`: the date lines span this column, and Blink hands a spanning
+   item's leftover width to a `max-content` track before a `fit-content` one,
+   so the arrow column grew and opened a gap after the arrow on some sections. */
+#items .destination-grid .arrow {
+  grid-column: 3;
+}
+
+/* The PLACE arrow is a grid item rather than part of a flex line, so it keeps
+   its own air and its own vertical centring — on the FIRST line of the place
+   beside it, not on the block, which is why this is a line-height trick rather
+   than `align-items`. */
+#items .destination-grid .arrow .inline-arrow svg {
+  display: inline-block;
+  vertical-align: middle;
+  margin: -1em var(--dest-arrow-gap);
+}
+
+/* The clock and the duration are two flex items of the line above, spaced by its
+   `gap` like everything else on it — so neither carries a margin of its own. */
 
 #items th,
 #items td {

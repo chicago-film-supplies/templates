@@ -50,27 +50,63 @@ const {
   destinationDetail = false, destinations = [], u, hasCollection = false,
 } = it;
 %>
+<%/* THE HEADER ROW HAS TWO HOMES, and which one is a fact about
+     `destinationDetail` alone.
+
+     OFF — every family but the quote — it is the table’s one <thead>, and the
+     rendered markup is what it has always been, so no other family’s golden
+     moves.
+
+     ON, each destination section is followed by its OWN header row, so the
+     section reads as the heading of the lines under it rather than as a row
+     inside a table that was already headed above it. Two consequences, neither
+     optional:
+
+     - Those header rows live in <tbody>, NOT in a second <thead>. Only the first
+       table-header-group is a header group — the rest render as row groups — and
+       the first one REPEATS at the top of every printed page, so a <thead> here
+       would reprint destination 1’s address block above destination 2’s lines.
+     - `table-layout: fixed` sizes a table from its FIRST ROW, which is now the
+       destination section’s single colspan cell — Blink would split that evenly
+       across every column and the grid would lose `--label-col`. The <colgroup>
+       states the widths instead, so sizing no longer depends on which KIND of row
+       happens to come first. It is emitted only in this shape: the headed table
+       is sized by its header row exactly as before.
+
+     Built as a string because it is emitted from two places and a second copy of
+     the conditional columns is a second thing to keep in step with `columnCount`. */%>
+<%
+const headerRow = '<tr class="column-headers">' + [
+  '<th scope="col" class="wide">Item Description</th>',
+  '<th scope="col">Type</th>',
+  '<th scope="col">Qty</th>',
+  hasRentals ? '<th scope="col">Duration</th>' : '',
+  '<th scope="col">Unit Price</th>',
+  hasDiscount ? '<th scope="col">Discount</th>' : '',
+  '<th scope="col">Subtotal</th>',
+  hasTax ? '<th scope="col">Tax</th>' : '',
+  '<th scope="col" class="total">Total</th>',
+].filter(Boolean).join("\n        ") + '</tr>';
+
+// TRUE until something has been headed. A destination section emits the header
+// under itself; anything reaching a line, a group banner or a destination that
+// resolves to no section pays for it first, so a grid whose rows do not open
+// with a destination is still headed exactly once.
+let headerPending = destinationDetail;
+
+// The previous destination section as RENDERED TEXT, so a consecutive repeat of
+// the same movement prints its dates alone. Null until the first section.
+let prevDestKey = null;
+%>
 <section id="items">
   <table>
+    <% if (destinationDetail) { %>
+    <colgroup><% for (let i = 0; i < columnCount; i++) { %><col><% } %></colgroup>
+    <% } else { %>
     <thead>
-      <tr>
-        <th scope="col" class="wide">Item Description</th>
-        <th scope="col">Type</th>
-        <th scope="col">Qty</th>
-        <% if (hasRentals) { %>
-        <th scope="col">Duration</th>
-        <% } %>
-        <th scope="col">Unit Price</th>
-        <% if (hasDiscount) { %>
-        <th scope="col">Discount</th>
-        <% } %>
-        <th scope="col">Subtotal</th>
-        <% if (hasTax) { %>
-        <th scope="col">Tax</th>
-        <% } %>
-        <th scope="col" class="total">Total</th>
-      </tr>
+      <%~ headerRow %>
     </thead>
+    <% } %>
     <tbody>
       <%/* The banner spans this table exactly. It is `itemColumnCount` rather
            than a second copy of the arithmetic: the alignment edge of the page
@@ -79,6 +115,10 @@ const {
            banner row spanned one column short of its own table. */%>
       <% const bannerSpan = columnCount; %>
       <% renderedItems.forEach(item => { %>
+        <% const dest = (destinationDetail && item.type === "destination") ? destinations.find(p => p.uid === item.uid) : undefined; %>
+        <% if (headerPending && !dest) { %>
+        <%~ headerRow %>
+        <% headerPending = false; } %>
         <% if (item.type === "group") { %>
         <tr>
           <td class="wide" colspan="<%= bannerSpan %>">
@@ -94,34 +134,45 @@ const {
         </tr>
         <% } %>
         <% } else if (item.type === "destination") { %>
-        <% const dest = destinationDetail ? destinations.find(p => p.uid === item.uid) : undefined; %>
         <% if (dest) { %>
-        <%/* The OrderDetail destination divider, as a PDF: one section of up to
-             four full-width lines, directly above the lines delivered there.
+        <%/* The OrderDetail destination divider, as a PDF: ONE row holding a
+             three-column grid, directly above the lines delivered there.
 
-               1  [name] address  ->  [name] address     the arrow half only when
-                                                         the collection differs
-               2  contact - phone; instructions          same shape, omitted when
-                                                         both legs are empty
-               3  start  ->  end  (clock) duration       rental furniture: the
-                                                         arrow, end and duration
-                                                         fall away with no
-                                                         collection leg
-               4  Charged: start  ->  end  (clock) days  only when the charge
-                                                         window differs
+               Delivery:  place name      ->   collection place name (only if the sides differ)
+                          address              collection address
 
-             "Differs" compares the RENDERED text, not the stored objects, so a
-             pair whose addresses carry the same values under different key order
-             still reads as one place (core#87 measured that trap at 6.5%).
+             A destination REPEATING the one before it prints the date lines
+             alone — both sides have to match for that.
+                          contact - phone         collection contact - phone
+                          instructions            collection instructions
+               Active:    start -> end (clock) duration
+               Charged:   start -> end (clock) days
+
+             The LABEL column names the movement (`getDestinationsLegend`:
+             Delivery or In Store Pickup) on the place line, and names the window
+             on each date line. The date lines span both address columns, so a
+             window reads start, arrow, end on one line.
+
+             The window label is Dates: when there is one window and Active: when
+             a Charged: window follows, so the two are only told apart when there
+             are two. One Charged: line per charge window, and a Total charged
+             line when there are several; the total is in BILLABLE days,
+             Σ max(days, 5), so it agrees with the money.
+
+             The contact and instructions lines are each omitted when both legs
+             are empty. With no collection leg there is no right column and no
+             arrow: a sale is handed over and never comes back.
 
              A SECOND COPY of the date rules in partials/shared/destinations.eta,
              deliberately: that table still serves the invoice, the pick sheet and
              the packing list. Keep the two in step until they are reconciled. */%>
         <%
           const d = dest.dates || {};
-          const hasActiveWindow = Boolean(d.delivery_start && d.collection_start);
-          const showCharged = hasCollection && Boolean(d.charge_start && d.charge_end) &&
+          const windows = d.charge_windows || [];
+          const showCharged = hasCollection && windows.length > 0 &&
             !u.isSameAsDeliveryDates(d);
+          // A 0-day window is valid, and `formatChargeDays` throws on 0.
+          const chargePeriod = (n) => n > 0 ? it.dates.formatChargeDays(n).periodLabel : "0 days";
           const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
           const addressText = (ep) => {
             if (!ep || !ep.address) return "";
@@ -132,63 +183,105 @@ const {
               (a.country_name && a.country_name !== "United States") ? a.country_name : null,
             ].filter(Boolean).join(", ");
           };
-          const placeName = (ep) => (ep && ep.address && ep.address.name) || "";
+          // The place NAME and its ADDRESS are two lines. `placeText` joins them
+          // only to compare the two sides; `placeLines` is what prints.
+          const placeLines = (ep) => [(ep && ep.address && ep.address.name) || "", addressText(ep)].filter(Boolean);
+          const placeText = (ep) => placeLines(ep).join("\n");
           const contactText = (ep) => {
-            if (!ep) return "";
-            const c = ep.contact;
-            const phone = c && c.phones && c.phones.length > 0 ? c.phones[0] : null;
-            const who = c ? [c.name, phone].filter(Boolean).join(" - ") : "";
-            return [who, ep.instructions].filter(Boolean).join("; ");
+            const c = ep && ep.contact;
+            if (!c) return "";
+            const phone = c.phones && c.phones.length > 0 ? c.phones[0] : null;
+            return [c.name, phone].filter(Boolean).join(" - ");
           };
-          const placeKey = (ep) => placeName(ep) + "|" + addressText(ep);
-          const showReturnPlace = hasCollection && placeKey(dest.collection) !== "|" &&
-            placeKey(dest.collection) !== placeKey(dest.delivery);
-          const showReturnContact = hasCollection && contactText(dest.collection) !== "" &&
-            contactText(dest.collection) !== contactText(dest.delivery);
-          const hasContactLine = contactText(dest.delivery) !== "" || showReturnContact;
+          const instructionsText = (ep) => (ep && ep.instructions) || "";
+          // In Store, not the legend value In Store Pickup: this label names the
+          // movement, and the Pickup half is the leg — which the places either
+          // side of the arrow already say.
+          const legLabel = (u.getDestinationsLegend([dest]).start || "Delivery")
+            .replace("In Store Pickup", "In Store");
+          // The collection side (arrow, place, contact, instructions) only when it
+          // differs from the delivery side in ANY of the three, compared as
+          // RENDERED text so the same address under a different key order still
+          // reads as one place. When all three match it would repeat the left.
+          const showReturn = hasCollection && (
+            placeText(dest.collection) !== placeText(dest.delivery) ||
+            contactText(dest.collection) !== contactText(dest.delivery) ||
+            instructionsText(dest.collection) !== instructionsText(dest.delivery)
+          );
+          const returnContact = showReturn ? contactText(dest.collection) : "";
+          const returnInstructions = showReturn ? instructionsText(dest.collection) : "";
+          const hasContactLine = contactText(dest.delivery) !== "" || returnContact !== "";
+          const hasInstructionsLine = instructionsText(dest.delivery) !== "" || returnInstructions !== "";
           const arrow = () => it.icons.svg("arrow-right", { size: 9 });
           const clock = () => it.icons.svg("clock", { size: 9 });
+          // A DESTINATION THAT REPEATS THE ONE BEFORE IT SHOWS ITS DATES ONLY.
+          // An order can split one venue across several legs that differ only by
+          // when, and reprinting the address, the contact and the instructions
+          // each time says nothing the reader did not just read. BOTH sides have
+          // to match, so a leg coming back to a different place still prints in
+          // full. Compared as rendered text, like showReturn above.
+          const destKey = [
+            placeText(dest.delivery), contactText(dest.delivery), instructionsText(dest.delivery),
+            placeText(dest.collection), contactText(dest.collection), instructionsText(dest.collection),
+          ].join("|");
+          const sameAsPrev = destKey === prevDestKey;
+          prevDestKey = destKey;
         %>
-        <tr class="destination-place">
+        <tr class="destination-section">
           <td class="wide" colspan="<%= columnCount %>">
-            <% if (placeName(dest.delivery)) { %><strong><%= placeName(dest.delivery) %></strong> <% } %><%= addressText(dest.delivery) %>
-            <% if (showReturnPlace) { %>
-            <%~ arrow() %>
-            <% if (placeName(dest.collection)) { %><strong><%= placeName(dest.collection) %></strong> <% } %><%= addressText(dest.collection) %>
-            <% } %>
+            <div class="destination-grid<% if (!hasCollection) { %> one-leg<% } %>">
+              <% if (!sameAsPrev) { %>
+              <div class="label bold"><%= legLabel %>:</div>
+              <div class="start"><% placeLines(dest.delivery).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></div>
+              <% if (showReturn) { %>
+              <div class="arrow"><span class="inline-arrow"><%~ arrow() %></span></div>
+              <div class="end"><% placeLines(dest.collection).forEach((line, i) => { %><% if (i > 0) { %><br><% } %><%= line %><% }) %></div>
+              <% } %>
+              <% if (hasContactLine) { %>
+              <div class="label"></div>
+              <div class="start"><%= contactText(dest.delivery) %></div>
+              <% if (showReturn) { %><div class="end"><%= returnContact %></div><% } %>
+              <% } %>
+              <% if (hasInstructionsLine) { %>
+              <div class="label"></div>
+              <div class="start"><%= instructionsText(dest.delivery) %></div>
+              <% if (showReturn) { %><div class="end"><%= returnInstructions %></div><% } %>
+              <% } %>
+              <% } %>
+              <div class="label bold"><% if (showCharged) { %>Active:<% } else { %>Dates:<% } %></div>
+              <div class="span">
+                <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
+                <% if (hasCollection) { %>
+                <% if (d.delivery_start && d.collection_start) { %><span class="inline-arrow"><%~ arrow() %></span><% } %>
+                <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
+                <% if (d.days_active != null) { %><span class="inline-clock"><%~ clock() %></span><span class="destination-days"><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
+                <% } %>
+              </div>
+              <% if (showCharged) { %>
+              <% windows.forEach((w, wi) => { %>
+              <div class="label bold"><% if (wi === 0) { %>Charged:<% } %></div>
+              <div class="span">
+                <%= it.dates.formatChicagoWeekdayDate(w.start) %><span class="inline-arrow"><%~ arrow() %></span><%= it.dates.formatChicagoWeekdayDate(w.end) %>
+                <span class="inline-clock"><%~ clock() %></span><span class="destination-days"><%= chargePeriod(w.days) %></span>
+              </div>
+              <% }) %>
+              <% if (windows.length > 1) { %>
+              <div class="label bold">Total charged:</div>
+              <div class="span"><span class="inline-clock"><%~ clock() %></span><span class="destination-days"><%= chargePeriod(it.dates.billableDays(windows.map((w) => w.days))) %></span></div>
+              <% } %>
+              <% } %>
+            </div>
           </td>
         </tr>
-        <% if (hasContactLine) { %>
-        <tr class="destination-contact">
-          <td class="wide" colspan="<%= columnCount %>">
-            <%= contactText(dest.delivery) %>
-            <% if (showReturnContact) { %><%~ arrow() %><%= contactText(dest.collection) %><% } %>
-          </td>
-        </tr>
-        <% } %>
-        <tr class="destination-dates">
-          <td class="wide" colspan="<%= columnCount %>">
-            <% if (d.delivery_start) { %><%= stamp(d.delivery_start) %><% } %>
-            <% if (hasCollection) { %>
-            <% if (hasActiveWindow) { %><%~ arrow() %><% } %>
-            <% if (d.collection_start) { %><%= stamp(d.collection_start) %><% } %>
-            <% if (d.days_active != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_active).periodLabel %></span><% } %>
-            <% } %>
-          </td>
-        </tr>
-        <% if (showCharged) { %>
-        <tr class="destination-charged">
-          <td class="wide" colspan="<%= columnCount %>">
-            <span class="bold">Charged:</span>
-            <%= it.dates.formatChicagoWeekdayDate(d.charge_start) %><%~ arrow() %><%= it.dates.formatChicagoWeekdayDate(d.charge_end) %>
-            <% if (d.days_charged != null) { %><span class="destination-days"><%~ clock() %><%= it.dates.formatChargeDays(d.days_charged).periodLabel %></span><% } %>
-          </td>
-        </tr>
-        <% } %>
+        <%/* The column headers belong to the section above them: the lines a
+             destination introduces are headed under that destination, not under
+             a header row printed once at the top of a table that spans several. */%>
+        <%~ headerRow %>
+        <% headerPending = false; %>
         <% } else if (showDestinationBanners) { %>
         <tr>
           <td class="wide" colspan="<%= bannerSpan %>">
-            <%= item.name %>
+            <strong><%= item.name %></strong>
           </td>
         </tr>
         <% } %>
@@ -256,7 +349,7 @@ const {
         </tr>
         <% if (item.description) { %>
         <tr>
-          <td class="wide" colspan="<%= bannerSpan %>" style="padding-left: <%= componentDepth(item) %>em">
+          <td class="wide" colspan="<%= bannerSpan %>" style="padding-left: <%= componentDepth(item) %>em; font-style: italic; font-weight: normal">
             <%= item.description %>
           </td>
         </tr>

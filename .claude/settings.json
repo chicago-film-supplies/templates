@@ -24,5 +24,11 @@
         ]
       }
     ]
+  },
+  "permissions": {
+    "allow": [
+      "mcp__cfs-api",
+      "mcp__cfs-api-prod"
+    ]
   }
 }

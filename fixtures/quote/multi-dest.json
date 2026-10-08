@@ -37,10 +37,7 @@
 				"delivery_end": "2026-04-06T09:00:00.000-05:00",
 				"collection_start": "2026-04-10T15:00:00.000-05:00",
 				"collection_end": "2026-04-10T15:00:00.000-05:00",
-				"charge_start": "2026-04-06T09:00:00.000-05:00",
-				"charge_end": "2026-04-10T15:00:00.000-05:00",
 				"days_active": 5,
-				"days_charged": 5,
 				"delivery_start_fs": {
 					"_seconds": 1775484000,
 					"_nanoseconds": 0
@@ -57,14 +54,13 @@
 					"_seconds": 1775851200,
 					"_nanoseconds": 0
 				},
-				"charge_start_fs": {
-					"_seconds": 1775484000,
-					"_nanoseconds": 0
-				},
-				"charge_end_fs": {
-					"_seconds": 1775851200,
-					"_nanoseconds": 0
-				}
+				"charge_windows": [
+					{
+						"start": "2026-04-06T09:00:00.000-05:00",
+						"end": "2026-04-10T15:00:00.000-05:00",
+						"days": 5
+					}
+				]
 			},
 			"delivery": {
 				"uid": "Dst1CounterPickup001",
@@ -123,7 +119,8 @@
 				}
 			},
 			"customer_collecting": true,
-			"customer_returning": true
+			"customer_returning": true,
+			"exchange": null
 		},
 		{
 			"uid": "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
@@ -132,10 +129,7 @@
 				"delivery_end": "2026-04-07T07:00:00.000-05:00",
 				"collection_start": "2026-04-13T15:00:00.000-05:00",
 				"collection_end": "2026-04-13T15:00:00.000-05:00",
-				"charge_start": "2026-04-07T07:00:00.000-05:00",
-				"charge_end": "2026-04-11T15:00:00.000-05:00",
 				"days_active": 7,
-				"days_charged": 5,
 				"delivery_start_fs": {
 					"_seconds": 1775563200,
 					"_nanoseconds": 0
@@ -152,14 +146,13 @@
 					"_seconds": 1776110400,
 					"_nanoseconds": 0
 				},
-				"charge_start_fs": {
-					"_seconds": 1775563200,
-					"_nanoseconds": 0
-				},
-				"charge_end_fs": {
-					"_seconds": 1775937600,
-					"_nanoseconds": 0
-				}
+				"charge_windows": [
+					{
+						"start": "2026-04-07T07:00:00.000-05:00",
+						"end": "2026-04-11T15:00:00.000-05:00",
+						"days": 5
+					}
+				]
 			},
 			"delivery": {
 				"uid": "Dst2StageDelivery001",
@@ -218,7 +211,8 @@
 				}
 			},
 			"customer_collecting": false,
-			"customer_returning": false
+			"customer_returning": false,
+			"exchange": null
 		}
 	],
 	"items": [

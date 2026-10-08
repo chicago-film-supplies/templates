@@ -20,6 +20,46 @@ html {
   font-size: 9px;
 }
 
+/* #details IS A LABEL/VALUE BLOCK IN THIS FAMILY, not a grid with headers: four
+   fields, each introduced by a row-scoped <th> (quote.eta). The other families
+   still emit the old two-thead shape, so these widths are scoped HERE rather
+   than added to `styles/base.css` — a `#details col` rule in the shared sheet
+   would size a colgroup those families do not have, and `#details thead th`
+   there still serves them.
+
+   The two label columns are a LENGTH, deliberately. `table-layout: fixed` gives
+   the table no say in what its content needs, and the point of the number is
+   the pair after it: 6rem + 18rem puts the Subject/Reference column on
+   `--label-col`, the edge the items grid gives its description column and the
+   one #details has always opened its second column on. Change one and change
+   the other, or the edge moves. `Reference:` is the longest label at ~5.1rem on
+   the 9px root, so 6rem clears it without wrapping. */
+#details col.label {
+  width: 6rem;
+}
+
+#details col:nth-child(2) {
+  width: calc(var(--label-col) - 6rem);
+}
+
+/* ⚠️ THE COLGROUP ONLY OWNS THE WIDTHS IF THE CELLS CLAIM NONE. Under
+   `table-layout: fixed` a column with no `<col>` width takes the width of its
+   FIRST-ROW cell, and every cell here inherits `th, td { width: 6rem }` from the
+   shared sheet — so the fourth column got 6rem, the four summed short of the
+   table, and Chromium spread the remainder over ALL of them, pushing the
+   Subject/Reference column right. Measured in print against the items grid Type
+   column edge: +17.6pt at 7 and 9 columns and +3.5pt at 8. Clearing the cell
+   widths leaves the fourth column to take exactly the remainder: +0.0pt at 7, 8
+   and 9.
+
+   The rule this replaced, `col.label + col`, matched the FOURTH column as well
+   as the second. That made the sum land near the table width at 8 columns, so
+   the misalignment looked fixed on the commonest quote and was not. */
+#details th,
+#details td {
+  width: auto;
+}
+
 /* The quote-only half of a rule whose shared half now lives in
    `styles/base.css`. Split rather than left whole so the shared sheet
    carries no selector for markup only this family emits. */
