@@ -269,15 +269,17 @@ const hasSerialized = allRows.some(function (row) { return row.stock_method === 
 // occurrence gets null from `pickSheetLineBooking` and falls back the same way;
 // its owner one line away carries the numbers.
 //
-// The buckets are walked in `bucketKeys` order so the cell reads left to right
-// in the same order as the count columns beside it, with the same labels.
-function unitsCell(booking) {
+// The buckets are walked in `bucketKeys` order so the cell reads top to bottom
+// in the same order as the count columns beside it, with the same labels. One
+// LINE per bucket: this column is one of eleven, and a run joined inline wraps
+// mid-list, leaving a label separated from the numbers it names.
+function unitLines(booking) {
   const units = booking ? booking.units : null;
-  if (!units) return "Serialized";
-  const parts = bucketKeys
+  if (!units) return ["Serialized"];
+  const lines = bucketKeys
     .filter(function (key) { return units[key] && units[key].length > 0; })
     .map(function (key) { return bucketLabels[key] + " " + u.formatUnitRanges(units[key]); });
-  return parts.length > 0 ? parts.join(" · ") : "Serialized";
+  return lines.length > 0 ? lines : ["Serialized"];
 }
 
 // Item Description, Type, [Stock], the seven buckets, Total.
@@ -483,7 +485,7 @@ const returnSpan = addressColumnCount - addressBoundary;
         </td>
         <td class="capitalize"><%= item.type %></td>
         <% if (hasSerialized) { %>
-        <td><%= item.stock_method === "serialized" ? unitsCell(booking) : "" %></td>
+        <td><% if (item.stock_method === "serialized") { unitLines(booking).forEach(function (line) { %><div><%= line %></div><% }) } %></td>
         <% } %>
         <% bucketKeys.forEach(function (key) { %>
         <%/* An empty cell rather than a `0`, and the difference is legibility at
