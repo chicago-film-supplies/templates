@@ -1,6 +1,6 @@
 <%
-const order = it.doc; // e2e api-cloudrun#1243 draft A
-const { destinations, items, totals } = order;
+const order = it.doc;
+const { destinations, items, totals } = order; // e2e api-cloudrun#1243 draft B
 // EVERY date on this page goes through `it.dates.formatChicago*`, and the zone
 // is named nowhere. date-fns resolves BOTH the parse and the format against the
 // ambient zone unless each is given `{ in: … }`, stored business datetimes are
