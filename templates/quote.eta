@@ -1,6 +1,5 @@
-<%/* draft draft/quote/2f9b002c */%>
 <%
-const order = it.doc;
+const order = it.doc; // e2e api-cloudrun#1243 draft A
 const { destinations, items, totals } = order;
 // EVERY date on this page goes through `it.dates.formatChicago*`, and the zone
 // is named nowhere. date-fns resolves BOTH the parse and the format against the
