@@ -241,14 +241,17 @@ const hasSerialized = allRows.some(function (row) { return row.stock_method === 
 // captured before core beta.635; a tracked booking with nothing prepped or out
 // has named no units yet. All three fall back to the word the column printed
 // before. A non-owner occurrence has no booking and falls back the same way.
+//
+// One LINE per set, as on the pick sheet, so a long run that wraps never
+// separates a label from the numbers it names.
 const PACKED_UNIT_BUCKETS = ["prepped", "out"];
-function unitsCell(row) {
+function unitLines(row) {
   const units = row.booking ? row.booking.units : null;
-  if (!units) return "Serialized";
-  const parts = PACKED_UNIT_BUCKETS
+  if (!units) return ["Serialized"];
+  const lines = PACKED_UNIT_BUCKETS
     .filter(function (key) { return units[key] && units[key].length > 0; })
     .map(function (key) { return u.BOOKING_BREAKDOWN_LABELS[key] + " " + u.formatUnitRanges(units[key]); });
-  return parts.length > 0 ? parts.join(" · ") : "Serialized";
+  return lines.length > 0 ? lines : ["Serialized"];
 }
 
 // THREE unconditional columns — Item Description, Type, Qty — plus the one
@@ -472,7 +475,7 @@ const returnSpan = addressColumnCount - addressBoundary;
         <td><%= row.name %></td>
         <td class="capitalize"><%= row.type %></td>
         <% if (hasSerialized) { %>
-        <td><%= row.stock_method === "serialized" ? unitsCell(row) : "" %></td>
+        <td><% if (row.stock_method === "serialized") { unitLines(row).forEach(function (line) { %><div><%= line %></div><% }) } %></td>
         <% } %>
         <td class="center"><%= row.quantity %></td>
       </tr>
