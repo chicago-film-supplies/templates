@@ -1,4 +1,4 @@
-<%/* draft draft/packing-list/b9888827 */%>
+<%/* draft draft/packing-list/c35960a8 */%>
 <%
 // ── What this document IS ───────────────────────────────────────────────────
 //
@@ -108,6 +108,34 @@ const legKey = sheet.leg === "collection"
   ? "packing_list_collection"
   : "packing_list_delivery";
 
+// Each packing-list row, paired with the BOOKING its units are counted on.
+//
+// `buildPackingList` returns bare rows (`uid`, `name`, `quantity`, …) and drops
+// the `PickSheetItem` each one came from, so a row cannot name its booking on
+// its own. It emits exactly one row per line of the array it is handed that
+// has a `uid` and a `rental` or `sale` type, in array order — so the same
+// filter over this leg’s entries lines them up index for index. The length
+// check makes that pairing fail LOUDLY if the builder’s rule ever moves: a
+// row printed beside another row’s unit numbers would put the wrong radios in
+// the customer’s hands, which is worse than no document.
+//
+// `pickSheetLineBooking`, never a `find` on `uid_booking`: it answers only for
+// the occurrence that OWNS an aggregate booking, so one booking’s units are
+// printed once and not on every line naming it.
+function withBookings(dest, forBuilder, rows) {
+  const handed = new Set(forBuilder);
+  const lineEntries = dest.items.filter(function (entry) {
+    const item = entry.item;
+    return handed.has(item) && item.uid && (item.type === "rental" || item.type === "sale");
+  });
+  if (lineEntries.length !== rows.length) {
+    throw new Error("packing list: " + rows.length + " rows against " + lineEntries.length + " lines at destination " + dest.uid);
+  }
+  return rows.map(function (row, i) {
+    return Object.assign({}, row, { booking: u.pickSheetLineBooking(dest, lineEntries[i]) });
+  });
+}
+
 const sections = sheet.orders.flatMap(function (order) {
   return order.destinations.map(function (dest) {
     const lines = dest.items.map(function (entry) { return entry.item; });
@@ -146,7 +174,7 @@ const sections = sheet.orders.flatMap(function (order) {
       // Expanded, not consolidated: `group_name` is preserved so the group
       // banners below can divide a section the way the order banner divides the
       // document.
-      rows: u.buildPackingList(forBuilder),
+      rows: withBookings(dest, forBuilder, u.buildPackingList(forBuilder)),
       // Whether anything at THIS leg is coming back. `orderHasRentals` answers
       // truthfully on a fulfillment-shaped line (`rental` is a
       // `FULFILLMENT_LINE_ITEM_TYPES` member) — the two money helpers in the
@@ -197,6 +225,34 @@ const allRows = sections.flatMap(function (section) { return section.rows; });
 // checks an asset tag against, and a page of nothing but bulk lines holds no
 // such row to find.
 const hasSerialized = allRows.some(function (row) { return row.stock_method === "serialized"; });
+
+// The Stock cell of a serialized row names its UNIT NUMBERS as ranges, so the
+// customer can see which radios they were handed (api-cloudrun#1230). Numbers
+// only, never serials (owner, 2026-10-08).
+//
+// ⭐ BOTH the `prepped` and the `out` sets, each labelled (owner, 2026-10-08):
+// a list printed mid-prep must say which units are packed and which have
+// already gone. The other unit buckets (`returned`, `lost`, `damaged`,
+// `cleaning`, `maintenance`) are custody AFTER the movement this paper travels
+// with, and stay off it. Labels come from core’s declaration, the same words
+// the pick sheet prints.
+//
+// ⚠️ `units` is null on an UNTRACKED booking and on every booking a fixture
+// captured before core beta.635; a tracked booking with nothing prepped or out
+// has named no units yet. All three fall back to the word the column printed
+// before. A non-owner occurrence has no booking and falls back the same way.
+//
+// One LINE per set, as on the pick sheet, so a long run that wraps never
+// separates a label from the numbers it names.
+const PACKED_UNIT_BUCKETS = ["prepped", "out"];
+function unitLines(row) {
+  const units = row.booking ? row.booking.units : null;
+  if (!units) return ["Serialized"];
+  const lines = PACKED_UNIT_BUCKETS
+    .filter(function (key) { return units[key] && units[key].length > 0; })
+    .map(function (key) { return u.BOOKING_BREAKDOWN_LABELS[key] + " " + u.formatUnitRanges(units[key]); });
+  return lines.length > 0 ? lines : ["Serialized"];
+}
 
 // THREE unconditional columns — Item Description, Type, Qty — plus the one
 // conditional. This grid is NOT `partials/shared/items-grid.eta`: that partial
@@ -419,7 +475,7 @@ const returnSpan = addressColumnCount - addressBoundary;
         <td><%= row.name %></td>
         <td class="capitalize"><%= row.type %></td>
         <% if (hasSerialized) { %>
-        <td><%= row.stock_method === "serialized" ? "Serialized" : "" %></td>
+        <td><% if (row.stock_method === "serialized") { unitLines(row).forEach(function (line) { %><div><%= line %></div><% }) } %></td>
         <% } %>
         <td class="center"><%= row.quantity %></td>
       </tr>
