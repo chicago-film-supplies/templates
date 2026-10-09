@@ -116,7 +116,8 @@
         }
       },
       "customer_collecting": false,
-      "customer_returning": false
+      "customer_returning": false,
+      "exchange": null
     },
     {
       "uid": "ca031069-abde-4ba1-a376-5183e3e8a27b",
@@ -205,7 +206,8 @@
         }
       },
       "customer_collecting": false,
-      "customer_returning": false
+      "customer_returning": false,
+      "exchange": null
     },
     {
       "uid": "8db48c41-3f18-4fc8-8081-720fa76863ae",
@@ -294,7 +296,8 @@
         }
       },
       "customer_collecting": false,
-      "customer_returning": false
+      "customer_returning": false,
+      "exchange": null
     }
   ],
   "items": [
@@ -880,7 +883,9 @@
     "out": 0,
     "returned": 0,
     "lost": 0,
-    "damaged": 0
+    "damaged": 0,
+    "cleaning": 0,
+    "maintenance": 0
   },
   "crms_id": null,
   "subject": "Sample subject.",

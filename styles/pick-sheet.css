@@ -84,10 +84,12 @@ html {
    instead. A group banner used to sit at `padding-left: 2rem` — further right
    than the rows it heads, which start at 0 — so the one line naming a section
    was the one line not aligned with it. Aligning it to its first child and
-   making it bold reads as a heading; the indent read as a stray. */
+   making it bold reads as a heading; the indent read as a stray.
+
+   Bold and NOT italic, matching the items grid’s group banners: italic there
+   means an item description, so an italic heading here read as one. */
 #items tr.group-banner > td {
   padding-left: 0;
-  font-style: italic;
   font-weight: bold;
 }
 
@@ -96,15 +98,6 @@ html {
 #items tbody > tr.order-banner:first-child > td {
   padding-top: 0;
   border-top: none;
-}
-
-/* The document total closes the table. It restates `PickSheet.quantity`, which
-   #details also prints — deliberately, because the two are read at different
-   moments: #details before picking starts, this after the last row has been
-   checked off. */
-#items tr.grand-total > td {
-  padding-top: 0.8rem;
-  border-top: 1px solid var(--rule, #999);
 }
 
 /* The scope line — what this whole sheet is an answer to, printed once under the

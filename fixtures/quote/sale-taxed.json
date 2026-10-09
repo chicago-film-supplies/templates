@@ -43,24 +43,12 @@
           "_seconds": 1786456800,
           "_nanoseconds": 0
         },
-        "collection_start": "2026-08-11T17:00:00.000-05:00",
-        "collection_start_fs": {
-          "_seconds": 1786485600,
-          "_nanoseconds": 0
-        },
-        "collection_end": "2026-08-11T17:00:00.000-05:00",
-        "collection_end_fs": {
-          "_seconds": 1786485600,
-          "_nanoseconds": 0
-        },
-        "days_active": 1,
-        "charge_windows": [
-          {
-            "start": "2026-08-11T09:00:00.000-05:00",
-            "end": "2026-08-11T17:00:00.000-05:00",
-            "days": 1
-          }
-        ]
+        "collection_start": null,
+        "collection_start_fs": null,
+        "collection_end": null,
+        "collection_end_fs": null,
+        "days_active": null,
+        "charge_windows": null
       },
       "delivery": {
         "uid": "vTn8CTAwwJHEJZLBzsOw",
@@ -80,26 +68,9 @@
         "instructions": "",
         "contact": null
       },
-      "collection": {
-        "uid": "vTn8CTAwwJHEJZLBzsOw",
-        "address": {
-          "city": "Chicago",
-          "country_name": "United States",
-          "full": "7695 Spruce Ln, Chicago, IL, United States",
-          "name": "Sunset Park Arena",
-          "postcode": "68889",
-          "region": "IL",
-          "street": "7695 Spruce Ln",
-          "street2": "",
-          "mapbox_id": "fYMqNq2ivSGcskyrCYWhKhEzVI0fPZFoGGZmQXweHQQeVj0xYuO5ZVI9NFixJEX",
-          "address_coordinates": null,
-          "user_coordinates": null
-        },
-        "instructions": "",
-        "contact": null
-      },
+      "collection": null,
       "customer_collecting": true,
-      "customer_returning": true,
+      "customer_returning": null,
       "exchange": null
     }
   ],
@@ -212,7 +183,9 @@
     "out": 10,
     "returned": 0,
     "lost": 0,
-    "damaged": 0
+    "damaged": 0,
+    "cleaning": 0,
+    "maintenance": 0
   },
   "crms_id": 1019,
   "crms_status": "Open",
