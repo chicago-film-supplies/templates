@@ -429,18 +429,34 @@ for (const arg of Deno.args) {
 }
 const params = resolveRenderParams(sidecar.params ?? [], paramOverrides);
 
-// Overlay the stylesheet: component styles first, then the template's own.
-const styleParts: string[] = [];
+/**
+ * The files each declared component OWNS, read from its sidecar's `files[]`.
+ *
+ * A family renders with its own files plus exactly these — nothing else
+ * (api-cloudrun#1245; `ownsTemplatePath` / `resolveFamilyOverlayAtTree`). So a
+ * stylesheet or partial is reached through the component that lists it, never
+ * through a `styles/<component>.css` naming convention or a directory walk: a
+ * split component's `styles/line-items.css` has no name the convention could
+ * guess, and a family that includes a partial it does not declare must fail
+ * here exactly as it fails in the golden gate.
+ */
+const componentFiles: string[][] = [];
 for (const dep of components) {
-  // A component need not ship a stylesheet — `base.meta.json`'s `files[]` is a
-  // manifest, not a promise of one file per kind — and the server concatenates
-  // whatever `styles/*.css` keys the content map happens to hold rather than
-  // demanding one per dependency. An unguarded read turned "this component has
-  // no CSS" into a NotFound crash naming a path the author never wrote.
-  try {
-    styleParts.push(await Deno.readTextFile(`styles/${dep}.css`));
-  } catch (err) {
-    if (!(err instanceof Deno.errors.NotFound)) throw err;
+  const meta: { files?: string[] } = JSON.parse(
+    await Deno.readTextFile(`template-components/${dep}.meta.json`),
+  );
+  componentFiles.push(meta.files ?? []);
+}
+
+// Overlay the stylesheet in the server's CASCADE order (`orderedStyleKeys`,
+// `api-cloudrun/src/lib/templates/overlay.ts`): components in `depends_on`
+// order, LEXICAL within one component — because production groups by a
+// component version's content-map keys, whose order Firestore does not keep —
+// then the template's own sheet last. A component need not ship a stylesheet.
+const styleParts: string[] = [];
+for (const files of componentFiles) {
+  for (const key of files.filter((f) => f.endsWith(".css")).sort()) {
+    styleParts.push(await Deno.readTextFile(key));
   }
 }
 styleParts.push(await Deno.readTextFile(`styles/${name}.css`));
@@ -453,8 +469,10 @@ const doc = JSON.parse(await Deno.readTextFile(fixtureFile));
 /**
  * Register every includable partial under the `@` prefix the server uses.
  *
- * Both pools: `partials/shared/**` (owned by the `base` COMPONENT, overlaid onto
- * every family) and `partials/<name>/**` (this family's own). The server resolves
+ * Both pools: the `partials/**` files of the components this family DECLARES
+ * (their sidecars' `files[]` — not a walk of `partials/shared/`, which would
+ * register a partial the server does not give this family) and
+ * `partials/<name>/**` (this family's own). The server resolves
  * the same set out of the merged content map via `partialEntries`
  * (`api-cloudrun/src/lib/templates/eta.ts`), so a key registered here and not
  * there — or the reverse — is content that previews one way and renders another.
@@ -482,7 +500,13 @@ async function* walkEta(dir: string): AsyncGenerator<string> {
 }
 
 const partialKeys: string[] = [];
-for (const dir of ["partials/shared", `partials/${name}`]) {
+for (const files of componentFiles) {
+  for (const key of files.filter((f) => f.startsWith("partials/") && f.endsWith(".eta"))) {
+    eta.loadTemplate(`@${key}`, await Deno.readTextFile(key), { async: true });
+    partialKeys.push(key);
+  }
+}
+for (const dir of [`partials/${name}`]) {
   for await (const key of walkEta(dir)) {
     eta.loadTemplate(`@${key}`, await Deno.readTextFile(key), { async: true });
     partialKeys.push(key);
