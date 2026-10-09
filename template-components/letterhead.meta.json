@@ -1,0 +1,7 @@
+{
+  "display_name": "Letterhead",
+  "files": [
+    "partials/shared/letterhead.eta",
+    "styles/letterhead.css"
+  ]
+}
