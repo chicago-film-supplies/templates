@@ -1,0 +1,8 @@
+{
+  "display_name": "Layout",
+  "files": [
+    "layouts/base.eta",
+    "styles/base.css",
+    "partials/shared/footer.eta"
+  ]
+}

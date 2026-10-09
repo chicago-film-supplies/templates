@@ -1,0 +1,7 @@
+{
+  "display_name": "Destinations",
+  "files": [
+    "partials/shared/destinations.eta",
+    "styles/destinations.css"
+  ]
+}
