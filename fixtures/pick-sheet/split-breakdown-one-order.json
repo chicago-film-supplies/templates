@@ -99,7 +99,8 @@
             },
             "customer_collecting": true,
             "customer_returning": true,
-            "jurisdiction": "rantoul"
+            "jurisdiction": "rantoul",
+            "exchange": null
           },
           "due_at": "2026-08-30T09:00:00.000-05:00",
           "quantity": 108,
@@ -114,7 +115,7 @@
           },
           "bookings": [
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:rs79zkY2jR4u4Qxz7m5J:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:rs79zkY2jR4u4Qxz7m5J:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "rs79zkY2jR4u4Qxz7m5J",
               "name": "Drapes Backpack",
               "type": "rental",
@@ -133,7 +134,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:xhQzPn5BK4RpFqGt5E0n:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:xhQzPn5BK4RpFqGt5E0n:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "xhQzPn5BK4RpFqGt5E0n",
               "name": "Satin Blackout Drape (7' x 7')",
               "type": "rental",
@@ -152,7 +153,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:NuqYcaDMcLf1KzAV0Zes:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:NuqYcaDMcLf1KzAV0Zes:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "NuqYcaDMcLf1KzAV0Zes",
               "name": "Pipes Case",
               "type": "rental",
@@ -171,7 +172,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:2o1qO9KcNfURAvaP561z:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:2o1qO9KcNfURAvaP561z:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "2o1qO9KcNfURAvaP561z",
               "name": "4' LED Light Bar",
               "type": "rental",
@@ -190,7 +191,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:pHoO6dCp4yXD9eF8XdBY:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:pHoO6dCp4yXD9eF8XdBY:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "pHoO6dCp4yXD9eF8XdBY",
               "name": "4' T5 Power Cable",
               "type": "rental",
@@ -209,7 +210,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:dPbWIZ86rFFPzN5pdPIO:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:dPbWIZ86rFFPzN5pdPIO:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "dPbWIZ86rFFPzN5pdPIO",
               "name": "4' T5 Interconnect Cable",
               "type": "rental",
@@ -228,7 +229,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:fZfNhvAjk5pmW5fvxxcp:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:fZfNhvAjk5pmW5fvxxcp:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "fZfNhvAjk5pmW5fvxxcp",
               "name": "7' Upright",
               "type": "rental",
@@ -247,7 +248,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:sFJ30x4TiQAosxxsDgpx:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:sFJ30x4TiQAosxxsDgpx:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "sFJ30x4TiQAosxxsDgpx",
               "name": "Cross Bar (4'-7')",
               "type": "rental",
@@ -266,7 +267,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:ePJgrlQYm5AEoKUpVcYz:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:ePJgrlQYm5AEoKUpVcYz:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "ePJgrlQYm5AEoKUpVcYz",
               "name": "25' Extension Cord",
               "type": "rental",
@@ -285,7 +286,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:OF6HH7Hewyd8XJtMZfWF:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:OF6HH7Hewyd8XJtMZfWF:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "OF6HH7Hewyd8XJtMZfWF",
               "name": "Bases Case",
               "type": "rental",
@@ -304,7 +305,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:8EtxDI4RzsHHt8Kbg33w:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:8EtxDI4RzsHHt8Kbg33w:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "8EtxDI4RzsHHt8Kbg33w",
               "name": "Cross Base",
               "type": "rental",
@@ -323,7 +324,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:tKNcDw2gsBp8UTCwQgXd:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:tKNcDw2gsBp8UTCwQgXd:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "tKNcDw2gsBp8UTCwQgXd",
               "name": "Short Director Chair",
               "type": "rental",
@@ -342,7 +343,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:JXDGN5GLKuPMwmj7R6Ra:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:JXDGN5GLKuPMwmj7R6Ra:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "JXDGN5GLKuPMwmj7R6Ra",
               "name": "Folding Rack",
               "type": "rental",
@@ -361,7 +362,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:pDW2F8ozBcwKQALfeq2K:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:pDW2F8ozBcwKQALfeq2K:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "pDW2F8ozBcwKQALfeq2K",
               "name": "Combo Hanger",
               "type": "rental",
@@ -380,7 +381,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:DoeafqvQ7F7nWIOw6Xhr:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:DoeafqvQ7F7nWIOw6Xhr:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "DoeafqvQ7F7nWIOw6Xhr",
               "name": "Hanger Stacker",
               "type": "rental",
@@ -399,7 +400,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:9e05fDrFWdLxv1g6kO08:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:9e05fDrFWdLxv1g6kO08:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "9e05fDrFWdLxv1g6kO08",
               "name": "Makeup Mirror (18\" White)",
               "type": "rental",
@@ -418,7 +419,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:CaWTUrRVadAs6IJUjqzF:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:CaWTUrRVadAs6IJUjqzF:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "CaWTUrRVadAs6IJUjqzF",
               "name": "4' Folding Table (Adjustable Height)",
               "type": "rental",
@@ -437,7 +438,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:YyBaHYXVZofngOqtw2Lk:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:YyBaHYXVZofngOqtw2Lk:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "YyBaHYXVZofngOqtw2Lk",
               "name": "Tall Director Chair",
               "type": "rental",
@@ -456,7 +457,7 @@
               "stores": []
             },
             {
-              "uid": "V3hl7IoFE51tElz7c4fr:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+              "uid": "V3hl7IoFE51tElz7c4fr:kETzgYqCmiCLZvjwBfpE:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "uid_product": "kETzgYqCmiCLZvjwBfpE",
               "name": "3 ' x 5' Floor Mat",
               "type": "rental",
@@ -504,7 +505,8 @@
                   "jN6MZEMqwr9VWsNix8p4"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
               "uid_booking": null,
               "owner_path": null
@@ -524,9 +526,10 @@
                   "rs79zkY2jR4u4Qxz7m5J"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:rs79zkY2jR4u4Qxz7m5J:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:rs79zkY2jR4u4Qxz7m5J:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -545,9 +548,10 @@
                   "xhQzPn5BK4RpFqGt5E0n"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:xhQzPn5BK4RpFqGt5E0n:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:xhQzPn5BK4RpFqGt5E0n:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -565,9 +569,10 @@
                   "NuqYcaDMcLf1KzAV0Zes"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:NuqYcaDMcLf1KzAV0Zes:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:NuqYcaDMcLf1KzAV0Zes:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -586,9 +591,10 @@
                   "2o1qO9KcNfURAvaP561z"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:2o1qO9KcNfURAvaP561z:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:2o1qO9KcNfURAvaP561z:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -608,9 +614,10 @@
                   "pHoO6dCp4yXD9eF8XdBY"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:pHoO6dCp4yXD9eF8XdBY:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:pHoO6dCp4yXD9eF8XdBY:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -630,9 +637,10 @@
                   "dPbWIZ86rFFPzN5pdPIO"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:dPbWIZ86rFFPzN5pdPIO:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:dPbWIZ86rFFPzN5pdPIO:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -651,9 +659,10 @@
                   "fZfNhvAjk5pmW5fvxxcp"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:fZfNhvAjk5pmW5fvxxcp:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:fZfNhvAjk5pmW5fvxxcp:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -672,9 +681,10 @@
                   "sFJ30x4TiQAosxxsDgpx"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:sFJ30x4TiQAosxxsDgpx:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:sFJ30x4TiQAosxxsDgpx:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -692,9 +702,10 @@
                   "ePJgrlQYm5AEoKUpVcYz"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:ePJgrlQYm5AEoKUpVcYz:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:ePJgrlQYm5AEoKUpVcYz:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -712,9 +723,10 @@
                   "OF6HH7Hewyd8XJtMZfWF"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:OF6HH7Hewyd8XJtMZfWF:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:OF6HH7Hewyd8XJtMZfWF:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -733,9 +745,10 @@
                   "8EtxDI4RzsHHt8Kbg33w"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": true
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:8EtxDI4RzsHHt8Kbg33w:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:8EtxDI4RzsHHt8Kbg33w:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -753,9 +766,10 @@
                   "tKNcDw2gsBp8UTCwQgXd"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:tKNcDw2gsBp8UTCwQgXd:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:tKNcDw2gsBp8UTCwQgXd:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": [
                 "b8036e25-5b04-4460-902b-20bc5b379b8d",
                 "49f728eb-bbaf-446a-88bb-eddece1480ae",
@@ -777,9 +791,10 @@
                   "JXDGN5GLKuPMwmj7R6Ra"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:JXDGN5GLKuPMwmj7R6Ra:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:JXDGN5GLKuPMwmj7R6Ra:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -797,7 +812,8 @@
                   "pd6d7eI0HVe874lYFx4R"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
               "uid_booking": null,
               "owner_path": null
@@ -818,9 +834,10 @@
                   "pDW2F8ozBcwKQALfeq2K"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:pDW2F8ozBcwKQALfeq2K:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:pDW2F8ozBcwKQALfeq2K:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -839,9 +856,10 @@
                   "DoeafqvQ7F7nWIOw6Xhr"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:DoeafqvQ7F7nWIOw6Xhr:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:DoeafqvQ7F7nWIOw6Xhr:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -872,9 +890,10 @@
                   "9e05fDrFWdLxv1g6kO08"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:9e05fDrFWdLxv1g6kO08:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:9e05fDrFWdLxv1g6kO08:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -891,9 +910,10 @@
                   "CaWTUrRVadAs6IJUjqzF"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:CaWTUrRVadAs6IJUjqzF:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:CaWTUrRVadAs6IJUjqzF:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -910,9 +930,10 @@
                   "YyBaHYXVZofngOqtw2Lk"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:YyBaHYXVZofngOqtw2Lk:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:YyBaHYXVZofngOqtw2Lk:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -929,9 +950,10 @@
                   "tKNcDw2gsBp8UTCwQgXd"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:tKNcDw2gsBp8UTCwQgXd:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:tKNcDw2gsBp8UTCwQgXd:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             },
             {
@@ -962,9 +984,10 @@
                   "kETzgYqCmiCLZvjwBfpE"
                 ],
                 "order_number": 1012,
-                "uid_order": "V3hl7IoFE51tElz7c4fr"
+                "uid_order": "V3hl7IoFE51tElz7c4fr",
+                "zero_priced": null
               },
-              "uid_booking": "V3hl7IoFE51tElz7c4fr:kETzgYqCmiCLZvjwBfpE:vTn8CTAwwJHEJZLBzsOw",
+              "uid_booking": "V3hl7IoFE51tElz7c4fr:kETzgYqCmiCLZvjwBfpE:b8036e25-5b04-4460-902b-20bc5b379b8d",
               "owner_path": null
             }
           ]

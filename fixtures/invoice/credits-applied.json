@@ -118,7 +118,8 @@
         "contact": null
       },
       "customer_collecting": true,
-      "customer_returning": true
+      "customer_returning": true,
+      "exchange": null
     }
   ],
   "items": [
@@ -212,13 +213,6 @@
     "amount_due_cents": 0
   },
   "xero_id": "92ff3305-e7ee-4419-8ef2-63203a51ce3b",
-  "uploadcare_uuid": "54127064-21e2-4880-a1f1-3abbddc155b9",
-  "pdf_generated_at": {
-    "_seconds": 1788111741,
-    "_nanoseconds": 154000000
-  },
-  "pdf_params": {},
-  "pdf_params_context": null,
   "pdf_versions": [],
   "crms_id": 110,
   "crms_opportunity_ids": [

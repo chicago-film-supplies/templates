@@ -109,7 +109,8 @@
         "contact": null
       },
       "customer_collecting": true,
-      "customer_returning": true
+      "customer_returning": true,
+      "exchange": null
     }
   ],
   "items": [

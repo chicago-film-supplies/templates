@@ -1,4 +1,4 @@
-<%/* draft draft/pick-sheet/e3434fc0 */%>
+<%/* draft draft/pick-sheet/ad1752f3 */%>
 <%
 // ── What this document IS, and what it is NOT ───────────────────────────────
 //
@@ -255,6 +255,33 @@ const allRows = sections.flatMap(function (section) {
 // these are the question.
 const hasSerialized = allRows.some(function (row) { return row.stock_method === "serialized"; });
 
+// The Stock cell of a serialized row names its UNIT NUMBERS, bucket by bucket —
+// `Prepped 1001–1010 · Out 1011–1020` — so the picker knows which radios, not
+// only how many (api-cloudrun#1230). Numbers only, never serials: this sheet is
+// read on `fulfillment.read` and serials sit behind `units.read` (owner,
+// 2026-10-08).
+//
+// ⚠️ `units` is null on an UNTRACKED booking and on every booking a fixture
+// captured before core beta.635, and a tracked booking holding only `reserved`
+// units has named none yet — `reserved` and `quoted` are counts, not unit
+// buckets. All three fall back to the word the column printed before, so a row
+// never reads as blank where the picker is meant to check a tag. A non-owner
+// occurrence gets null from `pickSheetLineBooking` and falls back the same way;
+// its owner one line away carries the numbers.
+//
+// The buckets are walked in `bucketKeys` order so the cell reads top to bottom
+// in the same order as the count columns beside it, with the same labels. One
+// LINE per bucket: this column is one of eleven, and a run joined inline wraps
+// mid-list, leaving a label separated from the numbers it names.
+function unitLines(booking) {
+  const units = booking ? booking.units : null;
+  if (!units) return ["Serialized"];
+  const lines = bucketKeys
+    .filter(function (key) { return units[key] && units[key].length > 0; })
+    .map(function (key) { return bucketLabels[key] + " " + u.formatUnitRanges(units[key]); });
+  return lines.length > 0 ? lines : ["Serialized"];
+}
+
 // Item Description, Type, [Stock], the seven buckets, Total.
 const itemColumnCount = 2 + (hasSerialized ? 1 : 0) + bucketKeys.length + 1;
 
@@ -458,7 +485,7 @@ const returnSpan = addressColumnCount - addressBoundary;
         </td>
         <td class="capitalize"><%= item.type %></td>
         <% if (hasSerialized) { %>
-        <td><%= item.stock_method === "serialized" ? "Serialized" : "" %></td>
+        <td><% if (item.stock_method === "serialized") { unitLines(booking).forEach(function (line) { %><div><%= line %></div><% }) } %></td>
         <% } %>
         <% bucketKeys.forEach(function (key) { %>
         <%/* An empty cell rather than a `0`, and the difference is legibility at

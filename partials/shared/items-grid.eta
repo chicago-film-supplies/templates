@@ -281,7 +281,7 @@ let prevDestKey = null;
         <% } else if (showDestinationBanners) { %>
         <tr>
           <td class="wide" colspan="<%= bannerSpan %>">
-            <%= item.name %>
+            <strong><%= item.name %></strong>
           </td>
         </tr>
         <% } %>
@@ -349,7 +349,7 @@ let prevDestKey = null;
         </tr>
         <% if (item.description) { %>
         <tr>
-          <td class="wide" colspan="<%= bannerSpan %>" style="padding-left: <%= componentDepth(item) %>em">
+          <td class="wide" colspan="<%= bannerSpan %>" style="padding-left: <%= componentDepth(item) %>em; font-style: italic; font-weight: normal">
             <%= item.description %>
           </td>
         </tr>
