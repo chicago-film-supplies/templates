@@ -216,7 +216,9 @@
     "out": 4,
     "returned": 0,
     "lost": 0,
-    "damaged": 0
+    "damaged": 0,
+    "cleaning": 0,
+    "maintenance": 0
   },
   "crms_id": 1018,
   "crms_status": "Open",
