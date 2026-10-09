@@ -103,9 +103,11 @@ Source of truth for the set: `ownsTemplatePath` (`api-cloudrun/src/services/temp
 | `styles/<gp>.css` | yes | yes — `content` + `edits` | **denied** | tab |
 | `partials/<gp>/**` | yes | yes — `content` + `edits` | **denied** | tab |
 | `templates/<gp>.meta.json` | yes (render input) | **no — 422** | **denied** | Details form (identity + `render`), Params tab, Fixtures tab |
-| `layouts/base.eta`, `styles/base.css`, `partials/shared/**` | yes (frozen copy) | yes, but don't | **denied** | via the **base component** editor |
+| the `files[]` of each component in `depends_on` (today `base`: `layouts/base.eta`, `styles/base.css`, `partials/shared/**`) | yes (frozen copy of the DECLARED components only) | yes, but don't | **denied** | via the **component** editor |
 | `fixtures/<gp>/*.json` | no (branch only) | the fixture verbs | allowed | Fixtures tab |
 | `goldens/**` | no | no | allowed | visual diff + approve the renders |
+
+⚠️ **A family renders with its own files plus the `files[]` of the components its sidecar declares in `depends_on` — nothing else (api-cloudrun#1245).** Until 2026-10-09 every `partials/shared/**` file was copied into every family's version. Now an `includeAsync` of a partial whose component the family does not declare is absent from its render and fails `visual-diff` with `EtaNameResolutionError`. **Declare the component before you include its partial.** Stylesheets join components first, in `depends_on` order, with the family's own `styles/<gp>.css` LAST, so a family overrides its components and never the reverse.
 
 The shared overlay is excluded from the template editor on purpose: those files belong to the `base` COMPONENT family, and editing a draft's frozen copy forks it — `rebaseDraftVersion` reconciles that divergence only while the draft is clean, so a dirty draft keeps the fork and its commit writes it onto the branch. Change them in a draft of the component family instead; consuming templates pick them up on their next publish.
 
@@ -572,15 +574,20 @@ a case where copying `visual-diff`'s table would miss a real finding:
 
 | path | `visual-diff` | the lints |
 |---|---|---|
-| `templates/<gp>.meta.json` | no-op — "metadata-only, no render change" | **fan IN** — the sidecar holds `fixtures[]` descriptions (check 3) and `params[]` (check 5) |
+| `templates/<gp>.meta.json` | **only when `depends_on`, `render` or `params` moved** — a rename or a `fixtures[]` description renders nothing | **fan IN, always** — the sidecar holds `fixtures[]` descriptions (check 3) and `params[]` (check 5) |
 | `deno.json` / `deno.lock` | unmapped → the job skips | **fan OUT to every family** — check 1 resolves `templateSchemaFor` from the pinned core. **This is #187.** |
 | `goldens/<branch>/<gp>/*.png` | never mapped | **fan IN** — check 4 is golden↔fixture parity in *both* directions |
 | the lints' own sources | irrelevant | **fan OUT** — changing a check changes every family's verdict |
 
-A finding in a shared file (`layouts/base.eta`, `styles/base.css`,
-`partials/shared/**`) maps to every family and therefore blocks any scoped run.
-That is the conservative direction and the correct one: the shared overlay ships
-on every document, so there is no family it is somebody else's problem for.
+⚠️ **The shared-file rows differ too, since api-cloudrun#1245, and this one is
+deliberate as well.** For RENDER, `visual-diff` (`scripts/renderFamilies.ts`)
+maps a component-owned file to the families that DECLARE its component, because
+that is exactly the set api-cloudrun publishes. For the LINTS, a finding in a
+shared file (`layouts/base.eta`, `styles/base.css`, `partials/shared/**`,
+`template-components/**`) still maps to every family and blocks any scoped run.
+That is the conservative direction for blame, and the correct one: over-blaming
+costs an author a look at a family, while under-blaming lands a finding nobody
+owns.
 
 ⚠️ **Residual, stated so nobody discovers it as a surprise: blame is by PATH,
 not by DELTA.** A PR touching `quote.eta` still blocks on a *pre-existing*
