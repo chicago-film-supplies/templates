@@ -110,7 +110,9 @@
             "prepped": 0,
             "quoted": 0,
             "reserved": 0,
-            "returned": 0
+            "returned": 0,
+            "cleaning": 0,
+            "maintenance": 0
           },
           "bookings": [
             {
@@ -128,7 +130,9 @@
                 "prepped": 0,
                 "quoted": 0,
                 "reserved": 0,
-                "returned": 0
+                "returned": 0,
+                "cleaning": 0,
+                "maintenance": 0
               },
               "stores": []
             },
@@ -147,7 +151,9 @@
                 "prepped": 0,
                 "quoted": 0,
                 "reserved": 0,
-                "returned": 0
+                "returned": 0,
+                "cleaning": 0,
+                "maintenance": 0
               },
               "stores": []
             },
@@ -166,7 +172,9 @@
                 "prepped": 0,
                 "quoted": 0,
                 "reserved": 0,
-                "returned": 0
+                "returned": 0,
+                "cleaning": 0,
+                "maintenance": 0
               },
               "stores": []
             },
@@ -185,7 +193,9 @@
                 "prepped": 0,
                 "quoted": 0,
                 "reserved": 0,
-                "returned": 0
+                "returned": 0,
+                "cleaning": 0,
+                "maintenance": 0
               },
               "stores": []
             },
@@ -204,7 +214,9 @@
                 "prepped": 0,
                 "quoted": 0,
                 "reserved": 0,
-                "returned": 0
+                "returned": 0,
+                "cleaning": 0,
+                "maintenance": 0
               },
               "stores": []
             },
@@ -223,7 +235,9 @@
                 "prepped": 0,
                 "quoted": 0,
                 "reserved": 0,
-                "returned": 0
+                "returned": 0,
+                "cleaning": 0,
+                "maintenance": 0
               },
               "stores": []
             },
@@ -242,7 +256,9 @@
                 "prepped": 0,
                 "quoted": 0,
                 "reserved": 0,
-                "returned": 0
+                "returned": 0,
+                "cleaning": 0,
+                "maintenance": 0
               },
               "stores": []
             },
@@ -261,7 +277,9 @@
                 "prepped": 0,
                 "quoted": 0,
                 "reserved": 0,
-                "returned": 0
+                "returned": 0,
+                "cleaning": 0,
+                "maintenance": 0
               },
               "stores": []
             },
@@ -280,7 +298,9 @@
                 "prepped": 0,
                 "quoted": 0,
                 "reserved": 0,
-                "returned": 0
+                "returned": 0,
+                "cleaning": 0,
+                "maintenance": 0
               },
               "stores": []
             }
@@ -315,7 +335,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": false
+                "zero_priced": false,
+                "quantity_ordered": 4
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:ZsN1H4wR7vgLQnIf8gzX:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": null
@@ -336,7 +357,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": true
+                "zero_priced": true,
+                "quantity_ordered": 16
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:3kzv0sanOljc25psMVkU:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": [
@@ -362,7 +384,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": true
+                "zero_priced": true,
+                "quantity_ordered": 2
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:HM7k3NDHG1GJ2uaykMKC:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": [
@@ -388,7 +411,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": true
+                "zero_priced": true,
+                "quantity_ordered": 4
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:WaQhdQliUvS0LCx5OUTv:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": null
@@ -409,7 +433,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": true
+                "zero_priced": true,
+                "quantity_ordered": 2
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:Ms2nlTfZZMoaR8yZwudF:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": [
@@ -435,7 +460,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": true
+                "zero_priced": true,
+                "quantity_ordered": 12
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:p2YQ9RZY8djeejSK2i0d:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": null
@@ -455,7 +481,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": false
+                "zero_priced": false,
+                "quantity_ordered": 10
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:J7svp77V0tLx6xBaKRBx:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": null
@@ -476,7 +503,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": true
+                "zero_priced": true,
+                "quantity_ordered": 30
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:5H3Z7i8guIkuXOaYOVqb:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": null
@@ -497,7 +525,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": true
+                "zero_priced": true,
+                "quantity_ordered": 40
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:3kzv0sanOljc25psMVkU:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": null
@@ -518,7 +547,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": true
+                "zero_priced": true,
+                "quantity_ordered": 5
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:Ms2nlTfZZMoaR8yZwudF:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": null
@@ -539,7 +569,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": true
+                "zero_priced": true,
+                "quantity_ordered": 10
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:9jjGlzOiKG6ap3LpAGDA:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": null
@@ -560,7 +591,8 @@
                 ],
                 "order_number": 1007,
                 "uid_order": "YWzMc44iBt6bFWPrci0f",
-                "zero_priced": true
+                "zero_priced": true,
+                "quantity_ordered": 5
               },
               "uid_booking": "YWzMc44iBt6bFWPrci0f:HM7k3NDHG1GJ2uaykMKC:296b5655-0250-4fa1-9872-641c8640ec97",
               "owner_path": null
