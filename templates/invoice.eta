@@ -1,4 +1,3 @@
-<%/* draft draft/invoice/8965a3ad */%>
 <%
 const invoice = it.doc;
 const { destinations, items, totals } = invoice;
