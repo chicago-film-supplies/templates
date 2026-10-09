@@ -1,0 +1,8 @@
+{
+  "display_name": "Line Items",
+  "files": [
+    "partials/shared/items-grid.eta",
+    "partials/shared/totals.eta",
+    "styles/line-items.css"
+  ]
+}
