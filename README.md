@@ -16,7 +16,7 @@ repo on publish):
 |---|---|
 | `templates` | A thin **family** record — identity + rollups (`uid_active`, `active_semver`, `draft_uids`, `version_count`), no content. |
 | `templates-versions` | **Status-discriminated** content projections — `draft` \| `published` \| `archived`. The editable content lives here. |
-| `template-components` | Shared **component** families (e.g. the `base` layout + stylesheet) that templates overlay via `depends_on.components`. |
+| `template-components` | Shared **component** families (`layout`, `letterhead`, `destinations`, `line-items`) that templates overlay via `depends_on.components`. |
 
 A render is `overlay(template content ∪ each depends_on component's active
 version)`. The renderer branches on file extension — `.eta` is the body/layout,
