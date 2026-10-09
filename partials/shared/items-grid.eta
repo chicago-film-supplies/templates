@@ -120,14 +120,14 @@ let prevDestKey = null;
         <%~ headerRow %>
         <% headerPending = false; } %>
         <% if (item.type === "group") { %>
-        <tr>
+        <tr class="group-banner">
           <td class="wide" colspan="<%= bannerSpan %>">
-            <strong><%= item.name %></strong>
+            <%= item.name %>
           </td>
         </tr>
         <% } else if (item.type === "order") { %>
         <% if (showOrderBanner) { %>
-        <tr>
+        <tr class="order-banner">
           <td class="wide" colspan="<%= bannerSpan %>">
             <strong><%= item.name %></strong>
           </td>
@@ -279,9 +279,9 @@ let prevDestKey = null;
         <%~ headerRow %>
         <% headerPending = false; %>
         <% } else if (showDestinationBanners) { %>
-        <tr>
+        <tr class="destination-banner">
           <td class="wide" colspan="<%= bannerSpan %>">
-            <strong><%= item.name %></strong>
+            <%= item.name %>
           </td>
         </tr>
         <% } %>
