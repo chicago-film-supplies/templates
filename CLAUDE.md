@@ -103,17 +103,30 @@ Source of truth for the set: `ownsTemplatePath` (`api-cloudrun/src/services/temp
 | `styles/<gp>.css` | yes | yes — `content` + `edits` | **denied** | tab |
 | `partials/<gp>/**` | yes | yes — `content` + `edits` | **denied** | tab |
 | `templates/<gp>.meta.json` | yes (render input) | **no — 422** | **denied** | Details form (identity + `render`), Params tab, Fixtures tab |
-| `layouts/base.eta`, `styles/base.css`, `partials/shared/**` | yes (frozen copy) | yes, but don't | **denied** | via the **base component** editor |
+| the `files[]` of each component in `depends_on` (`layout`, `letterhead`, `destinations`, `line-items` — see the table below) | yes (frozen copy of the DECLARED components only) | yes, but don't | **denied** | via the **component** editor |
 | `fixtures/<gp>/*.json` | no (branch only) | the fixture verbs | allowed | Fixtures tab |
 | `goldens/**` | no | no | allowed | visual diff + approve the renders |
 
-The shared overlay is excluded from the template editor on purpose: those files belong to the `base` COMPONENT family, and editing a draft's frozen copy forks it — `rebaseDraftVersion` reconciles that divergence only while the draft is clean, so a dirty draft keeps the fork and its commit writes it onto the branch. Change them in a draft of the component family instead; consuming templates pick them up on their next publish.
+⚠️ **A family renders with its own files plus the `files[]` of the components its sidecar declares in `depends_on` — nothing else (api-cloudrun#1245).** Until 2026-10-09 every `partials/shared/**` file was copied into every family's version. Now an `includeAsync` of a partial whose component the family does not declare is absent from its render and fails `visual-diff` with `EtaNameResolutionError`. **Declare the component before you include its partial.** Stylesheets join components first, in `depends_on` order, with the family's own `styles/<gp>.css` LAST, so a family overrides its components and never the reverse.
 
-⚠️ **"MCP writable: yes, but don't" now reads "yes, in the COMPONENT'S draft" — the component-draft path is the EXPECTED route, not a mistake.** `base` owns seven files rather than three: `layouts/base.eta`, `styles/base.css`, and `partials/shared/{footer, letterhead, destinations, items-grid, totals}.eta`. The shared chrome is where the brand lives, so editing it is ordinary work; what stays wrong is editing a *consuming template's frozen copy* of it, which forks the file. The distinction is which family's draft you are in, not whether the file may be touched.
+The shared overlay is excluded from the template editor on purpose: those files belong to a COMPONENT family, and editing a draft's frozen copy forks it — `rebaseDraftVersion` reconciles that divergence only while the draft is clean, so a dirty draft keeps the fork and its commit writes it onto the branch. Change them in a draft of the component family instead; consuming templates pick them up on their next publish.
+
+⚠️ **"MCP writable: yes, but don't" now reads "yes, in the COMPONENT'S draft" — the component-draft path is the EXPECTED route, not a mistake.** The shared chrome is four components (api-cloudrun#1245, split from the one `base` component on 2026-10-09). Read the ownership from `template-components/*.meta.json`, which is the authority:
+
+| component | owns | declared by |
+|---|---|---|
+| `layout` | `layouts/base.eta`, `styles/base.css`, `partials/shared/footer.eta` | every family |
+| `letterhead` | `partials/shared/letterhead.eta`, `styles/letterhead.css` | every family |
+| `destinations` | `partials/shared/destinations.eta`, `styles/destinations.css` | quote, invoice, packing-list, pick-sheet |
+| `line-items` | `partials/shared/items-grid.eta`, `partials/shared/totals.eta`, `styles/line-items.css` | quote, invoice |
+
+⚠️ **A CSS rule lives with the component whose MARKUP it matches, not the component its name suggests.** Five families draw an `#items` table without `items-grid`, and statement draws `#totals` without `totals`, so the `#items` table chrome, banner weight, `#totals`, `#details` and `#grid-wrapper` all stay in `styles/base.css` (`layout`). Moving one of those into `line-items.css` silently restyles every family that does not declare `line-items`. The paths did not move in the split. Only their owners changed.
+
+The shared chrome is where the brand lives, so editing it is ordinary work; what stays wrong is editing a *consuming template's frozen copy* of it, which forks the file. The distinction is which family's draft you are in, not whether the file may be touched.
 
 ⚠️ **`partials/<gp>/**` was INVISIBLE in the manager until now, and had been all along.** It has been owned, MCP-writable and pushed by every draft commit since the pipeline existed, with no tab — so the quote footer could only be seen by its effect in the PDF preview. The editor now lists any `partials/<gp>/*` key present in the content map (never a bare `Object.keys(content)`, which would expose the shared overlay).
 
-⚠️ **The quote footer is no longer one of them — it is `partials/shared/footer.eta`, a file of the `base` COMPONENT** (templates#140). It is listed in `template-components/base.meta.json`'s `files[]`, and `templates/quote.meta.json`'s `render.footer` points at it. **Edit it in a draft of the base component, not a quote draft** — editing a consuming template's frozen copy forks it, and `rebaseDraftVersion` reconciles that only while the draft is clean. `partials/<gp>/**` remains owned and writable for genuinely per-template partials; there just are not any right now.
+⚠️ **The quote footer is no longer one of them — it is `partials/shared/footer.eta`, a file of the `layout` COMPONENT** (templates#140; `base` until the 2026-10-09 split). It is listed in `template-components/layout.meta.json`'s `files[]`, and `templates/quote.meta.json`'s `render.footer` points at it. **Edit it in a draft of the `layout` component, not a quote draft** — editing a consuming template's frozen copy forks it, and `rebaseDraftVersion` reconciles that only while the draft is clean. `partials/<gp>/**` remains owned and writable for genuinely per-template partials; there just are not any right now.
 
 ⚠️ **And the footer is no longer the only shared partial, nor the only KIND.** `letterhead`, `destinations`, `items-grid` and `totals` are body fragments a template pulls in with `includeAsync` (§ Includes), where the footer is pulled in by the sidecar's `render.footer`. Same directory, same content map, same component — two different mechanisms reach them, and only the footer's renders in an isolated frame.
 
@@ -138,7 +151,7 @@ templates/<name>.meta.json              sidecar: display_name, collection_source
 layouts/<name>.eta                      component layout skeleton (wraps the body via `it.body`, injects `it.styles`)
 styles/<name>.css                       per-template OR per-component stylesheet
 partials/<template>/<part>.eta          includable partial: a render-config part (footer/header) OR a body fragment
-partials/shared/<part>.eta              the same, but owned by the `base` COMPONENT and overlaid onto every family
+partials/shared/<part>.eta              the same, but owned by a COMPONENT (see its sidecar) and overlaid onto the families that declare it
 template-components/<name>.meta.json    component sidecar: display_name + files[] manifest
 fixtures/<template>/<slug>.json         deterministic source docs for golden visual-diff (operator-managed; PII sanitized on capture)
 goldens/<branch>/<template>/<slug>.png  branch-keyed golden screenshot, one per fixture
@@ -572,15 +585,20 @@ a case where copying `visual-diff`'s table would miss a real finding:
 
 | path | `visual-diff` | the lints |
 |---|---|---|
-| `templates/<gp>.meta.json` | no-op — "metadata-only, no render change" | **fan IN** — the sidecar holds `fixtures[]` descriptions (check 3) and `params[]` (check 5) |
+| `templates/<gp>.meta.json` | **only when `depends_on`, `render` or `params` moved** — a rename or a `fixtures[]` description renders nothing | **fan IN, always** — the sidecar holds `fixtures[]` descriptions (check 3) and `params[]` (check 5) |
 | `deno.json` / `deno.lock` | unmapped → the job skips | **fan OUT to every family** — check 1 resolves `templateSchemaFor` from the pinned core. **This is #187.** |
 | `goldens/<branch>/<gp>/*.png` | never mapped | **fan IN** — check 4 is golden↔fixture parity in *both* directions |
 | the lints' own sources | irrelevant | **fan OUT** — changing a check changes every family's verdict |
 
-A finding in a shared file (`layouts/base.eta`, `styles/base.css`,
-`partials/shared/**`) maps to every family and therefore blocks any scoped run.
-That is the conservative direction and the correct one: the shared overlay ships
-on every document, so there is no family it is somebody else's problem for.
+⚠️ **The shared-file rows differ too, since api-cloudrun#1245, and this one is
+deliberate as well.** For RENDER, `visual-diff` (`scripts/renderFamilies.ts`)
+maps a component-owned file to the families that DECLARE its component, because
+that is exactly the set api-cloudrun publishes. For the LINTS, a finding in a
+shared file (`layouts/base.eta`, `styles/base.css`, `partials/shared/**`,
+`template-components/**`) still maps to every family and blocks any scoped run.
+That is the conservative direction for blame, and the correct one: over-blaming
+costs an author a look at a family, while under-blaming lands a finding nobody
+owns.
 
 ⚠️ **Residual, stated so nobody discovers it as a surprise: blame is by PATH,
 not by DELTA.** A PR touching `quote.eta` still blocks on a *pre-existing*

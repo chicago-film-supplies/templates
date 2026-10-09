@@ -1,0 +1,28 @@
+/* letterhead.css — the letterhead: #bill-to, #cfs and #logo, all three drawn by
+   partials/shared/letterhead.eta and by nothing else.
+
+   Carved out of styles/base.css (api-cloudrun#1245) in base.css's own relative
+   order. The page grid these sit on (#grid-wrapper) and #details beside them stay
+   in base.css: every family draws both, letterhead or no. */
+
+#bill-to {
+  grid-column: 1;
+}
+
+#cfs {
+  grid-column: 2;
+}
+
+#logo {
+  grid-column: 1 / -1;
+  justify-self: end;
+}
+
+#logo svg {
+  height: 2.4rem;
+  width: 4.8rem;
+}
+
+#cfs {
+  text-align: right;
+}

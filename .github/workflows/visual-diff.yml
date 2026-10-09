@@ -79,53 +79,28 @@ jobs:
           fi
 
       # ── Detect changed template git_paths ───────────────────────────
-      # A shared-asset change (layouts/base.eta, styles/base.css,
-      # partials/shared/**) re-renders every family → diff all. Otherwise map
-      # each changed templates/<gp>.eta | styles/<gp>.css | partials/<gp>/** |
-      # fixtures/<gp>/<slug>.json to its git_path. (Mirrors api-cloudrun
-      # src/services/templates/affected.ts; fixture-only changes go into the
-      # `goldenOnly` bucket on the api side — same trigger here.)
+      # `scripts/renderFamilies.ts` answers "which families RENDER differently?"
+      # (api-cloudrun#1245). A component-owned file (any path in a
+      # template-components/*.meta.json `files[]`) re-renders the families that
+      # DECLARE that component — the same set api-cloudrun publishes. A sidecar
+      # edit that moves `depends_on`, `render` or `params` is a render change; a
+      # rename is not. A legacy shared path no component claims still fans out to
+      # every family. ⚠️ Deliberately NOT `affectedFamilies.ts`, which answers a
+      # different question (lint blame) and fans shared files out to everyone on
+      # purpose — see its header.
+      #
+      # `--no-lock` and no imports: this runs before anything resolves the import
+      # map, and must not rewrite deno.lock in the runner.
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
       - name: Detect changed git_paths
         id: changed
         run: |
           set -euo pipefail
           BASE_SHA=$(git merge-base "origin/${{ github.base_ref }}" HEAD)
-          FILES=$(git diff --name-only "$BASE_SHA" HEAD)
-          echo "Changed files:"; echo "$FILES"
-
-          shared=0
-          declare -A paths
-          while IFS= read -r f; do
-            [ -z "$f" ] && continue
-            case "$f" in
-              layouts/base.eta|styles/base.css|partials/shared/*)
-                shared=1 ;;
-              templates/*.meta.json)
-                : ;; # metadata-only — no render change
-              templates/*.eta)
-                gp="${f#templates/}"; gp="${gp%.eta}"
-                [[ "$gp" == */* ]] || paths["$gp"]=1 ;;
-              styles/*.css)
-                gp="${f#styles/}"; gp="${gp%.css}"
-                [[ "$gp" == */* || "$gp" == "base" ]] || paths["$gp"]=1 ;;
-              partials/*)
-                rest="${f#partials/}"; seg="${rest%%/*}"
-                [ "$seg" != "shared" ] && paths["$seg"]=1 ;;
-              fixtures/*)
-                # fixtures/<gp>/<slug>.json — re-run that family's per-fixture
-                # golden fan-out without bumping the template version.
-                rest="${f#fixtures/}"; seg="${rest%%/*}"
-                [[ "$rest" == */*.json ]] && paths["$seg"]=1 ;;
-            esac
-          done <<< "$FILES"
-
-          if [ "$shared" = "1" ]; then
-            # Shared change → every family (one per templates/*.meta.json).
-            ALL=$(ls templates/*.meta.json 2>/dev/null | sed 's#templates/##;s#\.meta\.json##')
-            for gp in $ALL; do paths["$gp"]=1; done
-          fi
-
-          GPS="${!paths[*]}"
+          GPS=$(deno run --no-lock --allow-read --allow-run=git scripts/renderFamilies.ts --base="$BASE_SHA")
           echo "git_paths=$GPS" >> "$GITHUB_OUTPUT"
           echo "Affected git_paths: $GPS"
 

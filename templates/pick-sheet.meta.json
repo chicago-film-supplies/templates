@@ -8,7 +8,9 @@
   ],
   "depends_on": {
     "components": [
-      "base"
+      "layout",
+      "letterhead",
+      "destinations"
     ]
   },
   "fixtures": [
