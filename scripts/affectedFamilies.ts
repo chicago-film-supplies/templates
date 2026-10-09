@@ -21,15 +21,16 @@
  *
  * ## ⚠️ This table deliberately DISAGREES with `visual-diff.yml`'s
  *
- * `visual-diff.yml:88-130` maps a diff to affected `git_path`s for a different
- * question — *"which families RENDER differently?"* — and this one asks *"which
- * families' LINT VERDICT could this diff have changed?"* Four rows differ, and
- * every one of them is a case a naive copy gets wrong in the direction of
- * missing a real finding:
+ * `visual-diff.yml` maps a diff to affected `git_path`s through
+ * `scripts/renderFamilies.ts`, for a different question — *"which families RENDER
+ * differently?"* — and this one asks *"which families' LINT VERDICT could this
+ * diff have changed?"* Five rows differ, and every one of them is a case a naive
+ * copy gets wrong in the direction of missing a real finding:
  *
  * | path | `visual-diff` | here | why |
  * |---|---|---|---|
- * | `templates/<gp>.meta.json` | no-op — "metadata-only, no render change" | **fan IN** | the sidecar holds `fixtures[]` descriptions (check 3) and `params[]` (check 5). It changes no pixel and can redden three checks. |
+ * | `templates/<gp>.meta.json` | only when `depends_on`/`render`/`params` moved | **fan IN, always** | the sidecar holds `fixtures[]` descriptions (check 3) and `params[]` (check 5). A rename changes no pixel and can still redden three checks. |
+ * | a component-owned file (`partials/shared/**`, `layouts/base.eta`, …) | the families that DECLARE that component (api-cloudrun#1245) | **fan OUT to every family** | over-blaming is the safe direction for a lint; under-blaming lands a finding nobody owns. |
  * | `deno.json` / `deno.lock` | unmapped → the job skips | **fan OUT to every family** | check 1 resolves `templateSchemaFor` from the pinned core. **This is #187.** |
  * | `goldens/<branch>/<gp>/*.png` | not mapped (it reads goldens, never diffs them) | **fan IN** | check 4 is golden↔fixture parity in BOTH directions, so deleting a baseline is a finding about a file no other row names. |
  * | the lint's own sources | irrelevant | **fan OUT to every family** | changing a check changes every family's verdict, so its author owns all of them. |
