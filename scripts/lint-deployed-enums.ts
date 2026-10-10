@@ -82,6 +82,9 @@
  */
 
 import { allFamilies, BLAME_FLAG, readBlameSet } from "./affectedFamilies.ts";
+import { annotateError, annotateWarning } from "./_annotate.ts";
+
+const TITLE = "templates-lint › deployed-enums";
 
 const BASE_FLAG = "--base=";
 
@@ -113,6 +116,10 @@ if (unknownArgs.length > 0) {
       `but got ${unknownArgs.length} other ` +
       `(${unknownArgs.map((a) => JSON.stringify(a)).join(", ")}).\n`,
   );
+  annotateError({
+    title: TITLE,
+    message: `lint-deployed-enums was invoked with unknown argument(s): ${unknownArgs.join(" ")}`,
+  });
   Deno.exit(2);
 }
 
@@ -136,6 +143,12 @@ function couldNotVerify(reason: string): never {
       `        jq '.components.schemas.Template.properties\n` +
       `            | with_entries(select(.value.enum or .value.items.enum))'\n`,
   );
+  // Non-blocking by design (fails OPEN), so a WARNING, never an error.
+  annotateWarning({
+    title: TITLE,
+    message: `Could not verify sidecar enums against ${origin} (${env}): ${reason} ` +
+      "0 values checked — passing so a network blip cannot block the PR.",
+  });
   Deno.exit(0);
 }
 
@@ -193,6 +206,10 @@ if (deployedEnums.size === 0) {
 interface Finding {
   gitPath: string;
   text: string;
+  /** Repo-relative sidecar path, for the annotation. */
+  file: string;
+  /** One-paragraph operator-facing statement, for the annotation. */
+  summary: string;
 }
 const findings: Finding[] = [];
 
@@ -208,10 +225,12 @@ for (const gitPath of families) {
   } catch (err) {
     // A malformed sidecar is `lint-fixtures`' finding, not this one — but say
     // so rather than counting the family as checked.
+    const why = err instanceof Error ? err.message : String(err);
     findings.push({
       gitPath,
-      text: `${file}\n    could not be read as JSON: ` +
-        `${err instanceof Error ? err.message : String(err)}`,
+      text: `${file}\n    could not be read as JSON: ${why}`,
+      file,
+      summary: `${file} could not be read as JSON: ${why}`,
     });
     continue;
   }
@@ -235,6 +254,11 @@ for (const gitPath of families) {
           `    one — and nothing self-heals it. Release api-cloudrun with a\n` +
           `    core that has this member FIRST, then merge:\n` +
           `      gh release view --json tagName -q .tagName -R chicago-film-supplies/api-cloudrun`,
+        file,
+        summary: `${field}: ${JSON.stringify(value)} is not deployed in ${env} ` +
+          `(revision ${revision}), which accepts ${allowed.map((m) => JSON.stringify(m)).join(" | ")}. ` +
+          `Merging would fail the publish and roll it back; the API must be released with ` +
+          `this member first.`,
       });
     }
   }
@@ -271,6 +295,13 @@ if (blocking.length > 0) {
   );
   for (const finding of blocking) console.error(`  [${finding.gitPath}] ${finding.text}\n`);
   console.error(`Checked ${tally}.`);
+  for (const finding of blocking) {
+    annotateError({
+      file: finding.file,
+      title: TITLE,
+      message: `[${finding.gitPath}] ${finding.summary}`,
+    });
+  }
   Deno.exit(1);
 }
 

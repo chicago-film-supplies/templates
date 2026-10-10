@@ -57,6 +57,14 @@ name: templates-lint
 # irreversible, so it fails CLOSED on everything, including a registry it cannot
 # reach. Do not reconcile them; `scripts/lint-capture-floor.ts`'s header carries
 # the comparison.
+# ⭐ ANNOTATIONS. Every guard prints one `::error` workflow command per
+# BLOCKING finding (scripts/_annotate.ts — one shared helper), because template
+# operators have no GitHub access and api-cloudrun shows them a failed run's
+# annotations through the Checks API. Each script needs
+# `--allow-env=GITHUB_ACTIONS` for that; without it the guard still runs and
+# prints `[annotate] … no workflow annotations emitted` instead. ⚠️ GitHub keeps
+# only 10 error annotations per STEP (50 per job), so a step with more
+# findings than that shows the first 10 — the log still holds all of them.
 on:
   pull_request:
     branches:
@@ -126,7 +134,7 @@ jobs:
       # about the REPOSITORY, not about a family, so scoping which findings block
       # would block on nothing, ever.
       - name: Check deno.json / deno.lock agreement
-        run: deno run --no-lock --allow-read scripts/check-lockfile-sync.ts
+        run: deno run --no-lock --allow-read --allow-env=GITHUB_ACTIONS scripts/check-lockfile-sync.ts
 
       # ── Blame scoping — see scripts/affectedFamilies.ts ─────────────
       #
@@ -238,69 +246,12 @@ jobs:
       - name: Lint capture floor
         run: deno task lint:capture-floor
 
+      # Hardcoded customer emails / phone numbers in .eta sources. Lived here
+      # as a stdin heredoc until it moved to scripts/lint-pii.ts, unchanged, so
+      # it could share scripts/_annotate.ts (a stdin script cannot import a
+      # sibling module) and run locally as `deno task lint:pii`.
       - name: Scan templates for hardcoded PII
-        run: |
-          deno run --allow-read - <<'TS'
-          // Scan templates/**, layouts/** and partials/** for hardcoded customer PII.
-          //
-          // ⚠️ `partials/` was NOT scanned until 2026-08-26, and it had never
-          // been — while money-lint has walked it all along. It is the worst
-          // root to omit: `partials/shared/**` is owned by the `base` COMPONENT
-          // and overlaid onto EVERY family, so one hardcoded line there ships on
-          // every document at once. The file living there today carries the
-          // company phone number, which only passes because it is allowlisted
-          // below — the guard was never consulted about it.
-          // Heuristics (starting point — see workflow header):
-          //   - email addresses whose domain is NOT chicagofilmsupplies.com
-          //   - US phone-number patterns: (312) 555-1212 / 312-555-1212 /
-          //     312.555.1212 / +1 312 555 1212 / 3125551212
-          const EMAIL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
-          const PHONE =
-            /(?:\+?1[\s.-]?)?(?:\(\d{3}\)[\s.-]?|\d{3}[\s.-])\d{3}[\s.-]?\d{4}|\b\d{10}\b/g;
-          const ALLOWED_EMAIL_DOMAIN = "chicagofilmsupplies.com";
-          // CFS's own business contact is a legitimate hardcoded constant (it's
-          // the supplier's number, not customer PII). Allowlist its digits so
-          // the company-info block in templates doesn't trip the guard. Add
-          // more CFS lines here if they change.
-          const ALLOWED_PHONE_DIGITS = new Set(["3128183008"]);
-
-          const findings: string[] = [];
-          async function* walk(dir: string): AsyncGenerator<string> {
-            for await (const e of Deno.readDir(dir)) {
-              const p = `${dir}/${e.name}`;
-              if (e.isDirectory) yield* walk(p);
-              else if (e.isFile && p.endsWith(".eta")) yield p;
-            }
-          }
-          const roots: string[] = [];
-          for (const d of ["templates", "layouts", "partials"]) {
-            try { await Deno.stat(d); roots.push(d); } catch { /* absent */ }
-          }
-          for (const root of roots) {
-            for await (const file of walk(root)) {
-              const lines = (await Deno.readTextFile(file)).split("\n");
-              lines.forEach((line, i) => {
-                for (const m of line.matchAll(EMAIL)) {
-                  const domain = m[0].split("@")[1]?.toLowerCase() ?? "";
-                  if (domain !== ALLOWED_EMAIL_DOMAIN) {
-                    findings.push(`${file}:${i + 1}  hardcoded email: ${m[0]}`);
-                  }
-                }
-                for (const m of line.matchAll(PHONE)) {
-                  const digits = m[0].replace(/\D/g, "").replace(/^1(?=\d{10}$)/, "");
-                  if (ALLOWED_PHONE_DIGITS.has(digits)) continue;
-                  findings.push(`${file}:${i + 1}  hardcoded phone: ${m[0]}`);
-                }
-              });
-            }
-          }
-          if (findings.length) {
-            console.error("Hardcoded PII found — pull contact info from it.doc instead:\n");
-            for (const f of findings) console.error("  " + f);
-            Deno.exit(1);
-          }
-          console.log("pii-lint: no hardcoded customer PII found.");
-          TS
+        run: deno task lint:pii
 
       # The unit arm. Today it is the lockfile guard's two polarities and
       # nothing else, and that is exactly why it exists: guard 0 runs against a

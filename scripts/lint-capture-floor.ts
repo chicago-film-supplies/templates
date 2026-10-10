@@ -147,8 +147,10 @@
  */
 
 import { type CoverVerdict, suggestFloor } from "./captureFloorSuggest.ts";
+import { annotateError } from "./_annotate.ts";
 
 const FLOOR_FILE = "capture-floor.json";
+const TITLE = "templates-lint › capture-floor";
 const JSR_META = "https://jsr.io/@cfs/core/meta.json";
 
 /** Every leaf the walk keeps, as `collection:dotted.path=tag`. */
@@ -182,6 +184,10 @@ if (Deno.args.length > 0) {
       `  override is the shape that makes the check answer about a core nobody\n` +
       `  will deploy.\n`,
   );
+  annotateError({
+    title: TITLE,
+    message: `lint-capture-floor takes no arguments, got ${Deno.args.join(" ")}`,
+  });
   Deno.exit(2);
 }
 
@@ -204,6 +210,12 @@ function couldNotVerify(reason: string): never {
       `    By hand:\n` +
       `      curl -s ${JSR_META} | jq -r '.versions | keys[]' | sort -V | tail -1\n`,
   );
+  annotateError({
+    file: FLOOR_FILE,
+    title: TITLE,
+    message: `Could not verify the capture floor: ${reason} Failing closed on purpose — ` +
+      "if this is a registry outage, a re-run should clear it.",
+  });
   Deno.exit(1);
 }
 
@@ -310,6 +322,12 @@ if (compareVersions(parseVersion(floorVersion)!, parseVersion(newest)!) > 0) {
       `    capture until a core at or above it is published AND deployed.\n\n` +
       `    ${published.length} version(s) published; newest ${newest}.\n`,
   );
+  annotateError({
+    file: FLOOR_FILE,
+    title: TITLE,
+    message: `min_core ${floorVersion} is above the newest published @cfs/core (${newest}) — ` +
+      "no build can satisfy it, so every fixture capture is refused.",
+  });
   Deno.exit(1);
 }
 
@@ -557,4 +575,18 @@ console.error(
       `not staleness):\n` + dropped.map((t) => `          - ${t}`).join("\n") + `\n\n`) +
     `    ${tally}\n`,
 );
+{
+  // ONE annotation for the stale floor, not one per tag: the repair is a
+  // single edit, and GitHub keeps only 10 error annotations per step.
+  const listed = [...missing.map((t) => `+ ${t}`), ...rerouted.map((r) => `~ ${r}`)];
+  const shown = listed.slice(0, 12).join("; ") + (listed.length > 12 ? `; … ${listed.length - 12} more` : "");
+  annotateError({
+    file: FLOOR_FILE,
+    title: TITLE,
+    message: `min_core ${floorVersion} is STALE: @cfs/core@${newest} carries ` +
+      `${missing.length} PII mask tag(s) the floor lacks and ${rerouted.length} routed differently ` +
+      `(${shown}). A capture at the floor would write those fields to git unmasked. ` +
+      `Raise min_core to "${suggestion}" (${suggestionNote}) once api-cloudrun has deployed it.`,
+  });
+}
 Deno.exit(1);
