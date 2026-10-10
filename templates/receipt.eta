@@ -125,7 +125,7 @@ const showOrderBanner = groups.length > 1;
      a receipt must not print one customer’s name on another’s goods. The
      partial guards the name for it. */%>
 <%~ await includeAsync("@partials/shared/letterhead.eta", {
-     title: "Receipt",
+     title: "Receipt (dev test B)",
      customer_name: session.organization
        ? it.organizations.composeOrgName(session.organization.organization_path ?? [])
        : null,
