@@ -57,6 +57,16 @@ name: templates-lint
 # irreversible, so it fails CLOSED on everything, including a registry it cannot
 # reach. Do not reconcile them; `scripts/lint-capture-floor.ts`'s header carries
 # the comparison.
+# ⭐ EVERY GUARD RUNS, EVEN AFTER ONE FAILS. Each guard step after the first
+# carries `if: ${{ !cancelled() }}`, so a red guard no longer skips the ones
+# below it. Before this, the first failing step ended the job: a PR with a
+# broken citation AND an undeployed enum showed only the citation, and the
+# author (an operator with no GitHub access, reading annotations through the
+# manager) learned about the second only after fixing the first and waiting
+# for another run. The job is still red if ANY guard failed — `!cancelled()`
+# changes which steps run, not the job's conclusion — and a cancelled run
+# (superseded push, see `concurrency` below) still stops at once.
+#
 # ⭐ ANNOTATIONS. Every guard prints one `::error` workflow command per
 # BLOCKING finding (scripts/_annotate.ts — one shared helper), because template
 # operators have no GitHub access and api-cloudrun shows them a failed run's
@@ -151,7 +161,9 @@ jobs:
       # and the reasons are in `scripts/affectedFamilies.ts`. Do not reconcile
       # them — that is how #187 gets reintroduced.
       - name: Compute blame scope (PRs only)
-        if: github.event_name == 'pull_request'
+        # `!cancelled()` too: a failed lockfile guard must not skip this, or
+        # the scoped guards below would run UNSCOPED and over-blame the PR.
+        if: ${{ !cancelled() && github.event_name == 'pull_request' }}
         run: |
           set -euo pipefail
           BASE_SHA=$(git merge-base "origin/${{ github.base_ref }}" HEAD)
@@ -162,6 +174,7 @@ jobs:
       # same schema build the API enforces with. A lagging lock here would make the
       # gate pass while the API 422s — which is the exact drift it exists to catch.
       - name: Lint fixtures (schema + PII)
+        if: ${{ !cancelled() }}
         run: |
           if [ -f /tmp/changed-files.txt ]; then
             deno task lint:fixtures --blame-changed-files=/tmp/changed-files.txt
@@ -181,6 +194,7 @@ jobs:
       #    checkout. Run `deno task lint:citations` locally, where the siblings
       #    are present, before trusting a green run here.
       - name: Lint citations
+        if: ${{ !cancelled() }}
         run: deno task lint:citations
 
       # 3b. TIMEZONE — every date-fns call in an .eta must name Chicago on the
@@ -201,6 +215,7 @@ jobs:
       #
       #     Whole-tree and argument-free by design; see `scripts/lint-dates.ts`.
       - name: Lint timezones
+        if: ${{ !cancelled() }}
         run: deno task lint:dates
 
       # 4. DEPLOYED ENUMS — see the workflow header.
@@ -221,6 +236,7 @@ jobs:
       # only repair is a repo edit they cannot make. It fails CLOSED only on a
       # positive finding, which is a fact about the PR's own content.
       - name: Lint deployed enums
+        if: ${{ !cancelled() }}
         run: |
           if [ -f /tmp/changed-files.txt ]; then
             deno task lint:deployed-enums \
@@ -244,6 +260,7 @@ jobs:
       # quietly and writes customer data into git history. A blocked PR clears
       # on a re-run; a disclosure clears on nothing.
       - name: Lint capture floor
+        if: ${{ !cancelled() }}
         run: deno task lint:capture-floor
 
       # Hardcoded customer emails / phone numbers in .eta sources. Lived here
@@ -251,6 +268,7 @@ jobs:
       # it could share scripts/_annotate.ts (a stdin script cannot import a
       # sibling module) and run locally as `deno task lint:pii`.
       - name: Scan templates for hardcoded PII
+        if: ${{ !cancelled() }}
         run: deno task lint:pii
 
       # The unit arm. Today it is the lockfile guard's two polarities and
@@ -260,4 +278,5 @@ jobs:
       # real deno.lock (except for one ratchet arm), so it is order-independent
       # and safely last.
       - name: Unit tests
+        if: ${{ !cancelled() }}
         run: deno task test
