@@ -119,5 +119,3 @@ in the editor. The field-map is a best-effort head-start — loop-aliased refs
 
 See `api-cloudrun/.claude/skills/templates/SKILL.md` for the deep data-model /
 publish-invariant reference.
-
-PLANT (reverted next commit): see `scripts/does-not-exist-plant.ts`.
