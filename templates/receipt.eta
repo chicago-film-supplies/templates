@@ -59,7 +59,7 @@ const actionLabel = (type) =>
 // missing data rather than as inapplicable.
 const hasReference = items.some((item) => item.reference);
 
-// FOUR unconditional columns (side B) — Item Description, Action, Qty, Movement # — plus
+// FOUR unconditional columns — Item Description, Action, Qty, Movement # — plus
 // the one conditional.
 const itemColumnCount = 4 + (hasReference ? 1 : 0);
 
