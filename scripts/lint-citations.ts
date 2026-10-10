@@ -32,6 +32,7 @@
  *
  * Exit: 0 clean · 1 error · 2 findings (broken or ambiguous).
  */
+import { type Annotation, annotateError } from "./_annotate.ts";
 import {
   CITATION,
   type CitationVerdict,
@@ -230,6 +231,11 @@ async function docsToCheck(): Promise<string[]> {
       console.error(
         `error: configured scan root \`${root.path}\` does not exist — fix SCAN_ROOTS`,
       );
+      annotateError({
+        file: "scripts/lint-citations.ts",
+        title: TITLE,
+        message: `configured scan root \`${root.path}\` does not exist — fix SCAN_ROOTS`,
+      });
       Deno.exit(1);
     }
     if (stat.isFile) out.push(abs);
@@ -260,6 +266,13 @@ async function docsToCheck(): Promise<string[]> {
 const canonical = (p: string) =>
   p.startsWith(`${REPO}/`) ? `${WORKSPACE}/${OWN_REPO}/${p.slice(REPO.length + 1)}` : p;
 const rel = (p: string) => canonical(p).replace(`${WORKSPACE}/`, "");
+/** Path relative to THIS repo's root — what a GitHub annotation's `file=` needs.
+ * `rel` is workspace-relative (`templates/CLAUDE.md`), which GitHub would read as
+ * a `templates/` directory inside this repo. */
+const repoRel = (p: string) => {
+  const r = rel(p);
+  return r.startsWith(`${OWN_REPO}/`) ? r.slice(OWN_REPO.length + 1) : r;
+};
 
 /**
  * Dead citations allowed to stand for a stated reason, checked in BOTH
@@ -294,6 +307,9 @@ const counts: Record<CitationVerdict, number> = {
 };
 let checked = 0, pathOnly = 0;
 const brokenList: string[] = [];
+/** The BLOCKING findings (broken / ambiguous / stale exemption), as annotations. */
+const blockingAnnotations: Annotation[] = [];
+const TITLE = "templates-lint › citations";
 
 for (const doc of await docsToCheck()) {
   let text: string;
@@ -301,6 +317,11 @@ for (const doc of await docsToCheck()) {
     text = await Deno.readTextFile(doc);
   } catch (e) {
     console.error(`error: cannot read ${doc}: ${e instanceof Error ? e.message : e}`);
+    annotateError({
+      file: repoRel(doc),
+      title: TITLE,
+      message: `cannot read ${rel(doc)}: ${e instanceof Error ? e.message : e}`,
+    });
     Deno.exit(1);
   }
   const findings: string[] = [];
@@ -361,6 +382,7 @@ for (const doc of await docsToCheck()) {
     });
     counts[verdict]++;
 
+    const line = text.slice(0, m.index).split("\n").length;
     switch (verdict) {
       case "ok":
         break;
@@ -368,10 +390,22 @@ for (const doc of await docsToCheck()) {
         const why = lineOutOfRange ? `line past EOF (${eofDetail})` : "no such file";
         findings.push(`  BROKEN     ${key} — ${why}`);
         brokenList.push(`${relDoc}: ${key}${lineOutOfRange ? " (past EOF)" : ""}`);
+        blockingAnnotations.push({
+          file: repoRel(doc),
+          line,
+          title: TITLE,
+          message: `broken citation \`${key}\` — ${why}`,
+        });
         break;
       }
       case "ambiguous":
         findings.push(`  AMBIGUOUS  ${key} → ${candidates.map(rel).join("  |  ")}`);
+        blockingAnnotations.push({
+          file: repoRel(doc),
+          line,
+          title: TITLE,
+          message: `ambiguous citation \`${key}\` — matches ${candidates.map(rel).join(" | ")}`,
+        });
         break;
       case "unverifiable": {
         const head = resolved.split("/")[0];
@@ -405,11 +439,21 @@ for (const e of EXEMPT) {
     console.log(
       `\nexemption ${e.file} -> \`${e.path}\` is OBSOLETE: the path resolves again. Delete it.`,
     );
+    blockingAnnotations.push({
+      file: "scripts/lint-citations.ts",
+      title: TITLE,
+      message: `exemption ${e.file} -> \`${e.path}\` is OBSOLETE: the path resolves again. Delete it.`,
+    });
   } else if (!exemptUsed.has(key)) {
     exemptionFailures++;
     console.log(
       `\nexemption ${e.file} -> \`${e.path}\` matched NOTHING: the citation is gone. Delete it.`,
     );
+    blockingAnnotations.push({
+      file: "scripts/lint-citations.ts",
+      title: TITLE,
+      message: `exemption ${e.file} -> \`${e.path}\` matched NOTHING: the citation is gone. Delete it.`,
+    });
   }
 }
 
@@ -450,6 +494,7 @@ if (counts.broken || counts.ambiguous || exemptionFailures) {
   console.log(
     "⚠️ A citation that resolves may still have drifted off its subject — this cannot see that.",
   );
+  for (const a of blockingAnnotations) annotateError(a);
   Deno.exit(2);
 }
 Deno.exit(0);

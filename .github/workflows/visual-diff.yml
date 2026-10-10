@@ -127,6 +127,24 @@ jobs:
         run: |
           set -uo pipefail
           fail=0
+
+          # ── Annotations ─────────────────────────────────────────────────
+          # One `::error` per failing family (or per diffed fixture), because
+          # template operators have no GitHub access: api-cloudrun reads a
+          # failed run's annotations through the Checks API and shows them in
+          # the manager. Same format and escaping as scripts/_annotate.ts — a
+          # `run:` script cannot import that module, so these three functions
+          # are its bash twin. Keep the two in step. The `%` in each pattern is
+          # backslash-quoted: unquoted, `${s//%/…}` would read it as the
+          # end-anchor operator.
+          esc_data() { local s="$1"; s="${s//\%/%25}"; s="${s//$'\r'/%0D}"; s="${s//$'\n'/%0A}"; printf '%s' "$s"; }
+          esc_prop() { local s; s=$(esc_data "$1"); s="${s//:/%3A}"; s="${s//,/%2C}"; printf '%s' "$s"; }
+          # annotate_error <file-or-empty> <title> <message>
+          annotate_error() {
+            local props=""
+            [ -n "$1" ] && props="file=$(esc_prop "$1"),"
+            printf '::error %stitle=%s::%s\n' "$props" "$(esc_prop "$2")" "$(esc_data "$3")"
+          }
           for gp in ${{ steps.changed.outputs.git_paths }}; do
             echo "::group::golden-diff: $gp"
 
@@ -146,7 +164,7 @@ jobs:
             # `renderer-unavailable` verdict is NOT a visual regression — it is a
             # non-answer, which is the worst outcome for a required status check.
             attempts=5
-            verdict=""; body=""
+            verdict=""; body=""; code=""
             for attempt in $(seq 1 $attempts); do
               # Carry the previous attempt's per-fixture results forward when it
               # was a Gotenberg cold start (Uploadcare cost investigation,
@@ -234,9 +252,30 @@ jobs:
                        else "" end)
                     + "\n      candidate: https://ucarecdn.com/\(.image_uuids.candidate)/"
                     + "\n      diff:      https://ucarecdn.com/\(.image_uuids.diff)/"'
+                # One annotation per diffed FIXTURE, on the golden it differs
+                # from — that baseline is what approving the renders replaces.
+                while IFS=$'\t' read -r fixture delta; do
+                  annotate_error "goldens/$BASE_REF/$gp/$fixture.png" "visual-diff › diff" \
+                    "$gp / $fixture renders differently from its approved golden (delta $delta). If the change is intended, review the visual diff and approve the renders in the manager; otherwise fix the template."
+                done < <(printf '%s' "$body" | jq -r '.results[] | select(.verdict=="diff") | [.fixture, (.delta|tostring)] | @tsv')
                 fail=1 ;;
               renderer-unavailable|*)
                 echo "✗ $gp: renderer unavailable after retries — NOT a visual regression; retry the job."
+                # ⚠️ Two different failures land in this arm, and they do NOT
+                # clear the same way. A 200 carrying `renderer-unavailable` is
+                # the API saying the renderer was cold or down — a re-run clears
+                # it. A NON-200 on the last attempt is the request itself
+                # failing, which includes a template that does not render (an
+                # uncaught Eta error is a 500), and a re-run will not clear that.
+                # The log line above has always called both "renderer
+                # unavailable"; the annotation says which it was.
+                if [ "$code" = "200" ]; then
+                  annotate_error "" "visual-diff › renderer-unavailable" \
+                    "$gp: the renderer could not be reached after $attempts attempts, so no visual comparison was made. This is NOT a visual regression — re-running the check should clear it."
+                else
+                  annotate_error "" "visual-diff › request-failed" \
+                    "$gp: the visual-diff request failed after $attempts attempts (last HTTP ${code:-none}): $(printf '%s' "$body" | head -c 600). A 502/503/504 is a renderer cold start and a re-run should clear it; any other status (e.g. a 500 from a template that fails to render) will not clear on a re-run."
+                fi
                 fail=1 ;;
             esac
             echo "::endgroup::"
