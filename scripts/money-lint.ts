@@ -177,7 +177,6 @@ const RAW_MONEY_ARITH =
  */
 const RAW_BUDGET: Record<string, number> = {
   "templates/quote.eta": 2,
-  "templates/invoice.eta": 3,
 };
 
 // ── Scan ────────────────────────────────────────────────────────────
