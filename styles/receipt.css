@@ -47,4 +47,6 @@ html {
 #items th.center,
 #items td.center {
   font-variant-numeric: tabular-nums;
+  /* manager#636 verification only — this draft is abandoned, never merged. */
+  background: #ffe0e0;
 }
