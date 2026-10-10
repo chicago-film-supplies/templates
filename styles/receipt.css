@@ -48,5 +48,6 @@ html {
 #items td.center {
   font-variant-numeric: tabular-nums;
   /* manager#636 verification only — this draft is abandoned, never merged. */
-  background: #ffe0e0;
+  font-weight: bold;
+  letter-spacing: 0.3em;
 }
