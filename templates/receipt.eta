@@ -59,7 +59,7 @@ const actionLabel = (type) =>
 // missing data rather than as inapplicable.
 const hasReference = items.some((item) => item.reference);
 
-// FOUR unconditional columns — Item Description, Action, Qty, Movement # — plus
+// FOUR unconditional columns (side A) — Item Description, Action, Qty, Movement # — plus
 // the one conditional.
 const itemColumnCount = 4 + (hasReference ? 1 : 0);
 
@@ -76,8 +76,6 @@ const edgeColumns = itemColumnCount - 1;
 // invoice applies to its own order banner. One order is the ordinary case; the
 // banner exists for the cross-order session the check-in surface can produce.
 const showOrderBanner = groups.length > 1;
-const planted_total = session.quantity;
-const plantedUnits = planted_total * 1;
 
 // ── What this template deliberately does NOT render ─────────────────────────
 //
