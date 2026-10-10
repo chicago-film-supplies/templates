@@ -50,24 +50,33 @@ verdict per fixture. The CI aggregate is:
 - **no-fixtures** — the family has no fixtures in git → PASS, no render attempted.
   Capture a source doc in the manager to enable golden review.
 
-## Regenerating (the re-bless ritual)
+## Re-blessing after a renderer upgrade
 
-Goldens change only by a **deliberate re-bless** — after an intentional visual
-change, or after a Gotenberg/Chromium upgrade that legitimately shifts
-rendering. Regenerate from the api-cloudrun repo:
+Goldens change only by a **deliberate bless** — after an intentional visual
+change (approve the renders on the draft that made it), or after a
+Gotenberg/Chromium upgrade that legitimately shifts rendering.
 
-```bash
-# dry-run (shows which goldens would change + pixel delta), against dev Gotenberg:
-cd ../api-cloudrun
-GOTENBERG_URL_DEV=<gotenberg-url> deno run \
-  --allow-env --allow-net --allow-read --allow-write \
-  scripts/rebless-goldens.ts --branch=main --env=dev
+After a renderer upgrade, no laptop or checkout is needed. In the manager, use
+**Check renders** on a template (or **Check all renders** on the templates
+list); over MCP, `templates_check_renders`; over HTTP,
+`POST /templates/{uid}/check-renders` or `POST /templates/check-renders`. The
+check renders every fixture with that environment's renderer, at the head of the
+family's open draft (it opens one if there is none), compares each against this
+branch's golden, and saves the verdicts onto the draft. Then review the diffs in
+the draft's visual-diff panel, **Approve the renders** you accept, and release
+and merge the draft as usual.
 
-# write them:
-GOTENBERG_URL_DEV=<gotenberg-url> deno run -A scripts/rebless-goldens.ts \
-  --branch=main --env=dev --write
-```
+- **It never blesses.** A renderer upgrade is when a real regression can arrive
+  looking like noise, so the diffs are reviewed first.
+- **If every render still matches**, a draft the check opened is abandoned and
+  nothing is left behind. A draft it reused is always kept.
+- **Each environment checks its own namespace.** Prod compares against
+  `goldens/main/`, dev against `goldens/sandbox/`, because CI compares a PR
+  against the API of the branch it targets. Run the check in both
+  environments. A bless writes its own namespace and seeds another only where a
+  baseline is missing; it never overwrites one.
 
-Then commit the updated PNGs in the same PR as the visual change. The script
-reads templates from this repo (`TEMPLATES_REPO_DIR`, default `../templates`),
-assembles each overlay locally, and uses the same frozen render timestamp as CI.
+`scripts/rebless-goldens.ts` in api-cloudrun is still there as engineering
+tooling (a local dry run, or a bless without the API). Its operator recipe,
+including the impersonated Gotenberg token it needs, is in api-cloudrun's
+`gotenberg` skill.
