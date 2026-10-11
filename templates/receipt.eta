@@ -1,7 +1,7 @@
 <%
 // ── What this document IS ───────────────────────────────────────────────────
 //
-// A receipt states what physically changed hands in ONE operator action. Its
+// A receipt states what physically changed hands in ONE operator action (probe A, manager#625). Its
 // source is a `movement-sessions` document: the fold of every movement sharing
 // one `uuid_session` (`@cfs/core/schemas/movement-session.ts`). That fold is
 // rebuilt per call and stored NOWHERE — api-cloudrun#700 — which is safe to
