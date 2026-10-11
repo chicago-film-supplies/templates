@@ -1,5 +1,5 @@
 {
-  "display_name": "Statement",
+  "display_name": "Statement (head_sha check)",
   "collection_source": "statements",
   "collection_target": "statements",
   "surfaces": [
