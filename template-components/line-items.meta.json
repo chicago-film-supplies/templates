@@ -1,5 +1,5 @@
 {
-  "display_name": "Line Items",
+  "display_name": "Line Items (rename check)",
   "files": [
     "partials/shared/items-grid.eta",
     "partials/shared/totals.eta",
