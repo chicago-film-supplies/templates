@@ -1,7 +1,7 @@
 <%
 // ── What this document IS ───────────────────────────────────────────────────
 //
-// A receipt states what physically changed hands in ONE operator action. Its
+// A receipt states what physically changed hands in ONE operator action (probe: draft two). Its
 // source is a `movement-sessions` document: the fold of every movement sharing
 // one `uuid_session` (`@cfs/core/schemas/movement-session.ts`). That fold is
 // rebuilt per call and stored NOWHERE — api-cloudrun#700 — which is safe to
@@ -9,7 +9,7 @@
 // `{uuid_session}|{type}|{subject}`, so a retried action resolves to the same
 // documents rather than adding new ones.
 //
-// It is therefore NOT a money document. There is no price, no tax, no total and
+// It is therefore NOT a money document (probe: draft two, line 12). There is no price, no tax, no total and
 // no `it.money` call anywhere below, because a session carries no money at all.
 const session = it.doc;
 const { items, orders } = session;
