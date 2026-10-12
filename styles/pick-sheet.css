@@ -141,16 +141,3 @@ html {
 #exceptions p + p {
   margin-top: 0.4rem;
 }
-
-/* The non-owner note — "counted under <kit>", set on the row whose quantity
-   cells are blank.
-
-   Muted and small because it is an EXPLANATION rather than data: the row is
-   real, its units are real, and they are being picked one line away. At full
-   weight it would compete with the product name it hangs off, which is the one
-   thing a picker is scanning for. */
-#items td .counted-under {
-  color: #555;
-  font-size: 0.85em;
-  font-style: italic;
-}
