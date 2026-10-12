@@ -294,23 +294,28 @@ const showDestinationBanners = sections.length > 1;
 // with, and stay off it. Labels come from core’s declaration, the same words
 // the pick sheet prints.
 //
-// ⚠️ `units` is null on an UNTRACKED booking and on every booking a fixture
-// captured before core beta.635; a tracked booking with nothing prepped or out
-// has named no units yet; a non-owner occurrence has no booking. All of those
-// print no line: the column’s old fallback word “Serialized” was a cell value,
-// and as a line of its own it would say nothing a picker can act on.
+// The line always opens “Units:”, and a row whose booking has named no units
+// says so: “Units: unassigned” (owner, 2026-10-12). That covers `units` null
+// (an UNTRACKED booking, or a fixture captured before core beta.635) and a
+// tracked booking with nothing prepped or out yet. “Units” rather than the old
+// column’s “Serialized”: the line is about which units, not the stock method.
+//
+// ⚠️ A row with NO booking prints no line. `pickSheetLineBooking` answers only
+// for the occurrence that owns an aggregate booking, so a second occurrence’s
+// units are printed on the owner’s row; “unassigned” there would be false.
 //
 // The sets are joined with ", ", the same separator the ranges inside a set
 // use; the bucket label is what marks where one set ends and the next begins.
 const PACKED_UNIT_BUCKETS = ["prepped", "out"];
 function unitText(row) {
-  if (row.stock_method !== "serialized") return "";
-  const units = row.booking ? row.booking.units : null;
-  if (!units) return "";
-  return PACKED_UNIT_BUCKETS
-    .filter(function (key) { return units[key] && units[key].length > 0; })
-    .map(function (key) { return u.BOOKING_BREAKDOWN_LABELS[key] + " " + u.formatUnitRanges(units[key]); })
-    .join(", ");
+  if (row.stock_method !== "serialized" || !row.booking) return "";
+  const units = row.booking.units;
+  const sets = units
+    ? PACKED_UNIT_BUCKETS
+      .filter(function (key) { return units[key] && units[key].length > 0; })
+      .map(function (key) { return u.BOOKING_BREAKDOWN_LABELS[key] + " " + u.formatUnitRanges(units[key]); })
+    : [];
+  return "Units: " + (sets.length > 0 ? sets.join(", ") : "unassigned");
 }
 
 // THREE columns — Item Description, Type, Qty. This grid is NOT
