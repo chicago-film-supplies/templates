@@ -35,13 +35,47 @@ html {
   font-size: 9px;
 }
 
-/* The Qty column: a count, not prose. `font-variant-numeric` rather than a
-   monospace stack — the digits line up in a column without changing the
-   typeface mid-document. `.center` (base.css) does the alignment; this is only
-   about the glyphs. Same rule the receipt carries for the same reason. */
-#items th.center,
-#items td.center {
+/* QTY SITS CLOSE TO TYPE (owner, 2026-10-12). Type is the only short-valued
+   column ("Rental", "Sale"), so it gets a fixed narrow width and Qty starts a
+   short gap after it. Qty stays `auto` and takes the rest of the row, so the
+   table and its rules still run the full width; its content is LEFT aligned so
+   the count reads right after the type instead of floating in that slack.
+
+   ⚠️ This gives up one alignment on this family only: Qty no longer starts on
+   the edge where #destinations opens its Pickup block. A packing list has no
+   #totals to hold to that edge, and the owner asked for the count beside the
+   type.
+
+   `font-variant-numeric` rather than a monospace stack — the digits line up
+   without changing the typeface mid-document. */
+#items thead th.type {
+  width: 7rem;
+}
+
+#items th.qty,
+#items td.qty {
+  text-align: left;
   font-variant-numeric: tabular-nums;
+}
+
+/* A serialized row’s unit numbers, printed under it like a quote’s item
+   description: italic and unweighted, full width. Its top padding is dropped so
+   it reads as part of the row above rather than a row of its own. */
+#items tr.item-description > td {
+  padding-top: 0;
+  font-style: italic;
+}
+
+/* A light rule under every ITEM, never under a banner (owner, 2026-10-12).
+   `item-end` is the item’s last row, so an item with a description line is
+   ruled once, beneath both. The last item keeps base.css’s dark rule that
+   closes the table. */
+#items tr.item-end > td {
+  border-bottom: 1px solid #ddd;
+}
+
+#items tr.item-end:last-child > td {
+  border-bottom-color: #121212;
 }
 
 /* The ORDER banner, and the reason it needs a rule the other families' banners
