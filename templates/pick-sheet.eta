@@ -146,10 +146,10 @@ const bucketLabels = u.BOOKING_BREAKDOWN_LABELS;
 // so they simply leave the page. The sheet prints no unit total anywhere (see
 // the not-rendered list below), so there is no total for them to disagree with.
 //
-// ⚠️ A hidden row that OWNS an aggregate booking is kept. Another occurrence of
-// the same product elsewhere on the leg renders blank and reads “counted under
-// …” on the strength of that owner, so hiding the owner would take the
-// booking’s only numbers off the page while its other rows claim they are here.
+// The predicate reads the input and nothing else: no row is kept, hidden or
+// labelled on the strength of another row. The owner carve-out and the
+// “counted under …” label that justified it are retired (owner ruling
+// 2026-10-12): the template renders the document it is handed.
 const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
 
 const sections = sheet.orders.flatMap(function (order) {
@@ -161,10 +161,9 @@ const sections = sheet.orders.flatMap(function (order) {
     dest.items.forEach(function (entry) {
       byPath.set(entry.item.path.join(":"), entry.item);
     });
-    // ⚠️ `byPath` is built from the FULL leg, before the service filter, and
-    // that is load-bearing: it resolves `owner_path` for the counted-under
-    // label, so filtering it would turn a legitimate lookup into a blank.
-    // What is filtered is what gets RENDERED, which is a different question.
+    // `byPath` is built from the FULL leg, before the service filter: it
+    // answers the depth question below, which is about the order’s structure,
+    // not about what gets RENDERED.
     const notService = dest.items.filter(function (entry) {
       return entry.item.type !== "service";
     });
@@ -187,11 +186,6 @@ const sections = sheet.orders.flatMap(function (order) {
           hidden.add(entry.item.path.join(":"));
         }
       });
-      notService.forEach(function (entry) {
-        if (entry.owner_path === null) return;
-        if (hidden.has(entry.item.path.join(":"))) return;
-        hidden.delete(entry.owner_path.join(":"));
-      });
     }
     const admitted = notService.filter(function (entry) {
       return !hidden.has(entry.item.path.join(":"));
@@ -211,35 +205,6 @@ const sections = sheet.orders.flatMap(function (order) {
     return { order, dest, byPath, depthOf, rows };
   });
 });
-
-/**
- * What a NON-OWNER row says instead of a quantity.
- *
- * 🔴 **A row with no numbers and no explanation reads as missing data**, and on
- * this document there are always some: an aggregate booking has one owner
- * occurrence and every other occurrence renders blank. Measured on prod, 384
- * legs carry a booking standing for 2+ lines, so a picker meets this on ordinary
- * work — sees the same product twice, once with 56 and once with nothing, and
- * has no way to tell whether the blank one was forgotten.
- *
- * ⭐ It names the owner’s PARENT rather than the owner itself. The owner is the
- * same product by construction, so *"counted with Tent Tie Down"* on a Tent Tie
- * Down row says nothing; *"counted under Pop Up Tent (White)"* tells a picker
- * which kit to look in. `owner_path.at(-2)` is that parent, which is the same
- * value the manager’s row uses for the same sentence.
- *
- * ⚠️ Resolved by PATH, never by uid. `item.uid` repeats inside one document —
- * 18% of prod orders — so a uid lookup would find whichever occurrence came
- * first. A path is the row identity.
- */
-function countedUnder(section, entry) {
-  if (entry.owner_path === null) return "";
-  const parent = section.byPath.get(entry.owner_path.slice(0, -1).join(":"));
-  // No parent row means the owner hangs off the destination divider itself,
-  // which is not in `items` — so there is nothing to name and "above" is the
-  // honest answer. The rows are in document order, so it is also true.
-  return parent ? `counted under ${parent.name}` : "counted above";
-}
 
 // 🔴 **Every number on a row comes from `pickSheetLineBooking`, and it returns
 // null far more often than a reader expects.** A booking is aggregate per
@@ -529,10 +494,7 @@ const returnSpan = addressColumnCount - addressBoundary;
         <%/* Indented by component depth, the same 1em per level the quote and
              the invoice use, so a picker can see where a kit ends. */%>
         <td style="padding-left: <%= section.depthOf(item) %>em">
-          <%= item.name %><%/* The blank-cells explanation, on the row that is
-               blank rather than in a legend at the foot of the page: a picker
-               reads one row at a time and a legend is on the wrong page by the
-               time it is needed. */%><% if (entry.owner_path !== null) { %><span class="counted-under"> · <%= countedUnder(section, entry) %></span><% } %>
+          <%= item.name %>
         </td>
         <td class="capitalize"><%= item.type %></td>
         <% if (hasSerialized) { %>
