@@ -46,11 +46,11 @@ const u = it.pickSheets;
 // 🔴 **This document is PAGED, and a short one is indistinguishable from a small
 // one once a template is running.**
 //
-// `PickSheet.orders` is *the orders on THIS PAGE*; `order_count`,
-// `destination_count` and `quantity` describe the whole SCOPE. That split is
-// right for a screen and is a trap for paper: a sheet rendered from a default
-// page is silently short, showing a page of orders under a scope-wide total that
-// disagrees with them. `GET /pick-sheets?address=` returns the complete sheet by
+// `PickSheet.orders` is *the orders on THIS PAGE*; `order_count` and
+// `destination_count` describe the whole SCOPE. That split is right for a
+// screen and is a trap for paper: a sheet rendered from a default page is
+// silently short, showing a page of orders under scope-wide counts that
+// disagree with them. `GET /pick-sheets?address=` returns the complete sheet by
 // construction; this assertion is what catches a caller that reached for a paged
 // route instead.
 //
@@ -64,7 +64,7 @@ if (sheet.orders.length !== sheet.order_count) {
     `pick-sheet: this document is SHORT — ${sheet.orders.length} order(s) on the page ` +
       `against ${sheet.order_count} in the scope. A PickSheet is paged by ORDER; build it ` +
       "from `GET /pick-sheets?address=`, which returns every order with `next_cursor: null` " +
-      "by construction. Printing this page would put a scope-wide unit total over a subset " +
+      "by construction. Printing this page would put scope-wide counts over a subset " +
       "of the goods.",
   );
 }
@@ -94,7 +94,7 @@ if (sheet.orders.length !== sheet.order_count) {
 // the one breakdown state that is not the past participle of its
 // `FULFILLMENT_STAGE_LABELS` action ("Check Out"), where `prepped` and
 // `returned` still are — deliberate, and bought with the width it saves as the
-// longest heading on an eleven-column sheet.
+// longest heading on a ten-column sheet.
 //
 // ⚠️ `core/tests/fulfillment-stage.test.ts` pins the string, so a reappearing
 // copy still goes red. That closes the "nothing asserted either string" this
@@ -143,8 +143,8 @@ const bucketLabels = u.BOOKING_BREAKDOWN_LABELS;
 //
 // ⚠️ There is no roll-up. The quote moves a hidden row’s MONEY onto its parent;
 // a hidden row’s units are a different product and cannot be added to the kit’s,
-// so they simply leave the page. That is also why the sheet has no footer
-// total: a total under rows that no longer add up to it reads as a shortage.
+// so they simply leave the page. The sheet prints no unit total anywhere (see
+// the not-rendered list below), so there is no total for them to disagree with.
 //
 // ⚠️ A hidden row that OWNS an aggregate booking is kept. Another occurrence of
 // the same product elsewhere on the leg renders blank and reads “counted under
@@ -319,7 +319,7 @@ const hasSerialized = allRows.some(function (row) { return row.stock_method === 
 //
 // The buckets are walked in `bucketKeys` order so the cell reads top to bottom
 // in the same order as the count columns beside it, with the same labels. One
-// LINE per bucket: this column is one of eleven, and a run joined inline wraps
+// LINE per bucket: this column is one of ten, and a run joined inline wraps
 // mid-list, leaving a label separated from the numbers it names.
 function unitLines(booking) {
   const units = booking ? booking.units : null;
@@ -330,8 +330,8 @@ function unitLines(booking) {
   return lines.length > 0 ? lines : ["Serialized"];
 }
 
-// Item Description, Type, [Stock], the seven buckets, Total.
-const itemColumnCount = 2 + (hasSerialized ? 1 : 0) + bucketKeys.length + 1;
+// Item Description, Type, [Stock], the seven buckets.
+const itemColumnCount = 2 + (hasSerialized ? 1 : 0) + bucketKeys.length;
 
 // The second alignment edge of the page: the #items column boundary NEAREST THE
 // HALF-WAY POINT, rounding left. Same derivation as the quote, the invoice, the
@@ -354,6 +354,12 @@ const deliverySpan = hasCollection ? addressBoundary : addressColumnCount;
 const returnSpan = addressColumnCount - addressBoundary;
 
 // ── What this template deliberately does NOT render ─────────────────────────
+//
+// • A unit total, at any level — not per row, not per destination, not for the
+//   sheet. Dropped on the owner’s instruction (2026-10-12). The seven bucket
+//   cells are the quantities; `PickSheetBooking.quantity`,
+//   `PickSheetDestination.quantity` and `PickSheet.quantity` are all still on
+//   the document and are deliberately not read.
 //
 // • `PickSheetBooking.shortage` — units the allocator could not fill. Real, and
 //   a different document’s job: a shortage is resolved by re-allocating or
@@ -421,7 +427,6 @@ const returnSpan = addressColumnCount - addressBoundary;
       <th scope="col">Printed:</th>
       <th scope="col">Order<%= sheet.order_count === 1 ? "" : "s" %>:</th>
       <th scope="col">Destinations:</th>
-      <th scope="col">Total Units:</th>
     </tr>
   </thead>
   <tbody>
@@ -439,7 +444,6 @@ const returnSpan = addressColumnCount - addressBoundary;
         ? `#${sheet.orders[0].number}`
         : sheet.order_count %></td>
       <td><%= sheet.destination_count %></td>
-      <td><%= sheet.quantity %></td>
     </tr>
   </tbody>
 </table>
@@ -471,7 +475,6 @@ const returnSpan = addressColumnCount - addressBoundary;
         <% bucketKeys.forEach(function (key) { %>
         <th scope="col" class="center bucket"><%= bucketLabels[key] %></th>
         <% }) %>
-        <th scope="col" class="center">Total</th>
       </tr>
     </thead>
     <tbody>
@@ -499,10 +502,8 @@ const returnSpan = addressColumnCount - addressBoundary;
       <tr class="destination-banner">
         <td class="wide" colspan="<%= bannerSpan %>">
           <%/* `PickSheetDestination.name` is the destination DIVIDER's name —
-               what the operator called this section on the order — and
-               `quantity` is that leg's total, read off the document rather than
-               summed from the rows. */%>
-          <%= section.dest.name %> — <%= section.dest.quantity %> units
+               what the operator called this section on the order. */%>
+          <%= section.dest.name %>
         </td>
       </tr>
         <% } %>
@@ -544,12 +545,6 @@ const returnSpan = addressColumnCount - addressBoundary;
              would put six noise digits beside every real one. */%>
         <td class="center"><%= booking && booking.breakdown[key] ? booking.breakdown[key] : "" %></td>
         <% }) %>
-        <%/* The row total is the BOOKING's `quantity`, not the sum of the cells
-             beside it — a second reading of the same fact, deliberately. The
-             breakdown is a current-state partition, so the two agree by
-             construction; where they do not, the stored booking is wrong and this
-             sheet is the surface that shows it. */%>
-        <td class="center"><%= booking ? booking.quantity : "" %></td>
       </tr>
           <% } %>
         <% }) %>
