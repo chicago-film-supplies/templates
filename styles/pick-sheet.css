@@ -1,10 +1,12 @@
 /* pick-sheet.css — what is TRUE OF THE OPERATOR'S SHEET and of nothing else.
 
    The document chrome — the page grid, the alignment edges, the letterhead, the
-   table rules, #details, #destinations and #items — lives in `styles/base.css`
-   and reaches this family through the `base` component. A family is overlaid
-   from `base.css` plus its own sheet and nothing else (`ownsTemplatePath`), so
-   anything copied here would be a second copy that drifts.
+   table rules, #details, #destinations and #items — lives in the stylesheets of
+   the components this family declares in `depends_on`: `styles/base.css`
+   (`layout`), `styles/letterhead.css` (`letterhead`) and
+   `styles/destinations.css` (`destinations`). A family is overlaid from its
+   declared components' sheets plus its own and nothing else, so anything copied
+   here would be a second copy that drifts.
 
    ⚠️ **This sheet is a near-twin of `packing-list.css` and the duplication is
    deliberate.** The two families render the same source for different
@@ -51,7 +53,7 @@ html {
 
    A 5.5% cap was tried and lost to that rule on specificity, which is the right
    outcome: winning would have taken the alignment edge with it. The even spread
-   at ten columns is legible — the longest heading is "Checked Out" and the
+   at ten columns is legible — the longest heading is "Maintenance" and the
    longest value is three digits. If a future column count breaks that, the fix
    is fewer columns, not a local width. */
 
