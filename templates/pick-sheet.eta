@@ -132,7 +132,7 @@ const bucketLabels = u.BOOKING_BREAKDOWN_LABELS;
 // Measured on `multi-order-destination`: two `Delivery` groups hold one service
 // each and nothing else, so both banners go with them.
 //
-// ── Declared param: hide_zero_priced_components (default false) ─────────────
+// ── Declared param: hide_zero_priced_components (default true) ──────────────
 //
 // A zero-priced component is included with its parent at no charge — it moves
 // with the kit, which is a picking fact as much as a billing one (the core
