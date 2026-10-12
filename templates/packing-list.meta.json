@@ -30,6 +30,14 @@
       "params": {
         "hide_zero_priced_components": false
       }
+    },
+    {
+      "slug": "kit-components-hidden",
+      "label": "Kit with zero-priced components, hidden",
+      "description": "The `hide_zero_priced_components: true` state (the family default) on a kit with real flags. SAME capture as `kit-components-shown` (prod order 1064, delivery leg, 2026-10-12), so the two goldens differ only by the param: the two zero_priced components drop, and the zero_priced false component stays under its kit, which is the row the predicate must not catch. Stated explicitly rather than left to the default so the pair stays a control if the default ever moves. Re-capture together with `kit-components-shown` or not at all.",
+      "params": {
+        "hide_zero_priced_components": true
+      }
     }
   ],
   "render": {

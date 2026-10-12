@@ -1,0 +1,400 @@
+{
+  "scope": {
+    "kind": "order",
+    "uid": "h2O0vI0LUb0OyBWi0gcR",
+    "name": "Sample text for name.............",
+    "uids": [
+      "h2O0vI0LUb0OyBWi0gcR"
+    ]
+  },
+  "gate": "all",
+  "leg": "delivery",
+  "orders": [
+    {
+      "uid": "h2O0vI0LUb0OyBWi0gcR",
+      "number": 1064,
+      "status": "reserved",
+      "subject": "Sample..",
+      "organization": {
+        "uid": "w7ZopudzwKfVPUeZ66JV",
+        "organization_path": [
+          {
+            "uid": "QtttBdSNzwBcbKTMOfDA",
+            "name": "Dovetail Films LLC",
+            "derived": false
+          },
+          {
+            "uid": "w7ZopudzwKfVPUeZ66JV",
+            "name": "Vantagepoint Media Inc",
+            "derived": false
+          }
+        ]
+      },
+      "destinations": [
+        {
+          "uid": "d9269ee4-7d8d-468d-a01c-5689a2347976",
+          "name": "Cedar Point Lodge",
+          "destination": {
+            "uid": "d9269ee4-7d8d-468d-a01c-5689a2347976",
+            "dates": {
+              "delivery_start": "2026-10-22T09:00:00.000-05:00",
+              "delivery_start_fs": {
+                "_seconds": 1792677600,
+                "_nanoseconds": 0
+              },
+              "delivery_end": "2026-10-22T09:00:00.000-05:00",
+              "delivery_end_fs": {
+                "_seconds": 1792677600,
+                "_nanoseconds": 0
+              },
+              "collection_start": "2026-11-23T15:00:00.000-06:00",
+              "collection_start_fs": {
+                "_seconds": 1795467600,
+                "_nanoseconds": 0
+              },
+              "collection_end": "2026-11-23T15:00:00.000-06:00",
+              "collection_end_fs": {
+                "_seconds": 1795467600,
+                "_nanoseconds": 0
+              },
+              "days_active": 22,
+              "charge_windows": [
+                {
+                  "start": "2026-10-22T09:00:00.000-05:00",
+                  "end": "2026-11-23T15:00:00.000-06:00",
+                  "days": 22
+                }
+              ]
+            },
+            "delivery": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "2148 Magnolia Rd, Chicago, IL 95827",
+                "name": "Highland Rail Depot",
+                "postcode": "63536",
+                "region": "IL",
+                "street": "2148 Magnolia Rd",
+                "mapbox_id": "qGHpBp8ynNIiomixLLJpCnTqRK0iFSRoALZpQEhnATFmTo2wKxZ5MAT7XBnsDFL",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": null,
+              "contact": null
+            },
+            "collection": {
+              "uid": "vTn8CTAwwJHEJZLBzsOw",
+              "address": {
+                "city": "Chicago",
+                "country_name": "United States",
+                "full": "2148 Magnolia Rd, Chicago, IL 95827",
+                "name": "Highland Rail Depot",
+                "postcode": "63536",
+                "region": "IL",
+                "street": "2148 Magnolia Rd",
+                "mapbox_id": "qGHpBp8ynNIiomixLLJpCnTqRK0iFSRoALZpQEhnATFmTo2wKxZ5MAT7XBnsDFL",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": null,
+              "contact": null
+            },
+            "customer_collecting": true,
+            "customer_returning": true,
+            "exchange": null
+          },
+          "due_at": "2026-10-22T09:00:00.000-05:00",
+          "quantity": 109,
+          "breakdown": {
+            "cleaning": 0,
+            "damaged": 0,
+            "lost": 0,
+            "maintenance": 0,
+            "out": 0,
+            "prepped": 0,
+            "quoted": 0,
+            "reserved": 109,
+            "returned": 0
+          },
+          "bookings": [
+            {
+              "uid": "h2O0vI0LUb0OyBWi0gcR:0q6NhsjASVnRH5PqKLKP:d9269ee4-7d8d-468d-a01c-5689a2347976",
+              "uid_product": "0q6NhsjASVnRH5PqKLKP",
+              "name": "Walkie Talkie",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 40,
+              "shortage": 0,
+              "breakdown": {
+                "cleaning": 0,
+                "damaged": 0,
+                "lost": 0,
+                "maintenance": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 40,
+                "returned": 0
+              },
+              "stores": [],
+              "units": {
+                "cleaning": [],
+                "damaged": [],
+                "lost": [],
+                "maintenance": [],
+                "out": [],
+                "prepped": [],
+                "returned": []
+              }
+            },
+            {
+              "uid": "h2O0vI0LUb0OyBWi0gcR:9Mh47G21XUYW71ehVx7p:d9269ee4-7d8d-468d-a01c-5689a2347976:a027e45b0f50",
+              "uid_product": "9Mh47G21XUYW71ehVx7p",
+              "name": "Spare Battery w/ Belt Clip",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 20,
+              "shortage": 0,
+              "breakdown": {
+                "cleaning": 0,
+                "damaged": 0,
+                "lost": 0,
+                "maintenance": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 20,
+                "returned": 0
+              },
+              "stores": [],
+              "units": null
+            },
+            {
+              "uid": "h2O0vI0LUb0OyBWi0gcR:lMxUI8nQ7ZqMd4cWqmq0:d9269ee4-7d8d-468d-a01c-5689a2347976:a027e45b0f50",
+              "uid_product": "lMxUI8nQ7ZqMd4cWqmq0",
+              "name": "Six Bank Charger",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 6,
+              "shortage": 0,
+              "breakdown": {
+                "cleaning": 0,
+                "damaged": 0,
+                "lost": 0,
+                "maintenance": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 6,
+                "returned": 0
+              },
+              "stores": [],
+              "units": null
+            },
+            {
+              "uid": "h2O0vI0LUb0OyBWi0gcR:tjdX11xfcxOeTirjL7df:d9269ee4-7d8d-468d-a01c-5689a2347976:a027e45b0f50",
+              "uid_product": "tjdX11xfcxOeTirjL7df",
+              "name": "Walkie Case (Large)",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 3,
+              "shortage": 0,
+              "breakdown": {
+                "cleaning": 0,
+                "damaged": 0,
+                "lost": 0,
+                "maintenance": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 3,
+                "returned": 0
+              },
+              "stores": [],
+              "units": null
+            },
+            {
+              "uid": "h2O0vI0LUb0OyBWi0gcR:DG610dKUU7Zu85CwyxYX:d9269ee4-7d8d-468d-a01c-5689a2347976",
+              "uid_product": "DG610dKUU7Zu85CwyxYX",
+              "name": "Surveillance Kit",
+              "type": "rental",
+              "status": "reserved",
+              "quantity": 40,
+              "shortage": 0,
+              "breakdown": {
+                "cleaning": 0,
+                "damaged": 0,
+                "lost": 0,
+                "maintenance": 0,
+                "out": 0,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 40,
+                "returned": 0
+              },
+              "stores": [],
+              "units": null
+            }
+          ],
+          "items": [
+            {
+              "item": {
+                "uid": "7acd440e-237c-4059-9e9e-5ca07f30d8cf",
+                "type": "group",
+                "name": "Walkies & Hotspots",
+                "path": [
+                  "d9269ee4-7d8d-468d-a01c-5689a2347976",
+                  "7acd440e-237c-4059-9e9e-5ca07f30d8cf"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "0q6NhsjASVnRH5PqKLKP",
+                "name": "Walkie Talkie",
+                "description": "",
+                "quantity": 40,
+                "path": [
+                  "d9269ee4-7d8d-468d-a01c-5689a2347976",
+                  "7acd440e-237c-4059-9e9e-5ca07f30d8cf",
+                  "0q6NhsjASVnRH5PqKLKP"
+                ],
+                "zero_priced": null,
+                "stock_method": "serialized",
+                "order_number": 1064,
+                "uid_order": "h2O0vI0LUb0OyBWi0gcR",
+                "quantity_ordered": 40
+              },
+              "uid_booking": "h2O0vI0LUb0OyBWi0gcR:0q6NhsjASVnRH5PqKLKP:d9269ee4-7d8d-468d-a01c-5689a2347976",
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "9Mh47G21XUYW71ehVx7p",
+                "name": "Spare Battery w/ Belt Clip",
+                "description": "",
+                "quantity": 20,
+                "path": [
+                  "d9269ee4-7d8d-468d-a01c-5689a2347976",
+                  "7acd440e-237c-4059-9e9e-5ca07f30d8cf",
+                  "0q6NhsjASVnRH5PqKLKP",
+                  "9Mh47G21XUYW71ehVx7p"
+                ],
+                "zero_priced": true,
+                "quantity_per_parent": 0.5,
+                "stock_method": "bulk",
+                "order_number": 1064,
+                "uid_order": "h2O0vI0LUb0OyBWi0gcR",
+                "quantity_ordered": 20
+              },
+              "uid_booking": "h2O0vI0LUb0OyBWi0gcR:9Mh47G21XUYW71ehVx7p:d9269ee4-7d8d-468d-a01c-5689a2347976:a027e45b0f50",
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "lMxUI8nQ7ZqMd4cWqmq0",
+                "name": "Six Bank Charger",
+                "description": "",
+                "quantity": 6,
+                "path": [
+                  "d9269ee4-7d8d-468d-a01c-5689a2347976",
+                  "7acd440e-237c-4059-9e9e-5ca07f30d8cf",
+                  "0q6NhsjASVnRH5PqKLKP",
+                  "lMxUI8nQ7ZqMd4cWqmq0"
+                ],
+                "zero_priced": true,
+                "quantity_per_parent": 0.04,
+                "stock_method": "bulk",
+                "order_number": 1064,
+                "uid_order": "h2O0vI0LUb0OyBWi0gcR",
+                "quantity_ordered": 6
+              },
+              "uid_booking": "h2O0vI0LUb0OyBWi0gcR:lMxUI8nQ7ZqMd4cWqmq0:d9269ee4-7d8d-468d-a01c-5689a2347976:a027e45b0f50",
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "tjdX11xfcxOeTirjL7df",
+                "name": "Walkie Case (Large)",
+                "description": "",
+                "quantity": 3,
+                "path": [
+                  "d9269ee4-7d8d-468d-a01c-5689a2347976",
+                  "7acd440e-237c-4059-9e9e-5ca07f30d8cf",
+                  "0q6NhsjASVnRH5PqKLKP",
+                  "tjdX11xfcxOeTirjL7df"
+                ],
+                "zero_priced": false,
+                "quantity_per_parent": 0.04,
+                "stock_method": "bulk",
+                "order_number": 1064,
+                "uid_order": "h2O0vI0LUb0OyBWi0gcR",
+                "quantity_ordered": 3
+              },
+              "uid_booking": "h2O0vI0LUb0OyBWi0gcR:tjdX11xfcxOeTirjL7df:d9269ee4-7d8d-468d-a01c-5689a2347976:a027e45b0f50",
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "DG610dKUU7Zu85CwyxYX",
+                "name": "Surveillance Kit",
+                "description": "",
+                "quantity": 40,
+                "path": [
+                  "d9269ee4-7d8d-468d-a01c-5689a2347976",
+                  "7acd440e-237c-4059-9e9e-5ca07f30d8cf",
+                  "DG610dKUU7Zu85CwyxYX"
+                ],
+                "zero_priced": null,
+                "stock_method": "bulk",
+                "order_number": 1064,
+                "uid_order": "h2O0vI0LUb0OyBWi0gcR",
+                "quantity_ordered": 40
+              },
+              "uid_booking": "h2O0vI0LUb0OyBWi0gcR:DG610dKUU7Zu85CwyxYX:d9269ee4-7d8d-468d-a01c-5689a2347976",
+              "owner_path": null,
+              "booking_complete": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "order_count": 1,
+  "destination_count": 1,
+  "quantity": 109,
+  "organizations": [
+    {
+      "uid": "w7ZopudzwKfVPUeZ66JV",
+      "organization_path": [
+        {
+          "uid": "QtttBdSNzwBcbKTMOfDA",
+          "name": "Dovetail Films LLC",
+          "derived": false
+        },
+        {
+          "uid": "w7ZopudzwKfVPUeZ66JV",
+          "name": "Vantagepoint Media Inc",
+          "derived": false
+        }
+      ]
+    }
+  ],
+  "missing_order_uids": [],
+  "next_cursor": null,
+  "notice": null
+}
