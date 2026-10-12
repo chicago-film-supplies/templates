@@ -121,7 +121,10 @@ const legKey = sheet.leg === "collection"
 // `pickSheetLineBooking`, never a `find` on `uid_booking`: it answers only for
 // the occurrence that OWNS an aggregate booking, so one booking’s units are
 // printed once and not on every line naming it.
-function withBookings(dest, forBuilder, rows) {
+//
+// The same pairing carries the row’s `depth`, since `buildPackingList` drops
+// `path` along with the entry and depth can only be read off the path.
+function withBookings(dest, forBuilder, rows, depthOf) {
   const handed = new Set(forBuilder);
   const lineEntries = dest.items.filter(function (entry) {
     const item = entry.item;
@@ -131,7 +134,10 @@ function withBookings(dest, forBuilder, rows) {
     throw new Error("packing list: " + rows.length + " rows against " + lineEntries.length + " lines at destination " + dest.uid);
   }
   return rows.map(function (row, i) {
-    return Object.assign({}, row, { booking: u.pickSheetLineBooking(dest, lineEntries[i]) });
+    return Object.assign({}, row, {
+      booking: u.pickSheetLineBooking(dest, lineEntries[i]),
+      depth: depthOf(lineEntries[i].item),
+    });
   });
 }
 
@@ -156,13 +162,20 @@ function withBookings(dest, forBuilder, rows) {
 // array `withBookings` pairs against, so the row-to-booking pairing stays exact.
 const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
 
-function hiddenZeroPriced(dest) {
-  const hidden = new Set();
-  if (!hideZeroPricedComponents) return hidden;
+// How deep a line sits UNDER ANOTHER LINE ITEM in one leg — 0 top-level, 1 for
+// a kit component, 2 for a component of a component. One function serves both
+// the hide predicate above and the row indent below, so a row cannot be a
+// component for one purpose and top-level for the other. It is the quote and
+// invoice rule (`componentDepth`: ancestors that are line items, never
+// dividers) resolved against the leg’s own rows, because a leg’s items carry
+// no destination divider for a divider-uid set to subtract. An ancestor absent
+// from the leg is not counted, so a collection-leg rental under a sale kit
+// renders flush rather than indented under a row the sheet does not print.
+function depthIn(dest) {
   const pathKey = function (path) { return path.join(":"); };
   const byPath = new Map();
   dest.items.forEach(function (entry) { byPath.set(pathKey(entry.item.path), entry.item); });
-  const depthOf = function (item) {
+  return function (item) {
     let depth = 0;
     for (let i = 1; i < item.path.length; i++) {
       const ancestor = byPath.get(pathKey(item.path.slice(0, i)));
@@ -170,6 +183,11 @@ function hiddenZeroPriced(dest) {
     }
     return depth;
   };
+}
+
+function hiddenZeroPriced(dest, depthOf) {
+  const hidden = new Set();
+  if (!hideZeroPricedComponents) return hidden;
   dest.items.forEach(function (entry) {
     if (entry.item.zero_priced === true && depthOf(entry.item) > 0) hidden.add(entry.item);
   });
@@ -205,7 +223,8 @@ const sections = sheet.orders.flatMap(function (order) {
     // exact here because `groupByDestination` pushes the very references it was
     // handed — a uid-keyed set would be wrong, since `item.uid` repeats within
     // one document (18% of prod orders) and `path` is the row identity.
-    const hidden = hiddenZeroPriced(dest);
+    const depthOf = depthIn(dest);
+    const hidden = hiddenZeroPriced(dest, depthOf);
     const forBuilder = lines.filter(function (item) {
       if (hidden.has(item)) return false;
       return item.type === "group" || item.type === "destination" || admitted.has(item);
@@ -216,7 +235,7 @@ const sections = sheet.orders.flatMap(function (order) {
       // Expanded, not consolidated: `group_name` is preserved so the group
       // banners below can divide a section the way the order banner divides the
       // document.
-      rows: withBookings(dest, forBuilder, u.buildPackingList(forBuilder)),
+      rows: withBookings(dest, forBuilder, u.buildPackingList(forBuilder), depthOf),
       // Whether anything at THIS leg is coming back. `orderHasRentals` answers
       // truthfully on a fulfillment-shaped line (`rental` is a
       // `FULFILLMENT_LINE_ITEM_TYPES` member) — the two money helpers in the
@@ -510,7 +529,9 @@ const returnSpan = addressColumnCount - addressBoundary;
           <% } %>
           <% lastGroup = row.group_name; %>
       <tr>
-        <td><%= row.name %></td>
+        <%/* Indented 1em per level under a line item, the same rule and unit as
+             the quote and invoice items grid. Banners are never indented. */%>
+        <td style="padding-left: <%= row.depth %>em"><%= row.name %></td>
         <td class="capitalize"><%= row.type %></td>
         <% if (hasSerialized) { %>
         <td><% if (row.stock_method === "serialized") { unitLines(row).forEach(function (line) { %><div><%= line %></div><% }) } %></td>

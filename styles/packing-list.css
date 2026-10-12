@@ -62,19 +62,18 @@ html {
   border-top: 1px solid var(--rule, #999);
 }
 
-/* Three banner levels nest inside one table — order, destination, group — and
-   each has to read as subordinate to the one above at arm's length on a loading
-   dock, which is the one place this document is read. The destination indent
-   carries that; base.css supplies the weight for both levels.
+/* INDENT RULES — the quote and invoice ones (owner ruling 2026-10-12).
 
-   ⚠️ The GROUP banner sits flush left, as on the pick sheet. At 2rem it sat
-   further right than the rows it heads, which start at 0, so the one line
-   naming a section was the one line not aligned with it. And it is not italic:
+   Every banner sits FLUSH LEFT: order, destination and group alike. The
+   hierarchy between banner levels is carried by weight (base.css) and the
+   order banner's rule above, never by indent. A destination banner used to sit
+   at 1rem, which put the heading of a section to the right of the rows it
+   heads.
+
+   The only indent on the sheet is a COMPONENT row, 1em per level under its
+   kit, set inline from the row's depth in packing-list.eta. Not italic either:
    italic in the items grid means an item description. */
-#items tr.destination-banner > td {
-  padding-left: 1rem;
-}
-
+#items tr.destination-banner > td,
 #items tr.group-banner > td {
   padding-left: 0;
 }
