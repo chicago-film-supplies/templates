@@ -135,6 +135,47 @@ function withBookings(dest, forBuilder, rows) {
   });
 }
 
+// ── Declared param: hide_zero_priced_components (default true) ──────────────
+//
+// A zero-priced component is included with its kit at no charge and travels
+// inside it, so with the param on its row is dropped and the kit row stands
+// for it (owner ruling 2026-10-12, which reverses the earlier call that this
+// param would be wrong here). Same predicate as the pick sheet, the quote and
+// the invoice: `zero_priced === true` on a COMPONENT, so one order hides the
+// same lines on every document.
+//
+// ⚠️ A COMPONENT is a row sitting under another LINE ITEM, counted as the
+// ancestors that resolve to a real line in this leg. Never `path.length`: a
+// leg’s items carry its group dividers but not its destination divider, so a
+// depth read off the path would call a top-level line a component.
+//
+// The predicate reads the input and nothing else: no row is kept or moved on
+// the strength of another row (owner ruling 2026-10-12, which retired the
+// pick sheet’s owner carve-out and its “counted under” label for the same
+// reason). Hidden rows are removed BEFORE `buildPackingList`, from the same
+// array `withBookings` pairs against, so the row-to-booking pairing stays exact.
+const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
+
+function hiddenZeroPriced(dest) {
+  const hidden = new Set();
+  if (!hideZeroPricedComponents) return hidden;
+  const pathKey = function (path) { return path.join(":"); };
+  const byPath = new Map();
+  dest.items.forEach(function (entry) { byPath.set(pathKey(entry.item.path), entry.item); });
+  const depthOf = function (item) {
+    let depth = 0;
+    for (let i = 1; i < item.path.length; i++) {
+      const ancestor = byPath.get(pathKey(item.path.slice(0, i)));
+      if (ancestor && ancestor.type !== "group" && ancestor.type !== "destination") depth++;
+    }
+    return depth;
+  };
+  dest.items.forEach(function (entry) {
+    if (entry.item.zero_priced === true && depthOf(entry.item) > 0) hidden.add(entry.item);
+  });
+  return hidden;
+}
+
 const sections = sheet.orders.flatMap(function (order) {
   return order.destinations.map(function (dest) {
     const lines = dest.items.map(function (entry) { return entry.item; });
@@ -164,7 +205,9 @@ const sections = sheet.orders.flatMap(function (order) {
     // exact here because `groupByDestination` pushes the very references it was
     // handed — a uid-keyed set would be wrong, since `item.uid` repeats within
     // one document (18% of prod orders) and `path` is the row identity.
+    const hidden = hiddenZeroPriced(dest);
     const forBuilder = lines.filter(function (item) {
+      if (hidden.has(item)) return false;
       return item.type === "group" || item.type === "destination" || admitted.has(item);
     });
     return {
@@ -286,8 +329,12 @@ const returnSpan = addressColumnCount - addressBoundary;
 //   its zero-priced accessories, a `splitItem`, or a product appearing both
 //   standalone and as a kit component all name the SAME booking. Summing it per
 //   line is N× wrong. `it.pickSheets` ships no quantity helper for exactly this
-//   reason; `PickSheetDestination.quantity` is the total for that leg, computed
-//   once in the fold over the whole membership slice. Read it; do not re-derive it.
+//   reason. Each row prints its own line `quantity` and nothing derived.
+//
+// • A unit total, at any level — not per destination, not for the sheet.
+//   Dropped on the owner’s instruction (2026-10-12), matching the pick sheet.
+//   `PickSheetDestination.quantity` and `PickSheet.quantity` are still on the
+//   document and are deliberately not read.
 //
 // • `PickSheetDestination.breakdown` and `PickSheetBooking.shortage` — custody
 //   buckets and unfilled units. Both are real and both are internal: a shortage
@@ -298,14 +345,10 @@ const returnSpan = addressColumnCount - addressBoundary;
 //   narrows what is on the page and is already implied by the page; naming it
 //   would put an internal dispatch concept on a customer-facing document.
 //
-// • `hide_zero_priced_components`, which the quote and the invoice both declare
-//   and which a 2026-08-30 comment on templates#150 predicted this family would
-//   share. It would be WRONG here, and the reversal is worth stating: that param
-//   hides components whose money has been rolled up into their principal, which
-//   is a fact about a PRICE column this document does not have. The things it
-//   would hide are physical goods a picker has to put in the truck — a kit
-//   accessory is zero-priced and still has to travel. `params` is empty, and
-//   that is expected to stay the whole param universe.
+// • (Retired 2026-10-12.) This list used to refuse `hide_zero_priced_components`
+//   on the grounds that a zero-priced kit accessory still has to travel. The
+//   owner ruled otherwise: it travels INSIDE its kit, so the kit row stands for
+//   it, and the param is now declared above, default on.
 //
 // • Any signature line. A hand-off signature is a real thing to want here, and it
 //   is a decision about the WORKFLOW — who signs, for what, and whether an
@@ -356,7 +399,6 @@ const returnSpan = addressColumnCount - addressBoundary;
     <tr>
       <th scope="col">Printed:</th>
       <th scope="col">Order<%= sheet.order_count === 1 ? "" : "s" %>:</th>
-      <th scope="col">Total Units:</th>
     </tr>
   </thead>
   <tbody>
@@ -380,7 +422,6 @@ const returnSpan = addressColumnCount - addressBoundary;
       <td><%= sheet.order_count === 1 && sheet.orders[0]
         ? `#${sheet.orders[0].number}`
         : sheet.order_count %></td>
-      <td><%= sheet.quantity %></td>
     </tr>
   </tbody>
 </table>
@@ -442,11 +483,9 @@ const returnSpan = addressColumnCount - addressBoundary;
       <tr class="destination-banner">
         <td class="wide" colspan="<%= bannerSpan %>">
           <%/* `PickSheetDestination.name` is the destination DIVIDER's name —
-               what the operator called this section on the order — and
-               `quantity` is that leg's total, read off the document rather than
-               summed from the rows. Both name the section a picker is standing
-               in front of. */%>
-          <%= section.dest.name %> — <%= section.dest.quantity %> units
+               what the operator called this section on the order. No unit
+               count beside it: see the NOT-rendered list. */%>
+          <%= section.dest.name %>
         </td>
       </tr>
         <% } %>
@@ -480,15 +519,6 @@ const returnSpan = addressColumnCount - addressBoundary;
       </tr>
         <% }) %>
       <% }) %>
-      <%/* The document total, read off the sheet rather than summed from the
-           rows above. `PickSheet.quantity` is the units across every admitted
-           leg, computed once in the fold; re-deriving it here would be a second
-           authority, and the obvious per-line derivation through `uid_booking`
-           is the one that is N× wrong. */%>
-      <tr class="grand-total">
-        <td class="wide" colspan="<%= bannerSpan - 1 %>"><strong>Total Units</strong></td>
-        <td class="center"><strong><%= sheet.quantity %></strong></td>
-      </tr>
     </tbody>
   </table>
 </section>

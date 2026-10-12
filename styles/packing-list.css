@@ -86,15 +86,6 @@ html {
   border-top: none;
 }
 
-/* The document total closes the table. It restates `PickSheet.quantity`, which
-   the #details block also prints — deliberately, because the two are read at
-   different moments: #details before picking starts, this after the last row
-   has been checked off. */
-#items tr.grand-total > td {
-  padding-top: 0.8rem;
-  border-top: 1px solid var(--rule, #999);
-}
-
 /* The scope line — what this whole sheet is an answer to, printed once under
    the letterhead. It carries the leg, so it is the sentence that stops a
    delivery note being mistaken for a collection note. */
