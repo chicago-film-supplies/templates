@@ -277,19 +277,15 @@ const customerName = sheet.organizations.length === 1
 const showOrderBanner = sheet.orders.length > 1;
 const showDestinationBanners = sections.length > 1;
 
-const allRows = sections.flatMap(function (section) { return section.rows; });
-
-// ⚠️ The Stock column is CONDITIONAL, for the reason the receipt makes its
-// Reference column conditional: a headed column carrying one value on every row
-// reads as missing data rather than as inapplicable. `stock_method` earns its
-// place only when the page distinguishes — a serialized line is one a picker
-// checks an asset tag against, and a page of nothing but bulk lines holds no
-// such row to find.
-const hasSerialized = allRows.some(function (row) { return row.stock_method === "serialized"; });
-
-// The Stock cell of a serialized row names its UNIT NUMBERS as ranges, so the
-// customer can see which radios they were handed (api-cloudrun#1230). Numbers
-// only, never serials (owner, 2026-10-08).
+// A serialized row names its UNIT NUMBERS as ranges, so the customer can see
+// which radios they were handed (api-cloudrun#1230). Numbers only, never
+// serials (owner, 2026-10-08).
+//
+// They print as a DESCRIPTION line under the row, full width, the way the
+// quote prints an item description, rather than in a Stock column (owner,
+// 2026-10-12). A column held one or two cells of text on a page of bulk lines
+// and pushed Qty away from Type; a description line costs nothing on a row
+// that has no units.
 //
 // ⭐ BOTH the `prepped` and the `out` sets, each labelled (owner, 2026-10-08):
 // a list printed mid-prep must say which units are packed and which have
@@ -300,27 +296,29 @@ const hasSerialized = allRows.some(function (row) { return row.stock_method === 
 //
 // ⚠️ `units` is null on an UNTRACKED booking and on every booking a fixture
 // captured before core beta.635; a tracked booking with nothing prepped or out
-// has named no units yet. All three fall back to the word the column printed
-// before. A non-owner occurrence has no booking and falls back the same way.
+// has named no units yet; a non-owner occurrence has no booking. All of those
+// print no line: the column’s old fallback word “Serialized” was a cell value,
+// and as a line of its own it would say nothing a picker can act on.
 //
-// One LINE per set, as on the pick sheet, so a long run that wraps never
-// separates a label from the numbers it names.
+// The sets are joined with ", ", the same separator the ranges inside a set
+// use; the bucket label is what marks where one set ends and the next begins.
 const PACKED_UNIT_BUCKETS = ["prepped", "out"];
-function unitLines(row) {
+function unitText(row) {
+  if (row.stock_method !== "serialized") return "";
   const units = row.booking ? row.booking.units : null;
-  if (!units) return ["Serialized"];
-  const lines = PACKED_UNIT_BUCKETS
+  if (!units) return "";
+  return PACKED_UNIT_BUCKETS
     .filter(function (key) { return units[key] && units[key].length > 0; })
-    .map(function (key) { return u.BOOKING_BREAKDOWN_LABELS[key] + " " + u.formatUnitRanges(units[key]); });
-  return lines.length > 0 ? lines : ["Serialized"];
+    .map(function (key) { return u.BOOKING_BREAKDOWN_LABELS[key] + " " + u.formatUnitRanges(units[key]); })
+    .join(", ");
 }
 
-// THREE unconditional columns — Item Description, Type, Qty — plus the one
-// conditional. This grid is NOT `partials/shared/items-grid.eta`: that partial
-// is 6 to 9 columns of money (Unit Price, Discount, Subtotal, Tax, Total), and a
-// packing list has none of them. This family shares the letterhead, the
-// destinations table, the footer and the stylesheet, and nothing else.
-const itemColumnCount = 3 + (hasSerialized ? 1 : 0);
+// THREE columns — Item Description, Type, Qty. This grid is NOT
+// `partials/shared/items-grid.eta`: that partial is 6 to 9 columns of money
+// (Unit Price, Discount, Subtotal, Tax, Total), and a packing list has none of
+// them. This family shares the letterhead, the destinations table, the footer
+// and the stylesheet, and nothing else.
+const itemColumnCount = 3;
 
 // The second alignment edge of the page: the #items column boundary NEAREST THE
 // HALF-WAY POINT, rounding left. Same derivation as the quote, the invoice and
@@ -470,11 +468,8 @@ const returnSpan = addressColumnCount - addressBoundary;
     <thead>
       <tr>
         <th scope="col" class="wide">Item Description</th>
-        <th scope="col">Type</th>
-        <% if (hasSerialized) { %>
-        <th scope="col">Stock</th>
-        <% } %>
-        <th scope="col" class="center">Qty</th>
+        <th scope="col" class="type">Type</th>
+        <th scope="col" class="qty">Qty</th>
       </tr>
     </thead>
     <tbody>
@@ -528,16 +523,22 @@ const returnSpan = addressColumnCount - addressBoundary;
       </tr>
           <% } %>
           <% lastGroup = row.group_name; %>
-      <tr>
+          <% const units = unitText(row); %>
+      <%/* `item-end` marks the LAST row of an item, the description line when
+           there is one, so the light rule falls under the whole item rather
+           than between a row and its own units. */%>
+      <tr class="item<%= units ? "" : " item-end" %>">
         <%/* Indented 1em per level under a line item, the same rule and unit as
              the quote and invoice items grid. Banners are never indented. */%>
         <td style="padding-left: <%= row.depth %>em"><%= row.name %></td>
         <td class="capitalize"><%= row.type %></td>
-        <% if (hasSerialized) { %>
-        <td><% if (row.stock_method === "serialized") { unitLines(row).forEach(function (line) { %><div><%= line %></div><% }) } %></td>
-        <% } %>
-        <td class="center"><%= row.quantity %></td>
+        <td class="qty"><%= row.quantity %></td>
       </tr>
+          <% if (units) { %>
+      <tr class="item-description item-end">
+        <td class="wide" colspan="<%= bannerSpan %>" style="padding-left: <%= row.depth %>em"><%= units %></td>
+      </tr>
+          <% } %>
         <% }) %>
       <% }) %>
     </tbody>
