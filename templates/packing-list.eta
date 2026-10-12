@@ -121,7 +121,10 @@ const legKey = sheet.leg === "collection"
 // `pickSheetLineBooking`, never a `find` on `uid_booking`: it answers only for
 // the occurrence that OWNS an aggregate booking, so one booking’s units are
 // printed once and not on every line naming it.
-function withBookings(dest, forBuilder, rows) {
+//
+// The same pairing carries the row’s `depth`, since `buildPackingList` drops
+// `path` along with the entry and depth can only be read off the path.
+function withBookings(dest, forBuilder, rows, depthOf) {
   const handed = new Set(forBuilder);
   const lineEntries = dest.items.filter(function (entry) {
     const item = entry.item;
@@ -131,8 +134,64 @@ function withBookings(dest, forBuilder, rows) {
     throw new Error("packing list: " + rows.length + " rows against " + lineEntries.length + " lines at destination " + dest.uid);
   }
   return rows.map(function (row, i) {
-    return Object.assign({}, row, { booking: u.pickSheetLineBooking(dest, lineEntries[i]) });
+    return Object.assign({}, row, {
+      booking: u.pickSheetLineBooking(dest, lineEntries[i]),
+      depth: depthOf(lineEntries[i].item),
+    });
   });
+}
+
+// ── Declared param: hide_zero_priced_components (default true) ──────────────
+//
+// A zero-priced component is included with its kit at no charge and travels
+// inside it, so with the param on its row is dropped and the kit row stands
+// for it (owner ruling 2026-10-12, which reverses the earlier call that this
+// param would be wrong here). Same predicate as the pick sheet, the quote and
+// the invoice: `zero_priced === true` on a COMPONENT, so one order hides the
+// same lines on every document.
+//
+// ⚠️ A COMPONENT is a row sitting under another LINE ITEM, counted as the
+// ancestors that resolve to a real line in this leg. Never `path.length`: a
+// leg’s items carry its group dividers but not its destination divider, so a
+// depth read off the path would call a top-level line a component.
+//
+// The predicate reads the input and nothing else: no row is kept or moved on
+// the strength of another row (owner ruling 2026-10-12, which retired the
+// pick sheet’s owner carve-out and its “counted under” label for the same
+// reason). Hidden rows are removed BEFORE `buildPackingList`, from the same
+// array `withBookings` pairs against, so the row-to-booking pairing stays exact.
+const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
+
+// How deep a line sits UNDER ANOTHER LINE ITEM in one leg — 0 top-level, 1 for
+// a kit component, 2 for a component of a component. One function serves both
+// the hide predicate above and the row indent below, so a row cannot be a
+// component for one purpose and top-level for the other. It is the quote and
+// invoice rule (`componentDepth`: ancestors that are line items, never
+// dividers) resolved against the leg’s own rows, because a leg’s items carry
+// no destination divider for a divider-uid set to subtract. An ancestor absent
+// from the leg is not counted, so a collection-leg rental under a sale kit
+// renders flush rather than indented under a row the sheet does not print.
+function depthIn(dest) {
+  const pathKey = function (path) { return path.join(":"); };
+  const byPath = new Map();
+  dest.items.forEach(function (entry) { byPath.set(pathKey(entry.item.path), entry.item); });
+  return function (item) {
+    let depth = 0;
+    for (let i = 1; i < item.path.length; i++) {
+      const ancestor = byPath.get(pathKey(item.path.slice(0, i)));
+      if (ancestor && ancestor.type !== "group" && ancestor.type !== "destination") depth++;
+    }
+    return depth;
+  };
+}
+
+function hiddenZeroPriced(dest, depthOf) {
+  const hidden = new Set();
+  if (!hideZeroPricedComponents) return hidden;
+  dest.items.forEach(function (entry) {
+    if (entry.item.zero_priced === true && depthOf(entry.item) > 0) hidden.add(entry.item);
+  });
+  return hidden;
 }
 
 const sections = sheet.orders.flatMap(function (order) {
@@ -164,7 +223,10 @@ const sections = sheet.orders.flatMap(function (order) {
     // exact here because `groupByDestination` pushes the very references it was
     // handed — a uid-keyed set would be wrong, since `item.uid` repeats within
     // one document (18% of prod orders) and `path` is the row identity.
+    const depthOf = depthIn(dest);
+    const hidden = hiddenZeroPriced(dest, depthOf);
     const forBuilder = lines.filter(function (item) {
+      if (hidden.has(item)) return false;
       return item.type === "group" || item.type === "destination" || admitted.has(item);
     });
     return {
@@ -173,7 +235,7 @@ const sections = sheet.orders.flatMap(function (order) {
       // Expanded, not consolidated: `group_name` is preserved so the group
       // banners below can divide a section the way the order banner divides the
       // document.
-      rows: withBookings(dest, forBuilder, u.buildPackingList(forBuilder)),
+      rows: withBookings(dest, forBuilder, u.buildPackingList(forBuilder), depthOf),
       // Whether anything at THIS leg is coming back. `orderHasRentals` answers
       // truthfully on a fulfillment-shaped line (`rental` is a
       // `FULFILLMENT_LINE_ITEM_TYPES` member) — the two money helpers in the
@@ -215,19 +277,15 @@ const customerName = sheet.organizations.length === 1
 const showOrderBanner = sheet.orders.length > 1;
 const showDestinationBanners = sections.length > 1;
 
-const allRows = sections.flatMap(function (section) { return section.rows; });
-
-// ⚠️ The Stock column is CONDITIONAL, for the reason the receipt makes its
-// Reference column conditional: a headed column carrying one value on every row
-// reads as missing data rather than as inapplicable. `stock_method` earns its
-// place only when the page distinguishes — a serialized line is one a picker
-// checks an asset tag against, and a page of nothing but bulk lines holds no
-// such row to find.
-const hasSerialized = allRows.some(function (row) { return row.stock_method === "serialized"; });
-
-// The Stock cell of a serialized row names its UNIT NUMBERS as ranges, so the
-// customer can see which radios they were handed (api-cloudrun#1230). Numbers
-// only, never serials (owner, 2026-10-08).
+// A serialized row names its UNIT NUMBERS as ranges, so the customer can see
+// which radios they were handed (api-cloudrun#1230). Numbers only, never
+// serials (owner, 2026-10-08).
+//
+// They print as a DESCRIPTION line under the row, full width, the way the
+// quote prints an item description, rather than in a Stock column (owner,
+// 2026-10-12). A column held one or two cells of text on a page of bulk lines
+// and pushed Qty away from Type; a description line costs nothing on a row
+// that has no units.
 //
 // ⭐ BOTH the `prepped` and the `out` sets, each labelled (owner, 2026-10-08):
 // a list printed mid-prep must say which units are packed and which have
@@ -236,29 +294,36 @@ const hasSerialized = allRows.some(function (row) { return row.stock_method === 
 // with, and stay off it. Labels come from core’s declaration, the same words
 // the pick sheet prints.
 //
-// ⚠️ `units` is null on an UNTRACKED booking and on every booking a fixture
-// captured before core beta.635; a tracked booking with nothing prepped or out
-// has named no units yet. All three fall back to the word the column printed
-// before. A non-owner occurrence has no booking and falls back the same way.
+// The line always opens “Units:”, and a row whose booking has named no units
+// says so: “Units: unassigned” (owner, 2026-10-12). That covers `units` null
+// (an UNTRACKED booking, or a fixture captured before core beta.635) and a
+// tracked booking with nothing prepped or out yet. “Units” rather than the old
+// column’s “Serialized”: the line is about which units, not the stock method.
 //
-// One LINE per set, as on the pick sheet, so a long run that wraps never
-// separates a label from the numbers it names.
+// ⚠️ A row with NO booking prints no line. `pickSheetLineBooking` answers only
+// for the occurrence that owns an aggregate booking, so a second occurrence’s
+// units are printed on the owner’s row; “unassigned” there would be false.
+//
+// The sets are joined with ", ", the same separator the ranges inside a set
+// use; the bucket label is what marks where one set ends and the next begins.
 const PACKED_UNIT_BUCKETS = ["prepped", "out"];
-function unitLines(row) {
-  const units = row.booking ? row.booking.units : null;
-  if (!units) return ["Serialized"];
-  const lines = PACKED_UNIT_BUCKETS
-    .filter(function (key) { return units[key] && units[key].length > 0; })
-    .map(function (key) { return u.BOOKING_BREAKDOWN_LABELS[key] + " " + u.formatUnitRanges(units[key]); });
-  return lines.length > 0 ? lines : ["Serialized"];
+function unitText(row) {
+  if (row.stock_method !== "serialized" || !row.booking) return "";
+  const units = row.booking.units;
+  const sets = units
+    ? PACKED_UNIT_BUCKETS
+      .filter(function (key) { return units[key] && units[key].length > 0; })
+      .map(function (key) { return u.BOOKING_BREAKDOWN_LABELS[key] + " " + u.formatUnitRanges(units[key]); })
+    : [];
+  return "Units: " + (sets.length > 0 ? sets.join(", ") : "unassigned");
 }
 
-// THREE unconditional columns — Item Description, Type, Qty — plus the one
-// conditional. This grid is NOT `partials/shared/items-grid.eta`: that partial
-// is 6 to 9 columns of money (Unit Price, Discount, Subtotal, Tax, Total), and a
-// packing list has none of them. This family shares the letterhead, the
-// destinations table, the footer and the stylesheet, and nothing else.
-const itemColumnCount = 3 + (hasSerialized ? 1 : 0);
+// THREE columns — Item Description, Type, Qty. This grid is NOT
+// `partials/shared/items-grid.eta`: that partial is 6 to 9 columns of money
+// (Unit Price, Discount, Subtotal, Tax, Total), and a packing list has none of
+// them. This family shares the letterhead, the destinations table, the footer
+// and the stylesheet, and nothing else.
+const itemColumnCount = 3;
 
 // The second alignment edge of the page: the #items column boundary NEAREST THE
 // HALF-WAY POINT, rounding left. Same derivation as the quote, the invoice and
@@ -286,8 +351,12 @@ const returnSpan = addressColumnCount - addressBoundary;
 //   its zero-priced accessories, a `splitItem`, or a product appearing both
 //   standalone and as a kit component all name the SAME booking. Summing it per
 //   line is N× wrong. `it.pickSheets` ships no quantity helper for exactly this
-//   reason; `PickSheetDestination.quantity` is the total for that leg, computed
-//   once in the fold over the whole membership slice. Read it; do not re-derive it.
+//   reason. Each row prints its own line `quantity` and nothing derived.
+//
+// • A unit total, at any level — not per destination, not for the sheet.
+//   Dropped on the owner’s instruction (2026-10-12), matching the pick sheet.
+//   `PickSheetDestination.quantity` and `PickSheet.quantity` are still on the
+//   document and are deliberately not read.
 //
 // • `PickSheetDestination.breakdown` and `PickSheetBooking.shortage` — custody
 //   buckets and unfilled units. Both are real and both are internal: a shortage
@@ -298,14 +367,10 @@ const returnSpan = addressColumnCount - addressBoundary;
 //   narrows what is on the page and is already implied by the page; naming it
 //   would put an internal dispatch concept on a customer-facing document.
 //
-// • `hide_zero_priced_components`, which the quote and the invoice both declare
-//   and which a 2026-08-30 comment on templates#150 predicted this family would
-//   share. It would be WRONG here, and the reversal is worth stating: that param
-//   hides components whose money has been rolled up into their principal, which
-//   is a fact about a PRICE column this document does not have. The things it
-//   would hide are physical goods a picker has to put in the truck — a kit
-//   accessory is zero-priced and still has to travel. `params` is empty, and
-//   that is expected to stay the whole param universe.
+// • (Retired 2026-10-12.) This list used to refuse `hide_zero_priced_components`
+//   on the grounds that a zero-priced kit accessory still has to travel. The
+//   owner ruled otherwise: it travels INSIDE its kit, so the kit row stands for
+//   it, and the param is now declared above, default on.
 //
 // • Any signature line. A hand-off signature is a real thing to want here, and it
 //   is a decision about the WORKFLOW — who signs, for what, and whether an
@@ -356,7 +421,6 @@ const returnSpan = addressColumnCount - addressBoundary;
     <tr>
       <th scope="col">Printed:</th>
       <th scope="col">Order<%= sheet.order_count === 1 ? "" : "s" %>:</th>
-      <th scope="col">Total Units:</th>
     </tr>
   </thead>
   <tbody>
@@ -380,7 +444,6 @@ const returnSpan = addressColumnCount - addressBoundary;
       <td><%= sheet.order_count === 1 && sheet.orders[0]
         ? `#${sheet.orders[0].number}`
         : sheet.order_count %></td>
-      <td><%= sheet.quantity %></td>
     </tr>
   </tbody>
 </table>
@@ -410,11 +473,8 @@ const returnSpan = addressColumnCount - addressBoundary;
     <thead>
       <tr>
         <th scope="col" class="wide">Item Description</th>
-        <th scope="col">Type</th>
-        <% if (hasSerialized) { %>
-        <th scope="col">Stock</th>
-        <% } %>
-        <th scope="col" class="center">Qty</th>
+        <th scope="col" class="type">Type</th>
+        <th scope="col" class="qty">Qty</th>
       </tr>
     </thead>
     <tbody>
@@ -442,11 +502,9 @@ const returnSpan = addressColumnCount - addressBoundary;
       <tr class="destination-banner">
         <td class="wide" colspan="<%= bannerSpan %>">
           <%/* `PickSheetDestination.name` is the destination DIVIDER's name —
-               what the operator called this section on the order — and
-               `quantity` is that leg's total, read off the document rather than
-               summed from the rows. Both name the section a picker is standing
-               in front of. */%>
-          <%= section.dest.name %> — <%= section.dest.quantity %> units
+               what the operator called this section on the order. No unit
+               count beside it: see the NOT-rendered list. */%>
+          <%= section.dest.name %>
         </td>
       </tr>
         <% } %>
@@ -470,25 +528,24 @@ const returnSpan = addressColumnCount - addressBoundary;
       </tr>
           <% } %>
           <% lastGroup = row.group_name; %>
-      <tr>
-        <td><%= row.name %></td>
+          <% const units = unitText(row); %>
+      <%/* `item-end` marks the LAST row of an item, the description line when
+           there is one, so the light rule falls under the whole item rather
+           than between a row and its own units. */%>
+      <tr class="item<%= units ? "" : " item-end" %>">
+        <%/* Indented 1em per level under a line item, the same rule and unit as
+             the quote and invoice items grid. Banners are never indented. */%>
+        <td style="padding-left: <%= row.depth %>em"><%= row.name %></td>
         <td class="capitalize"><%= row.type %></td>
-        <% if (hasSerialized) { %>
-        <td><% if (row.stock_method === "serialized") { unitLines(row).forEach(function (line) { %><div><%= line %></div><% }) } %></td>
-        <% } %>
-        <td class="center"><%= row.quantity %></td>
+        <td class="qty"><%= row.quantity %></td>
       </tr>
+          <% if (units) { %>
+      <tr class="item-description item-end">
+        <td class="wide" colspan="<%= bannerSpan %>" style="padding-left: <%= row.depth %>em"><%= units %></td>
+      </tr>
+          <% } %>
         <% }) %>
       <% }) %>
-      <%/* The document total, read off the sheet rather than summed from the
-           rows above. `PickSheet.quantity` is the units across every admitted
-           leg, computed once in the fold; re-deriving it here would be a second
-           authority, and the obvious per-line derivation through `uid_booking`
-           is the one that is N× wrong. */%>
-      <tr class="grand-total">
-        <td class="wide" colspan="<%= bannerSpan - 1 %>"><strong>Total Units</strong></td>
-        <td class="center"><strong><%= sheet.quantity %></strong></td>
-      </tr>
     </tbody>
   </table>
 </section>

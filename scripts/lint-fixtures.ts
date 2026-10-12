@@ -43,6 +43,7 @@ import {
   type LintSidecar,
 } from "@cfs/core/utils/template-lint";
 import { BLAME_FLAG, readBlameSet } from "./affectedFamilies.ts";
+import { annotateError } from "./_annotate.ts";
 
 /**
  * REFUSE arguments rather than ignore them.
@@ -73,6 +74,10 @@ if (unknownArgs.length > 0) {
       `  working tree and reported clean for history it never read.\n\n` +
       `  For history:  deno task scan:fixture-history\n`,
   );
+  annotateError({
+    title: "templates-lint › fixtures",
+    message: `lint-fixtures was invoked with unknown argument(s): ${unknownArgs.join(" ")}`,
+  });
   Deno.exit(2);
 }
 
@@ -296,6 +301,15 @@ if (blocking.length > 0) {
     console.error(`  [${finding.gitPath}] ${finding.check}  ${finding.file}\n     ${finding.message}\n`);
   }
   console.error(`Examined ${examined} (${scopeLine}).`);
+  // One annotation per BLOCKING finding only — a notice is outside this
+  // change's blame scope and must not read to an operator as their blocker.
+  for (const finding of blocking) {
+    annotateError({
+      file: finding.file,
+      title: "templates-lint › fixtures",
+      message: `[${finding.gitPath}] ${finding.check}: ${finding.message}`,
+    });
+  }
   Deno.exit(1);
 }
 

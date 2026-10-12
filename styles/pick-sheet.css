@@ -1,10 +1,12 @@
 /* pick-sheet.css — what is TRUE OF THE OPERATOR'S SHEET and of nothing else.
 
    The document chrome — the page grid, the alignment edges, the letterhead, the
-   table rules, #details, #destinations and #items — lives in `styles/base.css`
-   and reaches this family through the `base` component. A family is overlaid
-   from `base.css` plus its own sheet and nothing else (`ownsTemplatePath`), so
-   anything copied here would be a second copy that drifts.
+   table rules, #details, #destinations and #items — lives in the stylesheets of
+   the components this family declares in `depends_on`: `styles/base.css`
+   (`layout`), `styles/letterhead.css` (`letterhead`) and
+   `styles/destinations.css` (`destinations`). A family is overlaid from its
+   declared components' sheets plus its own and nothing else, so anything copied
+   here would be a second copy that drifts.
 
    ⚠️ **This sheet is a near-twin of `packing-list.css` and the duplication is
    deliberate.** The two families render the same source for different
@@ -26,7 +28,7 @@
    gate nor `deno task preview` renders that frame (templates#137) — so a larger
    root would be legible in a warehouse and unverified at the paper edge.
 
-   ⭐ It also buys the column budget this family actually needs: eleven columns
+   ⭐ It also buys the column budget this family actually needs: ten columns
    against the packing list's four. */
 html {
   font-size: 9px;
@@ -45,13 +47,13 @@ html {
    this file had one.** `#items thead th:not(:first-child) { width: auto }` in
    base.css releases every column but the first, and that is what lands column 2
    on `--label-col` at EVERY column count — the shared alignment edge #details,
-   #destinations and #items all sit on. This family emits ten or eleven columns
-   where the widest sibling emits nine, so it is the strongest test that rule has
-   and the last place to override it.
+   #destinations and #items all sit on. This family emits nine or ten columns —
+   as many as the widest sibling or one more — so it is the strongest test that
+   rule has and the last place to override it.
 
    A 5.5% cap was tried and lost to that rule on specificity, which is the right
    outcome: winning would have taken the alignment edge with it. The even spread
-   at eleven columns is legible — the longest heading is "Checked Out" and the
+   at ten columns is legible — the longest heading is "Maintenance" and the
    longest value is three digits. If a future column count breaks that, the fix
    is fewer columns, not a local width. */
 
@@ -72,24 +74,26 @@ html {
   border-top: 1px solid var(--rule, #999);
 }
 
-/* Three banner levels nest inside one table — order, destination, group — and
-   each has to read as subordinate to the one above at arm's length on a loading
-   dock, which is the one place this document is read. The indent carries the
-   hierarchy; base.css already supplies the weight. */
-#items tr.destination-banner > td {
-  padding-left: 1rem;
-}
+/* INDENT RULES — the quote, invoice and packing list ones (owner ruling
+   2026-10-12).
 
-/* ⚠️ FLUSH LEFT, not indented, and the weight is what carries the hierarchy
-   instead. A group banner used to sit at `padding-left: 2rem` — further right
-   than the rows it heads, which start at 0 — so the one line naming a section
-   was the one line not aligned with it. Aligning it to its first child and
-   making it bold reads as a heading; the indent read as a stray.
+   Every banner sits FLUSH LEFT: order, destination and group alike, and the
+   weight (base.css) is what carries the hierarchy between them. A destination
+   banner used to sit at 1rem and a group banner at 2rem, each further right
+   than the rows it heads, which start at 0, so the one line naming a section
+   was the one line not aligned with it.
 
-   Bold and NOT italic, matching the items grid’s group banners: italic there
-   means an item description, so an italic heading here read as one. */
+   The only indent on the sheet is a COMPONENT row, 1em per level under its
+   kit, set inline from `depthOf` in pick-sheet.eta.
+
+   Bold and NOT italic, matching the items grid’s banners: italic there means
+   an item description, so an italic heading here read as one. */
+#items tr.destination-banner > td,
 #items tr.group-banner > td {
   padding-left: 0;
+}
+
+#items tr.group-banner > td {
   font-weight: bold;
 }
 
@@ -138,17 +142,4 @@ html {
 
 #exceptions p + p {
   margin-top: 0.4rem;
-}
-
-/* The non-owner note — "counted under <kit>", set on the row whose quantity
-   cells are blank.
-
-   Muted and small because it is an EXPLANATION rather than data: the row is
-   real, its units are real, and they are being picked one line away. At full
-   weight it would compete with the product name it hangs off, which is the one
-   thing a picker is scanning for. */
-#items td .counted-under {
-  color: #555;
-  font-size: 0.85em;
-  font-style: italic;
 }

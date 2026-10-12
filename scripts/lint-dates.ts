@@ -79,6 +79,7 @@
  * Run: deno task lint:dates
  */
 import { callArgs, commentLines, etaRoots, walkEta } from "./_etaScan.ts";
+import { annotateError } from "./_annotate.ts";
 
 /** The two date-fns entry points that resolve a zone. */
 const ZONE_SENSITIVE = /\.dateFns\.(parseISO|format)\s*\(/g;
@@ -165,6 +166,8 @@ export function scanSource(file: string, src: string): Finding[] {
   return out;
 }
 
+const TITLE = "templates-lint › dates";
+
 if (import.meta.main) {
   if (Deno.args.length > 0) {
     console.error(
@@ -172,6 +175,7 @@ if (import.meta.main) {
         `  It scans the whole tree, always — see lint-fixtures.ts on why a\n` +
         `  changed-files-scoped SCAN is the wrong shape for a guard like this.`,
     );
+    annotateError({ title: TITLE, message: `lint-dates takes no arguments, got ${Deno.args.join(" ")}` });
     Deno.exit(2);
   }
 
@@ -202,6 +206,15 @@ if (import.meta.main) {
       console.error(`  ${f.file}:${f.line}  unpinned ${f.fn}(`);
       console.error(`     ${f.text}`);
     }
+    for (const f of findings) {
+      annotateError({
+        file: f.file,
+        line: f.line,
+        title: TITLE,
+        message: `unpinned ${f.fn}( — pass { in: CHICAGO } to the PARSE as well as the FORMAT, ` +
+          `or use it.dates.formatChicago*. Unpinned, production (UTC) prints the wrong Chicago day.`,
+      });
+    }
     Deno.exit(1);
   }
 
@@ -222,6 +235,11 @@ if (import.meta.main) {
         `  prints dates. Check that etaRoots() still names the template directories\n` +
         `  and that the helper namespace is still it.dates.\n`,
     );
+    annotateError({
+      title: TITLE,
+      message: `lint-dates read ${files} .eta file(s) and found NO date formatting of either form — ` +
+        "the scan is broken, not clean.",
+    });
     Deno.exit(1);
   }
 

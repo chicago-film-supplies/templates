@@ -92,6 +92,7 @@
  */
 import { BLAME_FLAG, familiesOfPath, readBlameSet } from "./affectedFamilies.ts";
 import { commentLines, etaRoots, walkEta } from "./_etaScan.ts";
+import { annotateError } from "./_annotate.ts";
 
 // ── Arguments ───────────────────────────────────────────────────────
 
@@ -100,6 +101,10 @@ const directionArg = Deno.args.find((a) => a.startsWith(DIRECTION_FLAG));
 const direction = directionArg?.slice(DIRECTION_FLAG.length) ?? "over";
 if (direction !== "over" && direction !== "under") {
   console.error(`money-lint: --direction must be "over" or "under", got ${JSON.stringify(direction)}`);
+  annotateError({
+    title: "money-lint",
+    message: `money-lint: --direction must be "over" or "under", got ${JSON.stringify(direction)}`,
+  });
   Deno.exit(2);
 }
 const unknownArgs = Deno.args.filter(
@@ -110,6 +115,10 @@ if (unknownArgs.length > 0) {
     `money-lint: unexpected argument(s) ${unknownArgs.map((a) => JSON.stringify(a)).join(", ")}.\n` +
       `  Usage: money-lint.ts [--direction=over|under] [${BLAME_FLAG}<path>]\n`,
   );
+  annotateError({
+    title: "money-lint",
+    message: `money-lint was invoked with unexpected argument(s): ${unknownArgs.join(" ")}`,
+  });
   Deno.exit(2);
 }
 
@@ -191,9 +200,15 @@ interface Finding {
   text: string;
   /** `over` findings are regressions; `under` findings are unrecorded cleanups. */
   direction: "over" | "under";
+  /** 1-based line, when the finding is about one line — for the annotation. */
+  line?: number;
+  /** One-line operator-facing statement — the annotation's message. */
+  summary: string;
 }
 
 const findings: Finding[] = [];
+/** First raw-arithmetic line per file — where a Rule 3 annotation points. */
+const firstRawLine = new Map<string, number>();
 const counts = new Map<string, number>();
 const rawCounts = new Map<string, number>();
 const rawSites: string[] = [];
@@ -206,10 +221,12 @@ for (const root of roots) {
     counts.set(file, [...src.matchAll(CURRENCY)].length);
     const comments = commentLines(src);
     let raw = 0;
+    let firstRaw: number | undefined;
     src.split("\n").forEach((line, i) => {
       // A comment line is prose about money, not arithmetic on it.
       if (!comments.has(i) && RAW_MONEY_ARITH.test(stripStrings(line))) {
         raw++;
+        firstRaw ??= i + 1;
         rawSites.push(`${file}:${i + 1}  ${line.trim().slice(0, 100)}`);
       }
       if (comments.has(i)) return;
@@ -217,6 +234,9 @@ for (const root of roots) {
         findings.push({
           file,
           direction: "over",
+          line: i + 1,
+          summary: `non-closed money operation ${m[0]} — a template must not compute money; ` +
+            "the value arrives already computed by @cfs/core/utils/*.",
           text: `${file}:${i + 1}  non-closed money operation: ${m[0]}\n` +
             `      currency.js quantizes at its precision, so this makes a rounding\n` +
             `      decision nothing states. A template must not compute money at all —\n` +
@@ -225,6 +245,7 @@ for (const root of roots) {
       }
     });
     rawCounts.set(file, raw);
+    if (firstRaw !== undefined) firstRawLine.set(file, firstRaw);
   }
 }
 
@@ -235,6 +256,8 @@ for (const [file, n] of [...counts].sort()) {
     findings.push({
       file,
       direction: "over",
+      summary: `${n} it.currency reference(s), budget ${allowed} — it.currency is withdrawn; ` +
+        "use it.money.* for money display.",
       text: `${file}  ${n} it.currency references, budget ${allowed}\n` +
         `      it.currency is the RAW library — unguarded, and withdrawn from the render\n` +
         `      context entirely. Use it.money.* for money display.`,
@@ -249,6 +272,10 @@ for (const [file, n] of [...rawCounts].sort()) {
     findings.push({
       file,
       direction: "over",
+      line: firstRawLine.get(file),
+      summary: `${n} raw money arithmetic site(s) (a bare * or / on a money value), budget ` +
+        `${allowed} — a template must not compute money; the value arrives already computed ` +
+        "by @cfs/core/utils/*.",
       text: `${file}  ${n} raw money arithmetic site(s), budget ${allowed}\n` +
         `      A bare \`*\` or \`/\` on a money value. Neither Rule 1 nor Rule 2 can see\n` +
         `      this — they key on currency.js — which is how quote.eta's replacement\n` +
@@ -267,12 +294,16 @@ for (const [file, allowed] of Object.entries(RAW_BUDGET)) {
     findings.push({
       file,
       direction: "under",
+      summary: `raw-arithmetic budget ${allowed} but the file does not exist — remove the entry ` +
+        "from scripts/money-lint.ts.",
       text: `${file}  raw-arithmetic budget ${allowed} but the file does not exist — remove the entry.`,
     });
   } else if (n < allowed) {
     findings.push({
       file,
       direction: "under",
+      summary: `raw-arithmetic budget ${allowed} but only ${n} site(s) remain — lower it to ${n} ` +
+        "in scripts/money-lint.ts. Not a regression: removing the site was the right thing.",
       text: `${file}  raw-arithmetic budget ${allowed} but only ${n} site(s) remain — lower it\n` +
         `      to ${n}, so the ratchet keeps what the cleanup won.\n` +
         `      (Advisory: this arm is deliberately NOT a required check, because the only\n` +
@@ -292,12 +323,16 @@ for (const [file, allowed] of Object.entries(BUDGET)) {
     findings.push({
       file,
       direction: "over",
+      summary: `it.currency budgeted at ${allowed} but the file does not exist — remove the entry ` +
+        "from scripts/money-lint.ts.",
       text: `${file}  budgeted at ${allowed} but the file does not exist — remove the entry.`,
     });
   } else if (n < allowed) {
     findings.push({
       file,
       direction: "over",
+      summary: `it.currency budget ${allowed} but only ${n} reference(s) remain — lower it to ${n} ` +
+        "in scripts/money-lint.ts.",
       text: `${file}  budget ${allowed} but only ${n} references remain — lower it to ${n},\n` +
         `      so the ratchet keeps what the cleanup won.`,
     });
@@ -311,6 +346,10 @@ for (const [file, allowed] of Object.entries(BUDGET)) {
 // about the scan, not about a budget, and it must never be advisory.
 if (direction === "over" && files === 0) {
   console.error("money-lint: found no .eta files at all — the scan is broken, not clean.");
+  annotateError({
+    title: "money-lint",
+    message: "money-lint found no .eta files at all — the scan is broken, not clean.",
+  });
   Deno.exit(1);
 }
 
@@ -364,6 +403,19 @@ if (failing.length) {
       : `money-lint failed:\n`,
   );
   for (const f of failing) console.error("  " + f.text + "\n");
+  // Only `failing` — out-of-scope notices never become annotations. The ratchet
+  // arm is red but NOT required, so its title is its own check name and its
+  // message says so, rather than reading as a merge blocker.
+  for (const f of failing) {
+    annotateError({
+      file: f.file,
+      line: f.line,
+      title: direction === "under" ? "money-lint-ratchet" : "money-lint",
+      message: direction === "under"
+        ? `Advisory (does not block the merge): ${f.summary}`
+        : f.summary,
+    });
+  }
   Deno.exit(1);
 }
 

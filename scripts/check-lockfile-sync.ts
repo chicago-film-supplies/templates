@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --no-lock --allow-read
+#!/usr/bin/env -S deno run --no-lock --allow-read --allow-env=GITHUB_ACTIONS
 /**
  * Refuses a `deno.json` / `deno.lock` disagreement (templates#230).
  *
@@ -181,6 +181,7 @@
  * Exit: 0 in sync · 1 desynced (or unreadable).
  */
 import { formatRange, parse, parseRange, satisfies } from "@std/semver";
+import { annotateError } from "./_annotate.ts";
 
 /** The shape this guard reads out of `deno.json`. */
 export interface DenoConfig {
@@ -361,6 +362,8 @@ export function findProblems(config: DenoConfig, lock: DenoLock): string[] {
   return problems;
 }
 
+const TITLE = "templates-lint › lockfile";
+
 /** Rooted at this script's own location — see the docblock's *Rooting*. */
 export const REPO = new URL("../", import.meta.url);
 
@@ -370,6 +373,7 @@ function read(file: string): Record<string, unknown> {
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`✗ lockfile-sync: cannot read ${file} — ${msg}`);
+    annotateError({ file, title: TITLE, message: `cannot read ${file} — ${msg}` });
     Deno.exit(1);
   }
 }
@@ -394,6 +398,14 @@ if (import.meta.main) {
     console.error(
       "\n  Fix: run `deno install` and commit the updated deno.lock.",
     );
+    for (const p of problems) {
+      annotateError({
+        file: "deno.lock",
+        title: TITLE,
+        message: `deno.json and deno.lock are out of sync: ${p}. ` +
+          "Fix: run `deno install` and commit the updated deno.lock.",
+      });
+    }
     Deno.exit(1);
   }
 

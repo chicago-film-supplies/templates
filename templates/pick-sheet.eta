@@ -46,11 +46,11 @@ const u = it.pickSheets;
 // 🔴 **This document is PAGED, and a short one is indistinguishable from a small
 // one once a template is running.**
 //
-// `PickSheet.orders` is *the orders on THIS PAGE*; `order_count`,
-// `destination_count` and `quantity` describe the whole SCOPE. That split is
-// right for a screen and is a trap for paper: a sheet rendered from a default
-// page is silently short, showing a page of orders under a scope-wide total that
-// disagrees with them. `GET /pick-sheets?address=` returns the complete sheet by
+// `PickSheet.orders` is *the orders on THIS PAGE*; `order_count` and
+// `destination_count` describe the whole SCOPE. That split is right for a
+// screen and is a trap for paper: a sheet rendered from a default page is
+// silently short, showing a page of orders under scope-wide counts that
+// disagree with them. `GET /pick-sheets?address=` returns the complete sheet by
 // construction; this assertion is what catches a caller that reached for a paged
 // route instead.
 //
@@ -64,7 +64,7 @@ if (sheet.orders.length !== sheet.order_count) {
     `pick-sheet: this document is SHORT — ${sheet.orders.length} order(s) on the page ` +
       `against ${sheet.order_count} in the scope. A PickSheet is paged by ORDER; build it ` +
       "from `GET /pick-sheets?address=`, which returns every order with `next_cursor: null` " +
-      "by construction. Printing this page would put a scope-wide unit total over a subset " +
+      "by construction. Printing this page would put scope-wide counts over a subset " +
       "of the goods.",
   );
 }
@@ -94,7 +94,7 @@ if (sheet.orders.length !== sheet.order_count) {
 // the one breakdown state that is not the past participle of its
 // `FULFILLMENT_STAGE_LABELS` action ("Check Out"), where `prepped` and
 // `returned` still are — deliberate, and bought with the width it saves as the
-// longest heading on an eleven-column sheet.
+// longest heading on a ten-column sheet.
 //
 // ⚠️ `core/tests/fulfillment-stage.test.ts` pins the string, so a reappearing
 // copy still goes red. That closes the "nothing asserted either string" this
@@ -132,7 +132,7 @@ const bucketLabels = u.BOOKING_BREAKDOWN_LABELS;
 // Measured on `multi-order-destination`: two `Delivery` groups hold one service
 // each and nothing else, so both banners go with them.
 //
-// ── Declared param: hide_zero_priced_components (default false) ─────────────
+// ── Declared param: hide_zero_priced_components (default true) ──────────────
 //
 // A zero-priced component is included with its parent at no charge — it moves
 // with the kit, which is a picking fact as much as a billing one (the core
@@ -143,13 +143,13 @@ const bucketLabels = u.BOOKING_BREAKDOWN_LABELS;
 //
 // ⚠️ There is no roll-up. The quote moves a hidden row’s MONEY onto its parent;
 // a hidden row’s units are a different product and cannot be added to the kit’s,
-// so they simply leave the page. That is also why the sheet has no footer
-// total: a total under rows that no longer add up to it reads as a shortage.
+// so they simply leave the page. The sheet prints no unit total anywhere (see
+// the not-rendered list below), so there is no total for them to disagree with.
 //
-// ⚠️ A hidden row that OWNS an aggregate booking is kept. Another occurrence of
-// the same product elsewhere on the leg renders blank and reads “counted under
-// …” on the strength of that owner, so hiding the owner would take the
-// booking’s only numbers off the page while its other rows claim they are here.
+// The predicate reads the input and nothing else: no row is kept, hidden or
+// labelled on the strength of another row. The owner carve-out and the
+// “counted under …” label that justified it are retired (owner ruling
+// 2026-10-12): the template renders the document it is handed.
 const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
 
 const sections = sheet.orders.flatMap(function (order) {
@@ -161,10 +161,9 @@ const sections = sheet.orders.flatMap(function (order) {
     dest.items.forEach(function (entry) {
       byPath.set(entry.item.path.join(":"), entry.item);
     });
-    // ⚠️ `byPath` is built from the FULL leg, before the service filter, and
-    // that is load-bearing: it resolves `owner_path` for the counted-under
-    // label, so filtering it would turn a legitimate lookup into a blank.
-    // What is filtered is what gets RENDERED, which is a different question.
+    // `byPath` is built from the FULL leg, before the service filter: it
+    // answers the depth question below, which is about the order’s structure,
+    // not about what gets RENDERED.
     const notService = dest.items.filter(function (entry) {
       return entry.item.type !== "service";
     });
@@ -187,11 +186,6 @@ const sections = sheet.orders.flatMap(function (order) {
           hidden.add(entry.item.path.join(":"));
         }
       });
-      notService.forEach(function (entry) {
-        if (entry.owner_path === null) return;
-        if (hidden.has(entry.item.path.join(":"))) return;
-        hidden.delete(entry.owner_path.join(":"));
-      });
     }
     const admitted = notService.filter(function (entry) {
       return !hidden.has(entry.item.path.join(":"));
@@ -211,35 +205,6 @@ const sections = sheet.orders.flatMap(function (order) {
     return { order, dest, byPath, depthOf, rows };
   });
 });
-
-/**
- * What a NON-OWNER row says instead of a quantity.
- *
- * 🔴 **A row with no numbers and no explanation reads as missing data**, and on
- * this document there are always some: an aggregate booking has one owner
- * occurrence and every other occurrence renders blank. Measured on prod, 384
- * legs carry a booking standing for 2+ lines, so a picker meets this on ordinary
- * work — sees the same product twice, once with 56 and once with nothing, and
- * has no way to tell whether the blank one was forgotten.
- *
- * ⭐ It names the owner’s PARENT rather than the owner itself. The owner is the
- * same product by construction, so *"counted with Tent Tie Down"* on a Tent Tie
- * Down row says nothing; *"counted under Pop Up Tent (White)"* tells a picker
- * which kit to look in. `owner_path.at(-2)` is that parent, which is the same
- * value the manager’s row uses for the same sentence.
- *
- * ⚠️ Resolved by PATH, never by uid. `item.uid` repeats inside one document —
- * 18% of prod orders — so a uid lookup would find whichever occurrence came
- * first. A path is the row identity.
- */
-function countedUnder(section, entry) {
-  if (entry.owner_path === null) return "";
-  const parent = section.byPath.get(entry.owner_path.slice(0, -1).join(":"));
-  // No parent row means the owner hangs off the destination divider itself,
-  // which is not in `items` — so there is nothing to name and "above" is the
-  // honest answer. The rows are in document order, so it is also true.
-  return parent ? `counted under ${parent.name}` : "counted above";
-}
 
 // 🔴 **Every number on a row comes from `pickSheetLineBooking`, and it returns
 // null far more often than a reader expects.** A booking is aggregate per
@@ -319,7 +284,7 @@ const hasSerialized = allRows.some(function (row) { return row.stock_method === 
 //
 // The buckets are walked in `bucketKeys` order so the cell reads top to bottom
 // in the same order as the count columns beside it, with the same labels. One
-// LINE per bucket: this column is one of eleven, and a run joined inline wraps
+// LINE per bucket: this column is one of ten, and a run joined inline wraps
 // mid-list, leaving a label separated from the numbers it names.
 function unitLines(booking) {
   const units = booking ? booking.units : null;
@@ -330,8 +295,8 @@ function unitLines(booking) {
   return lines.length > 0 ? lines : ["Serialized"];
 }
 
-// Item Description, Type, [Stock], the seven buckets, Total.
-const itemColumnCount = 2 + (hasSerialized ? 1 : 0) + bucketKeys.length + 1;
+// Item Description, Type, [Stock], the seven buckets.
+const itemColumnCount = 2 + (hasSerialized ? 1 : 0) + bucketKeys.length;
 
 // The second alignment edge of the page: the #items column boundary NEAREST THE
 // HALF-WAY POINT, rounding left. Same derivation as the quote, the invoice, the
@@ -354,6 +319,12 @@ const deliverySpan = hasCollection ? addressBoundary : addressColumnCount;
 const returnSpan = addressColumnCount - addressBoundary;
 
 // ── What this template deliberately does NOT render ─────────────────────────
+//
+// • A unit total, at any level — not per row, not per destination, not for the
+//   sheet. Dropped on the owner’s instruction (2026-10-12). The seven bucket
+//   cells are the quantities; `PickSheetBooking.quantity`,
+//   `PickSheetDestination.quantity` and `PickSheet.quantity` are all still on
+//   the document and are deliberately not read.
 //
 // • `PickSheetBooking.shortage` — units the allocator could not fill. Real, and
 //   a different document’s job: a shortage is resolved by re-allocating or
@@ -421,7 +392,6 @@ const returnSpan = addressColumnCount - addressBoundary;
       <th scope="col">Printed:</th>
       <th scope="col">Order<%= sheet.order_count === 1 ? "" : "s" %>:</th>
       <th scope="col">Destinations:</th>
-      <th scope="col">Total Units:</th>
     </tr>
   </thead>
   <tbody>
@@ -439,7 +409,6 @@ const returnSpan = addressColumnCount - addressBoundary;
         ? `#${sheet.orders[0].number}`
         : sheet.order_count %></td>
       <td><%= sheet.destination_count %></td>
-      <td><%= sheet.quantity %></td>
     </tr>
   </tbody>
 </table>
@@ -471,7 +440,6 @@ const returnSpan = addressColumnCount - addressBoundary;
         <% bucketKeys.forEach(function (key) { %>
         <th scope="col" class="center bucket"><%= bucketLabels[key] %></th>
         <% }) %>
-        <th scope="col" class="center">Total</th>
       </tr>
     </thead>
     <tbody>
@@ -499,10 +467,8 @@ const returnSpan = addressColumnCount - addressBoundary;
       <tr class="destination-banner">
         <td class="wide" colspan="<%= bannerSpan %>">
           <%/* `PickSheetDestination.name` is the destination DIVIDER's name —
-               what the operator called this section on the order — and
-               `quantity` is that leg's total, read off the document rather than
-               summed from the rows. */%>
-          <%= section.dest.name %> — <%= section.dest.quantity %> units
+               what the operator called this section on the order. */%>
+          <%= section.dest.name %>
         </td>
       </tr>
         <% } %>
@@ -528,10 +494,7 @@ const returnSpan = addressColumnCount - addressBoundary;
         <%/* Indented by component depth, the same 1em per level the quote and
              the invoice use, so a picker can see where a kit ends. */%>
         <td style="padding-left: <%= section.depthOf(item) %>em">
-          <%= item.name %><%/* The blank-cells explanation, on the row that is
-               blank rather than in a legend at the foot of the page: a picker
-               reads one row at a time and a legend is on the wrong page by the
-               time it is needed. */%><% if (entry.owner_path !== null) { %><span class="counted-under"> · <%= countedUnder(section, entry) %></span><% } %>
+          <%= item.name %>
         </td>
         <td class="capitalize"><%= item.type %></td>
         <% if (hasSerialized) { %>
@@ -544,12 +507,6 @@ const returnSpan = addressColumnCount - addressBoundary;
              would put six noise digits beside every real one. */%>
         <td class="center"><%= booking && booking.breakdown[key] ? booking.breakdown[key] : "" %></td>
         <% }) %>
-        <%/* The row total is the BOOKING's `quantity`, not the sum of the cells
-             beside it — a second reading of the same fact, deliberately. The
-             breakdown is a current-state partition, so the two agree by
-             construction; where they do not, the stored booking is wrong and this
-             sheet is the surface that shows it. */%>
-        <td class="center"><%= booking ? booking.quantity : "" %></td>
       </tr>
           <% } %>
         <% }) %>
