@@ -51,7 +51,7 @@
       "key": "hide_zero_priced_components",
       "type": "boolean",
       "label": "Hide zero-priced components",
-      "default": false
+      "default": true
     }
   ]
 }
