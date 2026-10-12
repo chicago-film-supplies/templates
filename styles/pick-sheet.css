@@ -26,7 +26,7 @@
    gate nor `deno task preview` renders that frame (templates#137) — so a larger
    root would be legible in a warehouse and unverified at the paper edge.
 
-   ⭐ It also buys the column budget this family actually needs: eleven columns
+   ⭐ It also buys the column budget this family actually needs: ten columns
    against the packing list's four. */
 html {
   font-size: 9px;
@@ -45,13 +45,13 @@ html {
    this file had one.** `#items thead th:not(:first-child) { width: auto }` in
    base.css releases every column but the first, and that is what lands column 2
    on `--label-col` at EVERY column count — the shared alignment edge #details,
-   #destinations and #items all sit on. This family emits ten or eleven columns
-   where the widest sibling emits nine, so it is the strongest test that rule has
-   and the last place to override it.
+   #destinations and #items all sit on. This family emits nine or ten columns —
+   as many as the widest sibling or one more — so it is the strongest test that
+   rule has and the last place to override it.
 
    A 5.5% cap was tried and lost to that rule on specificity, which is the right
    outcome: winning would have taken the alignment edge with it. The even spread
-   at eleven columns is legible — the longest heading is "Checked Out" and the
+   at ten columns is legible — the longest heading is "Checked Out" and the
    longest value is three digits. If a future column count breaks that, the fix
    is fewer columns, not a local width. */
 
