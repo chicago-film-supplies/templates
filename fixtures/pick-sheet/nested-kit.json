@@ -195,8 +195,7 @@
                     {
                       "uid_location": "qps7yoTbCZdUehZLNNmU",
                       "name": "TBD Storage Location",
-                      "quantity": 1,
-                      "default": true
+                      "quantity": 1
                     }
                   ]
                 }
@@ -231,8 +230,7 @@
                     {
                       "uid_location": "qps7yoTbCZdUehZLNNmU",
                       "name": "TBD Storage Location",
-                      "quantity": 1,
-                      "default": true
+                      "quantity": 1
                     }
                   ]
                 }
@@ -267,8 +265,7 @@
                     {
                       "uid_location": "qps7yoTbCZdUehZLNNmU",
                       "name": "TBD Storage Location",
-                      "quantity": 1,
-                      "default": true
+                      "quantity": 1
                     }
                   ]
                 }
@@ -303,8 +300,7 @@
                     {
                       "uid_location": "qps7yoTbCZdUehZLNNmU",
                       "name": "TBD Storage Location",
-                      "quantity": 1,
-                      "default": true
+                      "quantity": 1
                     }
                   ]
                 }
@@ -339,8 +335,7 @@
                     {
                       "uid_location": "SqWA0BIibsME8l3djf45",
                       "name": "Unknown Location - 7' Upright",
-                      "quantity": 3,
-                      "default": false
+                      "quantity": 3
                     }
                   ]
                 }
@@ -459,8 +454,7 @@
                     {
                       "uid_location": "qps7yoTbCZdUehZLNNmU",
                       "name": "TBD Storage Location",
-                      "quantity": 4,
-                      "default": true
+                      "quantity": 4
                     }
                   ]
                 }
@@ -495,8 +489,7 @@
                     {
                       "uid_location": "wgloEwVWGd0QsJ5kqQqg",
                       "name": "Unknown Location - 4' Folding Table (Adjustable Height)",
-                      "quantity": 4,
-                      "default": false
+                      "quantity": 4
                     }
                   ]
                 }
@@ -531,8 +524,7 @@
                     {
                       "uid_location": "Kk9Td8xy62aDPjmVvLrG",
                       "name": "Unknown Location - Tall Director Chair",
-                      "quantity": 2,
-                      "default": false
+                      "quantity": 2
                     }
                   ]
                 }
@@ -567,8 +559,7 @@
                     {
                       "uid_location": "6SQF4pRBGYQa58ZM1c9K",
                       "name": "Unknown Location - Short Director Chair",
-                      "quantity": 2,
-                      "default": false
+                      "quantity": 2
                     }
                   ]
                 }
@@ -603,8 +594,7 @@
                     {
                       "uid_location": "nTAEjCAE2bqyE2dBiK3R",
                       "name": "Unknown Location - 3 ' x 5' Floor Mat",
-                      "quantity": 2,
-                      "default": false
+                      "quantity": 2
                     }
                   ]
                 }
