@@ -250,7 +250,7 @@ const sections = sheet.orders.flatMap(function (order) {
 //
 // A product that prints on more than one row (a kit component and a standalone
 // line, the same item in two groups, two destinations, two orders) gets a Qty
-// suffix naming how many the WHOLE SHEET carries, so the person loading it
+// column of its own naming how many the WHOLE SHEET carries, so the person loading it
 // can count the pile once rather than add rows up (owner, 2026-10-14).
 //
 // Keyed on the product `uid`, the same key `consolidateItems` uses, and summed
@@ -339,20 +339,26 @@ function unitText(row) {
   return "Units: " + (sets.length > 0 ? sets.join(", ") : "unassigned");
 }
 
-// THREE columns — Item Description, Type, Qty. This grid is NOT
+// FOUR columns — Item Description, Type, Qty, and the per-product sheet total
+// (“(15 of 38 total)”, owner 2026-10-14), which is blank on a product that
+// prints once. This grid is NOT
 // `partials/shared/items-grid.eta`: that partial is 6 to 9 columns of money
 // (Unit Price, Discount, Subtotal, Tax, Total), and a packing list has none of
 // them. This family shares the letterhead, the destinations table, the footer
 // and the stylesheet, and nothing else.
-const itemColumnCount = 3;
+const itemColumnCount = 4;
 
 // The second alignment edge of the page: the #items column boundary NEAREST THE
 // HALF-WAY POINT, rounding left. Same derivation as the quote, the invoice and
 // the receipt (see styles/base.css) — a fact about the shared page grid rather
 // than about any one family, and what keeps #details stopping on a real column
 // of the table below it.
-const addressColumnCount = itemColumnCount - 1;
-const addressBoundary = Math.floor((itemColumnCount - 1) / 2);
+//
+// ⚠️ Derived from the THREE item columns, not four. The total column is
+// appended after Qty and must not move the edge #details and #destinations
+// sit on; counting it would shift that edge from one half to one third.
+const addressColumnCount = 3 - 1;
+const addressBoundary = Math.floor(addressColumnCount / 2);
 
 // The destinations table draws every leg on the sheet in one block, so its
 // collection side is on when ANY leg has something coming back — the same
@@ -500,6 +506,7 @@ const returnSpan = addressColumnCount - addressBoundary;
         <th scope="col" class="wide">Item Description</th>
         <th scope="col" class="type">Type</th>
         <th scope="col" class="qty">Qty</th>
+        <th scope="col" class="sheet-total"></th>
       </tr>
     </thead>
     <tbody>
@@ -563,7 +570,8 @@ const returnSpan = addressColumnCount - addressBoundary;
         <td style="padding-left: <%= row.depth %>em"><%= row.name %></td>
         <td class="capitalize"><%= row.type %></td>
         <% const productTotal = productTotals.get(row.uid); %>
-        <td class="qty"><%= row.quantity %><% if (productTotal.rows > 1) { %> <strong><em>of <%= productTotal.quantity %> total</em></strong><% } %></td>
+        <td class="qty"><%= row.quantity %></td>
+        <td class="sheet-total"><% if (productTotal.rows > 1) { %><strong><em>(<%= row.quantity %> of <%= productTotal.quantity %> total)</em></strong><% } %></td>
       </tr>
           <% if (units) { %>
       <tr class="item-description item-end">
