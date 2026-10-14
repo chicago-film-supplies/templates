@@ -246,6 +246,27 @@ const sections = sheet.orders.flatMap(function (order) {
   });
 });
 
+// ── Per-product totals across the sheet ─────────────────────────────────────
+//
+// A product that prints on more than one row (a kit component and a standalone
+// line, the same item in two groups, two destinations, two orders) gets a Qty
+// suffix naming how many the WHOLE SHEET carries, so the person loading it
+// can count the pile once rather than add rows up (owner, 2026-10-14).
+//
+// Keyed on the product `uid`, the same key `consolidateItems` uses, and summed
+// from the PRINTED rows’ own line quantities: a hidden zero-priced component is
+// not on the page, so it is not in a total the page asks the reader to check.
+// Never from a booking — see the NOT-rendered list below.
+const productTotals = new Map();
+sections.forEach(function (section) {
+  section.rows.forEach(function (row) {
+    const seen = productTotals.get(row.uid) || { rows: 0, quantity: 0 };
+    seen.rows += 1;
+    seen.quantity += row.quantity;
+    productTotals.set(row.uid, seen);
+  });
+});
+
 // ── The facts this document states ──────────────────────────────────────────
 
 // The direction, in the words a person uses for it. Not a lookup table in core:
@@ -351,10 +372,14 @@ const returnSpan = addressColumnCount - addressBoundary;
 //   its zero-priced accessories, a `splitItem`, or a product appearing both
 //   standalone and as a kit component all name the SAME booking. Summing it per
 //   line is N× wrong. `it.pickSheets` ships no quantity helper for exactly this
-//   reason. Each row prints its own line `quantity` and nothing derived.
+//   reason. Each row prints its own line `quantity`; the only derived number is
+//   the per-product suffix above, summed from printed line quantities.
 //
-// • A unit total, at any level — not per destination, not for the sheet.
-//   Dropped on the owner’s instruction (2026-10-12), matching the pick sheet.
+// • A unit total across DIFFERENT products — not per destination, not for the
+//   sheet. Dropped on the owner’s instruction (2026-10-12), matching the pick
+//   sheet. The per-product suffix is a different number (one product, every
+//   row it prints on) and was asked for separately (2026-10-14).
+//
 //   `PickSheetDestination.quantity` and `PickSheet.quantity` are still on the
 //   document and are deliberately not read.
 //
@@ -537,7 +562,8 @@ const returnSpan = addressColumnCount - addressBoundary;
              the quote and invoice items grid. Banners are never indented. */%>
         <td style="padding-left: <%= row.depth %>em"><%= row.name %></td>
         <td class="capitalize"><%= row.type %></td>
-        <td class="qty"><%= row.quantity %></td>
+        <% const productTotal = productTotals.get(row.uid); %>
+        <td class="qty"><%= row.quantity %><% if (productTotal.rows > 1) { %> <strong><em>of <%= productTotal.quantity %> total</em></strong><% } %></td>
       </tr>
           <% if (units) { %>
       <tr class="item-description item-end">
