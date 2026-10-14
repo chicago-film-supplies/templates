@@ -154,8 +154,7 @@
                     {
                       "uid_location": "FcG11vXvhkl3lPxLpegb",
                       "name": "Unknown Location - Safety Vest (ANSI II)",
-                      "quantity": 50,
-                      "default": false
+                      "quantity": 50
                     }
                   ]
                 }
@@ -190,8 +189,7 @@
                     {
                       "uid_location": "dWuuIbE1nkBeGVTXtkeM",
                       "name": "Unknown Location - Duffel Bag for Safety Vests",
-                      "quantity": 1,
-                      "default": false
+                      "quantity": 1
                     }
                   ]
                 }
