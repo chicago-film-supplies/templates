@@ -52,6 +52,13 @@ html {
   width: 7rem;
 }
 
+/* Qty is now fixed too, so the sheet-total column (“(15 of 38 total)”,
+   owner 2026-10-14) starts a short gap after the count and takes the rest
+   of the row instead. */
+#items thead th.qty {
+  width: 5rem;
+}
+
 #items th.qty,
 #items td.qty {
   text-align: left;
