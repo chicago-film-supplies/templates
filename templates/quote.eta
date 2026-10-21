@@ -21,63 +21,29 @@ const { destinations, items, totals } = order;
 // so the golden gate compared this branch to itself and passed.
 // `evening-boundary` (prod order 872) exists to close exactly that hole: its
 // delivery is 19:00 CDT, which is 00:00 UTC to the second.
-// Divider rows are structure, not stock. They are interleaved with the real
-// line items in one array, and `path` records BOTH kinds of ancestor — which is
-// why the indent below has to subtract them rather than assume how many there
-// are. One predicate, so the two views cannot drift apart.
-const isDivider = (i) => i.type === "group" || i.type === "destination";
-const lineItems = items.filter(i => !isDivider(i));
-const dividerUids = new Set(items.filter(isDivider).map(i => i.uid));
 
-// A `transaction_fee` is stored in `items[]` but is NOT a line of the order.
-// `ITEM_CONTRACTS.transaction_fee` in @cfs/core is `pricing: "from_total"`,
-// `fulfillable: false`, `replacement: "forbidden"` — it is priced FROM the
-// document rather than from a shelf, and nobody ever picks one.
+// ── The rows this quote draws: one core author, not a hand copy ──────────
 //
-// It must not appear in the items grid, because `totals.transaction_fees` is
-// DERIVED from these very items (`getTransactionFeeTotals(costTransactionFees(
-// items, ...))`), so rendering both puts the same money on the page twice and
-// a customer reads it as being charged twice. Measured on `discounts-and-fee`:
-// the Card Processing Fee is $14.79 as a line and $14.79 again in the totals.
-//
-// The totals row is the better of the two survivors — it carries the RATE
-// ("Card Processing Fee 2.9%:"), where the line is a degenerate row with an
-// empty Type, no unit price and no tax. And the fee is genuinely outside the
-// line-item arithmetic: `totals.subtotal_cents` excludes it, and
-// `total_cents` adds it only at the end, after tax.
-//
-// Consequence worth knowing: the Total column no longer sums to
-// `totals.total_cents` — it sums to `subtotal_discounted + tax`, and the totals
-// block adds the fee on top. That is the ordinary shape of a quote.
-const isDocumentFee = (i) => i.type === "transaction_fee";
-const shownLineItems = lineItems.filter(i => !isDocumentFee(i));
-
-// Suppressing the fee LINE can strand its DIVIDER, and on a real order it does.
-// The Card Fee is written into its own `Transaction Fees` group, so filtering
-// the line left a group banner with no rows beneath it: the fee NAME in the
-// items grid, the fee money in the totals block. That is the same "rendered
-// twice" this section exists to prevent, wearing a different hat — the first
-// fix removed the row and left the heading. Measured on `fee-flat-card` (prod
-// order 502): one Transaction Fees banner before, none after.
-//
-// `partials/shared/items-grid.eta` draws a `group` banner unconditionally, and
-// deliberately: its docstring says a divider naming the only member of its
-// level is noise, "but each gate is the CALLER gate to compute, because only
-// the caller knows what its level contains". This is that gate.
-//
-// `path` is self-inclusive and records every ancestor, so a divider is live
-// exactly when some surviving line names it — needing no assumption about how
-// many divider levels there are, which is why the invoice twin is identical.
-//
-// 🔴 EVERY LINE IN THIS BLOCK NEEDS AN EVEN NUMBER OF APOSTROPHES. Eta parses
-// an exec block line by line, so an odd count opens a string literal that
-// swallows the closing tag, and it surfaces as "Bad template syntax:
-// Unexpected token" pointing at generated JS rather than at the prose that
-// caused it. Measured: one on a line fails, two on one line pass, three fail,
-// and one on each of two lines fails. Avoid possessives. All ~118 comment
-// lines above already obey this, which is why it had never been written down.
-const liveAncestors = new Set(shownLineItems.flatMap(i => i.path));
-const shownItems = items.filter(i => !isDocumentFee(i) && (!isDivider(i) || liveAncestors.has(i.uid)));
+// `it.orders.documentRenderRows` is what the quote and invoice families used to
+// copy by hand, line for line (core#130 row 11). It owns four rules:
+//   - a `transaction_fee` is stored in `items[]` but is not a line of the
+//     document. It is priced FROM the total, and #totals carries it with its
+//     rate, so drawing it in the grid as well prints the same money twice.
+//   - a divider is drawn only when a shown line hangs beneath it, so dropping
+//     the fee cannot strand a `Transaction Fees` banner over nothing.
+//   - `componentDepth` counts LINE ancestors, never a path length, so it is
+//     indifferent to how many divider levels exist.
+//   - `hide_zero_priced_components` hides a zero-priced COMPONENT and rolls its
+//     money onto the nearest visible LINE ancestor, keyed by `path` (a uid
+//     repeats within one document), so the grid still reconciles with #totals.
+//     A top-level zero-priced line is never hidden.
+// The two families differ only in the levels they pass: quotes use
+// `ORDER_ITEM_LEVELS`, the two levels an order has (destination, group) where
+// an invoice adds the order above them.
+const { lineItems, shownLineItems, shownItems, renderedItems, rolledUp, componentDepth, pathKey } =
+  it.orders.documentRenderRows(items, it.orders.ORDER_ITEM_LEVELS, {
+    hideZeroPricedComponents: it.params.hide_zero_priced_components === true,
+  });
 const hasDiscount = it.orders.orderHasDiscount(lineItems);
 const hasRentals = it.orders.orderHasRentals(lineItems);
 const hasTax = it.orders.orderHasTax(lineItems);
@@ -222,10 +188,10 @@ const DISAMBIGUATED_ITEM_TYPES = new Set(["rental", "sale"]);
 const numberCell = (n) => n ? n : "";
 const moneyCell = (c) => c ? it.money.formatCents(c) : "";
 
-// The tax a line carries, in cents. Factored out because three things need it
-// now: the Tax column prints it, the money cells to its LEFT have to know
-// whether the row owes anything before they can decide what a zero looks like,
-// and the component roll-up below moves it onto another row.
+// The tax a line carries, in cents. Factored out because two things need it:
+// the Tax column prints it (plus any `rolledUp` tax from hidden components),
+// and the money cells to its LEFT have to know whether the row owes anything
+// before they can decide what a zero looks like.
 //
 // NOT named `lineTaxCents` — the replacement fold further down already binds
 // that name in its own scope, and a same-named outer const would shadow-trap
@@ -248,89 +214,6 @@ const itemTaxCents = (item) => (item.price.taxes || []).reduce((sum, t) => sum +
 // those would restore exactly the column of noise the blank rule exists to
 // remove. Only a row whose own tax contradicts its blank cells gets one.
 const moneyCellOn = (c, taxCents) => c ? it.money.formatCents(c) : (taxCents ? "—" : "");
-
-// How deep a line item is nested UNDER ANOTHER LINE ITEM — 0 for a top-level
-// line, 1 for its component, 2 for a component of a component.
-//
-// This used to be `item.path.length - 3`, which is a proxy for depth rather
-// than depth: it hard-codes an assumption that both divider levels
-// (destination + group) are always present. When a line sits directly under a
-// destination with no group, its path is `[dest, item]` and the formula gives
-// −1em — invalid CSS, silently dropped — while ITS component gets 0em and
-// renders flush with its parent. That second half is the real defect; the
-// negative value was only the visible half.
-//
-// `path` is non-empty and self-inclusive on every item (the workspace
-// items-array invariant), so `at(-1)` is the item itself: drop it, then count
-// the ancestors that are real line items. Independent of how many divider
-// levels happen to be present. Divider uids are per-order UUIDs and product
-// uids are Firestore ids, so the two sets cannot collide.
-const componentDepth = (item) =>
-  (item.path ?? []).slice(0, -1).filter((uid) => !dividerUids.has(uid)).length;
-
-// ── Declared param: hide_zero_priced_components (default false) ────────────
-//
-// A mandatory zero-priced component is structure rather than something the
-// customer chose — the 240 bottles inside 10 cases of water. Some readers want
-// the case and not the bottles, so the row can be hidden.
-//
-// 🔴 Hiding it must ROLL ITS MONEY ONTO THE PARENT, exactly. The #totals block
-// reads the server-computed `totals` on the document, which count the tax on that row
-// whether or not it is rendered — so a hidden row whose $12.00 goes nowhere
-// makes the items table stop reconciling with its own footer, which is a worse
-// document than the one with the extra row in it.
-//
-// Only a COMPONENT is eligible (`componentDepth > 0`). A top-level zero-priced
-// line is something the customer ordered at no charge — the Locations Toolkit
-// on `long-multi-group` — and hiding that would delete a line of the order.
-const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
-
-// Keyed by PATH, never by uid: `item.uid` repeats within one document (18% of
-// prod orders), so two hidden components can share a uid and their money would
-// collide onto one row. `path` is the row identity.
-//
-// The separator is NUL, BUILT rather than written as a unicode escape. This
-// file is authored through `templates_propose_edit`, whose payload is JSON, and
-// a JSON round-trip decodes such an escape into a real NUL BYTE in the source.
-// The file still behaves identically — a literal NUL inside a JS string
-// literal is the same character — but it puts a control byte in a text file
-// that git is one edit away from treating as binary, and it mutates a line
-// nobody meant to touch. `String.fromCharCode` says the same thing in
-// characters that survive the trip.
-const PATH_SEP = String.fromCharCode(0);
-const pathKey = (item) => (item.path ?? []).join(PATH_SEP);
-const hiddenPaths = new Set();
-const rolledUp = new Map();
-if (hideZeroPricedComponents) {
-  const byPath = new Map(lineItems.map(i => [pathKey(i), i]));
-  const eligible = lineItems.filter(i => i.zero_priced === true && componentDepth(i) > 0);
-  const eligibleKeys = new Set(eligible.map(pathKey));
-  eligible.forEach(hidden => {
-    // Walk up to the nearest ancestor that is a line item AND is itself still
-    // visible, so a component of a hidden component rolls all the way to
-    // whatever actually renders.
-    let up = (hidden.path ?? []).slice(0, -1);
-    while (up.length > 0) {
-      const key = up.join(PATH_SEP);
-      const ancestor = byPath.get(key);
-      if (ancestor && !eligibleKeys.has(key)) {
-        const acc = rolledUp.get(key) || { tax: 0, subtotal: 0, total: 0 };
-        acc.tax += itemTaxCents(hidden);
-        acc.subtotal += hidden.price.subtotal_discounted_cents ?? hidden.price.subtotal_cents;
-        acc.total += hidden.price.total_cents;
-        rolledUp.set(key, acc);
-        hiddenPaths.add(pathKey(hidden));
-        return;
-      }
-      up = up.slice(0, -1);
-    }
-    // No visible ancestor line item — its parent is a divider, or the tree is
-    // shaped in a way this does not model. The row STAYS, because losing the
-    // money silently is the one outcome that must not happen. It is absent from
-    // `hiddenPaths`, so nothing else has to know.
-  });
-}
-const renderedItems = shownItems.filter(i => !hiddenPaths.has(pathKey(i)));
 
 // Replacement cost, in integer cents, computed the way CORE computes it.
 //
