@@ -13,46 +13,29 @@ const { destinations, items, totals } = invoice;
 // `date` and `due_date` are `chicagoStartOfDay`, i.e. midnight, which is the
 // worst case for this.
 
-// ── Divider structure: THREE levels, not the order’s two ────────────────────
+// ── The rows this invoice draws: one core author, not a hand copy ──────────
 //
-// An invoice can bill several orders, so its hierarchy is
-// [order, destination, group] where an order’s is [destination, group].
-// `path[0]` names the causal ORDER’s Firestore doc id.
-//
-// This predicate is the ONLY place the extra level is named. Everything
-// downstream — the component indent, the row identity, the roll-up — works off
-// "is this uid a divider", never off a path LENGTH, which is what keeps it
-// indifferent to how many divider levels exist. api-cloudrun#538 would re-base
-// orders onto these same three levels; when it lands, nothing here moves.
-const isDivider = (i) =>
-  i.type === "group" || i.type === "destination" || i.type === "order";
-const lineItems = items.filter(i => !isDivider(i));
-const dividerUids = new Set(items.filter(isDivider).map(i => i.uid));
-
-// A `transaction_fee` is stored in `items[]` but is NOT a line of the invoice:
-// it is priced FROM the document (`pricing: "from_total"`), and
-// `totals.transaction_fees` is derived from these very items — so rendering
-// both puts the same money on the page twice. The totals row is the better
-// survivor because it carries the rate.
-const isDocumentFee = (i) => i.type === "transaction_fee";
-const shownLineItems = lineItems.filter(i => !isDocumentFee(i));
-
-// Suppressing the fee LINE can strand its DIVIDER — the twin of the gate the
-// quote family carries, and identical because `path` makes it indifferent to
-// how many divider levels exist. An invoice nests one deeper (order above
-// destination above group) and needs no extra handling for that.
-//
-// A Card Fee written into its own `Transaction Fees` group leaves a banner with
-// no rows beneath it once the line is filtered: the fee NAME in the items grid,
-// the fee money in the totals block. `partials/shared/items-grid.eta` draws a
-// group banner unconditionally and says why the emptiness test belongs to the
-// caller — only the caller knows what its level contains.
-//
-// 🔴 EVERY LINE IN THIS BLOCK NEEDS AN EVEN NUMBER OF APOSTROPHES. Eta parses
-// an exec block line by line, so an odd count opens a string literal that
-// swallows the closing tag. See the longer note in `templates/quote.eta`.
-const liveAncestors = new Set(shownLineItems.flatMap(i => i.path));
-const shownItems = items.filter(i => !isDocumentFee(i) && (!isDivider(i) || liveAncestors.has(i.uid)));
+// `it.invoices.documentRenderRows` is what the quote and invoice families used to
+// copy by hand, line for line (core#130 row 11). It owns four rules:
+//   - a `transaction_fee` is stored in `items[]` but is not a line of the
+//     document. It is priced FROM the total, and #totals carries it with its
+//     rate, so drawing it in the grid as well prints the same money twice.
+//   - a divider is drawn only when a shown line hangs beneath it, so dropping
+//     the fee cannot strand a `Transaction Fees` banner over nothing.
+//   - `componentDepth` counts LINE ancestors, never a path length, so it is
+//     indifferent to how many divider levels exist.
+//   - `hide_zero_priced_components` hides a zero-priced COMPONENT and rolls its
+//     money onto the nearest visible LINE ancestor, keyed by `path` (a uid
+//     repeats within one document), so the grid still reconciles with #totals.
+//     A top-level zero-priced line is never hidden.
+// The two families differ only in the levels they pass: invoices use
+// `INVOICE_ITEM_LEVELS`, because an invoice can bill several orders and so
+// nests one level deeper (order, destination, group) than a quote (destination,
+// group).
+const { lineItems, shownLineItems, shownItems, renderedItems, rolledUp, componentDepth, pathKey } =
+  it.invoices.documentRenderRows(items, it.invoices.INVOICE_ITEM_LEVELS, {
+    hideZeroPricedComponents: it.params.hide_zero_priced_components === true,
+  });
 
 // `it.invoices`, NOT `it.orders`. An invoices→invoices family resolves to
 // {dates, money, icons, invoices} and gets no `it.orders` at all, so naming it
@@ -106,77 +89,6 @@ const moneyCellOn = (c, taxCents) => c ? it.money.formatCents(c) : (taxCents ? "
 // The Type column exists for ONE job: a product stocked both for sale and for
 // rent needs the column to say which this line is.
 const DISAMBIGUATED_ITEM_TYPES = new Set(["rental", "sale"]);
-
-// How deep a line sits UNDER ANOTHER LINE ITEM — 0 top-level, 1 for its
-// component. Counts real line-item ancestors rather than subtracting a fixed
-// number of divider levels, which is what makes the same helper correct at the
-// invoice’s three levels and the order’s two.
-const componentDepth = (item) =>
-  (item.path ?? []).slice(0, -1).filter((uid) => !dividerUids.has(uid)).length;
-
-// ── Declared param: hide_zero_priced_components (default false) ─────────────
-//
-// ⭐ **The predicate is `zero_priced === true`, as of 2026-09-10**, which is what
-// `quote.eta` has always done — the two families now ask the same question.
-//
-// ⚠️ **It was `price.base_cents === 0` until then, and that was a PROXY forced by
-// the corpus rather than a choice.** An invoice line genuinely had no
-// `zero_priced` field: the schema lacked the key and
-// `projectOrderItemToInvoiceItem` did not carry it, so testing for it would have
-// made this param a silent no-op. Stage two of `manager#421` backfilled every
-// invoice and made the projection emit, so the real flag is now readable here.
-//
-// ⭐ **Measured before the switch, over all 1,040 prod invoices: the proxy hid
-// 3,557 rows and the flag hides 3,556.** Invariant (1) ties `zero_priced ===
-// true` to `base_cents === 0`, so `true` is a strict SUBSET of the proxy and the
-// change can only ever make a hidden row VISIBLE — never the reverse. Exactly
-// one row moves (invoice #2411, draft): a component charged at $0.00 that is not
-// a zero-priced component, which the proxy was hiding wrongly.
-//
-// Only a COMPONENT is eligible (`componentDepth > 0`). A top-level zero-priced
-// line is something the customer was given at no charge, and hiding that would
-// delete a line of the invoice.
-const hideZeroPricedComponents = it.params.hide_zero_priced_components === true;
-
-// Keyed by PATH, never by uid: `item.uid` repeats within one document, so two
-// hidden components can share a uid and their money would collide onto one row.
-//
-// The separator is NUL, BUILT rather than written as an escape — this file can
-// be authored through `templates_propose_edit`, whose payload is JSON, and a
-// JSON round-trip decodes such an escape into a real NUL BYTE in the source.
-const PATH_SEP = String.fromCharCode(0);
-const pathKey = (item) => (item.path ?? []).join(PATH_SEP);
-const hiddenPaths = new Set();
-const rolledUp = new Map();
-if (hideZeroPricedComponents) {
-  const byPath = new Map(lineItems.map(i => [pathKey(i), i]));
-  const eligible = lineItems.filter(i => i.zero_priced === true && componentDepth(i) > 0);
-  const eligibleKeys = new Set(eligible.map(pathKey));
-  eligible.forEach(hidden => {
-    // Walk up to the nearest ancestor that is a line item AND still visible, so
-    // a component of a hidden component rolls all the way to what renders.
-    let up = (hidden.path ?? []).slice(0, -1);
-    while (up.length > 0) {
-      const key = up.join(PATH_SEP);
-      const ancestor = byPath.get(key);
-      if (ancestor && !eligibleKeys.has(key)) {
-        const acc = rolledUp.get(key) || { tax: 0, subtotal: 0, total: 0 };
-        acc.tax += itemTaxCents(hidden);
-        acc.subtotal += hidden.price.subtotal_discounted_cents ?? hidden.price.subtotal_cents;
-        acc.total += hidden.price.total_cents;
-        rolledUp.set(key, acc);
-        hiddenPaths.add(pathKey(hidden));
-        return;
-      }
-      up = up.slice(0, -1);
-    }
-    // No visible ancestor line item. The row STAYS, because losing the money
-    // silently is the one outcome that must not happen — #totals counts the tax
-    // on a hidden row whether or not it renders, so a hidden row whose money
-    // goes nowhere makes the table stop reconciling with its own footer.
-  });
-}
-const renderedItems = shownItems.filter(i => !hiddenPaths.has(pathKey(i)));
 
 // ── Settlement ──────────────────────────────────────────────────────────────
 //
