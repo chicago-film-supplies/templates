@@ -36,7 +36,6 @@
  * Run: deno task lint:fixtures
  */
 import {
-  IDENTITY_CHECK,
   type LintFamily,
   type LintFixture,
   lintFixtureSet,
@@ -161,31 +160,13 @@ for (const gitPath of gitPaths) {
 
 // ── Fold ────────────────────────────────────────────────────────────
 
-const folded = lintFixtureSet({ families });
-const { tally, ungatedFamilies, fixturedUngatedFamilies } = folded;
-
-/**
- * Advisory checks this repo ENFORCES ahead of core, by check id.
- *
- * 🔴 **This is a rollout flip, not a rule.** Core ships check 2c
- * ({@link IDENTITY_CHECK}, `pii-identity`, templates#288) with
- * `severity: "advisory"` because two committed fixtures predated core#91's
- * identity masking. Those two — `invoice/multi-charge-window` and
- * `invoice/rental-discount-taxed` — were re-captured in templates#482, and the
- * corpus has been clean since, so CI blocks on it from here. The RULE stays in
- * core; only the severity is decided here, and only by naming the check id.
- *
- * ⚠️ Delete this set once core drops the `"advisory"` argument at check 2c —
- * after that the finding arrives in `findings` on its own and this is dead.
- * The API and the manager still render it as advisory until then, which is
- * the safe direction for a disagreement: CI stricter than the preview.
- */
-const ENFORCED_ADVISORIES: ReadonlySet<string> = new Set([IDENTITY_CHECK]);
-const findings = [
-  ...folded.findings,
-  ...folded.advisories.filter((a) => ENFORCED_ADVISORIES.has(a.check)),
-];
-const advisories = folded.advisories.filter((a) => !ENFORCED_ADVISORIES.has(a.check));
+// Severity is core's decision alone. This repo enforced check 2c
+// (`pii-identity`) ahead of core via a local promotion set (#484) until core
+// made it blocking (core#137); a CI stricter than the API's preview is
+// tolerable only as a rollout step, never as a resting state.
+const { findings, advisories, tally, ungatedFamilies, fixturedUngatedFamilies } = lintFixtureSet({
+  families,
+});
 
 // ── Report ──────────────────────────────────────────────────────────
 //
@@ -300,8 +281,8 @@ const mentionsMask = (fs: { check: string }[]) => fs.some((f) => f.check === "pi
  * it would only hide it.
  *
  * ⚠️ **Nothing reaches this list today** (core's `LintFinding.severity`) —
- * check 2b flipped in core, and check 2c (`pii-identity`) is promoted to a
- * blocking finding above by `ENFORCED_ADVISORIES`. Kept because the seam is how the next
+ * checks 2b and 2c (`pii-identity`, core#137) both flipped to blocking in
+ * core. Kept because the seam is how the next
  * rule over an existing corpus ships, and a presenter that silently drops a
  * category is how an advisory becomes a check that does not exist.
  */
