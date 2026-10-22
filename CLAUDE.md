@@ -808,7 +808,7 @@ A `sed` over the version string cannot miss a subpath; a remembered list can, an
 
 The `minimumDependencyAge` exclusion for `jsr:@cfs/core` at the top of `deno.json` is load-bearing, not a convenience: Deno 2.9 refuses any package version younger than 24h, so without it `deno install` here fails outright for a full day after every core publish. The exclusion names that one first-party package and leaves the 24h supply-chain delay in force for everything else.
 
-**If a freshly published beta looks missing, suspect the JSR CDN before the publish** — the registry's `https://jsr.io/@cfs/core/meta.json` endpoint has served stale for 6+ hours (workspace CLAUDE.md §2a). Compare it against a cache-busted `?cb=1` fetch.
+**If a freshly published beta looks missing, suspect the JSR CDN before the publish** — the registry's `https://jsr.io/@cfs/core/meta.json` endpoint has served stale for 6+ hours (the `cfs-release-order` skill, § Step 2a). Compare it against a cache-busted `?cb=1` fetch.
 
 ## LLM Reference Docs
 
