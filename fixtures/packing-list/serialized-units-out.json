@@ -1,0 +1,616 @@
+{
+  "scope": {
+    "kind": "order",
+    "uid": "0Vf8CyXIqyggYRKt0MVF",
+    "name": "Sample text for name..............",
+    "uids": [
+      "0Vf8CyXIqyggYRKt0MVF"
+    ]
+  },
+  "gate": "all",
+  "leg": "collection",
+  "orders": [
+    {
+      "uid": "0Vf8CyXIqyggYRKt0MVF",
+      "number": 1069,
+      "status": "active",
+      "subject": "Sample..",
+      "organization": {
+        "uid": "Ss5h6xswGHK6UUUujBlF",
+        "organization_path": [
+          {
+            "uid": "08xkr7C2tN8bYC74nzOh",
+            "name": "Umberfield Studios Group",
+            "derived": false
+          },
+          {
+            "uid": "Ss5h6xswGHK6UUUujBlF",
+            "name": "Nightjar Productions LLC",
+            "derived": false
+          }
+        ]
+      },
+      "destinations": [
+        {
+          "uid": "dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+          "name": "Highland Rail Depot",
+          "destination": {
+            "uid": "dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+            "dates": {
+              "delivery_start": "2026-10-14T09:00:00.000-05:00",
+              "delivery_start_fs": {
+                "_seconds": 1791986400,
+                "_nanoseconds": 0
+              },
+              "delivery_end": "2026-10-14T09:00:00.000-05:00",
+              "delivery_end_fs": {
+                "_seconds": 1791986400,
+                "_nanoseconds": 0
+              },
+              "collection_start": "2026-10-22T15:00:00.000-05:00",
+              "collection_start_fs": {
+                "_seconds": 1792699200,
+                "_nanoseconds": 0
+              },
+              "collection_end": "2026-10-22T15:00:00.000-05:00",
+              "collection_end_fs": {
+                "_seconds": 1792699200,
+                "_nanoseconds": 0
+              },
+              "days_active": 7,
+              "charge_windows": [
+                {
+                  "start": "2026-10-16T09:00:00.000-05:00",
+                  "end": "2026-10-18T15:00:00.000-05:00",
+                  "days": 1
+                }
+              ]
+            },
+            "delivery": {
+              "uid": "vusL4DSkGJjyDE1WOvAV",
+              "address": {
+                "city": "Cleveland",
+                "country_name": "United States",
+                "full": "2912 Linden Ave, Brooklyn, Ohio 95745, United States",
+                "name": "Highland Rail Depot",
+                "postcode": "65975",
+                "region": "OH",
+                "street": "2912 Linden Ave",
+                "street2": "",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": null,
+              "contact": {
+                "uid": "iiA06Q3IDCza3I2YEOJo",
+                "first_name": "Sage",
+                "middle_name": null,
+                "last_name": "Carmichael",
+                "pronunciation": null,
+                "name": "Riley Fairfax",
+                "phones": [
+                  "(823) 555-0190"
+                ]
+              }
+            },
+            "collection": {
+              "uid": "vusL4DSkGJjyDE1WOvAV",
+              "address": {
+                "city": "Cleveland",
+                "country_name": "United States",
+                "full": "2912 Linden Ave, Brooklyn, Ohio 95745, United States",
+                "name": "Highland Rail Depot",
+                "postcode": "65975",
+                "region": "OH",
+                "street": "2912 Linden Ave",
+                "street2": "",
+                "address_coordinates": null,
+                "user_coordinates": null
+              },
+              "instructions": null,
+              "contact": {
+                "uid": "iiA06Q3IDCza3I2YEOJo",
+                "first_name": "Sage",
+                "middle_name": null,
+                "last_name": "Carmichael",
+                "pronunciation": null,
+                "name": "Riley Fairfax",
+                "phones": [
+                  "(823) 555-0190"
+                ]
+              }
+            },
+            "customer_collecting": false,
+            "customer_returning": false,
+            "exchange": null
+          },
+          "due_at": "2026-10-22T15:00:00.000-05:00",
+          "quantity": 211,
+          "breakdown": {
+            "cleaning": 0,
+            "damaged": 0,
+            "lost": 11,
+            "maintenance": 0,
+            "out": 200,
+            "prepped": 0,
+            "quoted": 0,
+            "reserved": 0,
+            "returned": 0
+          },
+          "bookings": [
+            {
+              "uid": "0Vf8CyXIqyggYRKt0MVF:0q6NhsjASVnRH5PqKLKP:dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+              "uid_product": "0q6NhsjASVnRH5PqKLKP",
+              "name": "Walkie Talkie",
+              "type": "rental",
+              "status": "active",
+              "quantity": 85,
+              "shortage": 0,
+              "breakdown": {
+                "cleaning": 0,
+                "damaged": 0,
+                "lost": 0,
+                "maintenance": 0,
+                "out": 85,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 85,
+                  "locations": [
+                    {
+                      "uid_location": "ZBzEiJgeZ3DgScSzHUvN",
+                      "name": "Unknown Location - Walkie Talkie",
+                      "quantity": 85
+                    }
+                  ]
+                }
+              ],
+              "units": {
+                "cleaning": [],
+                "damaged": [],
+                "lost": [],
+                "maintenance": [],
+                "out": [
+                  1001,
+                  1002,
+                  1003,
+                  1004,
+                  1005,
+                  1006,
+                  1007,
+                  1008,
+                  1009,
+                  1010,
+                  1011,
+                  1012,
+                  1013,
+                  1014,
+                  1015,
+                  1016,
+                  1017,
+                  1019,
+                  1020,
+                  1021,
+                  1022,
+                  1023,
+                  1024,
+                  1025,
+                  1026,
+                  1027,
+                  1028,
+                  1029,
+                  1030,
+                  1031,
+                  1032,
+                  1033,
+                  1034,
+                  1035,
+                  1036,
+                  1037,
+                  1038,
+                  1039,
+                  1040,
+                  1041,
+                  1042,
+                  1043,
+                  1044,
+                  1045,
+                  1046,
+                  1047,
+                  1048,
+                  1049,
+                  1050,
+                  1051,
+                  1052,
+                  1053,
+                  1054,
+                  1055,
+                  1056,
+                  1057,
+                  1058,
+                  1059,
+                  1060,
+                  1061,
+                  1062,
+                  1063,
+                  1064,
+                  1065,
+                  1066,
+                  1067,
+                  1068,
+                  1069,
+                  1070,
+                  1072,
+                  1073,
+                  1074,
+                  1075,
+                  1076,
+                  1077,
+                  1078,
+                  1079,
+                  1080,
+                  1081,
+                  1082,
+                  1083,
+                  1084,
+                  1085,
+                  1086,
+                  1087
+                ],
+                "prepped": [],
+                "returned": []
+              }
+            },
+            {
+              "uid": "0Vf8CyXIqyggYRKt0MVF:9Mh47G21XUYW71ehVx7p:dbf33c46-6b15-4669-b8a4-eb6e399d3f09:a027e45b0f50",
+              "uid_product": "9Mh47G21XUYW71ehVx7p",
+              "name": "Spare Battery w/ Belt Clip",
+              "type": "rental",
+              "status": "active",
+              "quantity": 43,
+              "shortage": 0,
+              "breakdown": {
+                "cleaning": 0,
+                "damaged": 0,
+                "lost": 0,
+                "maintenance": 0,
+                "out": 43,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 43,
+                  "locations": [
+                    {
+                      "uid_location": "o6YuvjrQa54uq184dvr8",
+                      "name": "Unknown Location - Spare Battery w/ Belt Clip",
+                      "quantity": 43
+                    }
+                  ]
+                }
+              ],
+              "units": null
+            },
+            {
+              "uid": "0Vf8CyXIqyggYRKt0MVF:lMxUI8nQ7ZqMd4cWqmq0:dbf33c46-6b15-4669-b8a4-eb6e399d3f09:a027e45b0f50",
+              "uid_product": "lMxUI8nQ7ZqMd4cWqmq0",
+              "name": "Six Bank Charger",
+              "type": "rental",
+              "status": "active",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "cleaning": 0,
+                "damaged": 0,
+                "lost": 0,
+                "maintenance": 0,
+                "out": 4,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 4,
+                  "locations": [
+                    {
+                      "uid_location": "XpO1ni4hBz5OpOMbL4T0",
+                      "name": "Unknown Location - Six Bank Charger",
+                      "quantity": 4
+                    }
+                  ]
+                }
+              ],
+              "units": null
+            },
+            {
+              "uid": "0Vf8CyXIqyggYRKt0MVF:tjdX11xfcxOeTirjL7df:dbf33c46-6b15-4669-b8a4-eb6e399d3f09:a027e45b0f50",
+              "uid_product": "tjdX11xfcxOeTirjL7df",
+              "name": "Walkie Case (Large)",
+              "type": "rental",
+              "status": "active",
+              "quantity": 4,
+              "shortage": 0,
+              "breakdown": {
+                "cleaning": 0,
+                "damaged": 0,
+                "lost": 0,
+                "maintenance": 0,
+                "out": 4,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 4,
+                  "locations": [
+                    {
+                      "uid_location": "dPboblI3oOAOh6iHr6pf",
+                      "name": "Unknown Location - Walkie Case (Large)",
+                      "quantity": 4
+                    }
+                  ]
+                }
+              ],
+              "units": null
+            },
+            {
+              "uid": "0Vf8CyXIqyggYRKt0MVF:DG610dKUU7Zu85CwyxYX:dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+              "uid_product": "DG610dKUU7Zu85CwyxYX",
+              "name": "Surveillance Kit",
+              "type": "rental",
+              "status": "active",
+              "quantity": 75,
+              "shortage": 0,
+              "breakdown": {
+                "cleaning": 0,
+                "damaged": 0,
+                "lost": 11,
+                "maintenance": 0,
+                "out": 64,
+                "prepped": 0,
+                "quoted": 0,
+                "reserved": 0,
+                "returned": 0
+              },
+              "stores": [
+                {
+                  "uid_store": "ABKEdXBOZc6VwgXLJ2lL",
+                  "name": "Fillmore",
+                  "default": true,
+                  "quantity": 75,
+                  "locations": [
+                    {
+                      "uid_location": "eVOS3SbrOIXDZb8wVlLI",
+                      "name": "Unknown Location - Surveillance Kit",
+                      "quantity": 75
+                    }
+                  ]
+                }
+              ],
+              "units": null
+            }
+          ],
+          "items": [
+            {
+              "item": {
+                "uid": "03f87080-f8b5-4329-ab12-a5af6e5ed7cf",
+                "type": "group",
+                "name": "Walkies & Hotspots",
+                "path": [
+                  "dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+                  "03f87080-f8b5-4329-ab12-a5af6e5ed7cf"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "0q6NhsjASVnRH5PqKLKP",
+                "name": "Walkie Talkie",
+                "description": "",
+                "quantity": 85,
+                "path": [
+                  "dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+                  "03f87080-f8b5-4329-ab12-a5af6e5ed7cf",
+                  "0q6NhsjASVnRH5PqKLKP"
+                ],
+                "zero_priced": null,
+                "quantity_per_parent": null,
+                "stock_method": "serialized",
+                "order_number": 1069,
+                "uid_order": "0Vf8CyXIqyggYRKt0MVF",
+                "quantity_ordered": 85
+              },
+              "uid_booking": "0Vf8CyXIqyggYRKt0MVF:0q6NhsjASVnRH5PqKLKP:dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "9Mh47G21XUYW71ehVx7p",
+                "name": "Spare Battery w/ Belt Clip",
+                "description": "",
+                "quantity": 43,
+                "path": [
+                  "dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+                  "03f87080-f8b5-4329-ab12-a5af6e5ed7cf",
+                  "0q6NhsjASVnRH5PqKLKP",
+                  "9Mh47G21XUYW71ehVx7p"
+                ],
+                "zero_priced": true,
+                "quantity_per_parent": 0.5,
+                "stock_method": "bulk",
+                "order_number": 1069,
+                "uid_order": "0Vf8CyXIqyggYRKt0MVF",
+                "quantity_ordered": 43
+              },
+              "uid_booking": "0Vf8CyXIqyggYRKt0MVF:9Mh47G21XUYW71ehVx7p:dbf33c46-6b15-4669-b8a4-eb6e399d3f09:a027e45b0f50",
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "lMxUI8nQ7ZqMd4cWqmq0",
+                "name": "Six Bank Charger",
+                "description": "",
+                "quantity": 4,
+                "path": [
+                  "dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+                  "03f87080-f8b5-4329-ab12-a5af6e5ed7cf",
+                  "0q6NhsjASVnRH5PqKLKP",
+                  "lMxUI8nQ7ZqMd4cWqmq0"
+                ],
+                "zero_priced": true,
+                "quantity_per_parent": 0.04,
+                "stock_method": "bulk",
+                "order_number": 1069,
+                "uid_order": "0Vf8CyXIqyggYRKt0MVF",
+                "quantity_ordered": 4
+              },
+              "uid_booking": "0Vf8CyXIqyggYRKt0MVF:lMxUI8nQ7ZqMd4cWqmq0:dbf33c46-6b15-4669-b8a4-eb6e399d3f09:a027e45b0f50",
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "tjdX11xfcxOeTirjL7df",
+                "name": "Walkie Case (Large)",
+                "description": "",
+                "quantity": 4,
+                "path": [
+                  "dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+                  "03f87080-f8b5-4329-ab12-a5af6e5ed7cf",
+                  "0q6NhsjASVnRH5PqKLKP",
+                  "tjdX11xfcxOeTirjL7df"
+                ],
+                "zero_priced": false,
+                "quantity_per_parent": 0.04,
+                "stock_method": "bulk",
+                "order_number": 1069,
+                "uid_order": "0Vf8CyXIqyggYRKt0MVF",
+                "quantity_ordered": 4
+              },
+              "uid_booking": "0Vf8CyXIqyggYRKt0MVF:tjdX11xfcxOeTirjL7df:dbf33c46-6b15-4669-b8a4-eb6e399d3f09:a027e45b0f50",
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "rental",
+                "uid": "DG610dKUU7Zu85CwyxYX",
+                "name": "Surveillance Kit",
+                "description": "",
+                "quantity": 75,
+                "path": [
+                  "dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+                  "03f87080-f8b5-4329-ab12-a5af6e5ed7cf",
+                  "DG610dKUU7Zu85CwyxYX"
+                ],
+                "zero_priced": null,
+                "quantity_per_parent": null,
+                "stock_method": "bulk",
+                "order_number": 1069,
+                "uid_order": "0Vf8CyXIqyggYRKt0MVF",
+                "quantity_ordered": 75
+              },
+              "uid_booking": "0Vf8CyXIqyggYRKt0MVF:DG610dKUU7Zu85CwyxYX:dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "uid": "e63d3047-f8fb-4f49-bfa2-88a39f9e1263",
+                "type": "group",
+                "name": "Transport",
+                "path": [
+                  "dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+                  "e63d3047-f8fb-4f49-bfa2-88a39f9e1263"
+                ],
+                "description": ""
+              },
+              "uid_booking": null,
+              "owner_path": null,
+              "booking_complete": false
+            },
+            {
+              "item": {
+                "type": "service",
+                "uid": "rXADfyGGnqrnMNwv3fGY",
+                "name": "Shipping",
+                "description": "UPS Ground - Estimated, will bill actual",
+                "quantity": 2,
+                "path": [
+                  "dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
+                  "e63d3047-f8fb-4f49-bfa2-88a39f9e1263",
+                  "rXADfyGGnqrnMNwv3fGY"
+                ],
+                "zero_priced": null,
+                "quantity_per_parent": null,
+                "stock_method": "none",
+                "order_number": 1069,
+                "uid_order": "0Vf8CyXIqyggYRKt0MVF",
+                "quantity_ordered": 2
+              },
+              "uid_booking": null,
+              "owner_path": null,
+              "booking_complete": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "order_count": 1,
+  "destination_count": 1,
+  "quantity": 211,
+  "organizations": [
+    {
+      "uid": "Ss5h6xswGHK6UUUujBlF",
+      "organization_path": [
+        {
+          "uid": "08xkr7C2tN8bYC74nzOh",
+          "name": "Umberfield Studios Group",
+          "derived": false
+        },
+        {
+          "uid": "Ss5h6xswGHK6UUUujBlF",
+          "name": "Nightjar Productions LLC",
+          "derived": false
+        }
+      ]
+    }
+  ],
+  "missing_order_uids": [],
+  "next_cursor": null,
+  "notice": null
+}
