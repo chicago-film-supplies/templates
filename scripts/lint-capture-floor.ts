@@ -148,6 +148,13 @@
 
 import { type CoverVerdict, suggestFloor } from "./captureFloorSuggest.ts";
 import { annotateError } from "./_annotate.ts";
+import {
+  probeRoutes,
+  readProbes,
+  reroutedEntries,
+  type RouteProbe,
+  type Router,
+} from "./captureFloorProbes.ts";
 
 const FLOOR_FILE = "capture-floor.json";
 const TITLE = "templates-lint › capture-floor";
@@ -331,6 +338,40 @@ if (compareVersions(parseVersion(floorVersion)!, parseVersion(newest)!) > 0) {
   Deno.exit(1);
 }
 
+// ── The discriminant probes, from the NEWEST core (templates#286) ────
+//
+// ⭐ One probe per arm of each sibling-discriminated mask route
+// (`scope.name` on `kind`), derived by core so a new discriminated route gets
+// probes with no edit here. Each version's router is asked every probe WITH
+// its siblings, so a re-route of one arm is a difference this lint can see —
+// called without siblings, every arm read `text` at every version.
+//
+// ⚠️ Taken from the newest only: `maskRouteProbes` first shipped in
+// `beta.680`, and an older version's ROUTER is what is being compared, not its
+// probe list. Fails CLOSED when the newest does not export it or exports
+// nothing — an empty probe set compares as covered by everything.
+let probes: RouteProbe[];
+{
+  let raw: unknown;
+  try {
+    const piiMod = await import(`jsr:@cfs/core@${newest}/utils/fixture-pii`);
+    const fn = (piiMod as Record<string, unknown>).maskRouteProbes;
+    raw = typeof fn === "function" ? (fn as () => unknown)() : undefined;
+  } catch {
+    raw = undefined;
+  }
+  const read = readProbes(raw);
+  if (!read) {
+    couldNotVerify(
+      `@cfs/core@${newest} does not export a non-empty \`maskRouteProbes()\` from ` +
+        `\`/utils/fixture-pii\`. Without it a re-route of ONE ARM of a discriminated ` +
+        `mask route (\`scope.name\` on \`kind\`) is invisible here (templates#286).`,
+    );
+  }
+  probes = read;
+}
+const probeByKey = new Map(probes.map((p) => [p.key, p]));
+
 // ── The walk, at an explicit version ────────────────────────────────
 
 /**
@@ -366,11 +407,11 @@ async function tagsAt(version: string): Promise<VersionWalk | null> {
   // would make a floor older than that fail the WHOLE lint — and the floor's
   // routes are never compared to anything. Only the newest's are required; see
   // where `newestRoutes` is bound.
-  let categoryForField: ((p: string) => string) | undefined;
+  let categoryForField: Router | undefined;
   try {
     const piiMod = await import(`jsr:@cfs/core@${version}/utils/fixture-pii`);
     const fn = (piiMod as Record<string, unknown>).categoryForField;
-    if (typeof fn === "function") categoryForField = fn as (p: string) => string;
+    if (typeof fn === "function") categoryForField = fn as Router;
   } catch {
     // Left undefined — the walk still yields tags.
   }
@@ -403,6 +444,12 @@ async function tagsAt(version: string): Promise<VersionWalk | null> {
       // collection would invent a distinction the router does not make.
       if (routes && categoryForField) routes.set(leaf.path, categoryForField(leaf.path));
     }
+  }
+  // Every discriminant arm, asked WITH its siblings and stored under its
+  // arm-labelled key (`scope.name[kind=destination]`), beside the sibling-less
+  // leaf answer above. The keys cannot collide: a leaf path never carries `[`.
+  if (routes && categoryForField) {
+    for (const [key, category] of probeRoutes(categoryForField, probes)) routes.set(key, category);
   }
   return { tags, routes, collections: entries.length };
 }
@@ -474,13 +521,9 @@ const dropped = [...floorWalk.tags].filter((t) => !newestWalk.tags.has(t)).sort(
 // fire. Only paths present at BOTH versions count: a path that exists solely in
 // the newest is a new tag and is `missing`'s business, and reporting it twice
 // would name one change as two.
-const rerouted = floorWalk.routes === null ? [] : [...newestRoutes]
-  .filter(([path, category]) => {
-    const before = floorWalk.routes?.get(path);
-    return before !== undefined && before !== category;
-  })
-  .map(([path, category]) => `${path}: ${floorWalk.routes?.get(path)} → ${category}`)
-  .sort();
+const rerouted = floorWalk.routes === null
+  ? []
+  : reroutedEntries(floorWalk.routes, newestRoutes, probeByKey);
 
 const tally = `floor @${floorVersion}: ${floorWalk.tags.size} tagged leaf(s) across ` +
   `${floorWalk.collections} collection(s) · newest @${newest}: ` +
