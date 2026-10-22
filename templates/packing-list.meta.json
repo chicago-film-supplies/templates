@@ -38,6 +38,11 @@
       "params": {
         "hide_zero_priced_components": true
       }
+    },
+    {
+      "slug": "serialized-units-out",
+      "label": "Serialized units out — the assigned Units line",
+      "description": "The only fixture rendering the ASSIGNED arm of the serialized-row `Units:` line (templates#473/#474): its Walkie Talkie booking carries 85 named units out, 1001–1087 with two gaps (1018, 1071), so the line must read `Units: Out 1001–1017, 1019–1070, 1072–1087` — three ranges, which is what pins the range-folding and the gap handling rather than one unbroken run. Every other fixture renders only `Units: unassigned` (the Walkie Talkie in `kit-components-shown` / `kit-components-hidden`). Address `order:0Vf8CyXIqyggYRKt0MVF:all:collection` — prod order 1069, captured 2026-10-21 while every unit was out. COLLECTION leg on an order scope on purpose: a delivery sheet drops a booking once its units go out, so only the collection leg still holds them, and the `order` scope cannot gain a second order. The SOURCE decays the day the units return (collection due 2026-10-22), so a re-capture after that will NOT reproduce this shape — check the Units line before blessing a re-capture. Only the `out` state is covered: prod held 0 bookings with units prepped at capture, so `Units: Prepped …` is still rendered by no fixture. Incidental, not its job: the kit's two zero_priced components hide at the family default, the zero_priced false Walkie Case stays, and the Surveillance Kit carries 11 lost beside 64 out."
     }
   ],
   "render": {
