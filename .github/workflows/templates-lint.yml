@@ -1,6 +1,6 @@
 name: templates-lint
 
-# Six always-on guards on every PR.
+# Seven always-on guards on every PR (3c, render config, joined 2026-10-21).
 #
 # 0. LOCKFILE SYNC (scripts/check-lockfile-sync.ts) — do deno.json and deno.lock
 #    still agree about what is DIRECTLY wanted? Numbered 0 because its POSITION
@@ -245,6 +245,19 @@ jobs:
           else
             deno task lint:deployed-enums --base="${{ github.base_ref || 'main' }}"
           fi
+
+      # 3c. RENDER CONFIG — every `it.doc.<path>` in a sidecar's
+      #     `render.filename` resolves against the family's collection_source
+      #     (scripts/lint-render-config.ts, templates#291). The filename is Eta
+      #     inside JSON: no other guard reads it as code, and `visual-diff`
+      #     cannot see it because it is not on the page.
+      #
+      #     ⚠️ Not blame-scoped, on the #187 reasoning: a core pin bump that
+      #     deletes a field touches no sidecar, so a scoped run would pass the
+      #     one PR that broke it. Fails CLOSED on an access it cannot read.
+      - name: Lint render config
+        if: ${{ !cancelled() }}
+        run: deno task lint:render-config
 
       # 5. CAPTURE FLOOR — see the workflow header.
       #
