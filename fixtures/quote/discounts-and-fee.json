@@ -147,7 +147,9 @@
         "subtotal_cents": 12000,
         "subtotal_discounted_cents": 10200,
         "total_cents": 11730
-      }
+      },
+      "coa_revenue": null,
+      "uid_tracking_category": null
     },
     {
       "uid": "c8d2e3f4-5a67-4b89-8c1d-2e3f4a5b6c7d",
@@ -196,7 +198,9 @@
         "subtotal_cents": 16800,
         "subtotal_discounted_cents": 13300,
         "total_cents": 15295
-      }
+      },
+      "coa_revenue": null,
+      "uid_tracking_category": null
     },
     {
       "uid": "CompedSandbagSet0001",
@@ -226,7 +230,9 @@
         "subtotal_cents": 5000,
         "subtotal_discounted_cents": 0,
         "total_cents": 0
-      }
+      },
+      "coa_revenue": null,
+      "uid_tracking_category": null
     },
     {
       "uid": "DeliverySetupRemove1",
@@ -251,7 +257,9 @@
         "subtotal_cents": 27500,
         "subtotal_discounted_cents": 27500,
         "total_cents": 27500
-      }
+      },
+      "coa_revenue": null,
+      "uid_tracking_category": null
     },
     {
       "uid": "CardProcessingFee001",
@@ -276,7 +284,9 @@
         "subtotal_cents": 1479,
         "subtotal_discounted_cents": 1479,
         "total_cents": 1479
-      }
+      },
+      "coa_revenue": null,
+      "uid_tracking_category": null
     }
   ],
   "query_by_items": [

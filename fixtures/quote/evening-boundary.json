@@ -168,7 +168,8 @@
       "inclusion_type": null,
       "zero_priced": false,
       "crms_id": 101,
-      "coa_revenue": 4000
+      "coa_revenue": 4000,
+      "uid_tracking_category": "M2JhGK8e0aGO5A8ZuooO"
     },
     {
       "uid": "eioftRapzd1n7lz2Y59z",
@@ -216,7 +217,8 @@
       "inclusion_type": "default",
       "zero_priced": true,
       "crms_id": 99,
-      "coa_revenue": 4000
+      "coa_revenue": 4000,
+      "uid_tracking_category": "M2JhGK8e0aGO5A8ZuooO"
     },
     {
       "uid": "Dmaie3W1OoRGvo9BMDC7",
@@ -264,7 +266,8 @@
       "inclusion_type": "default",
       "zero_priced": true,
       "crms_id": 98,
-      "coa_revenue": 4000
+      "coa_revenue": 4000,
+      "uid_tracking_category": "M2JhGK8e0aGO5A8ZuooO"
     }
   ],
   "totals": {

@@ -277,7 +277,9 @@
         "subtotal_cents": 200,
         "subtotal_discounted_cents": 200,
         "total_cents": 230
-      }
+      },
+      "coa_revenue": 4000,
+      "uid_tracking_category": "4JUfsewiwoaEvy06UI8W"
     },
     {
       "uid": "0BIQ73UMiHTtd8mo0yNk",
@@ -321,7 +323,9 @@
         "subtotal_cents": 5000,
         "subtotal_discounted_cents": 5000,
         "total_cents": 5750
-      }
+      },
+      "coa_revenue": 4000,
+      "uid_tracking_category": "4JUfsewiwoaEvy06UI8W"
     },
     {
       "uid": "jN6MZEMqwr9VWsNix8p4",
@@ -365,7 +369,9 @@
         "subtotal_cents": 60000,
         "subtotal_discounted_cents": 60000,
         "total_cents": 69000
-      }
+      },
+      "coa_revenue": 4000,
+      "uid_tracking_category": "8hHwBKBvfDObIvLN7a5E"
     },
     {
       "uid": "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
@@ -417,7 +423,9 @@
         "subtotal_cents": 25000,
         "subtotal_discounted_cents": 25000,
         "total_cents": 27563
-      }
+      },
+      "coa_revenue": 4100,
+      "uid_tracking_category": "5LOJjsqE2Zvzqt4My4mP"
     },
     {
       "uid": "6d10f5c3-84a9-4e27-91b6-0c4de728af35",
@@ -471,7 +479,9 @@
         "subtotal_cents": 1000,
         "subtotal_discounted_cents": 1000,
         "total_cents": 1150
-      }
+      },
+      "coa_revenue": 4000,
+      "uid_tracking_category": "IrnNmVh937dbAGBhUCox"
     },
     {
       "uid": "YyBaHYXVZofngOqtw2Lk",
@@ -515,7 +525,9 @@
         "subtotal_cents": 4500,
         "subtotal_discounted_cents": 4500,
         "total_cents": 5175
-      }
+      },
+      "coa_revenue": 4000,
+      "uid_tracking_category": "IrnNmVh937dbAGBhUCox"
     },
     {
       "uid": "aosey66Ih8tTaoWKQXmO",
@@ -559,7 +571,9 @@
         "subtotal_cents": 2400,
         "subtotal_discounted_cents": 2400,
         "total_cents": 2760
-      }
+      },
+      "coa_revenue": 4000,
+      "uid_tracking_category": "nCgnGkHCdahLfM24hkxU"
     },
     {
       "uid": "OYvggZa70ccCCbcQ8o1H",
@@ -603,7 +617,9 @@
         "subtotal_cents": 8000,
         "subtotal_discounted_cents": 8000,
         "total_cents": 8820
-      }
+      },
+      "coa_revenue": 4200,
+      "uid_tracking_category": "miwRHRdNeWuxbDv59UQc"
     }
   ],
   "totals": {

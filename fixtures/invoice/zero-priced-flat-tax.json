@@ -195,7 +195,8 @@
         "VQim9zNSP2k4gdhBEdnX"
       ],
       "coa_revenue": 4200,
-      "zero_priced": null
+      "zero_priced": null,
+      "uid_tracking_category": null
     },
     {
       "uid": "N8brmUmmSzHs523aJAMd",
@@ -246,7 +247,8 @@
         "N8brmUmmSzHs523aJAMd"
       ],
       "coa_revenue": 4200,
-      "zero_priced": true
+      "zero_priced": true,
+      "uid_tracking_category": null
     }
   ],
   "totals": {

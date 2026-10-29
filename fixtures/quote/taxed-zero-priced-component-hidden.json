@@ -138,7 +138,8 @@
       ],
       "inclusion_type": null,
       "zero_priced": null,
-      "coa_revenue": 4200
+      "coa_revenue": 4200,
+      "uid_tracking_category": "19p1VOVHOYMyFF1Xj5BZ"
     },
     {
       "uid": "N8brmUmmSzHs523aJAMd",
@@ -192,7 +193,8 @@
       ],
       "inclusion_type": "mandatory",
       "zero_priced": true,
-      "coa_revenue": 4200
+      "coa_revenue": 4200,
+      "uid_tracking_category": "19p1VOVHOYMyFF1Xj5BZ"
     }
   ],
   "totals": {
