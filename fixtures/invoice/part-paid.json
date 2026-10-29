@@ -195,9 +195,8 @@
         "XAcldGBzqdP3226aeZ8d"
       ],
       "coa_revenue": 4210,
-      "tracking_category": "Replacements",
+      "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl",
       "xero_id": "80944dda-1aaa-4e2c-ad48-abdf5c916de2",
-      "xero_tracking_option_id": "693879f2-c73d-4936-a47c-5abe53f0526e",
       "crms_opportunity_id": 1002,
       "crms_id": 225,
       "zero_priced": false
@@ -234,9 +233,8 @@
         "1f3Axe7e6ftTY5DW9L2A"
       ],
       "coa_revenue": 4210,
-      "tracking_category": "Replacements",
+      "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl",
       "xero_id": "637bf77f-3def-479f-a115-00baf73908d1",
-      "xero_tracking_option_id": "693879f2-c73d-4936-a47c-5abe53f0526e",
       "crms_opportunity_id": 1002,
       "crms_id": 207,
       "zero_priced": false
@@ -273,9 +271,8 @@
         "PnjJ53HlRoW1xHnfBFPk"
       ],
       "coa_revenue": 4210,
-      "tracking_category": "Replacements",
+      "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl",
       "xero_id": "87cdcd37-ca52-48df-9207-1bc6ddbc25cd",
-      "xero_tracking_option_id": "693879f2-c73d-4936-a47c-5abe53f0526e",
       "crms_opportunity_id": 1002,
       "crms_id": 192,
       "zero_priced": false
@@ -320,7 +317,9 @@
         "1c0485c6-472e-478d-b887-383b3e7d5ffc",
         "custom-2a75960d-ed45-4d1d-b80a-5e5ce9587d07"
       ],
-      "zero_priced": false
+      "zero_priced": false,
+      "uid_tracking_category": null,
+      "coa_revenue": null
     }
   ],
   "totals": {
