@@ -67,8 +67,7 @@
         "charge_windows": [
           {
             "start": "2025-05-05T09:00:00.000-05:00",
-            "end": "2025-05-07T15:00:00.000-05:00",
-            "days": 3
+            "end": "2025-05-07T15:00:00.000-05:00"
           }
         ]
       },
@@ -141,10 +140,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 7500,
         "replacement_cents": 40000,
-        "chargeable_days": 3,
-        "formula": "five_day_week",
         "subtotal_cents": 15000,
         "subtotal_discounted_cents": 15000,
         "discount": null,
@@ -165,7 +161,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 17250
+        "total_cents": 17250,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 7500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "none",
       "order_number": 458,

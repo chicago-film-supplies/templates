@@ -57,8 +57,7 @@
         "charge_windows": [
           {
             "start": "2026-08-17T09:00:00.000-05:00",
-            "end": "2026-09-18T15:00:00.000-05:00",
-            "days": 24
+            "end": "2026-09-18T15:00:00.000-05:00"
           }
         ]
       },
@@ -132,10 +131,7 @@
       "quantity": 10,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 6000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 28800,
         "subtotal_discounted_cents": 28800,
         "discount": null,
@@ -156,7 +152,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 31392
+        "total_cents": 31392,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -180,10 +194,7 @@
       "quantity": 4,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 4000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 11520,
         "subtotal_discounted_cents": 11520,
         "discount": null,
@@ -204,7 +215,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 12557
+        "total_cents": 12557,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -228,10 +257,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 3000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 2880,
         "subtotal_discounted_cents": 2880,
         "discount": null,
@@ -252,7 +278,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 3139
+        "total_cents": 3139,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -276,10 +320,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 3000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 2880,
         "subtotal_discounted_cents": 2880,
         "discount": null,
@@ -300,7 +341,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 3139
+        "total_cents": 3139,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -324,10 +383,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 6000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 5760,
         "subtotal_discounted_cents": 5760,
         "discount": null,
@@ -348,7 +404,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 6278
+        "total_cents": 6278,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -382,10 +456,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 0,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -406,7 +477,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "none",
       "order_number": 985,
@@ -430,10 +519,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 0,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -454,7 +540,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "none",
       "order_number": 985,
@@ -478,10 +582,7 @@
       "quantity": 2,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 2600,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 5200,
         "subtotal_discounted_cents": 5200,
         "discount": null,
@@ -502,7 +603,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 5668
+        "total_cents": 5668,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 2600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -527,10 +646,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 1044,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 1044,
         "subtotal_discounted_cents": 1044,
         "discount": null,
@@ -551,7 +667,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 1138
+        "total_cents": 1138,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 1044
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -576,10 +710,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 800,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 800,
         "subtotal_discounted_cents": 800,
         "discount": null,
@@ -600,7 +731,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 872
+        "total_cents": 872,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 800
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -625,10 +774,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 1200,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 1200,
         "subtotal_discounted_cents": 1200,
         "discount": null,
@@ -649,7 +795,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 1308
+        "total_cents": 1308,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 1200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -674,10 +838,7 @@
       "quantity": 2,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 1200,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 2400,
         "subtotal_discounted_cents": 2400,
         "discount": null,
@@ -698,7 +859,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 2616
+        "total_cents": 2616,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 1200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -723,10 +902,7 @@
       "quantity": 4,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 400,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 1600,
         "subtotal_discounted_cents": 1600,
         "discount": null,
@@ -747,7 +923,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 1744
+        "total_cents": 1744,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 400
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -772,10 +966,7 @@
       "quantity": 9,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 300,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 2700,
         "subtotal_discounted_cents": 2700,
         "discount": null,
@@ -796,7 +987,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 2943
+        "total_cents": 2943,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 300
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -821,10 +1030,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 600,
         "subtotal_discounted_cents": 600,
         "discount": null,
@@ -845,7 +1051,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 654
+        "total_cents": 654,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -870,10 +1094,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 800,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 800,
         "subtotal_discounted_cents": 800,
         "discount": null,
@@ -894,7 +1115,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 872
+        "total_cents": 872,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 800
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -919,10 +1158,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 400,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 400,
         "subtotal_discounted_cents": 400,
         "discount": null,
@@ -943,7 +1179,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 436
+        "total_cents": 436,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 400
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -968,10 +1222,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 1800,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 1800,
         "subtotal_discounted_cents": 1800,
         "discount": null,
@@ -992,7 +1243,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 1962
+        "total_cents": 1962,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 1800
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1017,10 +1286,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 700,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 700,
         "subtotal_discounted_cents": 700,
         "discount": null,
@@ -1041,7 +1307,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 763
+        "total_cents": 763,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 700
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1066,10 +1350,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 1000,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 1000,
         "subtotal_discounted_cents": 1000,
         "discount": null,
@@ -1090,7 +1371,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 1090
+        "total_cents": 1090,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 1000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1115,10 +1414,7 @@
       "quantity": 6,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 400,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 2400,
         "subtotal_discounted_cents": 2400,
         "discount": null,
@@ -1139,7 +1435,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 2616
+        "total_cents": 2616,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 400
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1164,10 +1478,7 @@
       "quantity": 3,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 5000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 8640,
         "subtotal_discounted_cents": 8640,
         "discount": null,
@@ -1188,7 +1499,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 9418
+        "total_cents": 9418,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1213,10 +1542,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 1200,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 1200,
         "subtotal_discounted_cents": 1200,
         "discount": null,
@@ -1237,7 +1563,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 1308
+        "total_cents": 1308,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 1200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "none",
       "order_number": 985,
@@ -1262,10 +1606,7 @@
       "quantity": 4,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 5000,
         "replacement_cents": 25000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 96000,
         "subtotal_discounted_cents": 96000,
         "discount": null,
@@ -1286,7 +1627,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 104640
+        "total_cents": 104640,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 5000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1310,10 +1669,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 30000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -1334,7 +1690,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1359,10 +1733,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 1200,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -1383,7 +1754,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1408,10 +1797,7 @@
       "quantity": 8,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 20000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -1432,7 +1818,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1457,10 +1861,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 3000,
         "replacement_cents": 30000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 14400,
         "subtotal_discounted_cents": 14400,
         "discount": null,
@@ -1481,7 +1882,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 15696
+        "total_cents": 15696,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 3000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1505,10 +1924,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 20000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -1529,7 +1945,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1554,10 +1988,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 1500,
         "replacement_cents": 10000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 7200,
         "subtotal_discounted_cents": 7200,
         "discount": null,
@@ -1578,7 +2009,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 7848
+        "total_cents": 7848,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 1500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1602,10 +2051,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 20000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -1626,7 +2072,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1651,10 +2115,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 7500,
         "replacement_cents": 200000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 36000,
         "subtotal_discounted_cents": 36000,
         "discount": null,
@@ -1675,7 +2136,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 39240
+        "total_cents": 39240,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 7500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1699,10 +2178,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 10000,
         "replacement_cents": 120000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 48000,
         "subtotal_discounted_cents": 48000,
         "discount": null,
@@ -1723,7 +2199,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 52320
+        "total_cents": 52320,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 10000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1747,10 +2241,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 10000,
         "replacement_cents": 140000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 48000,
         "subtotal_discounted_cents": 48000,
         "discount": null,
@@ -1771,7 +2262,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 52320
+        "total_cents": 52320,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 10000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1795,10 +2304,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 10000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 2880,
         "subtotal_discounted_cents": 2880,
         "discount": null,
@@ -1819,7 +2325,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 3139
+        "total_cents": 3139,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1843,10 +2367,7 @@
       "quantity": 5,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 200,
         "replacement_cents": 1000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 4800,
         "subtotal_discounted_cents": 4800,
         "discount": null,
@@ -1867,7 +2388,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 5232
+        "total_cents": 5232,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1891,10 +2430,7 @@
       "quantity": 10,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 200,
         "replacement_cents": 800,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 9600,
         "subtotal_discounted_cents": 9600,
         "discount": null,
@@ -1915,7 +2451,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 10464
+        "total_cents": 10464,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1939,10 +2493,7 @@
       "quantity": 3,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 11000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 8640,
         "subtotal_discounted_cents": 8640,
         "discount": null,
@@ -1963,7 +2514,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 9418
+        "total_cents": 9418,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -1987,10 +2556,7 @@
       "quantity": 4,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 7500,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 11520,
         "subtotal_discounted_cents": 11520,
         "discount": null,
@@ -2011,7 +2577,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 12557
+        "total_cents": 12557,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2035,10 +2619,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 1200,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -2059,7 +2640,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2084,10 +2683,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 3600,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 5760,
         "subtotal_discounted_cents": 5760,
         "discount": null,
@@ -2108,7 +2704,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 6278
+        "total_cents": 6278,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "none",
       "order_number": 985,
@@ -2132,10 +2746,7 @@
       "quantity": 6,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 200,
         "replacement_cents": 699,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 5760,
         "subtotal_discounted_cents": 5760,
         "discount": null,
@@ -2156,7 +2767,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 6278
+        "total_cents": 6278,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "none",
       "order_number": 985,
@@ -2180,10 +2809,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 200,
         "replacement_cents": 3000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 960,
         "subtotal_discounted_cents": 960,
         "discount": null,
@@ -2204,7 +2830,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 1046
+        "total_cents": 1046,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2228,10 +2872,7 @@
       "quantity": 5,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 3200,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 14400,
         "subtotal_discounted_cents": 14400,
         "discount": null,
@@ -2252,7 +2893,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 15696
+        "total_cents": 15696,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "none",
       "order_number": 985,
@@ -2276,10 +2935,7 @@
       "quantity": 30,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 100,
         "replacement_cents": 200,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 14400,
         "subtotal_discounted_cents": 14400,
         "discount": null,
@@ -2300,7 +2956,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 15696
+        "total_cents": 15696,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 100
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2324,10 +2998,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 1500,
         "replacement_cents": 0,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 7200,
         "subtotal_discounted_cents": 7200,
         "discount": null,
@@ -2348,7 +3019,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 7848
+        "total_cents": 7848,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 1500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "none",
       "order_number": 985,
@@ -2372,10 +3061,7 @@
       "quantity": 60,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 200,
         "replacement_cents": 1000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 57600,
         "subtotal_discounted_cents": 57600,
         "discount": null,
@@ -2396,7 +3082,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 62784
+        "total_cents": 62784,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2420,10 +3124,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 1000,
         "replacement_cents": 10000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 4800,
         "subtotal_discounted_cents": 4800,
         "discount": null,
@@ -2444,7 +3145,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 5232
+        "total_cents": 5232,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 1000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2468,10 +3187,7 @@
       "quantity": 20,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 800,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 16000,
         "subtotal_discounted_cents": 16000,
         "discount": null,
@@ -2492,7 +3208,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 17440
+        "total_cents": 17440,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 800
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2526,10 +3260,7 @@
       "quantity": 4,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 6000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 11520,
         "subtotal_discounted_cents": 11520,
         "discount": null,
@@ -2550,7 +3281,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 12557
+        "total_cents": 12557,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2574,10 +3323,7 @@
       "quantity": 9,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 6000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 25920,
         "subtotal_discounted_cents": 25920,
         "discount": null,
@@ -2598,7 +3344,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 28253
+        "total_cents": 28253,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2622,10 +3386,7 @@
       "quantity": 80,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 200,
         "replacement_cents": 1600,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 76800,
         "subtotal_discounted_cents": 76800,
         "discount": null,
@@ -2646,7 +3407,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 83712
+        "total_cents": 83712,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2670,10 +3449,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 1000,
         "replacement_cents": 8000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 4800,
         "subtotal_discounted_cents": 4800,
         "discount": null,
@@ -2694,7 +3470,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 5232
+        "total_cents": 5232,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 1000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2718,10 +3512,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 2500,
         "replacement_cents": 10000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 12000,
         "subtotal_discounted_cents": 12000,
         "discount": null,
@@ -2742,7 +3533,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 13080
+        "total_cents": 13080,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 2500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2766,10 +3575,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 2500,
         "replacement_cents": 4000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 24000,
         "subtotal_discounted_cents": 24000,
         "discount": null,
@@ -2790,7 +3596,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 26160
+        "total_cents": 26160,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 2500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2814,10 +3638,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 2500,
         "replacement_cents": 0,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 24000,
         "subtotal_discounted_cents": 24000,
         "discount": null,
@@ -2838,7 +3659,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 26160
+        "total_cents": 26160,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 2500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "none",
       "order_number": 985,
@@ -2862,10 +3701,7 @@
       "quantity": 100,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 900,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -2886,7 +3722,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2911,10 +3765,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 6500,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -2935,7 +3786,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -2960,10 +3829,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 1000,
         "replacement_cents": 9000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 9600,
         "subtotal_discounted_cents": 9600,
         "discount": null,
@@ -2984,7 +3850,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 10464
+        "total_cents": 10464,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 1000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3008,10 +3892,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 8700,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -3032,7 +3913,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3067,10 +3966,7 @@
       "quantity": 4,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 6000,
         "replacement_cents": 50000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 115200,
         "subtotal_discounted_cents": 115200,
         "discount": null,
@@ -3091,7 +3987,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 125568
+        "total_cents": 125568,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 6000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3115,10 +4029,7 @@
       "quantity": 16,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 3000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -3139,7 +4050,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3164,10 +4093,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 3000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -3188,7 +4114,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3213,10 +4157,7 @@
       "quantity": 4,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 10000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -3237,7 +4178,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3262,10 +4221,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 1200,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -3286,7 +4242,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3311,10 +4285,7 @@
       "quantity": 32,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 9000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -3335,7 +4306,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3360,10 +4349,7 @@
       "quantity": 12,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
         "replacement_cents": 3000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -3384,7 +4370,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3419,10 +4423,7 @@
       "quantity": 6,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 1000,
         "replacement_cents": 6000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 28800,
         "subtotal_discounted_cents": 28800,
         "discount": null,
@@ -3443,7 +4444,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 31392
+        "total_cents": 31392,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 1000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3477,10 +4496,7 @@
       "quantity": 4,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 2000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 11520,
         "subtotal_discounted_cents": 11520,
         "discount": null,
@@ -3501,7 +4517,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 12557
+        "total_cents": 12557,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3525,10 +4559,7 @@
       "quantity": 4,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 3000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 11520,
         "subtotal_discounted_cents": 11520,
         "discount": null,
@@ -3549,7 +4580,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 12557
+        "total_cents": 12557,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3573,10 +4622,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 1000,
         "replacement_cents": 7000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 9600,
         "subtotal_discounted_cents": 9600,
         "discount": null,
@@ -3597,7 +4643,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 10464
+        "total_cents": 10464,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 1000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3631,10 +4695,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 3000,
         "replacement_cents": 30000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 28800,
         "subtotal_discounted_cents": 28800,
         "discount": null,
@@ -3655,7 +4716,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 31392
+        "total_cents": 31392,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 3000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3679,10 +4758,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 3000,
         "replacement_cents": 70000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 14400,
         "subtotal_discounted_cents": 14400,
         "discount": null,
@@ -3703,7 +4779,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 15696
+        "total_cents": 15696,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 3000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3727,10 +4821,7 @@
       "quantity": 3,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 1500,
         "replacement_cents": 54000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 21600,
         "subtotal_discounted_cents": 21600,
         "discount": null,
@@ -3751,7 +4842,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 23544
+        "total_cents": 23544,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 1500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3785,10 +4894,7 @@
       "quantity": 1,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 3500,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 3500,
         "subtotal_discounted_cents": 3500,
         "discount": null,
@@ -3809,7 +4915,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 3815
+        "total_cents": 3815,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 3500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3833,10 +4957,7 @@
       "quantity": 4,
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 2000,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 8000,
         "subtotal_discounted_cents": 8000,
         "discount": null,
@@ -3857,7 +4978,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 8720
+        "total_cents": 8720,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 2000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3891,10 +5030,7 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 3000,
         "replacement_cents": 35000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 28800,
         "subtotal_discounted_cents": 0,
         "discount": {
@@ -3919,7 +5055,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 3000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,
@@ -3953,10 +5107,7 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 1000,
         "replacement_cents": 50000,
-        "chargeable_days": 24,
-        "formula": "five_day_week",
         "subtotal_cents": 4800,
         "subtotal_discounted_cents": 0,
         "discount": {
@@ -3981,7 +5132,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 1000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 24,
+            "den": 5
+          }
+        ]
       },
       "stock_method": "bulk",
       "order_number": 985,

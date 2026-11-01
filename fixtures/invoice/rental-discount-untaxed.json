@@ -77,8 +77,7 @@
         "charge_windows": [
           {
             "start": "2025-07-09T12:30:00.000-05:00",
-            "end": "2025-07-14T15:00:00.000-05:00",
-            "days": 4
+            "end": "2025-07-14T15:00:00.000-05:00"
           }
         ]
       },
@@ -162,9 +161,6 @@
       "quantity": 1,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 6000,
-        "chargeable_days": 4,
-        "formula": "five_day_week",
         "subtotal_cents": 6000,
         "subtotal_discounted_cents": 4800,
         "discount": {
@@ -181,7 +177,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 4800
+        "total_cents": 4800,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 6000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "path": [
         "3tiOW5c2wAl3W94FmfjV",
@@ -204,9 +218,6 @@
       "quantity": 4,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
-        "chargeable_days": 4,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -219,7 +230,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "path": [
         "3tiOW5c2wAl3W94FmfjV",
@@ -243,9 +272,6 @@
       "quantity": 4,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 0,
-        "chargeable_days": 4,
-        "formula": "five_day_week",
         "subtotal_cents": 0,
         "subtotal_discounted_cents": 0,
         "discount": null,
@@ -258,7 +284,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 0
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "path": [
         "3tiOW5c2wAl3W94FmfjV",

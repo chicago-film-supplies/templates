@@ -86,8 +86,7 @@
         "charge_windows": [
           {
             "start": "2025-04-22T09:00:00.000-05:00",
-            "end": "2025-05-16T15:00:00.000-05:00",
-            "days": 19
+            "end": "2025-05-16T15:00:00.000-05:00"
           }
         ]
       },
@@ -177,9 +176,6 @@
       ],
       "zero_priced": false,
       "price": {
-        "base_cents": 600,
-        "chargeable_days": 19,
-        "formula": "five_day_week",
         "subtotal_cents": 4560,
         "subtotal_discounted_cents": 4560,
         "discount": null,
@@ -200,7 +196,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 5062
+        "total_cents": 5062,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 19,
+            "den": 5
+          }
+        ]
       },
       "coa_revenue": 4000,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
@@ -224,9 +238,6 @@
       ],
       "zero_priced": false,
       "price": {
-        "base_cents": 200,
-        "chargeable_days": null,
-        "formula": "five_day_week",
         "subtotal_cents": 400,
         "subtotal_discounted_cents": 0,
         "discount": {
@@ -251,7 +262,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "coa_revenue": 4000,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
