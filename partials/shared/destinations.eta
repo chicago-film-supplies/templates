@@ -84,13 +84,12 @@ const { u, destinations, addressColumnCount, hasCollection, deliverySpan, return
     // A 0-day window is valid (it still bills the one-week minimum), and
     // `formatChargeDays` throws on 0, so every window count goes through this.
     const chargePeriod = (n) => n > 0 ? it.dates.formatChargeDays(n).periodLabel : "0 days";
-    // A window’s business days. Windows stopped storing `days` (core
+    // A window’s business days. Windows store no `days` (core
     // purchases-as-documents 5b), so they are counted here the way the manager
-    // counts them (`chargeWindowBusinessDays`, against `it.holidays`); a stored
-    // fixture still carrying `days` is read as-is until the fixtures move
-    // (templates#493). The total is billable days, Σ max(days, 5), which
-    // `it.dates.billableDays` computed until core dropped it.
-    const windowDays = (w) => w.days ?? it.dates.chargeWindowBusinessDays([w], it.holidays)[0];
+    // counts them (`chargeWindowBusinessDays`, against `it.holidays`). The total
+    // is billable days, Σ max(days, 5), which `it.dates.billableDays` computed
+    // until core dropped it.
+    const windowDays = (w) => it.dates.chargeWindowBusinessDays([w], it.holidays)[0];
     // A charge WINDOW is a span, and a span needs an end. With no rental line
     // the end date and the duration are both suppressed below, which would
     // leave "Dates Charged:" labelling a lone start date — the same
