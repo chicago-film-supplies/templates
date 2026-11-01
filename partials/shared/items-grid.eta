@@ -102,9 +102,8 @@ let prevDestKey = null;
 // Since core’s purchases-as-documents 5b a line prices by `price.price_formula`
 // (`{ uid, name, basis }`), `price.rates` (one per rate key) and `price.counts`
 // (what it BILLED, per rate key, as num/den). `base_cents`, `formula` and
-// `chargeable_days` are gone from every stored line; the `!p.rates` /
-// `!p.price_formula` arms below read them only for a fixture still in the old
-// shape, and go when the fixtures move (templates#493).
+// `chargeable_days` are gone from every stored line and every fixture
+// (templates#496), so nothing here reads them.
 //
 // Owner, 2026-11-01 (templates#493): a ONE-rate line — every line today, on
 // Five-day week or Fixed — prints that rate as its Unit Price, and Duration
@@ -124,7 +123,6 @@ const countText = (t) => {
 };
 const unitPriceCell = (item, taxCents) => {
   const p = item.price;
-  if (!p.rates) return moneyCellOn(p.base_cents, taxCents);
   if (p.rates.length <= 1) return moneyCellOn(p.rates.length === 1 ? p.rates[0].amount_cents : 0, taxCents);
   return p.rates.map(rateText).join(" · ");
 };
@@ -134,9 +132,8 @@ const unitPriceCell = (item, taxCents) => {
 // formats, exactly as Five-day week meters them.
 const durationText = (item) => {
   const p = item.price;
-  if (!p.price_formula) {
-    return p.formula === "fixed" ? "Fixed" : p.chargeable_days ? it.dates.formatChargeDays(p.chargeable_days).periodLabel : "";
-  }
+  // A line with no formula is a percent-of-total fee, which never reaches this grid.
+  if (!p.price_formula) return "";
   if (p.price_formula.basis === "flat") return "Fixed";
   const counts = (p.counts || []).filter((t) => t.num !== 0);
   if (counts.length === 1 && counts[0].rate_key === "week") {
@@ -221,10 +218,9 @@ const durationText = (item) => {
             !u.isSameAsDeliveryDates(d);
           // A 0-day window is valid, and `formatChargeDays` throws on 0.
           const chargePeriod = (n) => n > 0 ? it.dates.formatChargeDays(n).periodLabel : "0 days";
-          // A window’s business days. Windows stopped storing `days` (core
-          // 5b); a stored fixture still carrying it is read as-is until the
-          // fixtures move (templates#493).
-          const windowDays = (w) => w.days ?? it.dates.chargeWindowBusinessDays([w], it.holidays)[0];
+          // A window’s business days, counted from its dates the way the
+          // manager counts them: windows store no `days` (core 5b).
+          const windowDays = (w) => it.dates.chargeWindowBusinessDays([w], it.holidays)[0];
           const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
           const addressText = (ep) => {
             if (!ep || !ep.address) return "";
