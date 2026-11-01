@@ -97,6 +97,54 @@ let headerPending = destinationDetail;
 // The previous destination section as RENDERED TEXT, so a consecutive repeat of
 // the same movement prints its dates alone. Null until the first section.
 let prevDestKey = null;
+
+// ── A line’s Unit Price and Duration, off its formula snapshot ──────────────
+// Since core’s purchases-as-documents 5b a line prices by `price.price_formula`
+// (`{ uid, name, basis }`), `price.rates` (one per rate key) and `price.counts`
+// (what it BILLED, per rate key, as num/den). `base_cents`, `formula` and
+// `chargeable_days` are gone from every stored line; the `!p.rates` /
+// `!p.price_formula` arms below read them only for a fixture still in the old
+// shape, and go when the fixtures move (templates#493).
+//
+// Owner, 2026-11-01 (templates#493): a ONE-rate line — every line today, on
+// Five-day week or Fixed — prints that rate as its Unit Price, and Duration
+// reads Fixed on a flat formula and the billed weeks on Five-day week. A
+// MULTI-rate line (none in prod yet; e.g. a month cap then weeks) lists its
+// rates ($200.00/mo · $60.00/wk) and its counts (1 month + 2 weeks), so the
+// line can be checked by hand from what is printed.
+const RATE_UNIT = { day: "day", week: "wk", month: "mo" };
+const PERIOD_WORDS = { day: ["day", "days"], week: ["week", "weeks"], month: ["month", "months"] };
+const rateText = (r) => it.money.formatCents(r.amount_cents) +
+  (r.rate_key === "flat" ? "" : "/" + (RATE_UNIT[r.rate_key] ?? r.rate_key));
+const countText = (t) => {
+  const n = t.num / t.den;
+  const v = Number.isInteger(n) ? n : Math.round(n * 100) / 100;
+  const words = PERIOD_WORDS[t.rate_key];
+  return words ? v + " " + (v === 1 ? words[0] : words[1]) : v + " × " + t.rate_key;
+};
+const unitPriceCell = (item, taxCents) => {
+  const p = item.price;
+  if (!p.rates) return moneyCellOn(p.base_cents, taxCents);
+  if (p.rates.length <= 1) return moneyCellOn(p.rates.length === 1 ? p.rates[0].amount_cents : 0, taxCents);
+  return p.rates.map(rateText).join(" · ");
+};
+// The unit is core’s call where it can be: `formatChargeDays` auto-derives
+// weeks at >= 5 days and days below it, and THROWS on <= 0, hence the guards.
+// A single `week` count is num/den weeks; × 5 gives the business days it
+// formats, exactly as Five-day week meters them.
+const durationText = (item) => {
+  const p = item.price;
+  if (!p.price_formula) {
+    return p.formula === "fixed" ? "Fixed" : p.chargeable_days ? it.dates.formatChargeDays(p.chargeable_days).periodLabel : "";
+  }
+  if (p.price_formula.basis === "flat") return "Fixed";
+  const counts = (p.counts || []).filter((t) => t.num !== 0);
+  if (counts.length === 1 && counts[0].rate_key === "week") {
+    const days = (counts[0].num * 5) / counts[0].den;
+    return days > 0 ? it.dates.formatChargeDays(days).periodLabel : "";
+  }
+  return counts.map(countText).join(" + ");
+};
 %>
 <section id="items">
   <table>
@@ -173,6 +221,10 @@ let prevDestKey = null;
             !u.isSameAsDeliveryDates(d);
           // A 0-day window is valid, and `formatChargeDays` throws on 0.
           const chargePeriod = (n) => n > 0 ? it.dates.formatChargeDays(n).periodLabel : "0 days";
+          // A window’s business days. Windows stopped storing `days` (core
+          // 5b); a stored fixture still carrying it is read as-is until the
+          // fixtures move (templates#493).
+          const windowDays = (w) => w.days ?? it.dates.chargeWindowBusinessDays([w], it.holidays)[0];
           const stamp = (iso) => it.dates.formatChicagoWeekdayDate(iso) + " " + it.dates.formatChicagoTime(iso);
           const addressText = (ep) => {
             if (!ep || !ep.address) return "";
@@ -262,12 +314,12 @@ let prevDestKey = null;
               <div class="label bold"><% if (wi === 0) { %>Charged:<% } %></div>
               <div class="span">
                 <%= it.dates.formatChicagoWeekdayDate(w.start) %><span class="inline-arrow"><%~ arrow() %></span><%= it.dates.formatChicagoWeekdayDate(w.end) %>
-                <span class="inline-clock"><%~ clock() %></span><span class="destination-days"><%= chargePeriod(w.days) %></span>
+                <span class="inline-clock"><%~ clock() %></span><span class="destination-days"><%= chargePeriod(windowDays(w)) %></span>
               </div>
               <% }) %>
               <% if (windows.length > 1) { %>
               <div class="label bold">Total charged:</div>
-              <div class="span"><span class="inline-clock"><%~ clock() %></span><span class="destination-days"><%= chargePeriod(it.dates.billableDays(windows.map((w) => w.days))) %></span></div>
+              <div class="span"><span class="inline-clock"><%~ clock() %></span><span class="destination-days"><%= chargePeriod(windows.reduce((sum, w) => sum + Math.max(windowDays(w), 5), 0)) %></span></div>
               <% } %>
               <% } %>
             </div>
@@ -298,18 +350,10 @@ let prevDestKey = null;
           <td class="capitalize"><% if (DISAMBIGUATED_ITEM_TYPES.has(item.type)) { %><%= item.type %><% } %></td>
           <td><%= numberCell(item.quantity) %></td>
           <% if (hasRentals) { %>
-          <td><%/* The unit is core's call, not this file's: `formatChargeDays`
-                   auto-derives weeks at >= 5 chargeable days and days below it,
-                   and singularizes, so a 10-day rental reads `2 weeks` here and
-                   in the manager alike. It THROWS on <= 0, which the truthiness
-                   guard in front of it already excludes.
-
-                   A `fixed`-formula rental still carries a `chargeable_days`
-                   count (core sets it from the booking regardless of formula),
-                   but the price does not scale with it — so this checks
-                   `formula` FIRST and never reaches the days formatter for one. */%><%= item.type !== "rental" ? '' : item.price.formula === "fixed" ? "Fixed" : item.price.chargeable_days ? it.dates.formatChargeDays(item.price.chargeable_days).periodLabel : '' %></td>
+          <td><%/* durationText above: Fixed on a flat formula, the billed
+                   weeks on Five-day week, the counts on a multi-rate formula. */%><%= item.type !== "rental" ? '' : durationText(item) %></td>
           <% } %>
-          <td><%= moneyCellOn(item.price.base_cents, rowTaxCents) %></td>
+          <td><%= unitPriceCell(item, rowTaxCents) %></td>
           <% if (hasDiscount) { %>
           <td>
             <%/* Parenthesised: a discount is a deduction, and the accounting
