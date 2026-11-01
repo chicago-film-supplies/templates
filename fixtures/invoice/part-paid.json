@@ -86,8 +86,7 @@
         "charge_windows": [
           {
             "start": "2026-08-06T09:00:00.000-05:00",
-            "end": "2026-08-06T09:00:00.000-05:00",
-            "days": 1
+            "end": "2026-08-06T09:00:00.000-05:00"
           }
         ]
       },
@@ -171,9 +170,6 @@
       "quantity": 3,
       "uid_tax_class": "Y1kxMxz7xC899ncCIMQH",
       "price": {
-        "base_cents": 1600,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 4800,
         "subtotal_discounted_cents": 4800,
         "discount": null,
@@ -186,7 +182,25 @@
             "amount_cents": 492
           }
         ],
-        "total_cents": 5292
+        "total_cents": 5292,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 1600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "path": [
         "JthKx7NpHmowJJBTr1gD",
@@ -209,9 +223,6 @@
       "quantity": 1,
       "uid_tax_class": "Y1kxMxz7xC899ncCIMQH",
       "price": {
-        "base_cents": 1600,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 1600,
         "subtotal_discounted_cents": 1600,
         "discount": null,
@@ -224,7 +235,25 @@
             "amount_cents": 164
           }
         ],
-        "total_cents": 1764
+        "total_cents": 1764,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 1600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "path": [
         "JthKx7NpHmowJJBTr1gD",
@@ -247,9 +276,6 @@
       "quantity": 1,
       "uid_tax_class": "Y1kxMxz7xC899ncCIMQH",
       "price": {
-        "base_cents": 1600,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 1600,
         "subtotal_discounted_cents": 1600,
         "discount": null,
@@ -262,7 +288,25 @@
             "amount_cents": 164
           }
         ],
-        "total_cents": 1764
+        "total_cents": 1764,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 1600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "path": [
         "JthKx7NpHmowJJBTr1gD",
@@ -285,10 +329,7 @@
       "quantity": 9,
       "uid_tax_class": "Y1kxMxz7xC899ncCIMQH",
       "price": {
-        "base_cents": 2200,
         "base_percent": null,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 19800,
         "subtotal_discounted_cents": 19800,
         "discount": null,
@@ -309,7 +350,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 21830
+        "total_cents": 21830,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 2200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "path": [
         "JthKx7NpHmowJJBTr1gD",

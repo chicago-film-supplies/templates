@@ -102,16 +102,31 @@
       "quantity": 1,
       "uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
       "price": {
-        "base_cents": 35000,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "subtotal_cents": 35000,
         "subtotal_discounted_cents": 35000,
         "discount": null,
         "taxes": [],
         "taxes_base": [],
-        "total_cents": 35000
+        "total_cents": 35000,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 35000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "stock_method": "none",
       "order_number": 977,

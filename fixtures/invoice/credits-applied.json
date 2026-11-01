@@ -76,8 +76,7 @@
         "charge_windows": [
           {
             "start": "2023-04-13T09:00:00.000-05:00",
-            "end": "2023-04-16T17:00:00.000-05:00",
-            "days": 2
+            "end": "2023-04-16T17:00:00.000-05:00"
           }
         ]
       },
@@ -150,9 +149,6 @@
       "quantity": 1,
       "uid_tax_class": "Y1kxMxz7xC899ncCIMQH",
       "price": {
-        "base_cents": 39900,
-        "chargeable_days": null,
-        "formula": "five_day_week",
         "subtotal_cents": 39900,
         "subtotal_discounted_cents": 39900,
         "discount": null,
@@ -165,7 +161,25 @@
             "amount_cents": 4090
           }
         ],
-        "total_cents": 43990
+        "total_cents": 43990,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 39900
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "path": [
         "sfL6ZP7xDs1XxFHNvaHO",

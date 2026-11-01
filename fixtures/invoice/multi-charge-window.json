@@ -86,18 +86,15 @@
         "charge_windows": [
           {
             "start": "2025-04-22T09:00:00.000-05:00",
-            "end": "2025-04-24T15:00:00.000-05:00",
-            "days": 3
+            "end": "2025-04-24T15:00:00.000-05:00"
           },
           {
             "start": "2025-04-29T09:00:00.000-05:00",
-            "end": "2025-05-02T15:00:00.000-05:00",
-            "days": 4
+            "end": "2025-05-02T15:00:00.000-05:00"
           },
           {
             "start": "2025-05-13T09:00:00.000-05:00",
-            "end": "2025-05-14T15:00:00.000-05:00",
-            "days": 2
+            "end": "2025-05-14T15:00:00.000-05:00"
           }
         ]
       },
@@ -181,9 +178,6 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
-        "chargeable_days": 15,
-        "formula": "five_day_week",
         "subtotal_cents": 3600,
         "subtotal_discounted_cents": 3600,
         "discount": null,
@@ -204,7 +198,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 3996
+        "total_cents": 3996,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 3,
+            "den": 1
+          }
+        ]
       },
       "path": [
         "UTIdgPY8upuqt46EINjR",
@@ -227,9 +239,6 @@
       "quantity": 2,
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 200,
-        "chargeable_days": 15,
-        "formula": "five_day_week",
         "subtotal_cents": 1200,
         "subtotal_discounted_cents": 0,
         "discount": {
@@ -254,7 +263,25 @@
             "type": "percent"
           }
         ],
-        "total_cents": 0
+        "total_cents": 0,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 3,
+            "den": 1
+          }
+        ]
       },
       "path": [
         "UTIdgPY8upuqt46EINjR",

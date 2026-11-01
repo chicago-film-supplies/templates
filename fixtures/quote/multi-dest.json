@@ -57,8 +57,7 @@
         "charge_windows": [
           {
             "start": "2026-04-06T09:00:00.000-05:00",
-            "end": "2026-04-10T15:00:00.000-05:00",
-            "days": 5
+            "end": "2026-04-10T15:00:00.000-05:00"
           }
         ]
       },
@@ -149,8 +148,7 @@
         "charge_windows": [
           {
             "start": "2026-04-07T07:00:00.000-05:00",
-            "end": "2026-04-11T15:00:00.000-05:00",
-            "days": 5
+            "end": "2026-04-11T15:00:00.000-05:00"
           }
         ]
       },
@@ -252,10 +250,7 @@
       ],
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 200,
         "replacement_cents": 1600,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
         "discount": null,
         "taxes": [
           {
@@ -276,7 +271,25 @@
         ],
         "subtotal_cents": 200,
         "subtotal_discounted_cents": 200,
-        "total_cents": 230
+        "total_cents": 230,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 200
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "coa_revenue": 4000,
       "uid_tracking_category": "4JUfsewiwoaEvy06UI8W"
@@ -298,10 +311,7 @@
       ],
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 2500,
         "replacement_cents": 46500,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
         "discount": null,
         "taxes": [
           {
@@ -322,7 +332,25 @@
         ],
         "subtotal_cents": 5000,
         "subtotal_discounted_cents": 5000,
-        "total_cents": 5750
+        "total_cents": 5750,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 2500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "coa_revenue": 4000,
       "uid_tracking_category": "4JUfsewiwoaEvy06UI8W"
@@ -344,10 +372,7 @@
       ],
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 20000,
         "replacement_cents": 0,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
         "discount": null,
         "taxes": [
           {
@@ -368,7 +393,25 @@
         ],
         "subtotal_cents": 60000,
         "subtotal_discounted_cents": 60000,
-        "total_cents": 69000
+        "total_cents": 69000,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 20000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "coa_revenue": 4000,
       "uid_tracking_category": "8hHwBKBvfDObIvLN7a5E"
@@ -398,10 +441,7 @@
       ],
       "uid_tax_class": "F1VqGu0m6SbWMVLgLoV4",
       "price": {
-        "base_cents": 25000,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "discount": null,
         "taxes": [
           {
@@ -422,7 +462,25 @@
         ],
         "subtotal_cents": 25000,
         "subtotal_discounted_cents": 25000,
-        "total_cents": 27563
+        "total_cents": 27563,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 25000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "coa_revenue": 4100,
       "uid_tracking_category": "5LOJjsqE2Zvzqt4My4mP"
@@ -454,10 +512,7 @@
       ],
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 500,
         "replacement_cents": 6000,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
         "discount": null,
         "taxes": [
           {
@@ -478,7 +533,25 @@
         ],
         "subtotal_cents": 1000,
         "subtotal_discounted_cents": 1000,
-        "total_cents": 1150
+        "total_cents": 1150,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "coa_revenue": 4000,
       "uid_tracking_category": "IrnNmVh937dbAGBhUCox"
@@ -500,10 +573,7 @@
       ],
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 1500,
         "replacement_cents": 15000,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
         "discount": null,
         "taxes": [
           {
@@ -524,7 +594,25 @@
         ],
         "subtotal_cents": 4500,
         "subtotal_discounted_cents": 4500,
-        "total_cents": 5175
+        "total_cents": 5175,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 1500
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "coa_revenue": 4000,
       "uid_tracking_category": "IrnNmVh937dbAGBhUCox"
@@ -546,10 +634,7 @@
       ],
       "uid_tax_class": "GHDaH9QMXPydPtLwOcGY",
       "price": {
-        "base_cents": 600,
         "replacement_cents": 8000,
-        "chargeable_days": 5,
-        "formula": "five_day_week",
         "discount": null,
         "taxes": [
           {
@@ -570,7 +655,25 @@
         ],
         "subtotal_cents": 2400,
         "subtotal_discounted_cents": 2400,
-        "total_cents": 2760
+        "total_cents": 2760,
+        "price_formula": {
+          "uid": "FiveDayWeekPriceForm",
+          "name": "Five-day week",
+          "basis": "time"
+        },
+        "rates": [
+          {
+            "rate_key": "week",
+            "amount_cents": 600
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "week",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "coa_revenue": 4000,
       "uid_tracking_category": "nCgnGkHCdahLfM24hkxU"
@@ -592,10 +695,7 @@
       ],
       "uid_tax_class": "BvPzd2yRBcwBDjV7tSc7",
       "price": {
-        "base_cents": 2000,
         "replacement_cents": 0,
-        "chargeable_days": null,
-        "formula": "fixed",
         "discount": null,
         "taxes": [
           {
@@ -616,7 +716,25 @@
         ],
         "subtotal_cents": 8000,
         "subtotal_discounted_cents": 8000,
-        "total_cents": 8820
+        "total_cents": 8820,
+        "price_formula": {
+          "uid": "FixedPriceFormula000",
+          "name": "Fixed",
+          "basis": "flat"
+        },
+        "rates": [
+          {
+            "rate_key": "flat",
+            "amount_cents": 2000
+          }
+        ],
+        "counts": [
+          {
+            "rate_key": "flat",
+            "num": 1,
+            "den": 1
+          }
+        ]
       },
       "coa_revenue": 4200,
       "uid_tracking_category": "miwRHRdNeWuxbDv59UQc"
