@@ -185,6 +185,8 @@
   "query_by_invoices": [
     "IO5vOVx8QyfTh2a2Tt0V"
   ],
+  "credit_notes": [],
+  "query_by_credit_notes": [],
   "query_by_items": [
     "VQim9zNSP2k4gdhBEdnX"
   ],
