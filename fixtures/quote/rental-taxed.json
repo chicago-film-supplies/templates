@@ -216,6 +216,8 @@
   },
   "invoices": [],
   "query_by_invoices": [],
+  "credit_notes": [],
+  "query_by_credit_notes": [],
   "query_by_items": [
     "CaWTUrRVadAs6IJUjqzF"
   ],

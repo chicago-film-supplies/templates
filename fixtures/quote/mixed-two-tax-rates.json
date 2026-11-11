@@ -1292,6 +1292,8 @@
   "query_by_invoices": [
     "ssoVD9acC0qjyS3xai8m"
   ],
+  "credit_notes": [],
+  "query_by_credit_notes": [],
   "query_by_items": [
     "d5w9h96wJYvSPTDX3niD",
     "lMxaFkdQPEn45jwGYc5J",
