@@ -49,7 +49,7 @@
   },
   "destinations": [
     {
-      "uid_order": "sfL6ZP7xDs1XxFHNvaHO",
+      "uid_source": "sfL6ZP7xDs1XxFHNvaHO",
       "uid": "32987d7e-06c7-482a-bdf0-37097699b071",
       "dates": {
         "delivery_start": "2023-04-13T09:00:00.000-05:00",
