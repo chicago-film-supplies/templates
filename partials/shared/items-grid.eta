@@ -11,6 +11,11 @@
        rolledUp              money moved off hidden zero-priced components
        componentDepth        nesting depth UNDER A LINE ITEM, divider-agnostic
        numberCell/moneyCell/moneyCellOn/itemTaxCents/pathKey   the cell rules
+       statedUnitGrossCents  the family's `it.orders` / `it.invoices` helper:
+                             a STATED line's Unit Price (the gross of one
+                             unit), `null` on a rate line. Optional — a
+                             caller that does not pass it prints every line
+                             off its rates, as before.
        DISAMBIGUATED_ITEM_TYPES        which `type` values the Type column says
        showDestinationBanners          suppressed at a single destination
        showOrderBanner                 suppressed at a single source order
@@ -48,6 +53,7 @@ const {
   itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
   showDestinationBanners, showOrderBanner,
   destinationDetail = false, destinations = [], u, hasCollection = false,
+  statedUnitGrossCents = null,
 } = it;
 %>
 <%/* THE HEADER ROW HAS TWO HOMES, and which one is a fact about
@@ -121,8 +127,15 @@ const countText = (t) => {
   const words = PERIOD_WORDS[t.rate_key];
   return words ? v + " " + (v === 1 ? words[0] : words[1]) : v + " × " + t.rate_key;
 };
+// A STATED line (`price.stated_cents`, one-document-model ruling 189) states
+// its gross, not a rate: its Unit Price is the gross of ONE unit, rounded once
+// by core (owner, 2026-11-25). A stated total GOVERNS a line that also carries
+// rates, so this arm comes first. A display figure: Unit × Qty may sit under
+// 1¢ per unit off the Subtotal, as a Xero UnitAmount does.
 const unitPriceCell = (item, taxCents) => {
   const p = item.price;
+  const statedUnit = statedUnitGrossCents ? statedUnitGrossCents(item) : null;
+  if (statedUnit !== null) return moneyCellOn(statedUnit, taxCents);
   if (p.rates.length <= 1) return moneyCellOn(p.rates.length === 1 ? p.rates[0].amount_cents : 0, taxCents);
   return p.rates.map(rateText).join(" · ");
 };
