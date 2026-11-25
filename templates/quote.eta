@@ -407,6 +407,7 @@ const replacementLine = (item) => {
      itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
      showDestinationBanners: destinations.length > 1,
      showOrderBanner: true,
+     statedUnitGrossCents: it.orders.statedUnitGrossCents,
    }) %>
 <% } %>
 
