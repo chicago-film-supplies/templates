@@ -240,6 +240,7 @@ const showOrderBanner = (invoice.number_orders || []).length > 1;
      rolledUp, componentDepth, numberCell, moneyCell, moneyCellOn,
      itemTaxCents, pathKey, DISAMBIGUATED_ITEM_TYPES,
      showDestinationBanners, showOrderBanner,
+     statedUnitGrossCents: it.invoices.statedUnitGrossCents,
    }) %>
 <% } %>
 
