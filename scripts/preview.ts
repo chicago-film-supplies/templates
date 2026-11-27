@@ -123,6 +123,30 @@ const LOGO_SVG = CFS_LOGO_SVG;
 /** Frozen render timestamp — deterministic output for goldens. */
 const NOW = "2026-01-15T12:00:00.000-06:00";
 
+/**
+ * Frozen `it.holidays` — ⚠️ **a deliberate copy of `FROZEN_HOLIDAYS` in
+ * `api-cloudrun/src/lib/templates/goldenRender.ts`**, which the golden gate
+ * renders with and which reaches no shared package (same arrangement as
+ * `SCREENSHOT_WIDTH_PX` below). Drifting from it makes a local day count
+ * disagree with the golden.
+ *
+ * This harness passed NO `it.holidays` until 2026-11-27, and nothing said so
+ * while the shared partials carried a stored window-days fallback. Once #497 and
+ * #498 dropped it, every fixture whose page counts a charge window's business
+ * days (`chargeWindowBusinessDays(…, it.holidays)`) died here with `holidays is
+ * not iterable` — 10 of the 45 — while rendering fine in prod and in the gate.
+ */
+const HOLIDAYS = [
+  "2026-01-01", // New Year's Day
+  "2026-01-19", // Martin Luther King Jr. Day
+  "2026-05-25", // Memorial Day
+  "2026-07-03", // Independence Day (observed)
+  "2026-07-04", // Independence Day
+  "2026-09-07", // Labor Day
+  "2026-11-26", // Thanksgiving Day
+  "2026-12-25", // Christmas Day
+];
+
 const eta = new Eta({ autoEscape: true, cache: false });
 
 /**
@@ -556,6 +580,7 @@ const ctx = {
   version: 1,
   params,
   now: NOW,
+  holidays: HOLIDAYS,
   dateFns,
   tz,
   logo: LOGO_SVG,
