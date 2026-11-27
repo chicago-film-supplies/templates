@@ -160,10 +160,18 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": null,
-      "uid_tracking_category": null
+      "uid_tracking_category": null,
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "crms_id": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "c8d2e3f4-5a67-4b89-8c1d-2e3f4a5b6c7d",
@@ -226,10 +234,18 @@
             "num": 7,
             "den": 5
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": null,
-      "uid_tracking_category": null
+      "uid_tracking_category": null,
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "crms_id": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "CompedSandbagSet0001",
@@ -273,10 +289,18 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": null,
-      "uid_tracking_category": null
+      "uid_tracking_category": null,
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "crms_id": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "DeliverySetupRemove1",
@@ -315,10 +339,19 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "replacement_cents": null,
+        "stated_cents": null
       },
       "coa_revenue": null,
-      "uid_tracking_category": null
+      "uid_tracking_category": null,
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "crms_id": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "CardProcessingFee001",
@@ -342,10 +375,18 @@
         "total_cents": 1479,
         "price_formula": null,
         "rates": [],
-        "counts": []
+        "counts": [],
+        "replacement_cents": null,
+        "stated_cents": null
       },
       "coa_revenue": null,
-      "uid_tracking_category": null
+      "uid_tracking_category": null,
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "crms_id": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     }
   ],
   "query_by_items": [

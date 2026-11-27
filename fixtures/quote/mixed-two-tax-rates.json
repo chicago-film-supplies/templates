@@ -169,7 +169,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -183,7 +185,10 @@
       "zero_priced": false,
       "crms_id": 408,
       "coa_revenue": 4000,
-      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN"
+      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "lMxaFkdQPEn45jwGYc5J",
@@ -232,7 +237,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "none",
       "order_number": 993,
@@ -247,7 +254,10 @@
       "zero_priced": false,
       "crms_id": 509,
       "coa_revenue": 4000,
-      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd"
+      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "EIzqIswHEVKZvlW7w82E",
@@ -296,7 +306,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -312,7 +324,10 @@
       "zero_priced": true,
       "crms_id": 91,
       "coa_revenue": 4000,
-      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd"
+      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "I9Ac4WCfjqPhYdwGcfxZ",
@@ -361,7 +376,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -377,7 +394,10 @@
       "zero_priced": true,
       "crms_id": 508,
       "coa_revenue": 4000,
-      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd"
+      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "kETzgYqCmiCLZvjwBfpE",
@@ -426,7 +446,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -440,7 +462,10 @@
       "zero_priced": false,
       "crms_id": 108,
       "coa_revenue": 4000,
-      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN"
+      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "lMxaFkdQPEn45jwGYc5J",
@@ -489,7 +514,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "none",
       "order_number": 993,
@@ -504,7 +531,10 @@
       "zero_priced": false,
       "crms_id": 509,
       "coa_revenue": 4000,
-      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd"
+      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "WU65HeTi4HHMMk6JLkly",
@@ -553,7 +583,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -567,7 +599,10 @@
       "zero_priced": false,
       "crms_id": 407,
       "coa_revenue": 4200,
-      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN"
+      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "aAtxeOzwGBYmkzlmsjTc",
@@ -616,7 +651,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -630,7 +667,10 @@
       "zero_priced": false,
       "crms_id": 119,
       "coa_revenue": 4000,
-      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN"
+      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "nXrZlo5kGVMSqjkSWWaz",
@@ -679,7 +719,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -693,7 +735,10 @@
       "zero_priced": false,
       "crms_id": 115,
       "coa_revenue": 4200,
-      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN"
+      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "rYxQapfObjx5jhQbhZGw",
@@ -742,7 +787,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -756,7 +803,10 @@
       "zero_priced": false,
       "crms_id": 67,
       "coa_revenue": 4200,
-      "uid_tracking_category": "miwRHRdNeWuxbDv59UQc"
+      "uid_tracking_category": "miwRHRdNeWuxbDv59UQc",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "bw1VOxvwI21DI3MmYjZF",
@@ -805,7 +855,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -819,7 +871,10 @@
       "zero_priced": false,
       "crms_id": 438,
       "coa_revenue": 4000,
-      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd"
+      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "meT4g1Buy0xnufy1bGH2",
@@ -868,7 +923,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -882,7 +939,10 @@
       "zero_priced": false,
       "crms_id": 107,
       "coa_revenue": 4000,
-      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd"
+      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "eqOJlpjvKjSNxDrB3N8v",
@@ -931,7 +991,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -945,7 +1007,10 @@
       "zero_priced": false,
       "crms_id": 65,
       "coa_revenue": 4200,
-      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN"
+      "uid_tracking_category": "29tXDTAcKA7cFJMOz4XN",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "rYxQapfObjx5jhQbhZGw",
@@ -994,7 +1059,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -1009,7 +1076,10 @@
       "zero_priced": false,
       "crms_id": 67,
       "coa_revenue": 4200,
-      "uid_tracking_category": "miwRHRdNeWuxbDv59UQc"
+      "uid_tracking_category": "miwRHRdNeWuxbDv59UQc",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "tE77BpWcOFsExoPKuDue",
@@ -1062,7 +1132,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 993,
@@ -1076,7 +1148,10 @@
       "zero_priced": false,
       "crms_id": 526,
       "coa_revenue": 4000,
-      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd"
+      "uid_tracking_category": "bkJWgnFzhBt4oQbqSDSd",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "32242831-13d8-418c-b909-e7d9409f043d",
@@ -1135,7 +1210,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "none",
       "order_number": 993,
@@ -1149,7 +1226,10 @@
       "zero_priced": false,
       "crms_id": 409,
       "coa_revenue": 4210,
-      "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl"
+      "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "c881b39f-42b6-4054-96cf-cafa23e41bc9",
@@ -1193,7 +1273,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "none",
       "order_number": 993,
@@ -1207,7 +1289,10 @@
       "zero_priced": false,
       "crms_id": 30,
       "coa_revenue": 4100,
-      "uid_tracking_category": "5LOJjsqE2Zvzqt4My4mP"
+      "uid_tracking_category": "5LOJjsqE2Zvzqt4My4mP",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "Xgio2ZPsF3SyxtwJjkwD",
@@ -1241,7 +1326,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "none",
       "order_number": 993,
@@ -1255,7 +1342,10 @@
       "zero_priced": false,
       "crms_id": 464,
       "coa_revenue": 4110,
-      "uid_tracking_category": "5LOJjsqE2Zvzqt4My4mP"
+      "uid_tracking_category": "5LOJjsqE2Zvzqt4My4mP",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     }
   ],
   "totals": {

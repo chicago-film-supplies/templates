@@ -142,7 +142,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "none",
       "order_number": 976,
@@ -156,7 +158,10 @@
       "zero_priced": false,
       "crms_id": 247,
       "coa_revenue": 4210,
-      "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl"
+      "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     }
   ],
   "totals": {

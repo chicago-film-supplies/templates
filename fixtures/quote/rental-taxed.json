@@ -179,7 +179,9 @@
             "num": 6,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "stock_method": "bulk",
       "order_number": 991,
@@ -193,7 +195,10 @@
       "zero_priced": false,
       "crms_id": 104,
       "coa_revenue": 4000,
-      "uid_tracking_category": "IrnNmVh937dbAGBhUCox"
+      "uid_tracking_category": "IrnNmVh937dbAGBhUCox",
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     }
   ],
   "tax_exempt": false,
