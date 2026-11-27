@@ -140,7 +140,8 @@
         "S20xjunK2qYSdH1PVY2X",
         "bb74d095-3904-4890-b7c0-f1f68c27f6d0"
       ],
-      "description": ""
+      "description": "",
+      "path_extension_for": null
     },
     {
       "uid": "ade4ac39-2a53-4ba4-93cb-cffad41a63a0",
@@ -200,7 +201,8 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "stated_cents": null
       },
       "path": [
         "S20xjunK2qYSdH1PVY2X",
@@ -210,7 +212,16 @@
       ],
       "coa_revenue": 4200,
       "zero_priced": null,
-      "uid_tracking_category": null
+      "uid_tracking_category": null,
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "xero_id": null,
+      "crms_id": null,
+      "substituted_for": [],
+      "out_of_service": [],
+      "path_source_item": null,
+      "units_from": null,
+      "exchanged_for": []
     },
     {
       "uid": "N8brmUmmSzHs523aJAMd",
@@ -266,7 +277,8 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "stated_cents": null
       },
       "path": [
         "S20xjunK2qYSdH1PVY2X",
@@ -277,7 +289,16 @@
       ],
       "coa_revenue": 4200,
       "zero_priced": true,
-      "uid_tracking_category": null
+      "uid_tracking_category": null,
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "xero_id": null,
+      "crms_id": null,
+      "substituted_for": [],
+      "out_of_service": [],
+      "path_source_item": null,
+      "units_from": null,
+      "exchanged_for": []
     }
   ],
   "totals": {

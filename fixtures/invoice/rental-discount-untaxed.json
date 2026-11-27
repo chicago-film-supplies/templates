@@ -140,7 +140,8 @@
         "3tiOW5c2wAl3W94FmfjV",
         "1c4aacb0-4ce6-4e50-83aa-27195e254325"
       ],
-      "description": ""
+      "description": "",
+      "path_extension_for": null
     },
     {
       "uid": "74e91021-4b4c-4539-b082-4f5430098b4b",
@@ -195,7 +196,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "path": [
         "3tiOW5c2wAl3W94FmfjV",
@@ -206,9 +209,15 @@
       "coa_revenue": 4000,
       "uid_tracking_category": "wbK9sa4AeIPG50BGtzIe",
       "xero_id": "3f670cfc-09da-421c-82d7-305ca4512b2c",
-      "crms_opportunity_id": 609,
       "crms_id": 139,
-      "zero_priced": false
+      "zero_priced": false,
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "substituted_for": [],
+      "out_of_service": [],
+      "path_source_item": null,
+      "units_from": null,
+      "exchanged_for": []
     },
     {
       "uid": "3kzv0sanOljc25psMVkU",
@@ -248,7 +257,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "path": [
         "3tiOW5c2wAl3W94FmfjV",
@@ -260,9 +271,15 @@
       "coa_revenue": 4000,
       "uid_tracking_category": "wbK9sa4AeIPG50BGtzIe",
       "xero_id": "9e140072-d913-4478-a0a9-616c16f90b05",
-      "crms_opportunity_id": 609,
       "crms_id": 473,
-      "zero_priced": true
+      "zero_priced": true,
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "substituted_for": [],
+      "out_of_service": [],
+      "path_source_item": null,
+      "units_from": null,
+      "exchanged_for": []
     },
     {
       "uid": "Wnj0LODXW6zCYRmnJoxQ",
@@ -302,7 +319,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "path": [
         "3tiOW5c2wAl3W94FmfjV",
@@ -314,9 +333,15 @@
       "coa_revenue": 4000,
       "uid_tracking_category": "wbK9sa4AeIPG50BGtzIe",
       "xero_id": "64a79c7c-db51-49ba-a988-a44dfe5b216d",
-      "crms_opportunity_id": 609,
       "crms_id": 138,
-      "zero_priced": true
+      "zero_priced": true,
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "substituted_for": [],
+      "out_of_service": [],
+      "path_source_item": null,
+      "units_from": null,
+      "exchanged_for": []
     }
   ],
   "totals": {

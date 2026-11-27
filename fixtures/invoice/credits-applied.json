@@ -139,7 +139,8 @@
         "sfL6ZP7xDs1XxFHNvaHO",
         "32987d7e-06c7-482a-bdf0-37097699b071"
       ],
-      "description": ""
+      "description": "",
+      "path_extension_for": null
     },
     {
       "uid": "Jmv76gorwoLmSOmXwxh5",
@@ -179,7 +180,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "path": [
         "sfL6ZP7xDs1XxFHNvaHO",
@@ -189,9 +192,15 @@
       "coa_revenue": 4210,
       "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl",
       "xero_id": "12aeb68b-d76d-4c46-9c27-92082c9b1d60",
-      "crms_opportunity_id": 63,
       "crms_id": 209,
-      "zero_priced": null
+      "zero_priced": null,
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "substituted_for": [],
+      "out_of_service": [],
+      "path_source_item": null,
+      "units_from": null,
+      "exchanged_for": []
     },
     {
       "uid": "6ccb1633-1ced-44c4-ae04-534f0fe7ed98",

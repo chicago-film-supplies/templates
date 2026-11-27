@@ -445,7 +445,9 @@
                 "stock_method": "serialized",
                 "order_number": 1069,
                 "uid_order": "0Vf8CyXIqyggYRKt0MVF",
-                "quantity_ordered": 85
+                "quantity_ordered": 85,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": "0Vf8CyXIqyggYRKt0MVF:0q6NhsjASVnRH5PqKLKP:dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
               "owner_path": null,
@@ -469,7 +471,9 @@
                 "stock_method": "bulk",
                 "order_number": 1069,
                 "uid_order": "0Vf8CyXIqyggYRKt0MVF",
-                "quantity_ordered": 43
+                "quantity_ordered": 43,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": "0Vf8CyXIqyggYRKt0MVF:9Mh47G21XUYW71ehVx7p:dbf33c46-6b15-4669-b8a4-eb6e399d3f09:a027e45b0f50",
               "owner_path": null,
@@ -493,7 +497,9 @@
                 "stock_method": "bulk",
                 "order_number": 1069,
                 "uid_order": "0Vf8CyXIqyggYRKt0MVF",
-                "quantity_ordered": 4
+                "quantity_ordered": 4,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": "0Vf8CyXIqyggYRKt0MVF:lMxUI8nQ7ZqMd4cWqmq0:dbf33c46-6b15-4669-b8a4-eb6e399d3f09:a027e45b0f50",
               "owner_path": null,
@@ -517,7 +523,9 @@
                 "stock_method": "bulk",
                 "order_number": 1069,
                 "uid_order": "0Vf8CyXIqyggYRKt0MVF",
-                "quantity_ordered": 4
+                "quantity_ordered": 4,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": "0Vf8CyXIqyggYRKt0MVF:tjdX11xfcxOeTirjL7df:dbf33c46-6b15-4669-b8a4-eb6e399d3f09:a027e45b0f50",
               "owner_path": null,
@@ -540,7 +548,9 @@
                 "stock_method": "bulk",
                 "order_number": 1069,
                 "uid_order": "0Vf8CyXIqyggYRKt0MVF",
-                "quantity_ordered": 75
+                "quantity_ordered": 75,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": "0Vf8CyXIqyggYRKt0MVF:DG610dKUU7Zu85CwyxYX:dbf33c46-6b15-4669-b8a4-eb6e399d3f09",
               "owner_path": null,
@@ -578,7 +588,9 @@
                 "stock_method": "none",
                 "order_number": 1069,
                 "uid_order": "0Vf8CyXIqyggYRKt0MVF",
-                "quantity_ordered": 2
+                "quantity_ordered": 2,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": null,
               "owner_path": null,

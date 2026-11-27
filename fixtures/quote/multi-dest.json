@@ -289,10 +289,17 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": 4000,
-      "uid_tracking_category": "4JUfsewiwoaEvy06UI8W"
+      "uid_tracking_category": "4JUfsewiwoaEvy06UI8W",
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "0BIQ73UMiHTtd8mo0yNk",
@@ -350,10 +357,17 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": 4000,
-      "uid_tracking_category": "4JUfsewiwoaEvy06UI8W"
+      "uid_tracking_category": "4JUfsewiwoaEvy06UI8W",
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "jN6MZEMqwr9VWsNix8p4",
@@ -411,10 +425,17 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": 4000,
-      "uid_tracking_category": "8hHwBKBvfDObIvLN7a5E"
+      "uid_tracking_category": "8hHwBKBvfDObIvLN7a5E",
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "2b8e6a04-9d71-4c53-a2f9-58170be3c9d7",
@@ -480,10 +501,17 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": 4100,
-      "uid_tracking_category": "5LOJjsqE2Zvzqt4My4mP"
+      "uid_tracking_category": "5LOJjsqE2Zvzqt4My4mP",
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "6d10f5c3-84a9-4e27-91b6-0c4de728af35",
@@ -551,10 +579,17 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": 4000,
-      "uid_tracking_category": "IrnNmVh937dbAGBhUCox"
+      "uid_tracking_category": "IrnNmVh937dbAGBhUCox",
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "YyBaHYXVZofngOqtw2Lk",
@@ -612,10 +647,17 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": 4000,
-      "uid_tracking_category": "IrnNmVh937dbAGBhUCox"
+      "uid_tracking_category": "IrnNmVh937dbAGBhUCox",
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "aosey66Ih8tTaoWKQXmO",
@@ -673,10 +715,17 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": 4000,
-      "uid_tracking_category": "nCgnGkHCdahLfM24hkxU"
+      "uid_tracking_category": "nCgnGkHCdahLfM24hkxU",
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     },
     {
       "uid": "OYvggZa70ccCCbcQ8o1H",
@@ -734,10 +783,17 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "coa_revenue": 4200,
-      "uid_tracking_category": "miwRHRdNeWuxbDv59UQc"
+      "uid_tracking_category": "miwRHRdNeWuxbDv59UQc",
+      "quantity_per_parent": null,
+      "order_number": null,
+      "uid_order": null,
+      "uid_tax_class_override": null,
+      "exchanged_for": []
     }
   ],
   "totals": {

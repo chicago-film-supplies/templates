@@ -268,7 +268,10 @@
                 "stock_method": "serialized",
                 "order_number": 1064,
                 "uid_order": "h2O0vI0LUb0OyBWi0gcR",
-                "quantity_ordered": 40
+                "quantity_ordered": 40,
+                "quantity_per_parent": null,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": "h2O0vI0LUb0OyBWi0gcR:0q6NhsjASVnRH5PqKLKP:d9269ee4-7d8d-468d-a01c-5689a2347976",
               "owner_path": null,
@@ -292,7 +295,9 @@
                 "stock_method": "bulk",
                 "order_number": 1064,
                 "uid_order": "h2O0vI0LUb0OyBWi0gcR",
-                "quantity_ordered": 20
+                "quantity_ordered": 20,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": "h2O0vI0LUb0OyBWi0gcR:9Mh47G21XUYW71ehVx7p:d9269ee4-7d8d-468d-a01c-5689a2347976:a027e45b0f50",
               "owner_path": null,
@@ -316,7 +321,9 @@
                 "stock_method": "bulk",
                 "order_number": 1064,
                 "uid_order": "h2O0vI0LUb0OyBWi0gcR",
-                "quantity_ordered": 6
+                "quantity_ordered": 6,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": "h2O0vI0LUb0OyBWi0gcR:lMxUI8nQ7ZqMd4cWqmq0:d9269ee4-7d8d-468d-a01c-5689a2347976:a027e45b0f50",
               "owner_path": null,
@@ -340,7 +347,9 @@
                 "stock_method": "bulk",
                 "order_number": 1064,
                 "uid_order": "h2O0vI0LUb0OyBWi0gcR",
-                "quantity_ordered": 3
+                "quantity_ordered": 3,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": "h2O0vI0LUb0OyBWi0gcR:tjdX11xfcxOeTirjL7df:d9269ee4-7d8d-468d-a01c-5689a2347976:a027e45b0f50",
               "owner_path": null,
@@ -362,7 +371,10 @@
                 "stock_method": "bulk",
                 "order_number": 1064,
                 "uid_order": "h2O0vI0LUb0OyBWi0gcR",
-                "quantity_ordered": 40
+                "quantity_ordered": 40,
+                "quantity_per_parent": null,
+                "substituted_for": [],
+                "exchanged_for": []
               },
               "uid_booking": "h2O0vI0LUb0OyBWi0gcR:DG610dKUU7Zu85CwyxYX:d9269ee4-7d8d-468d-a01c-5689a2347976",
               "owner_path": null,

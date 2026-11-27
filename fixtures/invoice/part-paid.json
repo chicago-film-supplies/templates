@@ -149,7 +149,8 @@
         "JthKx7NpHmowJJBTr1gD",
         "905051ca-9371-42b8-a256-ac07c23b75ae"
       ],
-      "description": ""
+      "description": "",
+      "path_extension_for": null
     },
     {
       "uid": "1c0485c6-472e-478d-b887-383b3e7d5ffc",
@@ -200,7 +201,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "path": [
         "JthKx7NpHmowJJBTr1gD",
@@ -211,9 +214,15 @@
       "coa_revenue": 4210,
       "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl",
       "xero_id": "80944dda-1aaa-4e2c-ad48-abdf5c916de2",
-      "crms_opportunity_id": 1002,
       "crms_id": 225,
-      "zero_priced": false
+      "zero_priced": false,
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "substituted_for": [],
+      "out_of_service": [],
+      "path_source_item": null,
+      "units_from": null,
+      "exchanged_for": []
     },
     {
       "uid": "1f3Axe7e6ftTY5DW9L2A",
@@ -253,7 +262,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "path": [
         "JthKx7NpHmowJJBTr1gD",
@@ -264,9 +275,15 @@
       "coa_revenue": 4210,
       "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl",
       "xero_id": "637bf77f-3def-479f-a115-00baf73908d1",
-      "crms_opportunity_id": 1002,
       "crms_id": 207,
-      "zero_priced": false
+      "zero_priced": false,
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "substituted_for": [],
+      "out_of_service": [],
+      "path_source_item": null,
+      "units_from": null,
+      "exchanged_for": []
     },
     {
       "uid": "PnjJ53HlRoW1xHnfBFPk",
@@ -306,7 +323,9 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "base_percent": null,
+        "stated_cents": null
       },
       "path": [
         "JthKx7NpHmowJJBTr1gD",
@@ -317,9 +336,15 @@
       "coa_revenue": 4210,
       "uid_tracking_category": "5FoOYkx0IG9uiM9KTazl",
       "xero_id": "87cdcd37-ca52-48df-9207-1bc6ddbc25cd",
-      "crms_opportunity_id": 1002,
       "crms_id": 192,
-      "zero_priced": false
+      "zero_priced": false,
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "substituted_for": [],
+      "out_of_service": [],
+      "path_source_item": null,
+      "units_from": null,
+      "exchanged_for": []
     },
     {
       "uid": "custom-2a75960d-ed45-4d1d-b80a-5e5ce9587d07",
@@ -368,7 +393,8 @@
             "num": 1,
             "den": 1
           }
-        ]
+        ],
+        "stated_cents": null
       },
       "path": [
         "JthKx7NpHmowJJBTr1gD",
@@ -378,7 +404,16 @@
       ],
       "zero_priced": false,
       "uid_tracking_category": null,
-      "coa_revenue": null
+      "coa_revenue": null,
+      "quantity_per_parent": null,
+      "uid_tax_class_override": null,
+      "xero_id": null,
+      "crms_id": null,
+      "substituted_for": [],
+      "out_of_service": [],
+      "path_source_item": null,
+      "units_from": null,
+      "exchanged_for": []
     }
   ],
   "totals": {
