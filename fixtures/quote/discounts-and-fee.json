@@ -164,7 +164,7 @@
         "base_percent": null,
         "stated_cents": null
       },
-      "coa_revenue": null,
+      "coa_revenue": 4000,
       "uid_tracking_category": null,
       "quantity_per_parent": null,
       "order_number": null,
@@ -238,7 +238,7 @@
         "base_percent": null,
         "stated_cents": null
       },
-      "coa_revenue": null,
+      "coa_revenue": 4000,
       "uid_tracking_category": null,
       "quantity_per_parent": null,
       "order_number": null,
@@ -293,7 +293,7 @@
         "base_percent": null,
         "stated_cents": null
       },
-      "coa_revenue": null,
+      "coa_revenue": 4000,
       "uid_tracking_category": null,
       "quantity_per_parent": null,
       "order_number": null,
@@ -344,7 +344,7 @@
         "replacement_cents": null,
         "stated_cents": null
       },
-      "coa_revenue": null,
+      "coa_revenue": 4100,
       "uid_tracking_category": null,
       "quantity_per_parent": null,
       "order_number": null,
@@ -379,7 +379,7 @@
         "replacement_cents": null,
         "stated_cents": null
       },
-      "coa_revenue": null,
+      "coa_revenue": 4700,
       "uid_tracking_category": null,
       "quantity_per_parent": null,
       "order_number": null,

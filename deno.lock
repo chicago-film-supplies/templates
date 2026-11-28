@@ -2,7 +2,7 @@
   "version": "5",
   "specifiers": {
     "jsr:@bgub/eta@^4.6.0": "4.6.0",
-    "jsr:@cfs/core@10.0.0-beta.781": "10.0.0-beta.781",
+    "jsr:@cfs/core@10.0.0-beta.782": "10.0.0-beta.782",
     "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/internal@^1.0.12": "1.0.14",
     "jsr:@std/semver@^1.0.8": "1.0.8",
@@ -16,8 +16,8 @@
     "@bgub/eta@4.6.0": {
       "integrity": "fe872004cd6c64ca25c7e71fd80bbbad7d8d552cefd31828bddddb7db0f79eb1"
     },
-    "@cfs/core@10.0.0-beta.781": {
-      "integrity": "70518f1e6427f8a821f427ab9ab9c0c546098c21226d167d8a9087824cf0dcab",
+    "@cfs/core@10.0.0-beta.782": {
+      "integrity": "a5fa1a9d60bf007bf21ea4532b2f6e7dcb7b42b1b7f307a3617d50f5a46b9611",
       "dependencies": [
         "npm:@date-fns/tz",
         "npm:currency.js",
@@ -59,7 +59,7 @@
   "workspace": {
     "dependencies": [
       "jsr:@bgub/eta@^4.6.0",
-      "jsr:@cfs/core@10.0.0-beta.781",
+      "jsr:@cfs/core@10.0.0-beta.782",
       "jsr:@std/assert@^1.0.19",
       "jsr:@std/semver@^1.0.8",
       "npm:@date-fns/tz@^1.5.0",
